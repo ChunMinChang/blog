@@ -1,5 +1,5 @@
-title:            Blog
-description:      Coding. Music.
+title:            Peak Up
+description:      everyday surpass myself
 logo:             mountain.png
 disqus_shortname: chunminchang-blog
 # Assign a default image for your site's header and footer
@@ -47,12 +47,12 @@ author:
   picture:        chunmin.jpg
   email:          chun.m.chang@gmail.com
   # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
-  description:    Hello World
+  description:     I am a self-directed learner and a maker who enjoys building products from original ideas.
   # Social networking links used in footer. Update and remove as you like.
   twitter:
   facebook:
   github:         "https://github.com/ChunMinChang"
-  linkedin:
+  linkedin:       "https://www.linkedin.com/in/chunminchang"
   instagram:
   tumblr:
   # For Google Authorship https://plus.google.com/authorship

@@ -10,6 +10,6 @@ Hi, I am Chun-Min Chang, a software engineer. Everyday, I couldn't help but noti
 
 Playing guitar is my enjoyment. Music emblematize my passion for creative expression; Engineering background stands my creative understanding from multiple angles. I am also a self-directed learner and a maker who enjoys building products from original ideas.
 
-- [Website](https://github.com/ChunMinChang)
+- [Website](http://chunminchang.github.io/)
 - [Linkedin](https://www.linkedin.com/in/chunminchang)
-- [GitHub](https://github.com/ChunMinChang)
+- [GitHub](https://github.com/chunminchang)

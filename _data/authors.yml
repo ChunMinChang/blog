@@ -1,15 +1,15 @@
 default_author:
-  name:           Your Name
+  name:           Chun-Min Chang
   picture:        chunmin.jpg
-  email:          your@email.com
+  email:          chun.m.chang@gmail.cmo
   # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
-  description:    Some Details about yourself
+  description:    I am a self-directed learner and a maker who enjoys building products from original ideas.
   # Social networking links used in footer. Update and remove as you like.
   twitter:
   facebook:
-  github:
-  linkedin:
+  github:         "chunminchang"
+  linkedin:       "https://www.linkedin.com/in/chunminchang"
   instagram:
   tumblr:
   # For Google Authorship https://plus.google.com/authorship
-  google_plus:    "http://plus.google.com/123123123123132123"
+  google_plus:

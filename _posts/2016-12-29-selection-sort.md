@@ -83,14 +83,14 @@ so $$L = L_{sorted} \cup L_{unsorted} = [ ] \cup [ 5, 3, 1, 2, 3 ]$$.
 
 - In the first round, $$1$$ is picked and moved
   from $$L_{unsorted}$$ to $$L_{sorted}$$, so
-  - $$L = L_{sorted} \cup L_{unsorted} = [ 1 ] \cup [ 5, 3, 2, 3 ] = [1, 5, 3, 2, 3]$$
+  - $$L = L_{sorted} \cup L_{unsorted} = [ 1 ] \cup [ 5, 3, 2, 3 ] = [1 \vert 5, 3, 2, 3]$$
 - In the second round, $$2$$ is picked and moved
   from $$L_{unsorted}$$ to $$L_{sorted}$$, so
-  - $$L = L_{sorted} \cup L_{unsorted} = [ 1, 2 ] \cup [ 5, 3, 3 ] = [1, 2, 5, 3, 3]$$
+  - $$L = L_{sorted} \cup L_{unsorted} = [ 1, 2 ] \cup [ 5, 3, 3 ] = [1, 2 \vert 5, 3, 3]$$
 - Next, $$3$$ is picked, so
-  - $$L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3 ] \cup [ 5, 3 ] = [1, 2, 3, 5, 3]$$
+  - $$L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3 ] \cup [ 5, 3 ] = [1, 2, 3 \vert 5, 3]$$
 - Then, another $$3$$ is picked, so
-  - $$L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3 ] \cup [ 5 ] = [1, 2, 3, 3, 5]$$
+  - $$L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3 ] \cup [ 5 ] = [1, 2, 3, 3 \vert 5]$$
 - Finally, $$5$$ is picked, so
   - $$L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3, 5 ] \cup [ ] = [1, 2, 3, 3, 5]$$
 

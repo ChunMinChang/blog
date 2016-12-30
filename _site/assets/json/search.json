@@ -1,10 +1,19 @@
 [
   
     {
+      "title"    : "Insertion Sort",
+      "category" : "Algorithm",
+      "tags"     : "sorting",
+      "url"      : "/post/insertion-sort",
+      "date"     : "2016-12-30 00:00:00 +0800",
+			"shortdate": "December 30, 2016"
+    } ,
+  
+    {
       "title"    : "Selection Sort",
       "category" : "Algorithm",
       "tags"     : "sorting",
-      "url"      : "/blog/selection-sort",
+      "url"      : "/post/selection-sort",
       "date"     : "2016-12-29 00:00:00 +0800",
 			"shortdate": "December 29, 2016"
     } 

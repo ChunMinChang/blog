@@ -1,1 +1,285 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2016-12-26T17:16:52+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author></feed>
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2016-12-30T08:49:53+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/blog/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/blog/selection-sort</id><content type="html" xml:base="http://localhost:4000/blog/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
+
+&lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
+and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sort/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;idea&quot;&gt;Idea&lt;/h2&gt;
+&lt;p&gt;The concept is quite straight.
+If we could get the minimal value from list &lt;strong&gt;one by one&lt;/strong&gt;,
+then we could re-arrange the list from minimal to maximal values.&lt;/p&gt;
+
+&lt;p&gt;Imagine we have two lists &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;,
+the &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; is a list contains several items with comparable values and
+the &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; is a sorted list of &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.
+At first, &lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = [ ]&lt;/script&gt; is empty.&lt;/p&gt;
+
+&lt;p&gt;Take &lt;script type=&quot;math/tex&quot;&gt;L = [ 5, 3, 1, 2, 3 ]&lt;/script&gt; as an example:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;At the first round, we get &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; as minimal value,
+so we move it into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;. Now,
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 5, 3, 2, 3 ]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;At the second round, we get &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; as minimal value, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1, 2 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 5, 3, 3 ]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Next, &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is picked and moved from &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1, 2, 3 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 5, 3 ]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Then, the current minimal value &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is moved from &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1, 2, 3, 3 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 5 ]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Finally, &lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt; is moved into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1, 2, 3, 3, 5 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ ]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;See! the idea is quite simple.
+In the same way, to sort the list from maximal to minimal values,
+the only different is to pick the maximal value from list each round
+instead of minimal value.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-get-minimalor-maximal-value&quot;&gt;How to get minimal(or maximal) value&lt;/h3&gt;
+&lt;p&gt;The way to get minimal(or maximal) items in &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;
+is to linearly search the whole list:
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{Min($L$):} \\
+&amp; \space \space \space \space min = L[1] \\
+&amp; \space \space \space \space \text{for $i \leftarrow 1$ to $N$:} \\
+&amp; \space \space \space \space \space \space \space \space \text{if $L[i] &lt; min$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space min = L[i] \\
+\end{align} %]]&gt;&lt;/script&gt;
+or
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{Max($L$):} \\
+&amp; \space \space \space \space max = L[1] \\
+&amp; \space \space \space \space \text{for $i \leftarrow 1$ to $N$:} \\
+&amp; \space \space \space \space \space \space \space \space \text{if $L[i] &gt; max$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space max = L[i] \\
+\end{align} %]]&gt;&lt;/script&gt;
+, where &lt;script type=&quot;math/tex&quot;&gt;L[i]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;th element in the list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;
+and &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length of &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;divide-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Divide one list into unsorted list and sorted list&lt;/h3&gt;
+&lt;p&gt;In implementation, we usually divide the source list,
+which needs to be sorted, into two parts. One is sorted, the other is unsorted.
+This is better for memory usage than
+creating another list to put the sorted results.&lt;/p&gt;
+
+&lt;p&gt;That is, if we have a source list &lt;script type=&quot;math/tex&quot;&gt;L = [ 5, 3, 1, 2, 3 ]&lt;/script&gt;,
+it will be divided into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;.
+They are initialized to &lt;script type=&quot;math/tex&quot;&gt;[]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; respectively,
+so &lt;script type=&quot;math/tex&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ ] \cup [ 5, 3, 1, 2, 3 ]&lt;/script&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;In the first round, &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; is picked and moved
+from &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1 ] \cup [ 5, 3, 2, 3 ] = [1, 5, 3, 2, 3]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In the second round, &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; is picked and moved
+from &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1, 2 ] \cup [ 5, 3, 3 ] = [1, 2, 5, 3, 3]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Next, &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is picked, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3 ] \cup [ 5, 3 ] = [1, 2, 3, 5, 3]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Then, another &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is picked, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3 ] \cup [ 5 ] = [1, 2, 3, 3, 5]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Finally, &lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt; is picked, so
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3, 5 ] \cup [ ] = [1, 2, 3, 3, 5]&lt;/script&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;algorithm&quot;&gt;Algorithm&lt;/h2&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{SelectionSort($L$):} \\
+&amp; \space \space \space \space \text{for $i \leftarrow 1$ to $\vert L \vert - 1$:} \\
+&amp; \space \space \space \space \space \space \space \space m \leftarrow i \\
+&amp; \space \space \space \space \space \space \space \space \text{for $j \leftarrow i + 1$ to $\vert L \vert$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] &lt; L[m]$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m = j \\
+&amp; \space \space \space \space \space \space \space \space \text{swap $L[i]$ and $L[m]$} \\
+\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The above method will divide &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; into two parts.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L[1...i-1] = L_{sorted}&lt;/script&gt; is sorted&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L[i...N] = L_{unsorted}&lt;/script&gt; is unsorted,&lt;/li&gt;
+  &lt;li&gt;where &lt;script type=&quot;math/tex&quot;&gt;N = \vert L \vert&lt;/script&gt; is the length of &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The following are step by step explanation:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = 1&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = []&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[1...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;we need to find the minimal element in list &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;We use a value &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; to track the &lt;strong&gt;index&lt;/strong&gt; of the minimal element&lt;/li&gt;
+      &lt;li&gt;where &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is initialized to &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; will be updated to &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;2 \leq j \leq N&lt;/script&gt;, if &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+L[j] &lt; L[m] %]]&gt;&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;Repeatedly above instruction from &lt;script type=&quot;math/tex&quot;&gt;j = 2&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt;(searching whole &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;),
+&lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; would be the minimal value in &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;swap &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[i = 1]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;L[1]&lt;/script&gt; now can be considered as &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;so &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[2...N]&lt;/script&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = 2&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = L[1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[2...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;we need to find the minimal element in list &lt;script type=&quot;math/tex&quot;&gt;L[2...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;Same as above, &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is used to keep tracking the index of the minimal
+element in &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;where &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is initialized to &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;After searching the whole &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;,
+&lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; would be the minimal value in &lt;script type=&quot;math/tex&quot;&gt;L[2...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;We can put &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; into the &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; by swapping the &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[i = 2]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;Thus, &lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = L[1...2]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[3...N]&lt;/script&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = k&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = [1...k-1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[k...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is initialized to &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;After searching the whole &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;,
+&lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; would be the minimal value in &lt;script type=&quot;math/tex&quot;&gt;L[k...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;Swapping &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[i = k]&lt;/script&gt; would put &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;Then, &lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = L[1...k]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[k+1...N]&lt;/script&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = N - 1&lt;/script&gt;(final round)
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = [1...N-2]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[N-1...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is initialized to &lt;script type=&quot;math/tex&quot;&gt;N-1&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;Pick a smaller one between &lt;script type=&quot;math/tex&quot;&gt;L[N-1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;and put it into the &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; like above(by swapping with &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt;)&lt;/li&gt;
+      &lt;li&gt;Then &lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = [1...N-1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;The left one(now is &lt;script type=&quot;math/tex&quot;&gt;L[N]&lt;/script&gt;) is definitely the &lt;strong&gt;maximal&lt;/strong&gt; item
+in &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;, so we don’t need to do anything&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;proof&quot;&gt;Proof&lt;/h3&gt;
+
+&lt;h4 id=&quot;proof-by-contradiction&quot;&gt;Proof by contradiction&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Assume this method can &lt;strong&gt;not&lt;/strong&gt; give us an ordered list&lt;/li&gt;
+  &lt;li&gt;so it exists one &lt;script type=&quot;math/tex&quot;&gt;L[p] &gt; L[q]&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+p &lt; q %]]&gt;&lt;/script&gt;, in the result list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Before the result is computed, the unsorted list could be
+&lt;script type=&quot;math/tex&quot;&gt;L[..p..q..]&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;L[..q..p..]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;It means that &lt;script type=&quot;math/tex&quot;&gt;L[p]&lt;/script&gt; is picked &lt;strong&gt;before&lt;/strong&gt; &lt;script type=&quot;math/tex&quot;&gt;L[q]&lt;/script&gt;
+because &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+p &lt; q %]]&gt;&lt;/script&gt; in the result list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;It means &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+L[p] &lt; L[q] %]]&gt;&lt;/script&gt; and it is contradictory to the assumption&lt;/li&gt;
+  &lt;li&gt;Thus, the assumption is wrong. This method will give us an ordered list.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;complexity&quot;&gt;Complexity&lt;/h2&gt;
+&lt;p&gt;We need to search whole &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; to find a minimal(or maximal) item.
+Suppose &lt;script type=&quot;math/tex&quot;&gt;\vert L_{unsorted} \vert = N&lt;/script&gt; at first.
+(the length of &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; is &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt;).&lt;/p&gt;
+
+&lt;p&gt;At the first round, we need to search &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; items
+to find the minimal(or maximal) item and move it into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;.
+After then, &lt;script type=&quot;math/tex&quot;&gt;\vert L_{unsorted} \vert = N - 1&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;At the second round, whole &lt;script type=&quot;math/tex&quot;&gt;N - 1&lt;/script&gt; items in &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; would be counted
+to find the minimal(or maximal) one.
+After the picked one is moved into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;,
+the size of &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; is reduced to &lt;script type=&quot;math/tex&quot;&gt;\vert L_{unsorted} \vert = N - 2&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;The procedure keep working until the list &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; is empty
+(&lt;script type=&quot;math/tex&quot;&gt;\vert L_{unsorted} \vert = 0&lt;/script&gt;).
+Thus, we need to search
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}
+N + (N - 1) + (N - 2) + .... + 1
+&amp;= \frac{ N \cdot (N + 1) }{ 2 } \\
+&amp;= \frac{ 1 }{ 2 } \cdot N^2 + \frac{ 1 }{ 2 } N
+\end{align} %]]&gt;&lt;/script&gt;
+times to move all the items into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;.
+Therfore, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;,
+where the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length of the list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;simple_sort&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_sort.h&quot; data-gist-line=&quot;1-16, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_sort.cpp&quot; data-gist-line=&quot;1, 5-20, 37-73&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_test.cpp&quot; data-gist-line=&quot;2-37, 45-64, 100-101&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;!-- ### General version with C++ ```template``` --&gt;
+
+&lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Selection sort</summary></entry></feed>

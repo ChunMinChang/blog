@@ -242,11 +242,11 @@ Therefore, the complexity is $$\mathcal{O}(N^2)$$.
 
 See the files on [gist here][gist].
 
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="simple_sort.h" data-gist-line="1-14, 17-18, 25"></code>
+<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-14, 17-18, 25"></code>
 
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="simple_sort.cpp" data-gist-line="1, 5-20, 74-108"></code>
+<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1, 5-20, 74-108"></code>
 
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="simple_test.cpp" data-gist-line="2-37, 45-58, 66-72, 100-101"></code>
+<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="2-37, 45-58, 66-72, 100-101"></code>
 
 
 The above gist files are imported by [gist-embed][gist-embed].

@@ -251,7 +251,6 @@ See the files on [gist here][gist].
 
 The above gist files are imported by [gist-embed][gist-embed].
 
-[sel_sort]: https://chunminchang.gitbooks.io/codeplay/content/sort/selection_sort.html "Selection Sort"
 [gist]: https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb "simple_sort"
 [gist-embed]: https://github.com/blairvanderhoof/gist-embed "gist-embed"
 
@@ -259,4 +258,5 @@ The above gist files are imported by [gist-embed][gist-embed].
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
 
 [codeplay]: https://www.gitbook.com/book/chunminchang/codeplay/details "CodePlay"
-[ins-sort]: https://chunminchang.gitbooks.io/codeplay/content/sort/insertion_sort.html "Selection Sort"
+[ins-sort]: https://chunminchang.gitbooks.io/codeplay/content/sorting/insertion_sort.html "Insertion Sort"
+[sel_sort]: https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html "Selection Sort"

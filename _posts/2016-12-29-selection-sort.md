@@ -215,4 +215,4 @@ The above gist files are imported by [gist-embed][gist-embed].
 
 
 [codeplay]: https://www.gitbook.com/book/chunminchang/codeplay/details "CodePlay"
-[sel-sort]: https://chunminchang.gitbooks.io/codeplay/content/sort/selection_sort.html "Selection Sort"
+[sel-sort]: https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html "Selection Sort"

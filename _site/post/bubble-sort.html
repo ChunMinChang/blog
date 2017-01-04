@@ -9,25 +9,25 @@
 
 
 <!-- Begin Jekyll SEO tag v1.3.3 -->
-<title>Selection Sort - Peak Up</title>
-<meta property="og:title" content="Selection Sort" />
-<meta name="description" content="Selection sort" />
-<meta property="og:description" content="Selection sort" />
-<link rel="canonical" href="http://localhost:4000/post/selection-sort" />
-<meta property="og:url" content="http://localhost:4000/post/selection-sort" />
+<title>Bubble Sort - Peak Up</title>
+<meta property="og:title" content="Bubble Sort" />
+<meta name="description" content="Bubble Sort" />
+<meta property="og:description" content="Bubble Sort" />
+<link rel="canonical" href="http://localhost:4000/post/bubble-sort" />
+<meta property="og:url" content="http://localhost:4000/post/bubble-sort" />
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2016-12-29T00:00:00+08:00" />
-<link rel="next" href="http://localhost:4000/post/insertion-sort" title="Insertion Sort" />
+<meta property="article:published_time" content="2017-01-01T00:00:00+08:00" />
+<link rel="prev" href="http://localhost:4000/post/insertion-sort" title="Insertion Sort" />
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "Selection Sort",
-    "datePublished": "2016-12-29T00:00:00+08:00",
-    "description": "Selection sort",
+    "headline": "Bubble Sort",
+    "datePublished": "2017-01-01T00:00:00+08:00",
+    "description": "Bubble Sort",
     "logo": "http://localhost:4000mountain.png",
-    "url": "http://localhost:4000/post/selection-sort"
+    "url": "http://localhost:4000/post/bubble-sort"
   }
 </script>
 <!-- End Jekyll SEO tag -->
@@ -196,7 +196,7 @@
                         
 
                         
-                            Selection Sort
+                            Bubble Sort
                         </h1>
                     
 
@@ -207,7 +207,7 @@
                                 <span class="entry-date date published updated">
                             
                             
-                                    <time datetime="2016-12-29T00:00:00+08:00" class="post-time" itemprop="datePublished">29 Dec 2016</time>
+                                    <time datetime="2017-01-01T00:00:00+08:00" class="post-time" itemprop="datePublished">01 Jan 2017</time>
                                 </span>
                             
 
@@ -225,7 +225,7 @@
                             
 
                             
-                                    <span class="time">3.9444444444444446</span> minutes read
+                                    <span class="time">4.838888888888889</span> minutes read
                             
                                 
                             
@@ -239,285 +239,280 @@
                     <div class="post-body bordered-bottom" itemprop="description">
                     
 
-                        <h1 id="selection-sort">Selection sort</h1>
+                        <h1 id="bubble-sort">Bubble Sort</h1>
 
 <p>This post series is synchronized with my book <a href="https://www.gitbook.com/book/chunminchang/codeplay/details" title="CodePlay">CodePlay</a>
-and this post could be read <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html" title="Selection Sort">here</a>.</p>
+and this post could be read <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/bubble_sort.html" title="Bubble Sort">here</a>.</p>
 
 <h2 id="idea">Idea</h2>
-<p>The concept is quite straight.
-If we could get the minimal value from list <strong>one by one</strong>,
-then we could re-arrange the list from minimal to maximal values.</p>
+<p>The basic concept is same to <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html" title="Selection Sort"><em>Selection Sort</em></a>.
+The list is rearranged from minimal to maximal value
+by picking the maximal(or minimal) value from the unsorted list iteratively.</p>
 
-<p>Imagine we have two lists <script type="math/tex">L</script> and <script type="math/tex">L_{sorted}</script>,
-the <script type="math/tex">L</script> is a list contains several items with comparable values and
-the <script type="math/tex">L_{sorted}</script> is a sorted list of <script type="math/tex">L</script>.
-At first, <script type="math/tex">L_{sorted} = [ ]</script> is empty.</p>
+<p>In <em>selection sort</em>, the minimal element is selected after searching whole list.
+On the other hand, <em>bubble sort</em> iteratively compares two neighbor elements
+and swaps the elements if the left element is greater(or less) than
+the right one, from the list head to the list tail.
+Therefore, the maximal, the second-maximal, … values will be
+“bubbled” up to the tail of list one by one.</p>
 
-<p>Take <script type="math/tex">L = [ 5, 3, 1, 2, 3 ]</script> as an example:</p>
+<p>Take <script type="math/tex">L = [ 5, 3, 4, 2, 1 ]</script> as an example:</p>
 
 <ul>
-  <li>At the first round, we get <script type="math/tex">1</script> as minimal value,
-so we move it into <script type="math/tex">L_{sorted}</script>. Now,
+  <li>Step 1: Move the <strong>maximal</strong> value to the <strong>last</strong> position of the list.
     <ul>
-      <li>
-        <script type="math/tex; mode=display">L_{sorted} = [ 1 ]</script>
-      </li>
-      <li>
-        <script type="math/tex; mode=display">L = [ 5, 3, 2, 3 ]</script>
-      </li>
+      <li><script type="math/tex">5 > 3</script> so swap them. <script type="math/tex">L = [ 3, 5, 4, 2, 1 ]</script></li>
+      <li><script type="math/tex">5 > 4</script> so swap them. <script type="math/tex">L = [ 3, 4, 5, 2, 1 ]</script></li>
+      <li><script type="math/tex">5 > 2</script> so swap them. <script type="math/tex">L = [ 3, 4, 2, 5, 1 ]</script></li>
+      <li><script type="math/tex">5 > 1</script> so swap them. <script type="math/tex">L = [ 3, 4, 2, 1, 5 ]</script></li>
+      <li>The maximal value <script type="math/tex">5</script> is moved to the last of the list</li>
     </ul>
   </li>
-  <li>At the second round, we get <script type="math/tex">2</script> as minimal value, so
+  <li>Step 2: Move the <strong>second-maximal</strong> value to the <strong>second-last</strong> position of the list.
     <ul>
-      <li>
-        <script type="math/tex; mode=display">L_{sorted} = [ 1, 2 ]</script>
-      </li>
-      <li>
-        <script type="math/tex; mode=display">L = [ 5, 3, 3 ]</script>
-      </li>
+      <li><script type="math/tex">% <![CDATA[
+3 < 4 %]]></script> so do nothing.</li>
+      <li><script type="math/tex">4 > 2</script> so swap them. <script type="math/tex">L = [ 3, 2, 4, 1, 5 ]</script></li>
+      <li><script type="math/tex">4 > 1</script> so swap them. <script type="math/tex">L = [ 3, 2, 1, 4, 5 ]</script></li>
+      <li>The second-maximal value <script type="math/tex">4</script> is moved to the second-last of the list</li>
     </ul>
   </li>
-  <li>Next, <script type="math/tex">3</script> is picked and moved from <script type="math/tex">L</script> to <script type="math/tex">L_{sorted}</script>, so
+  <li>Step 3: Move the <strong>third-maximal</strong> value to the <strong>third-last</strong> position of the list.
     <ul>
-      <li>
-        <script type="math/tex; mode=display">L_{sorted} = [ 1, 2, 3 ]</script>
-      </li>
-      <li>
-        <script type="math/tex; mode=display">L = [ 5, 3 ]</script>
-      </li>
+      <li><script type="math/tex">3 > 2</script> so swap them. <script type="math/tex">L = [ 2, 3, 1, 4, 5 ]</script></li>
+      <li><script type="math/tex">3 > 1</script> so swap them. <script type="math/tex">L = [ 2, 1, 3, 4, 5 ]</script></li>
+      <li>The third-maximal value <script type="math/tex">3</script> is moved to the third-last of the list</li>
     </ul>
   </li>
-  <li>Then, the current minimal value <script type="math/tex">3</script> is moved from <script type="math/tex">L</script> to <script type="math/tex">L_{sorted}</script>, so
+  <li>Step 4: Move the <strong>fourth-maximal</strong> value to the <strong>fourth-last</strong> position of the list.
     <ul>
-      <li>
-        <script type="math/tex; mode=display">L_{sorted} = [ 1, 2, 3, 3 ]</script>
-      </li>
-      <li>
-        <script type="math/tex; mode=display">L = [ 5 ]</script>
-      </li>
-    </ul>
-  </li>
-  <li>Finally, <script type="math/tex">5</script> is moved into <script type="math/tex">L_{sorted}</script>, so
-    <ul>
-      <li>
-        <script type="math/tex; mode=display">L_{sorted} = [ 1, 2, 3, 3, 5 ]</script>
-      </li>
-      <li>
-        <script type="math/tex; mode=display">L = [ ]</script>
-      </li>
+      <li><script type="math/tex">2 > 1</script> so swap them. <script type="math/tex">L = [ 1, 2, 3, 4, 5 ]</script></li>
+      <li>The fourth-maximal value <script type="math/tex">2</script> is moved to the fourth-last of the list</li>
     </ul>
   </li>
 </ul>
 
-<p>See! the idea is quite simple.
-In the same way, to sort the list from maximal to minimal values,
-the only different is to pick the maximal value from list each round
-instead of minimal value.</p>
-
-<h3 id="how-to-get-minimalor-maximal-value">How to get minimal(or maximal) value</h3>
-<p>The way to get minimal(or maximal) items in <script type="math/tex">L</script>
-is to linearly search the whole list:
-<script type="math/tex">% <![CDATA[
-\begin{align}
-& \text{Min($L$):} \\
-& \space \space \space \space min = L[1] \\
-& \space \space \space \space \text{for $i \leftarrow 1$ to $N$:} \\
-& \space \space \space \space \space \space \space \space \text{if $L[i] < min$:} \\
-& \space \space \space \space \space \space \space \space \space \space \space \space min = L[i] \\
-\end{align} %]]></script>
-or
-<script type="math/tex">% <![CDATA[
-\begin{align}
-& \text{Max($L$):} \\
-& \space \space \space \space max = L[1] \\
-& \space \space \space \space \text{for $i \leftarrow 1$ to $N$:} \\
-& \space \space \space \space \space \space \space \space \text{if $L[i] > max$:} \\
-& \space \space \space \space \space \space \space \space \space \space \space \space max = L[i] \\
-\end{align} %]]></script>
-, where <script type="math/tex">L[i]</script> is the <script type="math/tex">i</script>th element in the list <script type="math/tex">L</script>
-and <script type="math/tex">N</script> is the length of <script type="math/tex">L</script>.</p>
-
 <h3 id="divide-one-list-into-unsorted-list-and-sorted-list">Divide one list into unsorted list and sorted list</h3>
-<p>In implementation, we usually divide the source list,
-which needs to be sorted, into two parts. One is sorted, the other is unsorted.
-This is better for memory usage than
-creating another list to put the sorted results.</p>
 
-<p>That is, if we have a source list <script type="math/tex">L = [ 5, 3, 1, 2, 3 ]</script>,
-it will be divided into <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script>.
-They are initialized to <script type="math/tex">[]</script> and <script type="math/tex">L</script> respectively,
-so <script type="math/tex">L = L_{sorted} \cup L_{unsorted} = [ ] \cup [ 5, 3, 1, 2, 3 ]</script>.</p>
+<p>In above example, the list is naturally partition into the sorted part
+and the unsorted part.
+The part contains the “bubbled” elements are sorted.
+The others are unsorted.</p>
 
 <ul>
-  <li>In the first round, <script type="math/tex">1</script> is picked and moved
-from <script type="math/tex">L_{unsorted}</script> to <script type="math/tex">L_{sorted}</script>, so
+  <li>Step 1: Move the <strong>maximal</strong> value to the <strong>last</strong> position of the list.
     <ul>
+      <li>This iteration ends after the comparison of last two elements(<em>4th</em> and <em>5th</em>)</li>
+      <li>The maximal value <script type="math/tex">5</script> is “bubbled” to the last(<em>5th</em>) of the list</li>
       <li>
-        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1 ] \cup [ 5, 3, 2, 3 ] = [1 \vert 5, 3, 2, 3]</script>
+        <script type="math/tex; mode=display">L = [ 3, 2, 4, 1, | 5 ]</script>
       </li>
+      <li>The <em>5th</em> element is sorted part and the <em>1st-to-4th</em> is unsorted part</li>
     </ul>
   </li>
-  <li>In the second round, <script type="math/tex">2</script> is picked and moved
-from <script type="math/tex">L_{unsorted}</script> to <script type="math/tex">L_{sorted}</script>, so
+  <li>Step 2: Move the <strong>second-maximal</strong> value to the <strong>second-last</strong> position of the list.
     <ul>
+      <li>This iteration ends after the comparison of second-last two elements(<em>3rd</em> and <em>4th</em>)</li>
+      <li>The second-maximal value <script type="math/tex">4</script> is “bubbled” to the second-last(<em>4th</em>) of the list</li>
       <li>
-        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1, 2 ] \cup [ 5, 3, 3 ] = [1, 2 \vert 5, 3, 3]</script>
+        <script type="math/tex; mode=display">L = [ 3, 2, 1, | 4, 5 ]</script>
       </li>
+      <li>The <em>4th-to-5th</em> elements is sorted part and the <em>1st-to-3rd</em> is unsorted part</li>
     </ul>
   </li>
-  <li>Next, <script type="math/tex">3</script> is picked, so
+  <li>Step 3: Move the <strong>third-maximal</strong> value to the <strong>third-last</strong> position of the list.
     <ul>
+      <li>This iteration ends after the comparison of third-last two elements(<em>2nd</em> and <em>3rd</em>)</li>
+      <li>The third-maximal value <script type="math/tex">3</script> is “bubbled” to the third-last(<em>3rd</em>) of the list</li>
       <li>
-        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3 ] \cup [ 5, 3 ] = [1, 2, 3 \vert 5, 3]</script>
+        <script type="math/tex; mode=display">L = [ 2, 1, | 3, 4, 5 ]</script>
       </li>
+      <li>The <em>3rd-to-5th</em> elements is sorted part and the <em>1st-to-2nd</em> is unsorted part</li>
     </ul>
   </li>
-  <li>Then, another <script type="math/tex">3</script> is picked, so
+  <li>Step 4: Move the <strong>fourth-maximal</strong> value to the <strong>fourth-last</strong> position of the list.
     <ul>
+      <li>This iteration ends after the comparison of fourth-last two elements(<em>1st</em> and <em>2nd</em>)</li>
+      <li>The fourth-maximal value <script type="math/tex">2</script> is “bubbled” to the fourth-last(<em>2nd</em>) of the list</li>
       <li>
-        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3 ] \cup [ 5 ] = [1, 2, 3, 3 \vert 5]</script>
+        <script type="math/tex; mode=display">L = [ 1, | 2, 3, 4, 5 ]</script>
       </li>
-    </ul>
-  </li>
-  <li>Finally, <script type="math/tex">5</script> is picked, so
-    <ul>
-      <li>
-        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3, 5 ] \cup [ ] = [1, 2, 3, 3, 5]</script>
-      </li>
+      <li>The <em>2nd-to-5th</em> elements is sorted part and the <em>1st</em> is unsorted part</li>
+      <li>The last left element is definitely the <strong>smallest</strong> value</li>
+      <li>so whole list from <em>1st</em> to <em>5th</em> is sorted</li>
     </ul>
   </li>
 </ul>
 
 <h2 id="algorithm">Algorithm</h2>
-<p><script type="math/tex">% <![CDATA[
+
+<script type="math/tex; mode=display">% <![CDATA[
 \begin{align}
-& \text{SelectionSort($L$):} \\
+& \text{BubbleSort($L$):} \\
 & \space \space \space \space \text{for $i \leftarrow 1$ to $\vert L \vert - 1$:} \\
-& \space \space \space \space \space \space \space \space m \leftarrow i \\
-& \space \space \space \space \space \space \space \space \text{for $j \leftarrow i + 1$ to $\vert L \vert$:} \\
-& \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] < L[m]$:} \\
-& \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m = j \\
-& \space \space \space \space \space \space \space \space \text{swap $L[i]$ and $L[m]$} \\
-\end{align} %]]></script></p>
-
-<p>The above method will divide <script type="math/tex">L</script> into two parts.</p>
+& \space \space \space \space \space \space \space \space \text{for $j \leftarrow 1$ to $\vert L \vert - i$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] > L[j+1]$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j]$ and $L[j+1]$} \\
+\end{align} %]]></script>
 
 <ul>
-  <li><script type="math/tex">L[1...i-1] = L_{sorted}</script> is sorted</li>
-  <li><script type="math/tex">L[i...N] = L_{unsorted}</script> is unsorted,</li>
-  <li>where <script type="math/tex">N = \vert L \vert</script> is the length of <script type="math/tex">L</script></li>
-</ul>
-
-<p>The following are step by step explanation:</p>
-
-<ul>
-  <li>When <script type="math/tex">i = 1</script>
-    <ul>
-      <li><script type="math/tex">L_{sorted} = []</script> and <script type="math/tex">L_{unsorted} = L[1...N]</script></li>
-      <li>we need to find the minimal element in list <script type="math/tex">L[1...N]</script></li>
-      <li>We use a value <script type="math/tex">m</script> to track the <strong>index</strong> of the minimal element</li>
-      <li>where <script type="math/tex">m</script> is initialized to <script type="math/tex">1</script></li>
-      <li><script type="math/tex">m</script> will be updated to <script type="math/tex">j</script>, where <script type="math/tex">2 \leq j \leq N</script>, if <script type="math/tex">% <![CDATA[
-L[j] < L[m] %]]></script></li>
-      <li>Repeatedly above instruction from <script type="math/tex">j = 2</script> to <script type="math/tex">N</script>(searching whole <script type="math/tex">L_{unsorted}</script>),
-<script type="math/tex">L[m]</script> would be the minimal value in <script type="math/tex">L[1...N]</script></li>
-      <li>swap <script type="math/tex">L[m]</script> and <script type="math/tex">L[i = 1]</script></li>
-      <li>then <script type="math/tex">L[1]</script> now can be considered as <script type="math/tex">L_{sorted}</script></li>
-      <li>so <script type="math/tex">L_{unsorted} = L[2...N]</script></li>
-    </ul>
-  </li>
-  <li>When <script type="math/tex">i = 2</script>
-    <ul>
-      <li><script type="math/tex">L_{sorted} = L[1]</script> and <script type="math/tex">L_{unsorted} = L[2...N]</script></li>
-      <li>we need to find the minimal element in list <script type="math/tex">L[2...N]</script></li>
-      <li>Same as above, <script type="math/tex">m</script> is used to keep tracking the index of the minimal
-element in <script type="math/tex">L_{unsorted}</script></li>
-      <li>where <script type="math/tex">m</script> is initialized to <script type="math/tex">2</script></li>
-      <li>After searching the whole <script type="math/tex">L_{unsorted}</script>,
-<script type="math/tex">L[m]</script> would be the minimal value in <script type="math/tex">L[2...N]</script></li>
-      <li>We can put <script type="math/tex">L[m]</script> into the <script type="math/tex">L_{sorted}</script> by swapping the <script type="math/tex">L[m]</script> and <script type="math/tex">L[i = 2]</script></li>
-      <li>Thus, <script type="math/tex">L_{sorted} = L[1...2]</script> and <script type="math/tex">L_{unsorted} = L[3...N]</script></li>
-    </ul>
-  </li>
-  <li>When <script type="math/tex">i = k</script>
-    <ul>
-      <li><script type="math/tex">L_{sorted} = [1...k-1]</script> and <script type="math/tex">L_{unsorted} = L[k...N]</script></li>
-      <li><script type="math/tex">m</script> is initialized to <script type="math/tex">k</script></li>
-      <li>After searching the whole <script type="math/tex">L_{unsorted}</script>,
-<script type="math/tex">L[m]</script> would be the minimal value in <script type="math/tex">L[k...N]</script></li>
-      <li>Swapping <script type="math/tex">L[m]</script> and <script type="math/tex">L[i = k]</script> would put <script type="math/tex">L[m]</script> into <script type="math/tex">L_{sorted}</script></li>
-      <li>Then, <script type="math/tex">L_{sorted} = L[1...k]</script> and <script type="math/tex">L_{unsorted} = L[k+1...N]</script></li>
-    </ul>
-  </li>
-  <li>When <script type="math/tex">i = N - 1</script>(final round)
-    <ul>
-      <li><script type="math/tex">L_{sorted} = [1...N-2]</script> and <script type="math/tex">L_{unsorted} = L[N-1...N]</script></li>
-      <li><script type="math/tex">m</script> is initialized to <script type="math/tex">N-1</script></li>
-      <li>Pick a smaller one between <script type="math/tex">L[N-1]</script> and <script type="math/tex">L[N]</script></li>
-      <li>and put it into the <script type="math/tex">L_{sorted}</script> like above(by swapping with <script type="math/tex">L[m]</script>)</li>
-      <li>Then <script type="math/tex">L_{sorted} = [1...N-1]</script> and <script type="math/tex">L_{unsorted} = L[N]</script></li>
-      <li>The left one(now is <script type="math/tex">L[N]</script>) is definitely the <strong>maximal</strong> item
-in <script type="math/tex">L[1...N]</script>, so we don’t need to do anything</li>
-    </ul>
-  </li>
+  <li>At the 1st round, the 1st-last element is sorted</li>
+  <li>At the 2nd round, the 2nd-last to 1st-last elements are sorted</li>
+  <li>At the 3rd round, the 3rd-last to 1st-last elements are sorted</li>
+  <li>At the <script type="math/tex">k</script> round, the <script type="math/tex">k</script>-last to 1st-last elements are sorted</li>
 </ul>
 
 <h3 id="proof">Proof</h3>
 
-<h4 id="proof-by-contradiction">Proof by contradiction</h4>
+<h4 id="proof-by-mathematical-induction">Proof by mathematical induction</h4>
+
+<h5 id="lemma-1">Lemma 1</h5>
+<p><script type="math/tex">% <![CDATA[
+\begin{align}
+& \text{for $j \leftarrow 1$ to $\vert L \vert - 1$:} \\
+& \space \space \space \space \text{if $L[j] > L[j+1]$:} \\
+& \space \space \space \space \space \space \space \space \text{swap $L[j]$ and $L[j+1]$} \\
+\end{align} %]]></script></p>
+
+<blockquote>
+  <p>Given a list <script type="math/tex">L</script> with <script type="math/tex">N</script> elements, where <script type="math/tex">N = \vert L \vert > 0</script>,
+the maximal element of <script type="math/tex">L</script> will be <script type="math/tex">L[N]</script>(the last element).</p>
+</blockquote>
 
 <ul>
-  <li>Assume this method can <strong>not</strong> give us an ordered list</li>
-  <li>so it exists one <script type="math/tex">L[p] > L[q]</script>, where <script type="math/tex">% <![CDATA[
-p < q %]]></script>, in the result list <script type="math/tex">L</script></li>
-  <li>Before the result is computed, the unsorted list could be
-<script type="math/tex">L[..p..q..]</script> or <script type="math/tex">L[..q..p..]</script></li>
-  <li>It means that <script type="math/tex">L[p]</script> is picked <strong>before</strong> <script type="math/tex">L[q]</script>
-because <script type="math/tex">% <![CDATA[
-p < q %]]></script> in the result list <script type="math/tex">L</script></li>
-  <li>It means <script type="math/tex">% <![CDATA[
-L[p] < L[q] %]]></script> and it is contradictory to the assumption</li>
-  <li>Thus, the assumption is wrong. This method will give us an ordered list.</li>
+  <li>Base step: When <script type="math/tex">N = 1</script>, the assumption obviously holds</li>
+  <li>Induction Hypothesis: Assume the hypothesis holds when <script type="math/tex">N = k(j \leftarrow 1 \text{ to } k-1)</script></li>
+  <li>Induction Step: when <script type="math/tex">N = k + 1</script>
+    <ul>
+      <li>After the iteration of <script type="math/tex">j = k - 1</script>,
+the list is divided into two parts: <script type="math/tex">L[1...k]</script> and <script type="math/tex">L[k+1]</script></li>
+      <li>From above hypothesis, the maximal value in <script type="math/tex">L[1...k]</script> is <script type="math/tex">L[k]</script></li>
+      <li>When <script type="math/tex">j = k</script>:
+        <ul>
+          <li>if <script type="math/tex">L[k] \leq L[k+1]</script>, then the maximal element is <script type="math/tex">L[k+1]</script>,
+so the hypothesis still holds</li>
+          <li>if <script type="math/tex">L[k] > L[k+1]</script>, they will be swapped.
+After then, the maximal element will be <script type="math/tex">L[k+1]</script>,
+so the hypothesis still holds</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
 
-<h2 id="complexity">Complexity</h2>
-<p>We need to search whole <script type="math/tex">L_{unsorted}</script> to find a minimal(or maximal) item.
-Suppose <script type="math/tex">\vert L_{unsorted} \vert = N</script> at first.
-(the length of <script type="math/tex">L_{unsorted}</script> is <script type="math/tex">N</script>).</p>
-
-<p>At the first round, we need to search <script type="math/tex">N</script> items
-to find the minimal(or maximal) item and move it into <script type="math/tex">L_{sorted}</script>.
-After then, <script type="math/tex">\vert L_{unsorted} \vert = N - 1</script>.</p>
-
-<p>At the second round, whole <script type="math/tex">N - 1</script> items in <script type="math/tex">L_{unsorted}</script> would be counted
-to find the minimal(or maximal) one.
-After the picked one is moved into <script type="math/tex">L_{sorted}</script>,
-the size of <script type="math/tex">L_{unsorted}</script> is reduced to <script type="math/tex">\vert L_{unsorted} \vert = N - 2</script>.</p>
-
-<p>The procedure keep working until the list <script type="math/tex">L_{unsorted}</script> is empty
-(<script type="math/tex">\vert L_{unsorted} \vert = 0</script>).
-Thus, we need to search
-<script type="math/tex">% <![CDATA[
+<h5 id="lemma-2">Lemma 2</h5>
+<p><script type="math/tex">% <![CDATA[
 \begin{align}
-N + (N - 1) + (N - 2) + .... + 1
-&= \frac{ N \cdot (N + 1) }{ 2 } \\
-&= \frac{ 1 }{ 2 } \cdot N^2 + \frac{ 1 }{ 2 } N
+& \text{for $i \leftarrow 1$ to $\vert L \vert - 1$:} \\
+& \space \space \space \space \text{for $j \leftarrow 1$ to $\vert L \vert - i$:} \\
+& \space \space \space \space \space \space \space \space \text{if $L[j] > L[j+1]$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j]$ and $L[j+1]$} \\
+\end{align} %]]></script></p>
+
+<blockquote>
+  <p>After the <script type="math/tex">i</script> iteration,
+<script type="math/tex">L[N - i + 1]</script> will be the <script type="math/tex">i</script>th largest element of <script type="math/tex">L[1...N]</script></p>
+</blockquote>
+
+<ul>
+  <li>Base step: When <script type="math/tex">i = 1</script>, the assumption holds because <em>lemma 1</em> is true</li>
+  <li>Induction Hypothesis: Assume hypothesis holds when <script type="math/tex">i = k</script></li>
+  <li>Induction Step: When <script type="math/tex">i = k + 1</script>
+    <ul>
+      <li>The goal is to prove that the <script type="math/tex">L[N - k]</script> is
+the <script type="math/tex">(k + 1)</script>th largest element of <script type="math/tex">L[1...N]</script></li>
+      <li>After the iteration <script type="math/tex">i = k</script>, <script type="math/tex">L[N-k+1]</script> is the <script type="math/tex">k</script>th
+largest element of <script type="math/tex">L[1...N]</script></li>
+      <li>We can divide the list into <script type="math/tex">L[1...N-k]</script> and <script type="math/tex">L[N-k+1...N]</script>
+        <ul>
+          <li>The list <script type="math/tex">L[N-k+1...N]</script> contains the picked
+<script type="math/tex">k</script>th, <script type="math/tex">(k-1)</script>th, …. , <script type="math/tex">1</script>st largest elements</li>
+          <li>The list <script type="math/tex">L[1...N-k]</script> is the unselected and unsorted list</li>
+        </ul>
+      </li>
+      <li>By applying the <em>lemma 1</em> to <script type="math/tex">L[1...N-k]</script>,
+the maximal element of <script type="math/tex">L[1...N-k]</script> will be <script type="math/tex">L[N-k]</script>
+after all the iterations for <script type="math/tex">1 \leq j \leq N - k</script>.</li>
+      <li><script type="math/tex">L[N-k]</script> is the <script type="math/tex">(k+1)</script>th selected maximal element</li>
+      <li>so <script type="math/tex">L[N - (k+1) + 1] = L[N-k]</script> is the <script type="math/tex">(k+1)</script>th largest element of <script type="math/tex">L[1...N]</script></li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="conclusion">Conclusion</h5>
+
+<p>By <em>lemma 2</em></p>
+<ul>
+  <li>After <script type="math/tex">i = 1</script>, <script type="math/tex">L[N]</script> is the <script type="math/tex">1</script>st largest element of <script type="math/tex">L[1...N]</script></li>
+  <li>After <script type="math/tex">i = 2</script>, <script type="math/tex">L[N - 1]</script> is the <script type="math/tex">2</script>nd largest element of <script type="math/tex">L[1...N]</script></li>
+  <li>After <script type="math/tex">i = 3</script>, <script type="math/tex">L[N - 2]</script> is the <script type="math/tex">3</script>rd largest element of <script type="math/tex">L[1...N]</script></li>
+  <li>…</li>
+  <li>After <script type="math/tex">i = k</script>, <script type="math/tex">L[N - k + 1]</script> is the <script type="math/tex">k</script>th largest element of <script type="math/tex">L[1...N]</script></li>
+  <li>After <script type="math/tex">i = k+1</script>, <script type="math/tex">L[N - k]</script> is the <script type="math/tex">(k+1)</script>th largest element of <script type="math/tex">L[1...N]</script></li>
+  <li>…</li>
+  <li>After <script type="math/tex">i = N-2</script>, <script type="math/tex">L[3]</script> is the <script type="math/tex">N-2</script>th largest element of <script type="math/tex">L[1...N]</script></li>
+  <li>After <script type="math/tex">i = N-1</script>, <script type="math/tex">L[2]</script> is the <script type="math/tex">N-1</script>th largest element of <script type="math/tex">L[1...N]</script></li>
+  <li>After <script type="math/tex">i = N</script>, <script type="math/tex">L[1]</script> is the <script type="math/tex">N</script>th largest element of <script type="math/tex">L[1...N]</script></li>
+</ul>
+
+<p>Thus, the list $L[1…N]$ is sorted by the order that <script type="math/tex">L[1] \leq L[2] \leq L[3] \leq ... \leq L[N-1] \leq L[N]</script>.</p>
+
+<h2 id="complexity">Complexity</h2>
+
+<p>Let <script type="math/tex">N = \vert L \vert</script> denote the length of list <script type="math/tex">L</script>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><script type="math/tex">i</script></th>
+      <th>iterations for <script type="math/tex">j</script></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">j \in [1, N-1]</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">2</script></td>
+      <td><script type="math/tex">j \in [1, N-2]</script></td>
+    </tr>
+    <tr>
+      <td>…</td>
+      <td>…</td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">N-2</script></td>
+      <td><script type="math/tex">j \in [1, 2]</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">N-1</script></td>
+      <td><script type="math/tex">j = 1</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The total of all iterations of <em>BubbleSort(<script type="math/tex">L</script>)</em> is tracked in above table
+and its sum is:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+(N - 1) + (N - 2) + ... + 2 + 1
+&= \frac{ N \cdot (N - 1) }{ 2 } \\
+&= \frac{ 1 }{ 2 } \cdot N^2 - \frac{ 1 }{ 2 } N
 \end{align} %]]></script>
-times to move all the items into <script type="math/tex">L_{sorted}</script>.
-Therfore, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>,
-where the <script type="math/tex">N</script> is the length of the list <script type="math/tex">L</script>.</p>
+
+<p>Therefore, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>.</p>
 
 <h2 id="implementation">Implementation</h2>
+
 <p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="simple_sort">gist here</a>.</p>
 
-<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-16, 25"></code></p>
+<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-14, 19-20, 25"></code></p>
 
-<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1, 5-20, 37-73"></code></p>
+<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1, 5-20, 109-130"></code></p>
 
-<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="2-37, 45-64, 100-101"></code></p>
-
-<!-- ### General version with C++ ```template``` -->
+<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="2-37, 45-58, 73-79, 100-101"></code></p>
 
 <p>The above gist files are imported by <a href="https://github.com/blairvanderhoof/gist-embed" title="gist-embed">gist-embed</a>.</p>
 
@@ -551,20 +546,20 @@ where the <script type="math/tex">N</script> is the length of the list <script t
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=Selection+Sort%20http://localhost:4000/post/selection-sort%20via%20&#64;"
+            <a href="https://twitter.com/intent/tweet?text=Bubble+Sort%20http://localhost:4000/post/bubble-sort%20via%20&#64;"
                 onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
                 title="Share on Twitter" itemprop="Twitter">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
         <li>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/selection-sort" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/bubble-sort" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
                 data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="fa fa-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=http://localhost:4000/post/selection-sort" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/bubble-sort" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
                 data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="fa fa-google-plus"></i>
             </a>

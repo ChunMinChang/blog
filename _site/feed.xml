@@ -1,10 +1,289 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2016-12-30T15:24:29+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Insertion Sort</title><link href="http://localhost:4000/post/insertion-sort" rel="alternate" type="text/html" title="Insertion Sort" /><published>2016-12-30T00:00:00+08:00</published><updated>2016-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/insertion-sort</id><content type="html" xml:base="http://localhost:4000/post/insertion-sort">&lt;h1 id=&quot;insertion-sort&quot;&gt;Insertion sort&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-01-04T12:02:58+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Bubble Sort</title><link href="http://localhost:4000/post/bubble-sort" rel="alternate" type="text/html" title="Bubble Sort" /><published>2017-01-01T00:00:00+08:00</published><updated>2017-01-01T00:00:00+08:00</updated><id>http://localhost:4000/post/bubble-sort</id><content type="html" xml:base="http://localhost:4000/post/bubble-sort">&lt;h1 id=&quot;bubble-sort&quot;&gt;Bubble Sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
-and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sort/insertion_sort.html&quot; title=&quot;Selection Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/bubble_sort.html&quot; title=&quot;Bubble Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;idea&quot;&gt;Idea&lt;/h2&gt;
-&lt;p&gt;The basic concept is similar to &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sort/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;&lt;em&gt;Selection Sort&lt;/em&gt;&lt;/a&gt;.
+&lt;p&gt;The basic concept is same to &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;&lt;em&gt;Selection Sort&lt;/em&gt;&lt;/a&gt;.
+The list is rearranged from minimal to maximal value
+by picking the maximal(or minimal) value from the unsorted list iteratively.&lt;/p&gt;
+
+&lt;p&gt;In &lt;em&gt;selection sort&lt;/em&gt;, the minimal element is selected after searching whole list.
+On the other hand, &lt;em&gt;bubble sort&lt;/em&gt; iteratively compares two neighbor elements
+and swaps the elements if the left element is greater(or less) than
+the right one, from the list head to the list tail.
+Therefore, the maximal, the second-maximal, … values will be
+“bubbled” up to the tail of list one by one.&lt;/p&gt;
+
+&lt;p&gt;Take &lt;script type=&quot;math/tex&quot;&gt;L = [ 5, 3, 4, 2, 1 ]&lt;/script&gt; as an example:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Step 1: Move the &lt;strong&gt;maximal&lt;/strong&gt; value to the &lt;strong&gt;last&lt;/strong&gt; position of the list.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;5 &gt; 3&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 3, 5, 4, 2, 1 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;5 &gt; 4&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 3, 4, 5, 2, 1 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;5 &gt; 2&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 3, 4, 2, 5, 1 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;5 &gt; 1&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 3, 4, 2, 1, 5 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;The maximal value &lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt; is moved to the last of the list&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Step 2: Move the &lt;strong&gt;second-maximal&lt;/strong&gt; value to the &lt;strong&gt;second-last&lt;/strong&gt; position of the list.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+3 &lt; 4 %]]&gt;&lt;/script&gt; so do nothing.&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;4 &gt; 2&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 3, 2, 4, 1, 5 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;4 &gt; 1&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 3, 2, 1, 4, 5 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;The second-maximal value &lt;script type=&quot;math/tex&quot;&gt;4&lt;/script&gt; is moved to the second-last of the list&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Step 3: Move the &lt;strong&gt;third-maximal&lt;/strong&gt; value to the &lt;strong&gt;third-last&lt;/strong&gt; position of the list.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;3 &gt; 2&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 2, 3, 1, 4, 5 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;3 &gt; 1&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 2, 1, 3, 4, 5 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;The third-maximal value &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is moved to the third-last of the list&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Step 4: Move the &lt;strong&gt;fourth-maximal&lt;/strong&gt; value to the &lt;strong&gt;fourth-last&lt;/strong&gt; position of the list.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;2 &gt; 1&lt;/script&gt; so swap them. &lt;script type=&quot;math/tex&quot;&gt;L = [ 1, 2, 3, 4, 5 ]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;The fourth-maximal value &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; is moved to the fourth-last of the list&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;divide-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Divide one list into unsorted list and sorted list&lt;/h3&gt;
+
+&lt;p&gt;In above example, the list is naturally partition into the sorted part
+and the unsorted part.
+The part contains the “bubbled” elements are sorted.
+The others are unsorted.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Step 1: Move the &lt;strong&gt;maximal&lt;/strong&gt; value to the &lt;strong&gt;last&lt;/strong&gt; position of the list.
+    &lt;ul&gt;
+      &lt;li&gt;This iteration ends after the comparison of last two elements(&lt;em&gt;4th&lt;/em&gt; and &lt;em&gt;5th&lt;/em&gt;)&lt;/li&gt;
+      &lt;li&gt;The maximal value &lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt; is “bubbled” to the last(&lt;em&gt;5th&lt;/em&gt;) of the list&lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 3, 2, 4, 1, | 5 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;The &lt;em&gt;5th&lt;/em&gt; element is sorted part and the &lt;em&gt;1st-to-4th&lt;/em&gt; is unsorted part&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Step 2: Move the &lt;strong&gt;second-maximal&lt;/strong&gt; value to the &lt;strong&gt;second-last&lt;/strong&gt; position of the list.
+    &lt;ul&gt;
+      &lt;li&gt;This iteration ends after the comparison of second-last two elements(&lt;em&gt;3rd&lt;/em&gt; and &lt;em&gt;4th&lt;/em&gt;)&lt;/li&gt;
+      &lt;li&gt;The second-maximal value &lt;script type=&quot;math/tex&quot;&gt;4&lt;/script&gt; is “bubbled” to the second-last(&lt;em&gt;4th&lt;/em&gt;) of the list&lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 3, 2, 1, | 4, 5 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;The &lt;em&gt;4th-to-5th&lt;/em&gt; elements is sorted part and the &lt;em&gt;1st-to-3rd&lt;/em&gt; is unsorted part&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Step 3: Move the &lt;strong&gt;third-maximal&lt;/strong&gt; value to the &lt;strong&gt;third-last&lt;/strong&gt; position of the list.
+    &lt;ul&gt;
+      &lt;li&gt;This iteration ends after the comparison of third-last two elements(&lt;em&gt;2nd&lt;/em&gt; and &lt;em&gt;3rd&lt;/em&gt;)&lt;/li&gt;
+      &lt;li&gt;The third-maximal value &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is “bubbled” to the third-last(&lt;em&gt;3rd&lt;/em&gt;) of the list&lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 2, 1, | 3, 4, 5 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;The &lt;em&gt;3rd-to-5th&lt;/em&gt; elements is sorted part and the &lt;em&gt;1st-to-2nd&lt;/em&gt; is unsorted part&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Step 4: Move the &lt;strong&gt;fourth-maximal&lt;/strong&gt; value to the &lt;strong&gt;fourth-last&lt;/strong&gt; position of the list.
+    &lt;ul&gt;
+      &lt;li&gt;This iteration ends after the comparison of fourth-last two elements(&lt;em&gt;1st&lt;/em&gt; and &lt;em&gt;2nd&lt;/em&gt;)&lt;/li&gt;
+      &lt;li&gt;The fourth-maximal value &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; is “bubbled” to the fourth-last(&lt;em&gt;2nd&lt;/em&gt;) of the list&lt;/li&gt;
+      &lt;li&gt;
+        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 1, | 2, 3, 4, 5 ]&lt;/script&gt;
+      &lt;/li&gt;
+      &lt;li&gt;The &lt;em&gt;2nd-to-5th&lt;/em&gt; elements is sorted part and the &lt;em&gt;1st&lt;/em&gt; is unsorted part&lt;/li&gt;
+      &lt;li&gt;The last left element is definitely the &lt;strong&gt;smallest&lt;/strong&gt; value&lt;/li&gt;
+      &lt;li&gt;so whole list from &lt;em&gt;1st&lt;/em&gt; to &lt;em&gt;5th&lt;/em&gt; is sorted&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;algorithm&quot;&gt;Algorithm&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{BubbleSort($L$):} \\
+&amp; \space \space \space \space \text{for $i \leftarrow 1$ to $\vert L \vert - 1$:} \\
+&amp; \space \space \space \space \space \space \space \space \text{for $j \leftarrow 1$ to $\vert L \vert - i$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] &gt; L[j+1]$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j]$ and $L[j+1]$} \\
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;At the 1st round, the 1st-last element is sorted&lt;/li&gt;
+  &lt;li&gt;At the 2nd round, the 2nd-last to 1st-last elements are sorted&lt;/li&gt;
+  &lt;li&gt;At the 3rd round, the 3rd-last to 1st-last elements are sorted&lt;/li&gt;
+  &lt;li&gt;At the &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; round, the &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;-last to 1st-last elements are sorted&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;proof&quot;&gt;Proof&lt;/h3&gt;
+
+&lt;h4 id=&quot;proof-by-mathematical-induction&quot;&gt;Proof by mathematical induction&lt;/h4&gt;
+
+&lt;h5 id=&quot;lemma-1&quot;&gt;Lemma 1&lt;/h5&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{for $j \leftarrow 1$ to $\vert L \vert - 1$:} \\
+&amp; \space \space \space \space \text{if $L[j] &gt; L[j+1]$:} \\
+&amp; \space \space \space \space \space \space \space \space \text{swap $L[j]$ and $L[j+1]$} \\
+\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; elements, where &lt;script type=&quot;math/tex&quot;&gt;N = \vert L \vert &gt; 0&lt;/script&gt;,
+the maximal element of &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; will be &lt;script type=&quot;math/tex&quot;&gt;L[N]&lt;/script&gt;(the last element).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Base step: When &lt;script type=&quot;math/tex&quot;&gt;N = 1&lt;/script&gt;, the assumption obviously holds&lt;/li&gt;
+  &lt;li&gt;Induction Hypothesis: Assume the hypothesis holds when &lt;script type=&quot;math/tex&quot;&gt;N = k(j \leftarrow 1 \text{ to } k-1)&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Induction Step: when &lt;script type=&quot;math/tex&quot;&gt;N = k + 1&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;After the iteration of &lt;script type=&quot;math/tex&quot;&gt;j = k - 1&lt;/script&gt;,
+the list is divided into two parts: &lt;script type=&quot;math/tex&quot;&gt;L[1...k]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[k+1]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;From above hypothesis, the maximal value in &lt;script type=&quot;math/tex&quot;&gt;L[1...k]&lt;/script&gt; is &lt;script type=&quot;math/tex&quot;&gt;L[k]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;j = k&lt;/script&gt;:
+        &lt;ul&gt;
+          &lt;li&gt;if &lt;script type=&quot;math/tex&quot;&gt;L[k] \leq L[k+1]&lt;/script&gt;, then the maximal element is &lt;script type=&quot;math/tex&quot;&gt;L[k+1]&lt;/script&gt;,
+so the hypothesis still holds&lt;/li&gt;
+          &lt;li&gt;if &lt;script type=&quot;math/tex&quot;&gt;L[k] &gt; L[k+1]&lt;/script&gt;, they will be swapped.
+After then, the maximal element will be &lt;script type=&quot;math/tex&quot;&gt;L[k+1]&lt;/script&gt;,
+so the hypothesis still holds&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;lemma-2&quot;&gt;Lemma 2&lt;/h5&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{for $i \leftarrow 1$ to $\vert L \vert - 1$:} \\
+&amp; \space \space \space \space \text{for $j \leftarrow 1$ to $\vert L \vert - i$:} \\
+&amp; \space \space \space \space \space \space \space \space \text{if $L[j] &gt; L[j+1]$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j]$ and $L[j+1]$} \\
+\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;After the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; iteration,
+&lt;script type=&quot;math/tex&quot;&gt;L[N - i + 1]&lt;/script&gt; will be the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;th largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Base step: When &lt;script type=&quot;math/tex&quot;&gt;i = 1&lt;/script&gt;, the assumption holds because &lt;em&gt;lemma 1&lt;/em&gt; is true&lt;/li&gt;
+  &lt;li&gt;Induction Hypothesis: Assume hypothesis holds when &lt;script type=&quot;math/tex&quot;&gt;i = k&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Induction Step: When &lt;script type=&quot;math/tex&quot;&gt;i = k + 1&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;The goal is to prove that the &lt;script type=&quot;math/tex&quot;&gt;L[N - k]&lt;/script&gt; is
+the &lt;script type=&quot;math/tex&quot;&gt;(k + 1)&lt;/script&gt;th largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;After the iteration &lt;script type=&quot;math/tex&quot;&gt;i = k&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[N-k+1]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;th
+largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;We can divide the list into &lt;script type=&quot;math/tex&quot;&gt;L[1...N-k]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[N-k+1...N]&lt;/script&gt;
+        &lt;ul&gt;
+          &lt;li&gt;The list &lt;script type=&quot;math/tex&quot;&gt;L[N-k+1...N]&lt;/script&gt; contains the picked
+&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;th, &lt;script type=&quot;math/tex&quot;&gt;(k-1)&lt;/script&gt;th, …. , &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;st largest elements&lt;/li&gt;
+          &lt;li&gt;The list &lt;script type=&quot;math/tex&quot;&gt;L[1...N-k]&lt;/script&gt; is the unselected and unsorted list&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;By applying the &lt;em&gt;lemma 1&lt;/em&gt; to &lt;script type=&quot;math/tex&quot;&gt;L[1...N-k]&lt;/script&gt;,
+the maximal element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N-k]&lt;/script&gt; will be &lt;script type=&quot;math/tex&quot;&gt;L[N-k]&lt;/script&gt;
+after all the iterations for &lt;script type=&quot;math/tex&quot;&gt;1 \leq j \leq N - k&lt;/script&gt;.&lt;/li&gt;
+      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L[N-k]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;(k+1)&lt;/script&gt;th selected maximal element&lt;/li&gt;
+      &lt;li&gt;so &lt;script type=&quot;math/tex&quot;&gt;L[N - (k+1) + 1] = L[N-k]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;(k+1)&lt;/script&gt;th largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h5&gt;
+
+&lt;p&gt;By &lt;em&gt;lemma 2&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = 1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[N]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;st largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = 2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[N - 1]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;nd largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = 3&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[N - 2]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;rd largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+  &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = k&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[N - k + 1]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;th largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = k+1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[N - k]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;(k+1)&lt;/script&gt;th largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+  &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = N-2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[3]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;N-2&lt;/script&gt;th largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = N-1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[2]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;N-1&lt;/script&gt;th largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = N&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[1]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt;th largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thus, the list $L[1…N]$ is sorted by the order that &lt;script type=&quot;math/tex&quot;&gt;L[1] \leq L[2] \leq L[3] \leq ... \leq L[N-1] \leq L[N]&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;complexity&quot;&gt;Complexity&lt;/h2&gt;
+
+&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;N = \vert L \vert&lt;/script&gt; denote the length of list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;iterations for &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;j \in [1, N-1]&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;j \in [1, N-2]&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;N-2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;j \in [1, 2]&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;N-1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;j = 1&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The total of all iterations of &lt;em&gt;BubbleSort(&lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;)&lt;/em&gt; is tracked in above table
+and its sum is:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+(N - 1) + (N - 2) + ... + 2 + 1
+&amp;= \frac{ N \cdot (N - 1) }{ 2 } \\
+&amp;= \frac{ 1 }{ 2 } \cdot N^2 - \frac{ 1 }{ 2 } N
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Therefore, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+
+&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;simple_sort&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-14, 19-20, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1, 5-20, 109-130&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;2-37, 45-58, 73-79, 100-101&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Bubble Sort</summary></entry><entry><title type="html">Insertion Sort</title><link href="http://localhost:4000/post/insertion-sort" rel="alternate" type="text/html" title="Insertion Sort" /><published>2016-12-30T00:00:00+08:00</published><updated>2016-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/insertion-sort</id><content type="html" xml:base="http://localhost:4000/post/insertion-sort">&lt;h1 id=&quot;insertion-sort&quot;&gt;Insertion sort&lt;/h1&gt;
+
+&lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
+and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/insertion_sort.html&quot; title=&quot;Insertion Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;idea&quot;&gt;Idea&lt;/h2&gt;
+&lt;p&gt;The basic concept is similar to &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;&lt;em&gt;Selection Sort&lt;/em&gt;&lt;/a&gt;.
 Considering there are two lists. One is already sorted,
 and the other is unsorted, denoted &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; respectively.
 The key idea is to pick the element from &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; one by one
@@ -295,11 +574,11 @@ Therefore, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}
 
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;simple_sort&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_sort.h&quot; data-gist-line=&quot;1-14, 17-18, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-14, 17-18, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_sort.cpp&quot; data-gist-line=&quot;1, 5-20, 74-108&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1, 5-20, 74-108&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_test.cpp&quot; data-gist-line=&quot;2-37, 45-58, 66-72, 100-101&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;2-37, 45-58, 66-72, 100-101&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
 
@@ -308,7 +587,7 @@ Therefore, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Insertion sort</summary></entry><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/post/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/post/selection-sort</id><content type="html" xml:base="http://localhost:4000/post/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
-and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sort/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;idea&quot;&gt;Idea&lt;/h2&gt;
 &lt;p&gt;The concept is quite straight.
@@ -577,11 +856,11 @@ where the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length
 &lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;simple_sort&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_sort.h&quot; data-gist-line=&quot;1-16, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-16, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_sort.cpp&quot; data-gist-line=&quot;1, 5-20, 37-73&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1, 5-20, 37-73&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;simple_test.cpp&quot; data-gist-line=&quot;2-37, 45-64, 100-101&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;2-37, 45-64, 100-101&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;!-- ### General version with C++ ```template``` --&gt;
 

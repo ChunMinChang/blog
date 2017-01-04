@@ -18,6 +18,7 @@
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2016-12-30T00:00:00+08:00" />
+<link rel="next" href="http://localhost:4000/post/bubble-sort" title="Bubble Sort" />
 <link rel="prev" href="http://localhost:4000/post/selection-sort" title="Selection Sort" />
 <script type="application/ld+json">
   {
@@ -242,10 +243,10 @@
                         <h1 id="insertion-sort">Insertion sort</h1>
 
 <p>This post series is synchronized with my book <a href="https://www.gitbook.com/book/chunminchang/codeplay/details" title="CodePlay">CodePlay</a>
-and this post could be read <a href="https://chunminchang.gitbooks.io/codeplay/content/sort/insertion_sort.html" title="Selection Sort">here</a>.</p>
+and this post could be read <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/insertion_sort.html" title="Insertion Sort">here</a>.</p>
 
 <h2 id="idea">Idea</h2>
-<p>The basic concept is similar to <a href="https://chunminchang.gitbooks.io/codeplay/content/sort/selection_sort.html" title="Selection Sort"><em>Selection Sort</em></a>.
+<p>The basic concept is similar to <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html" title="Selection Sort"><em>Selection Sort</em></a>.
 Considering there are two lists. One is already sorted,
 and the other is unsorted, denoted <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script> respectively.
 The key idea is to pick the element from <script type="math/tex">L_{unsorted}</script> one by one
@@ -536,11 +537,11 @@ Therefore, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>.<
 
 <p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="simple_sort">gist here</a>.</p>
 
-<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="simple_sort.h" data-gist-line="1-14, 17-18, 25"></code></p>
+<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-14, 17-18, 25"></code></p>
 
-<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="simple_sort.cpp" data-gist-line="1, 5-20, 74-108"></code></p>
+<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1, 5-20, 74-108"></code></p>
 
-<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="simple_test.cpp" data-gist-line="2-37, 45-58, 66-72, 100-101"></code></p>
+<p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="2-37, 45-58, 66-72, 100-101"></code></p>
 
 <p>The above gist files are imported by <a href="https://github.com/blairvanderhoof/gist-embed" title="gist-embed">gist-embed</a>.</p>
 
@@ -636,7 +637,7 @@ Therefore, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>.<
                 
             </ul>
             <div>
-                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2016 &bull;
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2017 &bull;
                 All rights reserved.
             </div>
             <ul class="menu-items">

@@ -70,7 +70,7 @@ $$
 , where $$L[i]$$ is the $$i$$th element in the list $$L$$
 and $$N$$ is the length of $$L$$.
 
-### Divide one list into unsorted list and sorted list
+### Dividing one list into unsorted list and sorted list
 In implementation, we usually divide the source list,
 which needs to be sorted, into two parts. One is sorted, the other is unsorted.
 This is better for memory usage than

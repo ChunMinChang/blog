@@ -44,7 +44,7 @@ Take $$L = [ 5, 3, 4, 2, 1 ]$$ as an example:
   - $$2 > 1$$ so swap them. $$L = [ 1, 2, 3, 4, 5 ]$$
   - The fourth-maximal value $$2$$ is moved to the fourth-last of the list
 
-### Divide one list into unsorted list and sorted list
+### Dividing one list into unsorted list and sorted list
 
 In above example, the list is naturally partition into the sorted part
 and the unsorted part.

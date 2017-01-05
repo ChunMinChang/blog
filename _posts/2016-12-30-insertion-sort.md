@@ -91,7 +91,7 @@ we need to insert $$x$$ between $$L[p]$$ and $$L[p+1]$$.
 (If $$p = 0$$, then we insert $$x$$ as the first element $$L[1]$$.
 If $$p = N$$, then we insert $$x$$ as the last element $$L[p + 1]$$.)
 
-### Divide one list into unsorted list and sorted list
+### Dividing one list into unsorted list and sorted list
 
 In implementation, we usually divide the source list $$L$$ into two parts.
 One is sorted, the other is unsorted.

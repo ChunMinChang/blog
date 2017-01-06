@@ -207,7 +207,7 @@ See the files on [gist here][gist].
 The above gist files are imported by [gist-embed][gist-embed].
 
 
-[gist]: https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb "simple_sort"
+[gist]: https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb "Sorting"
 [gist-embed]: https://github.com/blairvanderhoof/gist-embed "gist-embed"
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

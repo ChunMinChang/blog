@@ -153,6 +153,7 @@ $$
 ##### Conclusion
 
 By _lemma 2_
+
 - After $$i = 1$$, $$L[N]$$ is the $$1$$st largest element of $$L[1...N]$$
 - After $$i = 2$$, $$L[N - 1]$$ is the $$2$$nd largest element of $$L[1...N]$$
 - After $$i = 3$$, $$L[N - 2]$$ is the $$3$$rd largest element of $$L[1...N]$$

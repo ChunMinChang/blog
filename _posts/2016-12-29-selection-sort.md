@@ -190,7 +190,7 @@ N + (N - 1) + (N - 2) + .... + 1
 \end{align}
 $$
 times to move all the items into $$L_{sorted}$$.
-Therfore, the complexity is $$\mathcal{O}(N^2)$$,
+Thus, the complexity is $$\mathcal{O}(N^2)$$,
 where the $$N$$ is the length of the list $$L$$.
 
 ## Implementation

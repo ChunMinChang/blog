@@ -236,7 +236,7 @@ $$
 \end{align}
 $$
 times to move all the items into $$L_{sorted}$$.
-Therefore, the complexity is $$\mathcal{O}(N^2)$$.
+Thus, the complexity is $$\mathcal{O}(N^2)$$.
 
 ## Implementation
 

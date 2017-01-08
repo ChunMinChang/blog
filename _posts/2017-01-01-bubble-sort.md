@@ -191,7 +191,7 @@ $$
 \end{align}
 $$
 
-Therefore, the complexity is $$\mathcal{O}(N^2)$$.
+Thus, the complexity is $$\mathcal{O}(N^2)$$.
 
 ## Implementation
 

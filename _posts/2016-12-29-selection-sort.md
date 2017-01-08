@@ -102,7 +102,7 @@ $$
 & \space \space \space \space \space \space \space \space m \leftarrow i \\
 & \space \space \space \space \space \space \space \space \text{for $j \leftarrow i + 1$ to $\vert L \vert$:} \\
 & \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] < L[m]$:} \\
-& \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m = j \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m \leftarrow j \\
 & \space \space \space \space \space \space \space \space \text{swap $L[i]$ and $L[m]$} \\
 \end{align}
 $$

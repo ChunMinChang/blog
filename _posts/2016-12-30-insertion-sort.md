@@ -142,7 +142,7 @@ $$
 & \space \space \space \space \space \space \space \space j \leftarrow i\\
 & \space \space \space \space \space \space \space \space \text{while $j > 1$ and $L[j-1] > L[j]$:} \\
 & \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j-1]$ and $L[j]$} \\
-& \space \space \space \space \space \space \space \space \space \space \space \space j = j - 1 \\
+& \space \space \space \space \space \space \space \space \space \space \space \space j \leftarrow j - 1 \\
 \end{align}
 $$
 

@@ -338,7 +338,7 @@ or
 , where <script type="math/tex">L[i]</script> is the <script type="math/tex">i</script>th element in the list <script type="math/tex">L</script>
 and <script type="math/tex">N</script> is the length of <script type="math/tex">L</script>.</p>
 
-<h3 id="divide-one-list-into-unsorted-list-and-sorted-list">Divide one list into unsorted list and sorted list</h3>
+<h3 id="dividing-one-list-into-unsorted-list-and-sorted-list">Dividing one list into unsorted list and sorted list</h3>
 <p>In implementation, we usually divide the source list,
 which needs to be sorted, into two parts. One is sorted, the other is unsorted.
 This is better for memory usage than
@@ -397,7 +397,7 @@ from <script type="math/tex">L_{unsorted}</script> to <script type="math/tex">L_
 & \space \space \space \space \space \space \space \space m \leftarrow i \\
 & \space \space \space \space \space \space \space \space \text{for $j \leftarrow i + 1$ to $\vert L \vert$:} \\
 & \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] < L[m]$:} \\
-& \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m = j \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m \leftarrow j \\
 & \space \space \space \space \space \space \space \space \text{swap $L[i]$ and $L[m]$} \\
 \end{align} %]]></script></p>
 
@@ -505,19 +505,17 @@ N + (N - 1) + (N - 2) + .... + 1
 &= \frac{ 1 }{ 2 } \cdot N^2 + \frac{ 1 }{ 2 } N
 \end{align} %]]></script>
 times to move all the items into <script type="math/tex">L_{sorted}</script>.
-Therfore, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>,
+Thus, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>,
 where the <script type="math/tex">N</script> is the length of the list <script type="math/tex">L</script>.</p>
 
 <h2 id="implementation">Implementation</h2>
-<p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="simple_sort">gist here</a>.</p>
+<p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="Sorting">gist here</a>.</p>
 
 <p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-16, 25"></code></p>
 
 <p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1, 5-20, 37-73"></code></p>
 
 <p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="2-37, 45-64, 100-101"></code></p>
-
-<!-- ### General version with C++ ```template``` -->
 
 <p>The above gist files are imported by <a href="https://github.com/blairvanderhoof/gist-embed" title="gist-embed">gist-embed</a>.</p>
 

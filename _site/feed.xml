@@ -1,4 +1,649 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-01-04T12:02:58+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Bubble Sort</title><link href="http://localhost:4000/post/bubble-sort" rel="alternate" type="text/html" title="Bubble Sort" /><published>2017-01-01T00:00:00+08:00</published><updated>2017-01-01T00:00:00+08:00</updated><id>http://localhost:4000/post/bubble-sort</id><content type="html" xml:base="http://localhost:4000/post/bubble-sort">&lt;h1 id=&quot;bubble-sort&quot;&gt;Bubble Sort&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-01-09T13:41:12+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Merge Sort</title><link href="http://localhost:4000/post/merge-sort" rel="alternate" type="text/html" title="Merge Sort" /><published>2017-01-05T00:00:00+08:00</published><updated>2017-01-05T00:00:00+08:00</updated><id>http://localhost:4000/post/merge-sort</id><content type="html" xml:base="http://localhost:4000/post/merge-sort">&lt;h1 id=&quot;merge-sort&quot;&gt;Merge Sort&lt;/h1&gt;
+
+&lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
+and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/merge_sort.html&quot; title=&quot;Merge Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;idea&quot;&gt;Idea&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Merge sort&lt;/em&gt; is an efficient algorithm that
+applies the concepts of &lt;a href=&quot;https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm&quot; title=&quot;Divide and conquer algorithm&quot;&gt;&lt;em&gt;divide and conquer&lt;/em&gt;&lt;/a&gt; to sort the list.&lt;/p&gt;
+
+&lt;p&gt;The key idea of &lt;a href=&quot;https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm&quot; title=&quot;Divide and conquer algorithm&quot;&gt;&lt;em&gt;divide and conquer&lt;/em&gt;&lt;/a&gt; is to recursively break down the problems
+into two or more sub-problems and they are same or related to the original problem,
+until these divided sub-problems are simple enough to solve directly.
+Then, the solutions of the original problem can be combined and derived
+by the solutions of all the sub-problems.&lt;/p&gt;
+
+&lt;h3 id=&quot;divide-and-conquer&quot;&gt;Divide and conquer&lt;/h3&gt;
+&lt;p&gt;The calculation of &lt;a href=&quot;https://en.wikipedia.org/wiki/Fibonacci_number&quot; title=&quot;Fibonacci number&quot;&gt;&lt;em&gt;Fibonacci number&lt;/em&gt;&lt;/a&gt;, &lt;script type=&quot;math/tex&quot;&gt;F(n) = F(n-1) + F(n-2)&lt;/script&gt;,
+is one example.
+To calculate &lt;script type=&quot;math/tex&quot;&gt;F(n)&lt;/script&gt;, it needs to find &lt;script type=&quot;math/tex&quot;&gt;F(n-1)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;F(n-2)&lt;/script&gt;.
+Similarly, to calculate &lt;script type=&quot;math/tex&quot;&gt;F(n-1)&lt;/script&gt;, it needs to &lt;script type=&quot;math/tex&quot;&gt;F(n-2)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;F(n-3)&lt;/script&gt;.
+The sub-problems for calculating &lt;script type=&quot;math/tex&quot;&gt;F(n-1)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;F(n-2)&lt;/script&gt; have same form
+as the one for &lt;script type=&quot;math/tex&quot;&gt;F(n)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Recursively, we will need to get &lt;script type=&quot;math/tex&quot;&gt;F(n-1)&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F(n-2)&lt;/script&gt;, …, &lt;script type=&quot;math/tex&quot;&gt;F(2)&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F(1)&lt;/script&gt;
+and &lt;script type=&quot;math/tex&quot;&gt;F(1)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;F(2)&lt;/script&gt; are easy enough to solve directly. They are both &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;.
+Thus, &lt;script type=&quot;math/tex&quot;&gt;F(3) = F(2) + F(1) = 2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F(4) = F(3) + F(2) = 3&lt;/script&gt;, … and then &lt;script type=&quot;math/tex&quot;&gt;F(n)&lt;/script&gt;
+can be computed.&lt;/p&gt;
+
+&lt;h3 id=&quot;dividing-the-sorting-problem&quot;&gt;Dividing the sorting-problem&lt;/h3&gt;
+&lt;p&gt;Let’s apply this concept to the sorting problem.
+If we want to sort the list &lt;script type=&quot;math/tex&quot;&gt;L = [6, 3, 7, 1, 9, 2, 5]&lt;/script&gt;,
+the sub-lists &lt;script type=&quot;math/tex&quot;&gt;[6, 3, 7, 1], [9, 2, 5]&lt;/script&gt; must also be sorted,
+so we can narrow down our problem scope for handling the sub-lists.
+Next, &lt;script type=&quot;math/tex&quot;&gt;[6, 3, 7, 1]&lt;/script&gt; can be divided to &lt;script type=&quot;math/tex&quot;&gt;[6, 3], [7, 1]&lt;/script&gt;
+and &lt;script type=&quot;math/tex&quot;&gt;[6, 3]&lt;/script&gt; also can be split into &lt;script type=&quot;math/tex&quot;&gt;[6]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;[3]&lt;/script&gt;.
+Finally, &lt;script type=&quot;math/tex&quot;&gt;[6], [3]&lt;/script&gt; are not dividable
+so we stop breaking down the list.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;       [6, 3, 7, 1, 9, 2, 5]
+         /               \
+   [6, 3, 7, 1]       [9, 2, 5]
+    /        \          /     \
+ [6, 3]    [7, 1]    [9, 2]  [5]
+ /    \    /    \    /    \
+[6]  [3]  [7]  [1]  [9]  [2]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In the same way, the whole list can be divided into
+&lt;script type=&quot;math/tex&quot;&gt;[6], [3], [7], [1], [9], [2], [5]&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;conquering-the-sub-problems&quot;&gt;Conquering the sub-problems&lt;/h3&gt;
+&lt;p&gt;After there is only one element left,
+the subproblem is solved by nature since it’s already sorted.&lt;/p&gt;
+
+&lt;p&gt;However, the problem becomes&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;how do we combine these sorted chunks into a sorted list&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;We need a method that can merge two sorted lists,
+&lt;script type=&quot;math/tex&quot;&gt;L_1[1...X]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_2[1...Y]&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;X, Y \geq 1&lt;/script&gt;,
+into a bigger sorted list &lt;script type=&quot;math/tex&quot;&gt;L[1...(X+Y)]&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;combining-all-the-results-of-sub-sorting-problem&quot;&gt;Combining all the results of sub-sorting-problem&lt;/h3&gt;
+
+&lt;p&gt;Suppose we have two sorted lists &lt;script type=&quot;math/tex&quot;&gt;A = [3, 6, 10, 23]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B = [2, 7, 50, 55]&lt;/script&gt;.
+We provide two ways to merge them into a sorted list.&lt;/p&gt;
+
+&lt;h4 id=&quot;picking-the-smallest-elements-one-by-one&quot;&gt;Picking the smallest elements one by one&lt;/h4&gt;
+&lt;p&gt;The simplest method is to pick the smallest elements iteratively
+by searching both lists from the minimal to maximal.&lt;/p&gt;
+
+&lt;p&gt;We only need to compare the left most elements of both lists
+and pick the smaller one since &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; are already sorted.&lt;/p&gt;
+
+&lt;p&gt;The following example demonstrate the process of this idea:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- search index
+
+A = [(3), 6, 10, 23]
+B = [(2), 7, 50, 55]
+L = []                            // &amp;lt;- 2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;In the first round, &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; is picked since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+2 &lt; 3 %]]&gt;&lt;/script&gt;
+and going to be put into another list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;                                  // You can think the left most element
+                                  // is shifted one by one
+A = [(3), 6, 10, 23]              // [3, 6, 10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2]                           // &amp;lt;- 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; is picked, we move the index of &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;7&lt;/script&gt;.
+Next, &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is picked since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+3 &lt; 7 %]]&gt;&lt;/script&gt; and going to be put into &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A = [3, (6), 10, 23]              // [6, 10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2, 3]                        // &amp;lt;- 6
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is picked, we move the index of &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;6&lt;/script&gt;.
+Next, &lt;script type=&quot;math/tex&quot;&gt;6&lt;/script&gt; is picked since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+6 &lt; 7 %]]&gt;&lt;/script&gt; and going to be put into &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A = [3, 6, (10), 23]              // [10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2, 3, 6]                     // &amp;lt;- 7
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After &lt;script type=&quot;math/tex&quot;&gt;6&lt;/script&gt; is picked, we move the index of &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;6&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt;.
+Next, &lt;script type=&quot;math/tex&quot;&gt;7&lt;/script&gt; is picked since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+7 &lt; 10 %]]&gt;&lt;/script&gt; and going to be put into &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A = [3, 6, (10), 23]              // [10, 23]
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7]                  // &amp;lt;- 10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After &lt;script type=&quot;math/tex&quot;&gt;7&lt;/script&gt; is picked, we move the index of &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;7&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;50&lt;/script&gt;.
+Next, &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt; is picked since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+10 &lt; 50 %]]&gt;&lt;/script&gt; and going to be put into &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A = [3, 6, 10, (23)]              // [23]
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7, 10]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt; is picked, we move the index of &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;23&lt;/script&gt;.
+Next, &lt;script type=&quot;math/tex&quot;&gt;23&lt;/script&gt; is picked since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+23 &lt; 50 %]]&gt;&lt;/script&gt; and going to be put into &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A = [3, 6, 10, 23]                // []
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7, 10, 23]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After &lt;script type=&quot;math/tex&quot;&gt;23&lt;/script&gt; is picked, there is no need to compare again
+since the &lt;script type=&quot;math/tex&quot;&gt;23&lt;/script&gt; is the last element in &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A = [3, 6, 10, 23]                // []
+B = [2, 7, 50, 55]                // []
+L = [2, 3, 6, 7, 10, 23, 50, 55]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Next, we can append all the rest elements
+from &lt;script type=&quot;math/tex&quot;&gt;50&lt;/script&gt; to the end of &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; into the &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.
+Finally, we get a sort list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;swapping-the-elements-one-by-one&quot;&gt;Swapping the elements one by one&lt;/h4&gt;
+
+&lt;p&gt;Another idea to merge the two sorted lists
+&lt;script type=&quot;math/tex&quot;&gt;A = [3, 6, 10, 23]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B = [2, 7, 50, 55]&lt;/script&gt;,
+is to couple them together into a list &lt;script type=&quot;math/tex&quot;&gt;L = A \cup B&lt;/script&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- element who will be moved
+L = [3, 6, 10, 23, | (2), 7, 50, 55]
+
+// The '|' doesn't exist! It's only a notation for better explanation.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and then move the minimal element of the later list(&lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt;)
+to the right position of the former list(&lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;).&lt;/p&gt;
+
+&lt;p&gt;The way for finding right the position is to compare the elements one by one
+from the end of the former list(&lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;) to its head.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- element who will be moved
+L = [3, 6, 10, (2), 23, | 7, 50, 55]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In our example, the &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; is swapped with &lt;script type=&quot;math/tex&quot;&gt;23&lt;/script&gt; since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+2 &lt; 23 %]]&gt;&lt;/script&gt;.
+Then we keep comparing &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- element who will be moved
+L = [3, 6, (2), 10, 23, | 7, 50, 55]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Similarly, the &lt;script type=&quot;math/tex&quot;&gt;2, 10&lt;/script&gt; are swapped since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+2 &lt; 10 %]]&gt;&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- element who will be moved
+L = [3, (2), 6,  10, 23, | 7, 50, 55]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Next, the &lt;script type=&quot;math/tex&quot;&gt;2, 6&lt;/script&gt; are swapped since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+2 &lt; 6 %]]&gt;&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- element who will be moved
+L = [(2), 3, 6,  10, 23, | 7, 50, 55]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Next, the &lt;script type=&quot;math/tex&quot;&gt;2, 3&lt;/script&gt; are swapped since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+2 &lt; 3 %]]&gt;&lt;/script&gt;.
+After this round, there is nothing to compare,
+so the &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; is moved to its right position.
+Now &lt;script type=&quot;math/tex&quot;&gt;A = [2, 3, 6, 10, 23]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B = [7, 50, 55]&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;In the same way, we can do this process again with &lt;script type=&quot;math/tex&quot;&gt;7&lt;/script&gt;.
+It’s the minimal element of the later list &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; now.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- element who will be moved
+L = [2, 3, 6, 10, 23, | (7), 50, 55]
+L = [2, 3, 6, 10, (7), 23, | 50, 55]
+L = [2, 3, 6, (7), 10, 23, | 50, 55]
+
+L = [2, 3, 6, 7, 10, 23, | 50, 55]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After this round, &lt;script type=&quot;math/tex&quot;&gt;A = [2, 3, 6, 7, 10, 23]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B = [50, 55]&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Then do it again with with &lt;script type=&quot;math/tex&quot;&gt;50&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- element who will be moved
+L = [2, 3, 6,  7, 10, 23, | (50), 55]
+
+L = [2, 3, 6,  7, 10, 23, 50, | 55]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;However, &lt;script type=&quot;math/tex&quot;&gt;50&lt;/script&gt; doesn’t move because &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+23 &lt; 50 %]]&gt;&lt;/script&gt;.
+We just need to append &lt;script type=&quot;math/tex&quot;&gt;50&lt;/script&gt; to the end of the former list &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;.
+After this round, &lt;script type=&quot;math/tex&quot;&gt;A = [2, 3, 6, 7, 10, 23, 50]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B = [55]&lt;/script&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;() &amp;lt;- element who will be moved
+L = [2, 3, 6,  7, 10, 23, 50, | (55)]
+
+L = [2, 3, 6,  7, 10, 23, 50, 55]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It’s same to &lt;script type=&quot;math/tex&quot;&gt;55&lt;/script&gt;.
+It doesn’t need to be moved since &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+50 &lt; 55 %]]&gt;&lt;/script&gt;,
+so just append it to the &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;.
+Finally, &lt;script type=&quot;math/tex&quot;&gt;A = [2, 3, 6, 7, 10, 23, 50, 55]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B = []&lt;/script&gt; is empty now.
+Now we have a sorted list &lt;script type=&quot;math/tex&quot;&gt;L = A \cup B = A&lt;/script&gt;!&lt;/p&gt;
+
+&lt;h4 id=&quot;which-merge-method-is-better&quot;&gt;Which merge method is better&lt;/h4&gt;
+
+&lt;p&gt;The first method use &lt;strong&gt;extra space&lt;/strong&gt; to store the sorted results,
+rather than the second in-place solution.
+On the other hand, the second method needs &lt;strong&gt;more swapping executions&lt;/strong&gt;
+and its a linear operation.
+For better performance, we take the first method as our approach here.&lt;/p&gt;
+
+&lt;p&gt;Actually, there is a way to save the extra space
+and it works as fast as the first method above.
+However, it’s complicated.
+I will write another post for illustrating it.
+Please refer &lt;em&gt;In-place merge sort&lt;/em&gt; in &lt;a href=&quot;https://github.com/liuxinyu95/AlgoXY/releases/download/v0.618033/elementary-algorithms.pdf&quot; title=&quot;Elementary Algorithms&quot;&gt;Elementary Algorithms&lt;/a&gt;
+to read it.&lt;/p&gt;
+
+&lt;h2 id=&quot;algorithm&quot;&gt;Algorithm&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{MergeSort($L$):} \\
+&amp; \space \space \space \space \text{mergeSort($L, 1, \vert L \vert$)}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{mergeSort($L, l, r$):} \\
+&amp; \space \space \space \space \text{if $l &lt; r$:} \\
+&amp; \space \space \space \space \space \space \space \space m \leftarrow \lfloor \frac{l+r}{2} \rfloor \\
+&amp; \space \space \space \space \space \space \space \space \text{mergeSort($L, l, m$)} \\
+&amp; \space \space \space \space \space \space \space \space \text{mergeSort($L, m+1, r$)} \\
+&amp; \space \space \space \space \space \space \space \space \text{merge($L, l, m, r$)} \\
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{merge($L, l, m, r$):} \\
+&amp; \space \space \space \space L^\prime \leftarrow [] \\
+&amp; \space \space \space \space i \leftarrow l, j \leftarrow m+1, k \leftarrow l \\
+&amp; \space \space \space \space \text{while $i \leq m$ and $j \leq r$:} \\
+&amp; \space \space \space \space \space \space \space \space \text{if $L[i] &lt; L[j]$}: \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space L^\prime[k] \leftarrow L[i] \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space i \leftarrow i + 1 \\
+&amp; \space \space \space \space \space \space \space \space \text{else}: \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space L^\prime[k] \leftarrow L[j] \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space j \leftarrow j + 1 \\
+&amp; \space \space \space \space \space \space \space \space k \leftarrow k + 1 \\
+&amp; \space \space \space \space \text{while $i \leq m$:} \\
+&amp; \space \space \space \space \space \space \space \space L^\prime[k] \leftarrow L[i] \\
+&amp; \space \space \space \space \space \space \space \space i \leftarrow i + 1 \\
+&amp; \space \space \space \space \space \space \space \space k \leftarrow k + 1 \\
+&amp; \space \space \space \space \text{while $j \leq r$:} \\
+&amp; \space \space \space \space \space \space \space \space L^\prime[k] \leftarrow L[j] \\
+&amp; \space \space \space \space \space \space \space \space j \leftarrow j + 1 \\
+&amp; \space \space \space \space \space \space \space \space k \leftarrow k + 1 \\
+&amp; \space \space \space \space \text{for $i \leftarrow l$ to $r$:} \\
+&amp; \space \space \space \space \space \space \space \space L[i] \leftarrow L^\prime[i] \\
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;proof&quot;&gt;Proof&lt;/h3&gt;
+
+&lt;h4 id=&quot;correctness-of-merge&quot;&gt;Correctness of &lt;em&gt;Merge&lt;/em&gt;&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  List L
+
+        &amp;lt;------   sorted   ------&amp;gt; &amp;lt;------   sorted  -------&amp;gt;
+        &amp;lt;- merged -&amp;gt; &amp;lt;---  A  ---&amp;gt; &amp;lt;- merged -&amp;gt; &amp;lt;---  B  ---&amp;gt;
+  -----+---+--------+---+-----+---+-----+------+---+-----+---+-----
+   ... | l | ...... | i | ... | m | m+1 | .... | j | ... | r | ...
+  -----+---+--------+---+-----+---+-----+------+---+-----+---+-----
+                      ^                          ^
+                head of sublist A          head of sublist B
+
+  List L'
+
+   &amp;lt;--   merged  --&amp;gt; &amp;lt;---   empty   ---&amp;gt;
+  +---+-------+-----+---+-------+-------+
+  | 1 |  ...  | k-1 | k | ..... | r-l+1 |
+  +---+-------+-----+---+-------+-------+
+                      ^
+                head of empty area of list L'
+
+  L[l...m]    : the sorted sublists for merging with L[m+1...r]
+  L[m+1...r]  : the sorted sublists for merging with L[l...m]
+  A, B        : the sublists containing elements that have NOT been merged yet
+  L'[1...k-1] : the merged list from L[l...i-1] and L[m+1...j-1]
+
+  i: The index of the first element in L[l...m] that has NOT been merged yet
+  j: The index of the first element in L[m+1...r] that has NOT been merged yet
+  k: The index of next merged element copied from L[i] or L[j]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Loop Invariant&lt;/strong&gt;:
+At the beginning of the while-loop, the following conditions hold:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Sublists &lt;script type=&quot;math/tex&quot;&gt;L[i...m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[j...r]&lt;/script&gt; are sorted&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L^\prime&lt;/script&gt; holds the elements from sublists &lt;script type=&quot;math/tex&quot;&gt;L[l...i-1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[m+1...j-1]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;All elements in &lt;script type=&quot;math/tex&quot;&gt;L^\prime[1...k-1]&lt;/script&gt; is less or equal than
+sublists &lt;script type=&quot;math/tex&quot;&gt;L[i...m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[j...r]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L^\prime&lt;/script&gt; are sorted.
+Formally, &lt;script type=&quot;math/tex&quot;&gt;\forall i \in [l + 1, r], L^\prime[i - 1] \leq L^\prime[i]&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Then we use loop-invariants to prove:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Initialization: At the very beginning when &lt;script type=&quot;math/tex&quot;&gt;k = 1, i = l, j = m+1&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;the input &lt;script type=&quot;math/tex&quot;&gt;L[l...m], L[m+1...r]&lt;/script&gt; are sorted so &lt;em&gt;1&lt;/em&gt; holds&lt;/li&gt;
+      &lt;li&gt;the list &lt;script type=&quot;math/tex&quot;&gt;L^\prime&lt;/script&gt; is empty so &lt;em&gt;2, 3, 4&lt;/em&gt; hold&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Maintenance: Consider the iteration &lt;script type=&quot;math/tex&quot;&gt;k = x&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;1&lt;/em&gt; is preserved since there is no change in &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;2&lt;/em&gt; is preserved because
+        &lt;ul&gt;
+          &lt;li&gt;If &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+j &gt; r \lor (i \leq m \land L[i] &lt; L[j]) %]]&gt;&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L^\prime[k] \leftarrow L[i]&lt;/script&gt;
+            &lt;ul&gt;
+              &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;k \leftarrow k+1, i \leftarrow i+1&lt;/script&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;em&gt;3&lt;/em&gt; is preserved because &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+L[k-1] = L[i-1] &lt; L[j] \leq L[j+1] \leq ... \leq L[r] %]]&gt;&lt;/script&gt;
+and &lt;script type=&quot;math/tex&quot;&gt;L[k-1] = L[i-1] \leq L[i] \leq ... \leq L[m]&lt;/script&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;Otherwise, &lt;script type=&quot;math/tex&quot;&gt;L^\prime[k] \leftarrow L[j]&lt;/script&gt;
+            &lt;ul&gt;
+              &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;k \leftarrow k+1, j \leftarrow j+1&lt;/script&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;em&gt;3&lt;/em&gt; is preserved because &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+L[k-1] = L[j-1] &lt; L[j] \leq L[j+1] \leq ... \leq L[r] %]]&gt;&lt;/script&gt;
+and &lt;script type=&quot;math/tex&quot;&gt;L[k-1] = L[j-1] \leq L[i] \leq L[i+1] \leq ... \leq L[m]&lt;/script&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;The previous appended element must be smaller than
+the current selected minimal element or &lt;em&gt;1&lt;/em&gt; is false&lt;/li&gt;
+      &lt;li&gt;By &lt;em&gt;3&lt;/em&gt;, the next selected minimal element will be larger than current one&lt;/li&gt;
+      &lt;li&gt;So &lt;em&gt;4&lt;/em&gt; is also preserved&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Termination
+    &lt;ul&gt;
+      &lt;li&gt;By &lt;strong&gt;2&lt;/strong&gt;, &lt;script type=&quot;math/tex&quot;&gt;L^\prime&lt;/script&gt; consists of the elements in &lt;script type=&quot;math/tex&quot;&gt;L[l...r]&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;By &lt;strong&gt;4&lt;/strong&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[l...r] = L^\prime[l...r]&lt;/script&gt; are sorted&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;correctness-of-merge-sort&quot;&gt;Correctness of &lt;em&gt;Merge Sort&lt;/em&gt;&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; elements,
+the &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; can be sorted
+by applying the above the &lt;em&gt;MergeSort&lt;/em&gt; with &lt;script type=&quot;math/tex&quot;&gt;l = 1, r = N&lt;/script&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Base step: When &lt;script type=&quot;math/tex&quot;&gt;N = 1&lt;/script&gt;, it’s trivial.&lt;/li&gt;
+  &lt;li&gt;Induction Hypothesis:
+Suppose this assumption holds when list has &lt;script type=&quot;math/tex&quot;&gt;N = 1, 2, ..., k&lt;/script&gt; elements&lt;/li&gt;
+  &lt;li&gt;Induction Step: When &lt;script type=&quot;math/tex&quot;&gt;N = k + 1&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;the list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; is divide to &lt;script type=&quot;math/tex&quot;&gt;L[1...m]&lt;/script&gt;(&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; elements)
+and &lt;script type=&quot;math/tex&quot;&gt;L[m+1...N]&lt;/script&gt;(&lt;script type=&quot;math/tex&quot;&gt;N - m&lt;/script&gt; elements)&lt;/li&gt;
+      &lt;li&gt;so &lt;script type=&quot;math/tex&quot;&gt;m = \lfloor \frac{1+(k+1)}{2} \rfloor = \lfloor \frac{k}{2} \rfloor + 1 \leq k&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;and &lt;script type=&quot;math/tex&quot;&gt;1 \leq m \implies 0 \leq m-1 \implies k \leq k-1+m \implies \\
+  k+1 \leq k+m \implies (k+1)-m \leq k \implies N-m \leq k&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;By our hypothesis, &lt;script type=&quot;math/tex&quot;&gt;L[1...m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[m+1...N]&lt;/script&gt; can be sorted&lt;/li&gt;
+      &lt;li&gt;By the proved correctness of &lt;em&gt;merge&lt;/em&gt; above,
+the merged &lt;script type=&quot;math/tex&quot;&gt;L[1...m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[m+1...N]&lt;/script&gt; is also sorted,
+so the proof is done&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;complexity&quot;&gt;Complexity&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  ^    +------------------------------------------------------+   Merge
+  |    |                           N                          |   Complexity
+  |    +------------------------------------------------------+
+  |                 |                              |
+  |                 v                              v
+  |    +------------------------+    +------------------------+
+  |    |           N/2          |    |           N/2          |   2 * O(N/2)
+  |    +------------------------+    +------------------------+
+  |         |              |              |              |
+            v              v              v              v
+  K    +---------+    +---------+    +---------+    +---------+
+       |   N/4   |    |   N/4   |    |   N/4   |    |   N/4   |   4 * O(N/4)
+  |    +---------+    +---------+    +---------+    +---------+
+  |      |     |        |     |        |     |        |     |
+  |      v     v        v     v        v     v        v     v
+  |
+  |                        .  .  .  .  .  .                       2^i * O(N/(2^i))
+  |
+  |    +---+  +---+  +---+                                +---+
+  |    | 1 |  | 1 |  | 1 |  .  .  .  .  .  .  .  .  .  .  | 1 |   N * O(1)
+  v    +---+  +---+  +---+                                +---+
+
+  N: the number of list elements.
+  K: K layers from N to 1.
+     N/2^k = 1 =&amp;gt; N = 2^K =&amp;gt; K = log_2(N)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above figure is the &lt;strong&gt;recursion tree&lt;/strong&gt; of &lt;em&gt;merge sort&lt;/em&gt;.
+The list containing &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; elements is recursively divided to sort
+until there is only one elements.
+Suppose that there is &lt;script type=&quot;math/tex&quot;&gt;K&lt;/script&gt; times of division, therefore,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\frac{ N }{ 2^K }   &amp;= 1 \\
+\implies          N &amp;= 2^K \\
+\implies          K &amp;= \log_{ 2 }N
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;On the other hand, the time complexity
+depends on the performance of &lt;em&gt;merge&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;T_{merge}(N)&lt;/script&gt;.
+The used &lt;em&gt;merge&lt;/em&gt; here is the basic version.
+It iteratively picks the minimal elements from both sublists
+then copied to another list &lt;script type=&quot;math/tex&quot;&gt;L^\prime&lt;/script&gt;.
+After all the elements in one sublist are all selected,
+we move the rest elements in the other sublist to list &lt;script type=&quot;math/tex&quot;&gt;L^\prime&lt;/script&gt;.
+Finally, we assigned &lt;script type=&quot;math/tex&quot;&gt;L[i] \leftarrow L^\prime[i]&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\forall i \in [1, N]&lt;/script&gt;.
+Thus, &lt;script type=&quot;math/tex&quot;&gt;T_{merge}(N)&lt;/script&gt; can be defined as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;T_{merge}(N) = c \cdot N&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;c&lt;/script&gt; is a constant reflecting the basic operations
+like comparisons or assignments for merging routine.&lt;/p&gt;
+
+&lt;h3 id=&quot;by-the-recursion-tree&quot;&gt;By the recursion tree&lt;/h3&gt;
+
+&lt;p&gt;From the above figure, the total time for the &lt;em&gt;merge sort&lt;/em&gt; is
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\overbrace{
+2 \cdot c \cdot \frac{N}{2} +
+4 \cdot c \cdot \frac{N}{4} +
+8 \cdot c \cdot \frac{N}{8} +
+... +
+N \cdot c \cdot 1
+}^{K}
+&amp;= K \cdot c \cdot N \\
+&amp;= c \cdot N \cdot \log_{ 2 }N
+\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Thus, the time complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N \log N)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;by-telescoping&quot;&gt;By telescoping&lt;/h3&gt;
+
+&lt;p&gt;Formally, since the &lt;em&gt;merge sort&lt;/em&gt; repeatedly breaks down the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt;-elements list
+into two &lt;script type=&quot;math/tex&quot;&gt;\frac{N}{2}&lt;/script&gt;-elements sublists,
+the amount of time that &lt;em&gt;merge sort&lt;/em&gt;, &lt;script type=&quot;math/tex&quot;&gt;T_{sort}(N)&lt;/script&gt;,
+can be written as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+T_{sort}(N)
+&amp;= T_{sort}(\frac{N}{2}) + T_{sort}(\frac{N}{2}) + T_{merge}(N) \\
+&amp;= 2 \cdot T_{sort}(\frac{N}{2}) + T_{merge}(N) \\
+&amp;= 2 \cdot T_{sort}(\frac{N}{2}) + c \cdot N
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+T_{sort}(N)
+&amp;= 2 \cdot T_{sort}(\frac{N}{2}) + c \cdot N \\
+&amp;= 2 \cdot (2 \cdot T_{sort}(\frac{N}{4}) + c \cdot \frac{N}{2}) + c \cdot N \\
+&amp;= 2^2 \cdot T_{sort}(\frac{N}{4}) + 2 \cdot c \cdot N \\
+&amp;= 2^2 \cdot (2 \cdot T_{sort}(\frac{N}{8}) + c \cdot \frac{N}{4}) + 2 \cdot c \cdot N \\
+&amp;= 2^3 \cdot T_{sort}(\frac{N}{4}) + 3 \cdot c \cdot N \\
+&amp;= ... \\
+&amp;= 2^K \cdot T_{sort}(\frac{N}{2^K}) + K \cdot c \cdot N \\
+&amp;= N \cdot T_{sort}(1) + K \cdot c \cdot N \\
+&amp;= N \cdot 1 + K \cdot c \cdot N \\
+&amp;= N + c \cdot N \cdot \log_{ 2 }N
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Thus, the time complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N \log N)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+
+&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-14, 21-22, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1, 5-36, 131-307&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;2-37, 45-58, 80-86, 100-101&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;appendix&quot;&gt;Appendix&lt;/h2&gt;
+
+&lt;h3 id=&quot;correctness-of-naive-in-place-merge&quot;&gt;Correctness of &lt;em&gt;naive in-place merge&lt;/em&gt;&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+&amp; \text{naiveInplaceMerge($L, l, m, r$):} \\
+&amp; \space \space \space \space \text{for $i \leftarrow m+1$ to $r$:} \\
+&amp; \space \space \space \space \space \space \space \space \text{for $j \leftarrow i$ down to $l+1$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j-1] \leq L[j]$:} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \text{break} \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j-1]$ and $L[j]$} \\
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h4 id=&quot;proof-by-mathematical-induction&quot;&gt;Proof by mathematical induction&lt;/h4&gt;
+
+&lt;h5 id=&quot;lemma-1&quot;&gt;Lemma 1&lt;/h5&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a sorted list &lt;script type=&quot;math/tex&quot;&gt;A = [a_1, a_2, ..., a_N]&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; elements,
+where &lt;script type=&quot;math/tex&quot;&gt;a_1 \leq a_2 \leq ... \leq a_N&lt;/script&gt;,
+and one value &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;,
+the list &lt;script type=&quot;math/tex&quot;&gt;L = A \cup [x] = [a_1, a_2, ..., a_N, x]&lt;/script&gt;
+(&lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is appended to the end of list &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;),
+can be sorted by the &lt;em&gt;naive in-place merge&lt;/em&gt; method with &lt;script type=&quot;math/tex&quot;&gt;l = 1, m = N, r = N + 1&lt;/script&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Base step: When &lt;script type=&quot;math/tex&quot;&gt;N = 0&lt;/script&gt;, list &lt;script type=&quot;math/tex&quot;&gt;L = [x]&lt;/script&gt; is trivially true&lt;/li&gt;
+  &lt;li&gt;Induction Hypothesis: Suppose this assumption holds when &lt;script type=&quot;math/tex&quot;&gt;N = k&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Induction Step: When &lt;script type=&quot;math/tex&quot;&gt;N = k + 1&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;If &lt;script type=&quot;math/tex&quot;&gt;x \geq L[k]&lt;/script&gt;, then the &lt;script type=&quot;math/tex&quot;&gt;L = a_1 \leq a_2 \leq ... \leq a_k \leq x&lt;/script&gt; is naturally sorted&lt;/li&gt;
+      &lt;li&gt;Otherwise, &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+x &lt; L[k] %]]&gt;&lt;/script&gt; and the &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[k]&lt;/script&gt; are swapped.
+        &lt;ul&gt;
+          &lt;li&gt;Now &lt;script type=&quot;math/tex&quot;&gt;L[1...k] = [a_1, a_2, ... , a_{k-1}, x]&lt;/script&gt;&lt;/li&gt;
+          &lt;li&gt;By the hypothesis, the &lt;em&gt;naive in-place merge&lt;/em&gt; works when &lt;script type=&quot;math/tex&quot;&gt;N = k&lt;/script&gt;, so we can a sorted &lt;script type=&quot;math/tex&quot;&gt;L[1...k]&lt;/script&gt;&lt;/li&gt;
+          &lt;li&gt;Thus, the list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; now is sorted since &lt;script type=&quot;math/tex&quot;&gt;L[1...k]&lt;/script&gt; is sorted
+and all its elements are smaller than the current &lt;script type=&quot;math/tex&quot;&gt;(k+1)&lt;/script&gt;th element &lt;script type=&quot;math/tex&quot;&gt;L[k]&lt;/script&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;lemma-2&quot;&gt;Lemma 2&lt;/h5&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a sorted list &lt;script type=&quot;math/tex&quot;&gt;A = [a_1, a_2, ..., a_N]&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; elements
+where &lt;script type=&quot;math/tex&quot;&gt;a_1 \leq a_2 \leq ... \leq a_N&lt;/script&gt;,
+and &lt;script type=&quot;math/tex&quot;&gt;B = [b_1, b_2, ..., b_M]&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; elements
+where &lt;script type=&quot;math/tex&quot;&gt;b_1 \leq b_2 \leq ... \leq b_M&lt;/script&gt;,
+the list &lt;script type=&quot;math/tex&quot;&gt;L = A \cup B = [a_1, a_2, ..., a_N, b_1, b_2, ..., b_M]&lt;/script&gt;
+can be sorted by the above &lt;em&gt;naive in-place merge&lt;/em&gt; method with &lt;script type=&quot;math/tex&quot;&gt;l = 1, m = N, r = M+N&lt;/script&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Base step: When &lt;script type=&quot;math/tex&quot;&gt;M = 1&lt;/script&gt;, the condition is same as &lt;em&gt;Lemma 1&lt;/em&gt;, so it’s true&lt;/li&gt;
+  &lt;li&gt;Induction Hypothesis: Suppose this assumption holds when &lt;script type=&quot;math/tex&quot;&gt;M = k&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Induction Step: When &lt;script type=&quot;math/tex&quot;&gt;M = k + 1&lt;/script&gt;
+    &lt;ul&gt;
+      &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = N + 1&lt;/script&gt;
+        &lt;ul&gt;
+          &lt;li&gt;the element &lt;script type=&quot;math/tex&quot;&gt;L[N+1]&lt;/script&gt; will be merged with &lt;script type=&quot;math/tex&quot;&gt;L[1...N] = A&lt;/script&gt;&lt;/li&gt;
+          &lt;li&gt;then the list &lt;script type=&quot;math/tex&quot;&gt;L[1...N+1]&lt;/script&gt; is sorted by &lt;em&gt;Lemma 1&lt;/em&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = N + 2&lt;/script&gt;
+        &lt;ul&gt;
+          &lt;li&gt;the list is composed by sorted sublists &lt;script type=&quot;math/tex&quot;&gt;A^\prime = L[1...N+1]&lt;/script&gt;
+and &lt;script type=&quot;math/tex&quot;&gt;B^\prime = L[N+2...N+k+1]&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; elements&lt;/li&gt;
+          &lt;li&gt;By the hypothesis, the &lt;em&gt;naive in-place merge&lt;/em&gt; works when &lt;script type=&quot;math/tex&quot;&gt;\vert B^\prime \vert = k&lt;/script&gt;&lt;/li&gt;
+          &lt;li&gt;Thus, the list &lt;script type=&quot;math/tex&quot;&gt;L = A^\prime \cup B^\prime = A \cup B&lt;/script&gt; is sorted&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www-bcf.usc.edu/~dkempe/CS104/11-07.pdf&quot; title=&quot;2013 CS104: Recursive Sorting Algorithms and their Analysis&quot;&gt;CS104&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.cs.princeton.edu/courses/archive/spr07/cos226/lectures/04MergeQuick.pdf&quot; title=&quot;Mergesort and Quicksort&quot;&gt;COS226&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.cs.mcgill.ca/~dprecup/courses/IntroCS/Lectures/comp250-lecture16.pdf&quot; title=&quot;Lecture 16: MergeSort proof of correctness, and running time&quot;&gt;COMP250&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.inf.unibz.it/~nutt/DSA1112/DSALabs/sols2.pdf&quot; title=&quot;Data Structures and Algorithms&quot;&gt;DSA1112&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cs.rochester.edu/~gildea/csc282/slides/C02-start.pdf&quot; title=&quot;Getting Started&quot;&gt;CSC282&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Merge Sort</summary></entry><entry><title type="html">Bubble Sort</title><link href="http://localhost:4000/post/bubble-sort" rel="alternate" type="text/html" title="Bubble Sort" /><published>2017-01-01T00:00:00+08:00</published><updated>2017-01-01T00:00:00+08:00</updated><id>http://localhost:4000/post/bubble-sort</id><content type="html" xml:base="http://localhost:4000/post/bubble-sort">&lt;h1 id=&quot;bubble-sort&quot;&gt;Bubble Sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/bubble_sort.html&quot; title=&quot;Bubble Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -51,7 +696,7 @@ Therefore, the maximal, the second-maximal, … values will be
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;divide-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Divide one list into unsorted list and sorted list&lt;/h3&gt;
+&lt;h3 id=&quot;dividing-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Dividing one list into unsorted list and sorted list&lt;/h3&gt;
 
 &lt;p&gt;In above example, the list is naturally partition into the sorted part
 and the unsorted part.
@@ -201,6 +846,7 @@ after all the iterations for &lt;script type=&quot;math/tex&quot;&gt;1 \leq j \l
 &lt;h5 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h5&gt;
 
 &lt;p&gt;By &lt;em&gt;lemma 2&lt;/em&gt;&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = 1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[N]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;st largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
   &lt;li&gt;After &lt;script type=&quot;math/tex&quot;&gt;i = 2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;L[N - 1]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;nd largest element of &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
@@ -261,11 +907,11 @@ and its sum is:&lt;/p&gt;
 &amp;= \frac{ 1 }{ 2 } \cdot N^2 - \frac{ 1 }{ 2 } N
 \end{align} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;Therefore, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Thus, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
 
-&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;simple_sort&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-14, 19-20, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
@@ -377,7 +1023,7 @@ we need to insert &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; betwe
 (If &lt;script type=&quot;math/tex&quot;&gt;p = 0&lt;/script&gt;, then we insert &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; as the first element &lt;script type=&quot;math/tex&quot;&gt;L[1]&lt;/script&gt;.
 If &lt;script type=&quot;math/tex&quot;&gt;p = N&lt;/script&gt;, then we insert &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; as the last element &lt;script type=&quot;math/tex&quot;&gt;L[p + 1]&lt;/script&gt;.)&lt;/p&gt;
 
-&lt;h3 id=&quot;divide-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Divide one list into unsorted list and sorted list&lt;/h3&gt;
+&lt;h3 id=&quot;dividing-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Dividing one list into unsorted list and sorted list&lt;/h3&gt;
 
 &lt;p&gt;In implementation, we usually divide the source list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; into two parts.
 One is sorted, the other is unsorted.
@@ -448,7 +1094,7 @@ and &lt;script type=&quot;math/tex&quot;&gt;[73, 24, 37, 9, 97, 29]&lt;/script&g
 &amp; \space \space \space \space \space \space \space \space j \leftarrow i\\
 &amp; \space \space \space \space \space \space \space \space \text{while $j &gt; 1$ and $L[j-1] &gt; L[j]$:} \\
 &amp; \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j-1]$ and $L[j]$} \\
-&amp; \space \space \space \space \space \space \space \space \space \space \space \space j = j - 1 \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space j \leftarrow j - 1 \\
 \end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;The above method will divide &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; into two parts.
@@ -568,11 +1214,11 @@ In this case, if the length of list is &lt;script type=&quot;math/tex&quot;&gt;N
 &amp;= \frac{ 1 }{ 2 } \cdot N^2 - \frac{ 1 }{ 2 } N
 \end{align} %]]&gt;&lt;/script&gt;
 times to move all the items into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;.
-Therefore, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;.&lt;/p&gt;
+Thus, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
 
-&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;simple_sort&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-14, 17-18, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
@@ -683,7 +1329,7 @@ or
 , where &lt;script type=&quot;math/tex&quot;&gt;L[i]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;th element in the list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;
 and &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length of &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
 
-&lt;h3 id=&quot;divide-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Divide one list into unsorted list and sorted list&lt;/h3&gt;
+&lt;h3 id=&quot;dividing-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Dividing one list into unsorted list and sorted list&lt;/h3&gt;
 &lt;p&gt;In implementation, we usually divide the source list,
 which needs to be sorted, into two parts. One is sorted, the other is unsorted.
 This is better for memory usage than
@@ -742,7 +1388,7 @@ from &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; to &lt;
 &amp; \space \space \space \space \space \space \space \space m \leftarrow i \\
 &amp; \space \space \space \space \space \space \space \space \text{for $j \leftarrow i + 1$ to $\vert L \vert$:} \\
 &amp; \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] &lt; L[m]$:} \\
-&amp; \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m = j \\
+&amp; \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m \leftarrow j \\
 &amp; \space \space \space \space \space \space \space \space \text{swap $L[i]$ and $L[m]$} \\
 \end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
 
@@ -850,19 +1496,17 @@ N + (N - 1) + (N - 2) + .... + 1
 &amp;= \frac{ 1 }{ 2 } \cdot N^2 + \frac{ 1 }{ 2 } N
 \end{align} %]]&gt;&lt;/script&gt;
 times to move all the items into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;.
-Therfore, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;,
+Thus, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;,
 where the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length of the list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
-&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;simple_sort&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-16, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1, 5-20, 37-73&quot;&gt;&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;2-37, 45-64, 100-101&quot;&gt;&lt;/code&gt;&lt;/p&gt;
-
-&lt;!-- ### General version with C++ ```template``` --&gt;
 
 &lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
 

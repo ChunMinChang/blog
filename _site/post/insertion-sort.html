@@ -340,7 +340,7 @@ we need to insert <script type="math/tex">x</script> between <script type="math/
 (If <script type="math/tex">p = 0</script>, then we insert <script type="math/tex">x</script> as the first element <script type="math/tex">L[1]</script>.
 If <script type="math/tex">p = N</script>, then we insert <script type="math/tex">x</script> as the last element <script type="math/tex">L[p + 1]</script>.)</p>
 
-<h3 id="divide-one-list-into-unsorted-list-and-sorted-list">Divide one list into unsorted list and sorted list</h3>
+<h3 id="dividing-one-list-into-unsorted-list-and-sorted-list">Dividing one list into unsorted list and sorted list</h3>
 
 <p>In implementation, we usually divide the source list <script type="math/tex">L</script> into two parts.
 One is sorted, the other is unsorted.
@@ -411,7 +411,7 @@ and <script type="math/tex">[73, 24, 37, 9, 97, 29]</script>.</p>
 & \space \space \space \space \space \space \space \space j \leftarrow i\\
 & \space \space \space \space \space \space \space \space \text{while $j > 1$ and $L[j-1] > L[j]$:} \\
 & \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j-1]$ and $L[j]$} \\
-& \space \space \space \space \space \space \space \space \space \space \space \space j = j - 1 \\
+& \space \space \space \space \space \space \space \space \space \space \space \space j \leftarrow j - 1 \\
 \end{align} %]]></script></p>
 
 <p>The above method will divide <script type="math/tex">L</script> into two parts.
@@ -531,11 +531,11 @@ In this case, if the length of list is <script type="math/tex">N</script>, we ne
 &= \frac{ 1 }{ 2 } \cdot N^2 - \frac{ 1 }{ 2 } N
 \end{align} %]]></script>
 times to move all the items into <script type="math/tex">L_{sorted}</script>.
-Therefore, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>.</p>
+Thus, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>.</p>
 
 <h2 id="implementation">Implementation</h2>
 
-<p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="simple_sort">gist here</a>.</p>
+<p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="Sorting">gist here</a>.</p>
 
 <p><code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-14, 17-18, 25"></code></p>
 

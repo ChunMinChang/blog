@@ -202,8 +202,6 @@ See the files on [gist here][gist].
 
 <code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="2-37, 45-64, 100-101"></code>
 
-<!-- ### General version with C++ ```template``` -->
-
 The above gist files are imported by [gist-embed][gist-embed].
 
 

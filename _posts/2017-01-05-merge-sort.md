@@ -522,10 +522,9 @@ See the files on [gist here][gist].
 
 <code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-14, 21-22, 25"></code>
 
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1, 5-36, 131-307"></code>
+<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1-2, 6-37, 132-344"></code>
 
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="2-37, 45-58, 80-86, 100-101"></code>
-
+<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="1-44, 52-65, 90-97, 112-113"></code>
 
 The above gist files are imported by [gist-embed][gist-embed].
 

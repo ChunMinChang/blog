@@ -356,7 +356,11 @@ tags: [tags]
 		{% if excerptsize <= 100 and excerptsize >= 50 %}
 			<p class="lead">{{ post.excerpt | strip_html }}&hellip;</p>
 		{% else %}
-			<p>{{ post.content | strip_html | truncatewords:50 }}&hellip;</p>
+			{% if post.content contains site.excerpt_separator %}
+				<p>{{ post.excerpt }}</p>
+			{% else %}
+				<p>{{ post.content | strip_html | truncatewords:50 }}&hellip;</p>
+    	{% endif %}
 		{% endif %}
 			<div class="text-center">
 			{% if post.description %}

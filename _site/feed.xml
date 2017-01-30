@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-01-30T14:40:37+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Lunar New Year</title><link href="http://localhost:4000/post/lunar-new-year" rel="alternate" type="text/html" title="Lunar New Year" /><published>2017-01-28T00:00:00+08:00</published><updated>2017-01-28T00:00:00+08:00</updated><id>http://localhost:4000/post/lunar-new-year</id><content type="html" xml:base="http://localhost:4000/post/lunar-new-year">&lt;h1 id=&quot;新年寄語&quot;&gt;新年寄語&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-01-30T15:30:04+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Lunar New Year</title><link href="http://localhost:4000/post/lunar-new-year" rel="alternate" type="text/html" title="Lunar New Year" /><published>2017-01-28T00:00:00+08:00</published><updated>2017-01-28T00:00:00+08:00</updated><id>http://localhost:4000/post/lunar-new-year</id><content type="html" xml:base="http://localhost:4000/post/lunar-new-year">&lt;h1 id=&quot;新年寄語&quot;&gt;新年寄語&lt;/h1&gt;
 
 &lt;p&gt;今年終於把部落格架起來了，所以不免俗的來回顧過去和立定目標好了。
 大學之後就很久沒寫關於生活的事情了，可能是人老了生活單純許多，沒有那麼多話好說了。
@@ -9,6 +9,8 @@
   &lt;li&gt;環境影響成長&lt;/li&gt;
   &lt;li&gt;性格決定命運&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;!--read more--&gt;
 
 &lt;h2 id=&quot;人生最重要的是時間&quot;&gt;人生最重要的是時間  &lt;/h2&gt;
 &lt;p&gt;工作以來，最慶幸的改變是修正了臨時抱佛腳的個性。
@@ -57,7 +59,16 @@
 想做的事太多，時間太少，能把握的只有讓自己一天比一天進步。
 明年的目標是重新研讀Computer Science的基礎知識，多貢獻一些開源專案，
 讓自己的程式可以跑在更多地方，開發更多有用的服務。
-還有，太久沒講台語也太久沒彈吉他，所以明年要讓台語輪轉一點，然後再做幾首台語歌吧！&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Life" /><category term="Goal" /><category term="New Year" /><summary type="html">新年寄語</summary></entry><entry><title type="html">Merge Sort</title><link href="http://localhost:4000/post/merge-sort" rel="alternate" type="text/html" title="Merge Sort" /><published>2017-01-05T00:00:00+08:00</published><updated>2017-01-05T00:00:00+08:00</updated><id>http://localhost:4000/post/merge-sort</id><content type="html" xml:base="http://localhost:4000/post/merge-sort">&lt;h1 id=&quot;merge-sort&quot;&gt;Merge Sort&lt;/h1&gt;
+還有，太久沒講台語也太久沒彈吉他，所以明年要讓台語輪轉一點，然後再做幾首台語歌吧！&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Life" /><category term="Goal" /><category term="New Year" /><summary type="html">新年寄語
+
+今年終於把部落格架起來了，所以不免俗的來回顧過去和立定目標好了。
+大學之後就很久沒寫關於生活的事情了，可能是人老了生活單純許多，沒有那麼多話好說了。
+這幾年變化比較大的，大概是開始工作了吧。工作兩年了，最大的心得是：
+
+
+  人生最重要的是時間
+  環境影響成長
+  性格決定命運</summary></entry><entry><title type="html">Merge Sort</title><link href="http://localhost:4000/post/merge-sort" rel="alternate" type="text/html" title="Merge Sort" /><published>2017-01-05T00:00:00+08:00</published><updated>2017-01-05T00:00:00+08:00</updated><id>http://localhost:4000/post/merge-sort</id><content type="html" xml:base="http://localhost:4000/post/merge-sort">&lt;h1 id=&quot;merge-sort&quot;&gt;Merge Sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/merge_sort.html&quot; title=&quot;Merge Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -702,7 +713,556 @@ and &lt;script type=&quot;math/tex&quot;&gt;B^\prime = L[N+2...N+k+1]&lt;/script
   &lt;li&gt;&lt;a href=&quot;http://www.cs.mcgill.ca/~dprecup/courses/IntroCS/Lectures/comp250-lecture16.pdf&quot; title=&quot;Lecture 16: MergeSort proof of correctness, and running time&quot;&gt;COMP250&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.inf.unibz.it/~nutt/DSA1112/DSALabs/sols2.pdf&quot; title=&quot;Data Structures and Algorithms&quot;&gt;DSA1112&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.cs.rochester.edu/~gildea/csc282/slides/C02-start.pdf&quot; title=&quot;Getting Started&quot;&gt;CSC282&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Merge Sort</summary></entry><entry><title type="html">Bubble Sort</title><link href="http://localhost:4000/post/bubble-sort" rel="alternate" type="text/html" title="Bubble Sort" /><published>2017-01-01T00:00:00+08:00</published><updated>2017-01-01T00:00:00+08:00</updated><id>http://localhost:4000/post/bubble-sort</id><content type="html" xml:base="http://localhost:4000/post/bubble-sort">&lt;h1 id=&quot;bubble-sort&quot;&gt;Bubble Sort&lt;/h1&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Merge Sort
+
+This post series is synchronized with my book CodePlay
+and this post could be read here.
+
+Idea
+Merge sort is an efficient algorithm that
+applies the concepts of divide and conquer to sort the list.
+
+The key idea of divide and conquer is to recursively break down the problems
+into two or more sub-problems and they are same or related to the original problem,
+until these divided sub-problems are simple enough to solve directly.
+Then, the solutions of the original problem can be combined and derived
+by the solutions of all the sub-problems.
+
+Divide and conquer
+The calculation of Fibonacci number, ,
+is one example.
+To calculate , it needs to find  and .
+Similarly, to calculate , it needs to  and .
+The sub-problems for calculating  and  have same form
+as the one for .
+
+Recursively, we will need to get , , …, , 
+and  and  are easy enough to solve directly. They are both .
+Thus, , , … and then 
+can be computed.
+
+Dividing the sorting-problem
+Let’s apply this concept to the sorting problem.
+If we want to sort the list ,
+the sub-lists  must also be sorted,
+so we can narrow down our problem scope for handling the sub-lists.
+Next,  can be divided to 
+and  also can be split into  and .
+Finally,  are not dividable
+so we stop breaking down the list.
+
+       [6, 3, 7, 1, 9, 2, 5]
+         /               \
+   [6, 3, 7, 1]       [9, 2, 5]
+    /        \          /     \
+ [6, 3]    [7, 1]    [9, 2]  [5]
+ /    \    /    \    /    \
+[6]  [3]  [7]  [1]  [9]  [2]
+
+
+
+In the same way, the whole list can be divided into
+.
+
+Conquering the sub-problems
+After there is only one element left,
+the subproblem is solved by nature since it’s already sorted.
+
+However, the problem becomes
+
+  how do we combine these sorted chunks into a sorted list
+
+
+We need a method that can merge two sorted lists,
+ and , where ,
+into a bigger sorted list .
+
+Combining all the results of sub-sorting-problem
+
+Suppose we have two sorted lists  and .
+We provide two ways to merge them into a sorted list.
+
+Picking the smallest elements one by one
+The simplest method is to pick the smallest elements iteratively
+by searching both lists from the minimal to maximal.
+
+We only need to compare the left most elements of both lists
+and pick the smaller one since  and  are already sorted.
+
+The following example demonstrate the process of this idea:
+
+() &amp;lt;- search index
+
+A = [(3), 6, 10, 23]
+B = [(2), 7, 50, 55]
+L = []                            // &amp;lt;- 2
+
+
+In the first round,  is picked since 
+and going to be put into another list .
+
+                                  // You can think the left most element
+                                  // is shifted one by one
+A = [(3), 6, 10, 23]              // [3, 6, 10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2]                           // &amp;lt;- 3
+
+
+
+After  is picked, we move the index of  from  to .
+Next,  is picked since  and going to be put into .
+
+A = [3, (6), 10, 23]              // [6, 10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2, 3]                        // &amp;lt;- 6
+
+
+
+After  is picked, we move the index of  from  to .
+Next,  is picked since  and going to be put into .
+
+A = [3, 6, (10), 23]              // [10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2, 3, 6]                     // &amp;lt;- 7
+
+
+
+After  is picked, we move the index of  from  to .
+Next,  is picked since  and going to be put into .
+
+A = [3, 6, (10), 23]              // [10, 23]
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7]                  // &amp;lt;- 10
+
+
+
+After  is picked, we move the index of  from  to .
+Next,  is picked since  and going to be put into .
+
+A = [3, 6, 10, (23)]              // [23]
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7, 10]
+
+
+
+After  is picked, we move the index of  from  to .
+Next,  is picked since  and going to be put into .
+
+A = [3, 6, 10, 23]                // []
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7, 10, 23]
+
+
+
+After  is picked, there is no need to compare again
+since the  is the last element in .
+
+A = [3, 6, 10, 23]                // []
+B = [2, 7, 50, 55]                // []
+L = [2, 3, 6, 7, 10, 23, 50, 55]
+
+
+
+Next, we can append all the rest elements
+from  to the end of  into the .
+Finally, we get a sort list .
+
+Swapping the elements one by one
+
+Another idea to merge the two sorted lists
+ and ,
+is to couple them together into a list 
+
+() &amp;lt;- element who will be moved
+L = [3, 6, 10, 23, | (2), 7, 50, 55]
+
+// The '|' doesn't exist! It's only a notation for better explanation.
+
+
+
+and then move the minimal element of the later list()
+to the right position of the former list().
+
+The way for finding right the position is to compare the elements one by one
+from the end of the former list() to its head.
+
+() &amp;lt;- element who will be moved
+L = [3, 6, 10, (2), 23, | 7, 50, 55]
+
+
+
+In our example, the  is swapped with  since .
+Then we keep comparing  with .
+
+() &amp;lt;- element who will be moved
+L = [3, 6, (2), 10, 23, | 7, 50, 55]
+
+
+
+Similarly, the  are swapped since .
+
+() &amp;lt;- element who will be moved
+L = [3, (2), 6,  10, 23, | 7, 50, 55]
+
+
+
+Next, the  are swapped since .
+
+() &amp;lt;- element who will be moved
+L = [(2), 3, 6,  10, 23, | 7, 50, 55]
+
+
+
+Next, the  are swapped since .
+After this round, there is nothing to compare,
+so the  is moved to its right position.
+Now  and 
+
+In the same way, we can do this process again with .
+It’s the minimal element of the later list  now.
+
+() &amp;lt;- element who will be moved
+L = [2, 3, 6, 10, 23, | (7), 50, 55]
+L = [2, 3, 6, 10, (7), 23, | 50, 55]
+L = [2, 3, 6, (7), 10, 23, | 50, 55]
+
+L = [2, 3, 6, 7, 10, 23, | 50, 55]
+
+
+
+After this round,  and .
+
+Then do it again with with .
+
+() &amp;lt;- element who will be moved
+L = [2, 3, 6,  7, 10, 23, | (50), 55]
+
+L = [2, 3, 6,  7, 10, 23, 50, | 55]
+
+
+
+However,  doesn’t move because .
+We just need to append  to the end of the former list .
+After this round,  and .
+
+() &amp;lt;- element who will be moved
+L = [2, 3, 6,  7, 10, 23, 50, | (55)]
+
+L = [2, 3, 6,  7, 10, 23, 50, 55]
+
+
+
+It’s same to .
+It doesn’t need to be moved since ,
+so just append it to the .
+Finally,  and  is empty now.
+Now we have a sorted list !
+
+Which merge method is better
+
+The first method use extra space to store the sorted results,
+rather than the second in-place solution.
+On the other hand, the second method needs more swapping executions
+and its a linear operation.
+For better performance, we take the first method as our approach here.
+
+Actually, there is a way to save the extra space
+and it works as fast as the first method above.
+However, it’s complicated.
+I will write another post for illustrating it.
+Please refer In-place merge sort in Elementary Algorithms
+to read it.
+
+Algorithm
+
+
+
+
+
+
+
+Proof
+
+Correctness of Merge
+
+  List L
+
+        &amp;lt;------   sorted   ------&amp;gt; &amp;lt;------   sorted  -------&amp;gt;
+        &amp;lt;- merged -&amp;gt; &amp;lt;---  A  ---&amp;gt; &amp;lt;- merged -&amp;gt; &amp;lt;---  B  ---&amp;gt;
+  -----+---+--------+---+-----+---+-----+------+---+-----+---+-----
+   ... | l | ...... | i | ... | m | m+1 | .... | j | ... | r | ...
+  -----+---+--------+---+-----+---+-----+------+---+-----+---+-----
+                      ^                          ^
+                head of sublist A          head of sublist B
+
+  List L'
+
+   &amp;lt;--   merged  --&amp;gt; &amp;lt;---   empty   ---&amp;gt;
+  +---+-------+-----+---+-------+-------+
+  | 1 |  ...  | k-1 | k | ..... | r-l+1 |
+  +---+-------+-----+---+-------+-------+
+                      ^
+                head of empty area of list L'
+
+  L[l...m]    : the sorted sublists for merging with L[m+1...r]
+  L[m+1...r]  : the sorted sublists for merging with L[l...m]
+  A, B        : the sublists containing elements that have NOT been merged yet
+  L'[1...k-1] : the merged list from L[l...i-1] and L[m+1...j-1]
+
+  i: The index of the first element in L[l...m] that has NOT been merged yet
+  j: The index of the first element in L[m+1...r] that has NOT been merged yet
+  k: The index of next merged element copied from L[i] or L[j]
+
+
+
+Loop Invariant:
+At the beginning of the while-loop, the following conditions hold:
+
+
+  Sublists  and  are sorted
+   holds the elements from sublists  and 
+  All elements in  is less or equal than
+sublists  and 
+   are sorted.
+Formally, 
+
+
+Then we use loop-invariants to prove:
+
+
+  Initialization: At the very beginning when 
+    
+      the input  are sorted so 1 holds
+      the list  is empty so 2, 3, 4 hold
+    
+  
+  Maintenance: Consider the iteration 
+    
+      1 is preserved since there is no change in 
+      2 is preserved because
+        
+          If , 
+            
+              then 
+              3 is preserved because 
+and 
+            
+          
+          Otherwise, 
+            
+              then 
+              3 is preserved because 
+and 
+            
+          
+        
+      
+      The previous appended element must be smaller than
+the current selected minimal element or 1 is false
+      By 3, the next selected minimal element will be larger than current one
+      So 4 is also preserved
+    
+  
+  Termination
+    
+      By 2,  consists of the elements in 
+      By 4,  are sorted
+    
+  
+
+
+Correctness of Merge Sort
+
+
+  Given a list  with  elements,
+the  can be sorted
+by applying the above the MergeSort with .
+
+
+
+  Base step: When , it’s trivial.
+  Induction Hypothesis:
+Suppose this assumption holds when list has  elements
+  Induction Step: When 
+    
+      the list  is divide to ( elements)
+and ( elements)
+      so 
+      and 
+      By our hypothesis,  and  can be sorted
+      By the proved correctness of merge above,
+the merged  and  is also sorted,
+so the proof is done
+    
+  
+
+
+Complexity
+
+  ^    +------------------------------------------------------+   Merge
+  |    |                           N                          |   Complexity
+  |    +------------------------------------------------------+
+  |                 |                              |
+  |                 v                              v
+  |    +------------------------+    +------------------------+
+  |    |           N/2          |    |           N/2          |   2 * O(N/2)
+  |    +------------------------+    +------------------------+
+  |         |              |              |              |
+            v              v              v              v
+  K    +---------+    +---------+    +---------+    +---------+
+       |   N/4   |    |   N/4   |    |   N/4   |    |   N/4   |   4 * O(N/4)
+  |    +---------+    +---------+    +---------+    +---------+
+  |      |     |        |     |        |     |        |     |
+  |      v     v        v     v        v     v        v     v
+  |
+  |                        .  .  .  .  .  .                       2^i * O(N/(2^i))
+  |
+  |    +---+  +---+  +---+                                +---+
+  |    | 1 |  | 1 |  | 1 |  .  .  .  .  .  .  .  .  .  .  | 1 |   N * O(1)
+  v    +---+  +---+  +---+                                +---+
+
+  N: the number of list elements.
+  K: K layers from N to 1.
+     N/2^k = 1 =&amp;gt; N = 2^K =&amp;gt; K = log_2(N)
+
+
+
+The above figure is the recursion tree of merge sort.
+The list containing  elements is recursively divided to sort
+until there is only one elements.
+Suppose that there is  times of division, therefore,
+
+
+
+On the other hand, the time complexity
+depends on the performance of merge .
+The used merge here is the basic version.
+It iteratively picks the minimal elements from both sublists
+then copied to another list .
+After all the elements in one sublist are all selected,
+we move the rest elements in the other sublist to list .
+Finally, we assigned , .
+Thus,  can be defined as
+
+
+
+where  is a constant reflecting the basic operations
+like comparisons or assignments for merging routine.
+
+By the recursion tree
+
+From the above figure, the total time for the merge sort is
+
+
+Thus, the time complexity is .
+
+By telescoping
+
+Formally, since the merge sort repeatedly breaks down the -elements list
+into two -elements sublists,
+the amount of time that merge sort, ,
+can be written as follows:
+
+
+
+
+
+Thus, the time complexity is .
+
+Implementation
+
+See the files on gist here.
+
+
+
+
+
+
+
+The above gist files are imported by gist-embed.
+
+
+
+
+
+Appendix
+
+Correctness of naive in-place merge
+
+
+
+Proof by mathematical induction
+
+Lemma 1
+
+
+  Given a sorted list  with  elements,
+where ,
+and one value ,
+the list 
+( is appended to the end of list ),
+can be sorted by the naive in-place merge method with .
+
+
+
+  Base step: When , list  is trivially true
+  Induction Hypothesis: Suppose this assumption holds when 
+  Induction Step: When 
+    
+      If , then the  is naturally sorted
+      Otherwise,  and the  and  are swapped.
+        
+          Now 
+          By the hypothesis, the naive in-place merge works when , so we can a sorted 
+          Thus, the list  now is sorted since  is sorted
+and all its elements are smaller than the current th element 
+        
+      
+    
+  
+
+
+Lemma 2
+
+
+  Given a sorted list  with  elements
+where ,
+and  with  elements
+where ,
+the list 
+can be sorted by the above naive in-place merge method with .
+
+
+
+  Base step: When , the condition is same as Lemma 1, so it’s true
+  Induction Hypothesis: Suppose this assumption holds when 
+  Induction Step: When 
+    
+      When 
+        
+          the element  will be merged with 
+          then the list  is sorted by Lemma 1
+        
+      
+      When 
+        
+          the list is composed by sorted sublists 
+and  with  elements
+          By the hypothesis, the naive in-place merge works when 
+          Thus, the list  is sorted
+        
+      
+    
+  
+
+
+Reference
+
+  CS104
+  COS226
+  COMP250
+  DSA1112
+  CSC282</summary></entry><entry><title type="html">Bubble Sort</title><link href="http://localhost:4000/post/bubble-sort" rel="alternate" type="text/html" title="Bubble Sort" /><published>2017-01-01T00:00:00+08:00</published><updated>2017-01-01T00:00:00+08:00</updated><id>http://localhost:4000/post/bubble-sort</id><content type="html" xml:base="http://localhost:4000/post/bubble-sort">&lt;h1 id=&quot;bubble-sort&quot;&gt;Bubble Sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/bubble_sort.html&quot; title=&quot;Bubble Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -982,7 +1542,259 @@ and its sum is:&lt;/p&gt;
 
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Bubble Sort</summary></entry><entry><title type="html">Insertion Sort</title><link href="http://localhost:4000/post/insertion-sort" rel="alternate" type="text/html" title="Insertion Sort" /><published>2016-12-30T00:00:00+08:00</published><updated>2016-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/insertion-sort</id><content type="html" xml:base="http://localhost:4000/post/insertion-sort">&lt;h1 id=&quot;insertion-sort&quot;&gt;Insertion sort&lt;/h1&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Bubble Sort
+
+This post series is synchronized with my book CodePlay
+and this post could be read here.
+
+Idea
+The basic concept is same to Selection Sort.
+The list is rearranged from minimal to maximal value
+by picking the maximal(or minimal) value from the unsorted list iteratively.
+
+In selection sort, the minimal element is selected after searching whole list.
+On the other hand, bubble sort iteratively compares two neighbor elements
+and swaps the elements if the left element is greater(or less) than
+the right one, from the list head to the list tail.
+Therefore, the maximal, the second-maximal, … values will be
+“bubbled” up to the tail of list one by one.
+
+Take  as an example:
+
+
+  Step 1: Move the maximal value to the last position of the list.
+    
+       so swap them. 
+       so swap them. 
+       so swap them. 
+       so swap them. 
+      The maximal value  is moved to the last of the list
+    
+  
+  Step 2: Move the second-maximal value to the second-last position of the list.
+    
+       so do nothing.
+       so swap them. 
+       so swap them. 
+      The second-maximal value  is moved to the second-last of the list
+    
+  
+  Step 3: Move the third-maximal value to the third-last position of the list.
+    
+       so swap them. 
+       so swap them. 
+      The third-maximal value  is moved to the third-last of the list
+    
+  
+  Step 4: Move the fourth-maximal value to the fourth-last position of the list.
+    
+       so swap them. 
+      The fourth-maximal value  is moved to the fourth-last of the list
+    
+  
+
+
+Dividing one list into unsorted list and sorted list
+
+In above example, the list is naturally partition into the sorted part
+and the unsorted part.
+The part contains the “bubbled” elements are sorted.
+The others are unsorted.
+
+
+  Step 1: Move the maximal value to the last position of the list.
+    
+      This iteration ends after the comparison of last two elements(4th and 5th)
+      The maximal value  is “bubbled” to the last(5th) of the list
+      
+        
+      
+      The 5th element is sorted part and the 1st-to-4th is unsorted part
+    
+  
+  Step 2: Move the second-maximal value to the second-last position of the list.
+    
+      This iteration ends after the comparison of second-last two elements(3rd and 4th)
+      The second-maximal value  is “bubbled” to the second-last(4th) of the list
+      
+        
+      
+      The 4th-to-5th elements is sorted part and the 1st-to-3rd is unsorted part
+    
+  
+  Step 3: Move the third-maximal value to the third-last position of the list.
+    
+      This iteration ends after the comparison of third-last two elements(2nd and 3rd)
+      The third-maximal value  is “bubbled” to the third-last(3rd) of the list
+      
+        
+      
+      The 3rd-to-5th elements is sorted part and the 1st-to-2nd is unsorted part
+    
+  
+  Step 4: Move the fourth-maximal value to the fourth-last position of the list.
+    
+      This iteration ends after the comparison of fourth-last two elements(1st and 2nd)
+      The fourth-maximal value  is “bubbled” to the fourth-last(2nd) of the list
+      
+        
+      
+      The 2nd-to-5th elements is sorted part and the 1st is unsorted part
+      The last left element is definitely the smallest value
+      so whole list from 1st to 5th is sorted
+    
+  
+
+
+Algorithm
+
+
+
+
+  At the 1st round, the 1st-last element is sorted
+  At the 2nd round, the 2nd-last to 1st-last elements are sorted
+  At the 3rd round, the 3rd-last to 1st-last elements are sorted
+  At the  round, the -last to 1st-last elements are sorted
+
+
+Proof
+
+Proof by mathematical induction
+
+Lemma 1
+
+
+
+  Given a list  with  elements, where ,
+the maximal element of  will be (the last element).
+
+
+
+  Base step: When , the assumption obviously holds
+  Induction Hypothesis: Assume the hypothesis holds when 
+  Induction Step: when 
+    
+      After the iteration of ,
+the list is divided into two parts:  and 
+      From above hypothesis, the maximal value in  is 
+      When :
+        
+          if , then the maximal element is ,
+so the hypothesis still holds
+          if , they will be swapped.
+After then, the maximal element will be ,
+so the hypothesis still holds
+        
+      
+    
+  
+
+
+Lemma 2
+
+
+
+  After the  iteration,
+ will be the th largest element of 
+
+
+
+  Base step: When , the assumption holds because lemma 1 is true
+  Induction Hypothesis: Assume hypothesis holds when 
+  Induction Step: When 
+    
+      The goal is to prove that the  is
+the th largest element of 
+      After the iteration ,  is the th
+largest element of 
+      We can divide the list into  and 
+        
+          The list  contains the picked
+th, th, …. , st largest elements
+          The list  is the unselected and unsorted list
+        
+      
+      By applying the lemma 1 to ,
+the maximal element of  will be 
+after all the iterations for .
+       is the th selected maximal element
+      so  is the th largest element of 
+    
+  
+
+
+Conclusion
+
+By lemma 2
+
+
+  After ,  is the st largest element of 
+  After ,  is the nd largest element of 
+  After ,  is the rd largest element of 
+  …
+  After ,  is the th largest element of 
+  After ,  is the th largest element of 
+  …
+  After ,  is the th largest element of 
+  After ,  is the th largest element of 
+  After ,  is the th largest element of 
+
+
+Thus, the list $L[1…N]$ is sorted by the order that .
+
+Complexity
+
+Let  denote the length of list .
+
+
+  
+    
+      
+      iterations for 
+    
+  
+  
+    
+      
+      
+    
+    
+      
+      
+    
+    
+      …
+      …
+    
+    
+      
+      
+    
+    
+      
+      
+    
+  
+
+
+The total of all iterations of BubbleSort() is tracked in above table
+and its sum is:
+
+
+
+Thus, the complexity is .
+
+Implementation
+
+See the files on gist here.
+
+
+
+
+
+
+
+The above gist files are imported by gist-embed.</summary></entry><entry><title type="html">Insertion Sort</title><link href="http://localhost:4000/post/insertion-sort" rel="alternate" type="text/html" title="Insertion Sort" /><published>2016-12-30T00:00:00+08:00</published><updated>2016-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/insertion-sort</id><content type="html" xml:base="http://localhost:4000/post/insertion-sort">&lt;h1 id=&quot;insertion-sort&quot;&gt;Insertion sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/insertion_sort.html&quot; title=&quot;Insertion Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -1289,7 +2101,277 @@ Thus, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)
 
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Insertion sort</summary></entry><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/post/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/post/selection-sort</id><content type="html" xml:base="http://localhost:4000/post/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Insertion sort
+
+This post series is synchronized with my book CodePlay
+and this post could be read here.
+
+Idea
+The basic concept is similar to Selection Sort.
+Considering there are two lists. One is already sorted,
+and the other is unsorted, denoted  and  respectively.
+The key idea is to pick the element from  one by one
+and then insert them into the correct positions of .
+Suppose we have 
+and :
+
+
+  Step 1
+    
+      Pick  (which is the first element) from ,
+and insert it into 
+      Find a position in  such that
+all elements before it is less than or equal to 
+and all elements after it is greater than 
+      Start comparing it from the last(maximal) element
+to the first(minimal) one in 
+(Or you can do same thing from the first element to the last one)
+       is greater than , so we keep moving
+      Next, we found that  is less than 
+      A-ha!  should be inserted between  and 
+      The  and  are updated to 
+and  respectively.
+    
+  
+  Step 2
+    
+      Pick the current first element of , ,
+and insert it into 
+      Same as the previous step, we start comparing  from the maximal element
+of  to find the position to insert
+       is obviously larger than , so we should keep moving
+      In this step, we can not find any element less than or equal to  after
+the all elements in  are checked
+      Thus, the  is the minimal value among these elements
+      We should put  as the first element in 
+      The  and  are updated to 
+and  respectively
+    
+  
+  Step 3
+    
+      pick the current first element of , ,
+and then insert it into 
+      Start comparing  with , we found  is greater
+      It means that  is the maximal value among these elements
+      Therefore,  should be inserted at the last position of 
+      The  and  are updated to
+ and  respectively
+    
+  
+  Step 4
+    
+       is picked to compare with the elements in .
+       is greater than , so go next
+       is equal to , so we stop here
+      The picked  should be inserted between the existed  and 
+      so the  and  are updated to
+ and  respectively.
+    
+  
+  Step 5
+    
+       is picked to insert.
+       is greater than ,
+      so it should be put to the last position of 
+      Finally,  is empty
+and .
+    
+  
+
+
+How to find the inserted position
+
+We can use the following method to find the first element
+whose value is less than or equal to the picked element:
+
+,where  is the element needs to be inserted,
+ is the th element in the sorted list ,
+and  is the length of .
+
+After getting the position  given the element ,
+we need to insert  between  and .
+(If , then we insert  as the first element .
+If , then we insert  as the last element .)
+
+Dividing one list into unsorted list and sorted list
+
+In implementation, we usually divide the source list  into two parts.
+One is sorted, the other is unsorted.
+They are denoted  and  respectively.
+This is better for memory usage than
+creating another list to put the sorted results.
+
+Suppose we have ,
+where  and  are initialized to 
+and .
+
+
+  First round
+    
+       is picked, but there is nothing could be compared
+      so we just put it into 
+       and 
+      now 
+    
+  
+  Second round
+    
+       is picked and 
+      so, we should insert  as the first element and update lists
+      then  and 
+      now 
+    
+  
+  Third round
+    
+       is picked and 
+      so we should insert  between  and 
+      then  and 
+      now 
+    
+  
+  Fourth round
+    
+       is picked and 
+      Thus,  are updated to
+ and .
+      now 
+    
+  
+  Fifth round
+    
+       is picked and 
+      so we should put  as the last element of the 
+      then  and 
+      now .
+    
+  
+  Final round
+    
+       is picked and 
+      so we should insert  between  and 
+      then  and  is empty
+      now .
+    
+  
+
+
+Algorithm
+
+
+The above method will divide  into two parts.
+ is sorted, and  is unsorted,
+where  is the length of .
+The  will be picked to insert into  iteratively.
+
+
+  When 
+    
+       and 
+      The goal in this round is to insert the  into 
+      The  is picked and compare with 
+      If , then we swap them
+      Otherwise, do nothing
+      Then,  is sorted and 
+    
+  
+  When 
+    
+       and 
+      The goal in this round is to insert the  into 
+      The  is picked
+      If , it means that  is sorted, so we don’t need to do anything
+      Otherwise(), swap  and 
+and check whether it needs to swap again if 
+      After finishing checking,  is sorted
+and 
+    
+  
+  When 
+    
+       and 
+      The goal in this round is to insert the  into 
+      The  is picked to compare with the elements one by one in ,
+from the maximal() to minimal item(), to find a place to insert
+      After finishing checking,  is sorted
+and  is 
+    
+  
+  When 
+    
+       and 
+      The goal in this round is to insert the  into 
+      In the same way, the  is sorted after finishing the procedure
+      so  is updated to  and  is empty
+    
+  
+
+
+Another method without swapping
+
+
+Proof
+
+Proof by mathematical induction
+
+
+  After each iteration for  in ,
+  the  is sorted array.
+
+
+We need to prove this statement is true.
+
+
+  when :
+    
+      Same as the above explanation
+      The assumption is hold
+    
+  
+  when :
+    
+      Assume the statement is hold when 
+       is sorted array
+    
+  
+  when 
+    
+      If , then  is naturally sorted
+so the proof is done
+      Otherwise, the  is swapped with 
+      Now  is sorted and (after swapping!)
+      Next, we apply this algorithm to  and now 
+      The statement is hold when ,
+so  is sorted after applying the algorithm
+      Now  is sorted and , so the proof is done
+    
+  
+
+
+Complexity
+The time complexity depends on the speed to find the inserted position.
+The more iterations to find the value of  need,
+the more time it takes.
+The worst case is that we need to go through whole  to find correct
+positions to insert. It happens when the list is arranged from maximal to
+minimal values(e.g.,).
+In this case, if the length of list is , we need to search
+
+times to move all the items into .
+Thus, the complexity is .
+
+Implementation
+
+See the files on gist here.
+
+
+
+
+
+
+
+The above gist files are imported by gist-embed.</summary></entry><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/post/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/post/selection-sort</id><content type="html" xml:base="http://localhost:4000/post/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -1571,4 +2653,250 @@ where the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length
 
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Selection sort</summary></entry></feed>
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Selection sort
+
+This post series is synchronized with my book CodePlay
+and this post could be read here.
+
+Idea
+The concept is quite straight.
+If we could get the minimal value from list one by one,
+then we could re-arrange the list from minimal to maximal values.
+
+Imagine we have two lists  and ,
+the  is a list contains several items with comparable values and
+the  is a sorted list of .
+At first,  is empty.
+
+Take  as an example:
+
+
+  At the first round, we get  as minimal value,
+so we move it into . Now,
+    
+      
+        
+      
+      
+        
+      
+    
+  
+  At the second round, we get  as minimal value, so
+    
+      
+        
+      
+      
+        
+      
+    
+  
+  Next,  is picked and moved from  to , so
+    
+      
+        
+      
+      
+        
+      
+    
+  
+  Then, the current minimal value  is moved from  to , so
+    
+      
+        
+      
+      
+        
+      
+    
+  
+  Finally,  is moved into , so
+    
+      
+        
+      
+      
+        
+      
+    
+  
+
+
+See! the idea is quite simple.
+In the same way, to sort the list from maximal to minimal values,
+the only different is to pick the maximal value from list each round
+instead of minimal value.
+
+How to get minimal(or maximal) value
+The way to get minimal(or maximal) items in 
+is to linearly search the whole list:
+
+or
+
+, where  is the th element in the list 
+and  is the length of .
+
+Dividing one list into unsorted list and sorted list
+In implementation, we usually divide the source list,
+which needs to be sorted, into two parts. One is sorted, the other is unsorted.
+This is better for memory usage than
+creating another list to put the sorted results.
+
+That is, if we have a source list ,
+it will be divided into  and .
+They are initialized to  and  respectively,
+so .
+
+
+  In the first round,  is picked and moved
+from  to , so
+    
+      
+        
+      
+    
+  
+  In the second round,  is picked and moved
+from  to , so
+    
+      
+        
+      
+    
+  
+  Next,  is picked, so
+    
+      
+        
+      
+    
+  
+  Then, another  is picked, so
+    
+      
+        
+      
+    
+  
+  Finally,  is picked, so
+    
+      
+        
+      
+    
+  
+
+
+Algorithm
+
+
+The above method will divide  into two parts.
+
+
+   is sorted
+   is unsorted,
+  where  is the length of 
+
+
+The following are step by step explanation:
+
+
+  When 
+    
+       and 
+      we need to find the minimal element in list 
+      We use a value  to track the index of the minimal element
+      where  is initialized to 
+       will be updated to , where , if 
+      Repeatedly above instruction from  to (searching whole ),
+ would be the minimal value in 
+      swap  and 
+      then  now can be considered as 
+      so 
+    
+  
+  When 
+    
+       and 
+      we need to find the minimal element in list 
+      Same as above,  is used to keep tracking the index of the minimal
+element in 
+      where  is initialized to 
+      After searching the whole ,
+ would be the minimal value in 
+      We can put  into the  by swapping the  and 
+      Thus,  and 
+    
+  
+  When 
+    
+       and 
+       is initialized to 
+      After searching the whole ,
+ would be the minimal value in 
+      Swapping  and  would put  into 
+      Then,  and 
+    
+  
+  When (final round)
+    
+       and 
+       is initialized to 
+      Pick a smaller one between  and 
+      and put it into the  like above(by swapping with )
+      Then  and 
+      The left one(now is ) is definitely the maximal item
+in , so we don’t need to do anything
+    
+  
+
+
+Proof
+
+Proof by contradiction
+
+
+  Assume this method can not give us an ordered list
+  so it exists one , where , in the result list 
+  Before the result is computed, the unsorted list could be
+ or 
+  It means that  is picked before 
+because  in the result list 
+  It means  and it is contradictory to the assumption
+  Thus, the assumption is wrong. This method will give us an ordered list.
+
+
+Complexity
+We need to search whole  to find a minimal(or maximal) item.
+Suppose  at first.
+(the length of  is ).
+
+At the first round, we need to search  items
+to find the minimal(or maximal) item and move it into .
+After then, .
+
+At the second round, whole  items in  would be counted
+to find the minimal(or maximal) one.
+After the picked one is moved into ,
+the size of  is reduced to .
+
+The procedure keep working until the list  is empty
+().
+Thus, we need to search
+
+times to move all the items into .
+Thus, the complexity is ,
+where the  is the length of the list .
+
+Implementation
+See the files on gist here.
+
+
+
+
+
+
+
+The above gist files are imported by gist-embed.</summary></entry></feed>

@@ -1,4 +1,172 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-01-30T15:30:04+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Lunar New Year</title><link href="http://localhost:4000/post/lunar-new-year" rel="alternate" type="text/html" title="Lunar New Year" /><published>2017-01-28T00:00:00+08:00</published><updated>2017-01-28T00:00:00+08:00</updated><id>http://localhost:4000/post/lunar-new-year</id><content type="html" xml:base="http://localhost:4000/post/lunar-new-year">&lt;h1 id=&quot;新年寄語&quot;&gt;新年寄語&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-03-22T15:22:35+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Requiring Android build-tools for Fennec</title><link href="http://localhost:4000/post/requiring-android-build-tools-for-fennec" rel="alternate" type="text/html" title="Requiring Android build-tools for Fennec" /><published>2017-03-22T00:00:00+08:00</published><updated>2017-03-22T00:00:00+08:00</updated><id>http://localhost:4000/post/requiring-android-build-tools-for-fennec</id><content type="html" xml:base="http://localhost:4000/post/requiring-android-build-tools-for-fennec">&lt;h1 id=&quot;requiring-android-build-tools-for-fennec&quot;&gt;Requiring Android build-tools for Fennec&lt;/h1&gt;
+
+&lt;p&gt;To build fennec, I run &lt;code class=&quot;highlighter-rouge&quot;&gt;$./mach bootstrap&lt;/code&gt; under my &lt;em&gt;gecko-dev&lt;/em&gt; repo
+and select &lt;em&gt;Firefox for Android&lt;/em&gt; to install all stuff for development.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Please choose the version of Firefox you want to build:
+1. Firefox for Desktop Artifact Mode
+2. Firefox for Desktop
+3. Firefox for Android Artifact Mode
+4. Firefox for Android
+
+Note on Artifact Mode:
+...
+...
+
+Your choice: 4
+
+Looks like you have Homebrew installed. We will install all required packages via Homebrew.
+
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Next, I create/modify the &lt;em&gt;mozconfig&lt;/em&gt;(or &lt;em&gt;.mozconfig&lt;/em&gt;) under my &lt;em&gt;gecko-dev&lt;/em&gt; repo:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Build Firefox for Android:
+ac_add_options --enable-application=mobile/android
+ac_add_options --target=arm-linux-androideabi
+
+# With the following Android SDK and NDK:
+ac_add_options --with-android-sdk=&quot;/Users/cchang/.mozbuild/android-sdk-macosx&quot;
+ac_add_options --with-android-ndk=&quot;/Users/cchang/.mozbuild/android-ndk-r11c&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;However, there are still error shown when I build by &lt;code class=&quot;highlighter-rouge&quot;&gt;./mach build&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
+...
+ 0:09.78 DEBUG: configure:10912: checking if app-specific confvars.sh exists
+ 0:09.78 DEBUG: configure:11077: checking for Android SDK platform version 23
+ 0:09.78 DEBUG: configure:11085: checking for Android build-tools
+ 0:09.78 DEBUG: configure: error: You must install the Android build-tools version 23.0.3.  Try |mach bootstrap|.  (Looked for /Users/cchang/.mozbuild/android-sdk-macosx/build-tools/23.0.3)
+ 0:09.78 ERROR: old-configure failed
+ 0:09.82 *** Fix above errors and then restart with               &quot;/Applications/Xcode.app/Contents/Developer/usr/bin/make -f client.mk build&quot;
+ 0:09.82 make: *** [configure] Error 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To solve this, I check whether &lt;code class=&quot;highlighter-rouge&quot;&gt;/Users/cchang/.mozbuild/android-sdk-macosx/build-tools/23.0.3&lt;/code&gt; exists.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls /Users/cchang/.mozbuild/android-sdk-macosx/
+SDK Readme.txt	extras		platforms		tools
+add-ons		platform-tools	temp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;There is really no &lt;code class=&quot;highlighter-rouge&quot;&gt;build-tools&lt;/code&gt;, so I need to install it by my own.&lt;/p&gt;
+
+&lt;p&gt;I open the &lt;em&gt;SDK Readme.txt&lt;/em&gt; to know what I could do:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd /Users/cchang/.mozbuild/android-sdk-macosx/
+$ vim SDK\ Readme.txt
+...
+...
+To start the SDK Manager, please execute the program &quot;android&quot;.
+
+From the command-line you can also directly trigger an update by
+executing:
+  tools/android update sdk --no-ui
+
+Tip: use --help to see the various command-line options.
+...
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;From above, we could run &lt;code class=&quot;highlighter-rouge&quot;&gt;$ tools/android&lt;/code&gt; to install what we need:
+&lt;img src=&quot;../images/posts/android-sdk-manager.png&quot; alt=&quot;Android SDK Manager&quot; title=&quot;Android SDK Manager&quot; /&gt;
+After the selected items are installed, we can successfully build the fennec!&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
+...
+61:33.64 Overall system resources - Wall time: 3687s; CPU: 97%; Read bytes: 3304162816; Write bytes: 6230259712; Read time: 45476; Write time: 36725
+61:33.64 Swap in/out (MB): 4092/2
+61:34.40 /usr/local/bin/terminal-notifier -title Mozilla Build System -group mozbuild -message Build complete
+61:34.69 We know it took a while, but your build finally finished successfully!
+To view resource usage of the build, run |mach resource-usage|.
+For more information on what to do now, see https://developer.mozilla.org/docs/Developer_Guide/So_You_Just_Built_Firefox
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Gecko" /><category term="Mozilla" /><category term="Fennec" /><summary type="html">Requiring Android build-tools for Fennec
+
+To build fennec, I run $./mach bootstrap under my gecko-dev repo
+and select Firefox for Android to install all stuff for development.
+
+Please choose the version of Firefox you want to build:
+1. Firefox for Desktop Artifact Mode
+2. Firefox for Desktop
+3. Firefox for Android Artifact Mode
+4. Firefox for Android
+
+Note on Artifact Mode:
+...
+...
+
+Your choice: 4
+
+Looks like you have Homebrew installed. We will install all required packages via Homebrew.
+
+...
+
+
+
+Next, I create/modify the mozconfig(or .mozconfig) under my gecko-dev repo:
+# Build Firefox for Android:
+ac_add_options --enable-application=mobile/android
+ac_add_options --target=arm-linux-androideabi
+
+# With the following Android SDK and NDK:
+ac_add_options --with-android-sdk=&quot;/Users/cchang/.mozbuild/android-sdk-macosx&quot;
+ac_add_options --with-android-ndk=&quot;/Users/cchang/.mozbuild/android-ndk-r11c&quot;
+
+
+
+However, there are still error shown when I build by ./mach build:
+...
+...
+ 0:09.78 DEBUG: configure:10912: checking if app-specific confvars.sh exists
+ 0:09.78 DEBUG: configure:11077: checking for Android SDK platform version 23
+ 0:09.78 DEBUG: configure:11085: checking for Android build-tools
+ 0:09.78 DEBUG: configure: error: You must install the Android build-tools version 23.0.3.  Try |mach bootstrap|.  (Looked for /Users/cchang/.mozbuild/android-sdk-macosx/build-tools/23.0.3)
+ 0:09.78 ERROR: old-configure failed
+ 0:09.82 *** Fix above errors and then restart with               &quot;/Applications/Xcode.app/Contents/Developer/usr/bin/make -f client.mk build&quot;
+ 0:09.82 make: *** [configure] Error 1
+
+
+
+To solve this, I check whether /Users/cchang/.mozbuild/android-sdk-macosx/build-tools/23.0.3 exists.
+$ ls /Users/cchang/.mozbuild/android-sdk-macosx/
+SDK Readme.txt	extras		platforms		tools
+add-ons		platform-tools	temp
+
+
+There is really no build-tools, so I need to install it by my own.
+
+I open the SDK Readme.txt to know what I could do:
+$ cd /Users/cchang/.mozbuild/android-sdk-macosx/
+$ vim SDK\ Readme.txt
+...
+...
+To start the SDK Manager, please execute the program &quot;android&quot;.
+
+From the command-line you can also directly trigger an update by
+executing:
+  tools/android update sdk --no-ui
+
+Tip: use --help to see the various command-line options.
+...
+...
+
+
+
+From above, we could run $ tools/android to install what we need:
+
+After the selected items are installed, we can successfully build the fennec!
+
+...
+...
+61:33.64 Overall system resources - Wall time: 3687s; CPU: 97%; Read bytes: 3304162816; Write bytes: 6230259712; Read time: 45476; Write time: 36725
+61:33.64 Swap in/out (MB): 4092/2
+61:34.40 /usr/local/bin/terminal-notifier -title Mozilla Build System -group mozbuild -message Build complete
+61:34.69 We know it took a while, but your build finally finished successfully!
+To view resource usage of the build, run |mach resource-usage|.
+For more information on what to do now, see https://developer.mozilla.org/docs/Developer_Guide/So_You_Just_Built_Firefox</summary></entry><entry><title type="html">Lunar New Year</title><link href="http://localhost:4000/post/lunar-new-year" rel="alternate" type="text/html" title="Lunar New Year" /><published>2017-01-28T00:00:00+08:00</published><updated>2017-01-28T00:00:00+08:00</updated><id>http://localhost:4000/post/lunar-new-year</id><content type="html" xml:base="http://localhost:4000/post/lunar-new-year">&lt;h1 id=&quot;新年寄語&quot;&gt;新年寄語&lt;/h1&gt;
 
 &lt;p&gt;今年終於把部落格架起來了，所以不免俗的來回顧過去和立定目標好了。
 大學之後就很久沒寫關於生活的事情了，可能是人老了生活單純許多，沒有那麼多話好說了。

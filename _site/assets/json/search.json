@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Requiring Android build-tools for Fennec",
+      "category" : "Gecko",
+      "tags"     : "Mozilla, Fennec",
+      "url"      : "/post/requiring-android-build-tools-for-fennec",
+      "date"     : "2017-03-22 00:00:00 +0800",
+			"shortdate": "March 22, 2017"
+    } ,
+  
+    {
       "title"    : "Lunar New Year",
       "category" : "Life",
       "tags"     : "Goal, New Year",

@@ -1,5 +1,8 @@
 # blog
-Personal blog for development notes
+Personal blog for development notes.
+For convenience sake, I fork from
+[hmfaysal/hmfaysal-omega-theme](https://github.com/hmfaysal/hmfaysal-omega-theme)
+to log my working notes.
 
 ## Requirments
 - Category
@@ -9,6 +12,8 @@ Personal blog for development notes
 - ```$ bundle exec jekyll serve```
 
 ## TO-DO
+- Add table-of-content in post
+- Remove the animation in the beginning of the page
 - Survey: Move to hexo?
   - [themes here](https://hexo.io/themes/)
     - [Hiker](https://itimetraveler.github.io/hexo-theme-hiker/)

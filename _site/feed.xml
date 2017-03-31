@@ -1,4 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-03-25T23:13:11+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Requiring Android build-tools for Fennec</title><link href="http://localhost:4000/post/requiring-android-build-tools-for-fennec" rel="alternate" type="text/html" title="Requiring Android build-tools for Fennec" /><published>2017-03-22T00:00:00+08:00</published><updated>2017-03-22T00:00:00+08:00</updated><id>http://localhost:4000/post/requiring-android-build-tools-for-fennec</id><content type="html" xml:base="http://localhost:4000/post/requiring-android-build-tools-for-fennec">&lt;h1 id=&quot;requiring-android-build-tools-for-fennec&quot;&gt;Requiring Android build-tools for Fennec&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-03-31T12:45:22+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Running multiple Firefox at the same time</title><link href="http://localhost:4000/post/running-multiple-firefox-at-the-same-time" rel="alternate" type="text/html" title="Running multiple Firefox at the same time" /><published>2017-03-30T00:00:00+08:00</published><updated>2017-03-30T00:00:00+08:00</updated><id>http://localhost:4000/post/running-multiple-firefox-at-the-same-time</id><content type="html" xml:base="http://localhost:4000/post/running-multiple-firefox-at-the-same-time">&lt;h1 id=&quot;running-multiple-firefox-at-the-same-time&quot;&gt;Running multiple Firefox at the same time&lt;/h1&gt;
+
+&lt;p&gt;I have two firefox: Firefox(normal version) and Firefox Developer Edition.
+Today morning, I deleted the Firefox Developer Edition by &lt;em&gt;AppCleaner&lt;/em&gt;
+and re-installed it, then something weird happened.&lt;/p&gt;
+
+&lt;p&gt;When I opened the new Firefox Developer Edition
+then launched my unchanged Firefox, the Firefox cannot be opened
+and it showed an error: &lt;strong&gt;A copy of Firefox is already open.
+Only one copy of Firefox an be opened at a time.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/posts/a-copy-of-firefox-is-alreay-open.png&quot; alt=&quot;&quot; title=&quot;A copy of Firefox is already open&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;AFAIK, the multiple Firefox instances are able to run at the same time,
+if they use &lt;strong&gt;different profiles&lt;/strong&gt;.
+Therefore, I opened &lt;code class=&quot;highlighter-rouge&quot;&gt;about:profiles&lt;/code&gt; on Firefox to check it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/posts/firefox-about-profiles-wrong.png&quot; alt=&quot;&quot; title=&quot;Firefox - about:profiles(incorrect)&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;From above, the setting was incorrect.
+It should use &lt;em&gt;Profile: default&lt;/em&gt; instead of &lt;em&gt;Profile: dev-edition-default&lt;/em&gt;.
+That’s why I cannot open Firefox and FirefoxDeveloperEdition at the same time.&lt;/p&gt;
+
+&lt;p&gt;To fix the problem, I simply click &lt;em&gt;Set a default profile&lt;/em&gt;
+under &lt;em&gt;Profile: default&lt;/em&gt;, then closed it, and relaunched it to check the setting.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/posts/firefox-about-profiles-right.png&quot; alt=&quot;&quot; title=&quot;Firefox - about:profiles(correct)&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I also checked the FirefoxDeveloperEdition’s setting
+to make sure everything is fine.
+&lt;img src=&quot;../images/posts/firefoxdeveloperedition-about-profiles.png&quot; alt=&quot;&quot; title=&quot;FirefoxDeveloperEdition - about:profiles&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I wrote this to remember how I fix it,
+in case the same problem happens again.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Mozilla" /><category term="Firefox" /><summary type="html">Running multiple Firefox at the same time
+
+I have two firefox: Firefox(normal version) and Firefox Developer Edition.
+Today morning, I deleted the Firefox Developer Edition by AppCleaner
+and re-installed it, then something weird happened.
+
+When I opened the new Firefox Developer Edition
+then launched my unchanged Firefox, the Firefox cannot be opened
+and it showed an error: A copy of Firefox is already open.
+Only one copy of Firefox an be opened at a time.
+
+
+
+AFAIK, the multiple Firefox instances are able to run at the same time,
+if they use different profiles.
+Therefore, I opened about:profiles on Firefox to check it.
+
+
+
+From above, the setting was incorrect.
+It should use Profile: default instead of Profile: dev-edition-default.
+That’s why I cannot open Firefox and FirefoxDeveloperEdition at the same time.
+
+To fix the problem, I simply click Set a default profile
+under Profile: default, then closed it, and relaunched it to check the setting.
+
+
+
+I also checked the FirefoxDeveloperEdition’s setting
+to make sure everything is fine.
+
+
+I wrote this to remember how I fix it,
+in case the same problem happens again.</summary></entry><entry><title type="html">Requiring Android build-tools for Fennec</title><link href="http://localhost:4000/post/requiring-android-build-tools-for-fennec" rel="alternate" type="text/html" title="Requiring Android build-tools for Fennec" /><published>2017-03-22T00:00:00+08:00</published><updated>2017-03-22T00:00:00+08:00</updated><id>http://localhost:4000/post/requiring-android-build-tools-for-fennec</id><content type="html" xml:base="http://localhost:4000/post/requiring-android-build-tools-for-fennec">&lt;h1 id=&quot;requiring-android-build-tools-for-fennec&quot;&gt;Requiring Android build-tools for Fennec&lt;/h1&gt;
 
 &lt;p&gt;To build fennec, I run &lt;code class=&quot;highlighter-rouge&quot;&gt;$./mach bootstrap&lt;/code&gt; under my &lt;em&gt;gecko-dev&lt;/em&gt; repo
 and select &lt;em&gt;Firefox for Android&lt;/em&gt; to install all stuff for development.&lt;/p&gt;
@@ -83,7 +149,7 @@ After the selected items are installed, we can successfully build the fennec!&lt
 To view resource usage of the build, run |mach resource-usage|.
 For more information on what to do now, see https://developer.mozilla.org/docs/Developer_Guide/So_You_Just_Built_Firefox
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Gecko" /><category term="Mozilla" /><category term="Fennec" /><summary type="html">Requiring Android build-tools for Fennec
+&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Mozilla" /><category term="Fennec" /><summary type="html">Requiring Android build-tools for Fennec
 
 To build fennec, I run $./mach bootstrap under my gecko-dev repo
 and select Firefox for Android to install all stuff for development.

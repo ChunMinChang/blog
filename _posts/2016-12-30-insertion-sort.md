@@ -2,7 +2,7 @@
 layout: post
 title: Insertion Sort
 category: Algorithm
-tags: [sorting]
+tags: [Sorting]
 comments: true
 mathjax: true
 ---
@@ -12,7 +12,7 @@ This post series is synchronized with my book [CodePlay][codeplay]
 and this post could be read [here][ins-sort].
 
 ## Idea
-The basic concept is similar to [_Selection Sort_][sel_sort].
+The basic concept is similar to [_Selection Sort_][sel-sort].
 Considering there are two lists. One is already sorted,
 and the other is unsorted, denoted $$L_{sorted}$$ and $$L_{unsorted}$$ respectively.
 The key idea is to pick the element from $$L_{unsorted}$$ one by one
@@ -242,21 +242,10 @@ Thus, the complexity is $$\mathcal{O}(N^2)$$.
 
 See the files on [gist here][gist].
 
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-14, 17-18, 25"></code>
-
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1, 6-21, 75-109"></code>
-
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="1-44, 52-65, 74-81, 112-113"></code>
-
-
-The above gist files are imported by [gist-embed][gist-embed].
+{% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb insertion_sort.cpp %}
+{% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb utils.h %}
 
 [gist]: https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb "Sorting"
-[gist-embed]: https://github.com/blairvanderhoof/gist-embed "gist-embed"
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
-
 [codeplay]: https://www.gitbook.com/book/chunminchang/codeplay/details "CodePlay"
 [ins-sort]: https://chunminchang.gitbooks.io/codeplay/content/sorting/insertion_sort.html "Insertion Sort"
-[sel_sort]: https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html "Selection Sort"
+[sel-sort]: https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html "Selection Sort"

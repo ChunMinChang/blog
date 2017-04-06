@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-03-31T12:45:22+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Running multiple Firefox at the same time</title><link href="http://localhost:4000/post/running-multiple-firefox-at-the-same-time" rel="alternate" type="text/html" title="Running multiple Firefox at the same time" /><published>2017-03-30T00:00:00+08:00</published><updated>2017-03-30T00:00:00+08:00</updated><id>http://localhost:4000/post/running-multiple-firefox-at-the-same-time</id><content type="html" xml:base="http://localhost:4000/post/running-multiple-firefox-at-the-same-time">&lt;h1 id=&quot;running-multiple-firefox-at-the-same-time&quot;&gt;Running multiple Firefox at the same time&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-06T14:13:09+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Running multiple Firefox at the same time</title><link href="http://localhost:4000/post/running-multiple-firefox-at-the-same-time" rel="alternate" type="text/html" title="Running multiple Firefox at the same time" /><published>2017-03-30T00:00:00+08:00</published><updated>2017-03-30T00:00:00+08:00</updated><id>http://localhost:4000/post/running-multiple-firefox-at-the-same-time</id><content type="html" xml:base="http://localhost:4000/post/running-multiple-firefox-at-the-same-time">&lt;h1 id=&quot;running-multiple-firefox-at-the-same-time&quot;&gt;Running multiple Firefox at the same time&lt;/h1&gt;
 
 &lt;p&gt;I have two firefox: Firefox(normal version) and Firefox Developer Edition.
 Today morning, I deleted the Firefox Developer Edition by &lt;em&gt;AppCleaner&lt;/em&gt;
@@ -848,17 +848,268 @@ T_{sort}(N)
 
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-14, 21-22, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;cassert&amp;gt;
+#include &amp;lt;cstring&amp;gt;    // for memcpy
+#include &amp;quot;sorting.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1-2, 6-37, 132-344&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+/*
+ * Merge sort: O(n * log(n))
+ */
+// Basic merge: O(n)
+// The following is the most straightforward way to merge two sorted array.
+// However, it allocates extra memory for sorted results in every recursion.
+void merge(int list[],
+           const unsigned int left,
+           const unsigned int division,
+           const unsigned int right)
+{
+  assert(left &amp;lt;= right);
+  //      |&amp;lt;-- sorted --&amp;gt;|&amp;lt;-- sorted --&amp;gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  unsigned int i = left;
+  unsigned int j = division + 1;
+  const unsigned int size = right - left + 1;
+  int array[size];
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;1-44, 52-65, 90-97, 112-113&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+  // When left &amp;lt;= i &amp;lt;= div and div + 1 &amp;lt;= j &amp;lt;= right:
+  // Compare list[i] and list[j], if list[i] &amp;lt; list[j], then copy list[i] into
+  // the new array and let i = i + 1. Otherwise, copy list[j] into the new array
+  // and let j = j + 1. If i &amp;gt; div, it means list[left...div] is all compared
+  // and already copied, so we just need to put the rest list[j...right] into
+  // the array. In the same way, if j &amp;gt; right, then put the rest list[i...div]
+  // into the array.
+  unsigned int k = 0;
+  for (k = 0 ; k &amp;lt; size; ++k) {
+    array[k] = (j &amp;gt; right || (i &amp;lt;= division &amp;amp;&amp;amp; list[i] &amp;lt; list[j])) ? list[i++] : list[j++];
+  }
 
-&lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
+  // while (i &amp;lt;= division &amp;amp;&amp;amp; j &amp;lt;= right) {
+  //   array[k++] = (list[i] &amp;lt; list[j]) ? list[i++] : list[j++];
+  //   // if (list[i] &amp;lt; list[j]) {
+  //   //   array[k] = list[i];
+  //   //   ++i;
+  //   // } else {
+  //   //   array[k] = list[j];
+  //   //   ++j;
+  //   // }
+  //   // ++k;
+  // }
+  //
+  // // In this case, j &amp;gt; right, so we put the rest list[i...div] into the array.
+  // while (i &amp;lt;= division) {
+  //   array[k++] = list[i++];
+  //   // array[k] = list[i];
+  //   // ++i;
+  //   // ++k;
+  // }
+  //
+  // // in this case, i &amp;gt; div, so we put the rest list[j...right] into the array.
+  // while (j &amp;lt;= right) {
+  //   array[k++] = list[j++];
+  //   // array[k] = list[j];
+  //   // ++j;
+  //   // ++k;
+  // }
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+  assert(k == size);
+  assert(i == division + 1);
+  assert(j == right + 1);
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;
+  // Overwrite list[left...right] by the new sorted array.
+  for (k = 0 ; k &amp;lt; size ; ++k) {
+    list[left + k] = array[k];
+  }
+  assert(left + k == right + 1);
+}
+
+// Append ∞ as the last sentinel element to the both ordered arrays for merging.
+void mergeWithSentinel(int list[], unsigned int left, unsigned int division, unsigned int right)
+{
+  assert(left &amp;lt;= right);
+  //      |&amp;lt;-- sorted --&amp;gt;|&amp;lt;-- sorted --&amp;gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  //      |&amp;lt;---  A&amp;#39;  ---&amp;gt;|&amp;lt;---  B&amp;#39;  ---&amp;gt;|
+
+  // Allocate list A = A&amp;#39; ∪ [INFINITY] and list B = B&amp;#39; ∪ [INFINITY]
+  const static int INFINITY = ((unsigned int)(-1) &amp;gt;&amp;gt; 1);
+  const unsigned int sizeA = division - left + 2; // (division - left + 1) + 1
+  const unsigned int sizeB = right - division + 1; // (right - (division + 1) + 1) + 1
+  int *A = new int[sizeA]; // 1 is for [ INFINITY ]
+  int *B = new int[sizeB];
+  // Copy elements from list[left...division] to A&amp;#39;[0...(sizeA - 2)].
+  memcpy((void*)A, (void*)(list + left), sizeof(int) * (sizeA - 1));
+  // Copy elements from list[(division + 1)...right] to B&amp;#39;[0...(sizeB - 2)].
+  memcpy((void*)B, (void*)(list + division + 1), sizeof(int) * (sizeB - 1));
+  // Set the last elements of A and B to INFINITY.
+  A[sizeA - 1] = B[sizeB - 1] = INFINITY;
+  // Move the sorted elements of A and B to list[left...right].
+  unsigned int i, j;
+  for (i = j = 0 ; left &amp;lt;= right ; ++left) {
+    list[left] = A[i] &amp;lt; B[j] ? A[i++] : B[j++];
+  }
+  free(A);
+  free(B);
+}
+
+// The following method demonstrates a in-place version of merge method.
+// However, it downgrades mergesort overall performance to quadratic O(n^2)!
+// Naive in-place merge: O(n^2)
+void naiveInplaceMerge(int list[],
+           const unsigned int left,
+           const unsigned int division,
+           const unsigned int right)
+{
+  assert(left &amp;lt;= right);
+  //      |&amp;lt;-- sorted --&amp;gt;|&amp;lt;-- sorted --&amp;gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  unsigned int anchor = left;
+  for (unsigned int i = division + 1 ; i &amp;lt;= right ; ++i) {
+    for (unsigned int j = i ; j &amp;gt; anchor ; --j) { // Replace anchor with left is fine.
+      // The following condition is definitely true and will be triggered.
+      // list[division + k + 1] &amp;gt;= list[division + k] where k &amp;gt;= 1
+      // is assertive because list[division + 1 .... right] is a sorted from
+      // minimal item to maximal one.
+      if (list[j] &amp;gt;= list[j-1]) {
+        anchor = j;
+        break;
+      }
+      swap(list[j], list[j-1]);
+    }
+  }
+}
+
+void topDownMergeSort(int list[], const unsigned int left, const unsigned int right)
+{
+  if (left &amp;gt;= right) {
+    return;
+  }
+
+  const unsigned int middle = (left + right) / 2;
+  topDownMergeSort(list, left, middle);
+  topDownMergeSort(list, middle + 1, right);
+  merge(list, left, middle, right);
+  // mergeWithSentinel(list, left, middle, right);
+  // naiveInplaceMerge(list, left, middle, right); // Slower!
+}
+
+void bottomUpMergeSort(int list[], const unsigned int length)
+{
+  // &amp;lt;----------  l = 2^k + r  ----------&amp;gt;  where k, r are integers, k &amp;gt;= 0,
+  // &amp;lt;-----  2^k  -----&amp;gt;|&amp;lt;-----  r  -----&amp;gt;  and 0 &amp;lt;= r &amp;lt; 2^k.
+  // +---+---+---------+---+---------+---+
+  // | 0 | 1 | ....... | n | ....... | m |
+  // +---+---+---------+---+---------+---+
+  //
+  // l            k  r
+  // 1 : 2^0 + 0  0  0
+  // 2 : 2^1 + 0  1  0
+  // 3 : 2^1 + 1  1  1
+  // 4 : 2^2 + 0  2  0
+  // 5 : 2^2 + 1  2  1
+  // 6 : 2^2 + 2  2  2
+  // 7 : 2^2 + 3  2  3
+  // 8 : 2^3 + 0  3  0
+  // 9 : 2^3 + 1  3  1
+  // ...
+  // ...
+  //
+  // When r = 0:  The length of list is powers of 2, denoted 2^k, so all the
+  //              size of blocks for merging must be same. At the round (k+1),
+  //              the size is 2^k, where k &amp;gt;= 0 is a integer.
+  // When r != 0: We can consider there are extra &amp;#39;r&amp;#39; elements added into the
+  //              above list whose length is powers of 2.
+  //              The extra &amp;#39;r&amp;#39; elements will be merged when the block size is
+  //              grown to 2^k, where k &amp;gt;= 0 and 0 &amp;lt; r &amp;lt; 2^k.
+  //
+  // Each round, the list is divided into blocks and then merged
+  // from size 1, 2, 4, ... to lenght/2.
+  for (unsigned int size = 1 ; size &amp;lt; length ; size *= 2) {
+    // If i &amp;gt;= length - size, then the rest elements list[i .. length - 1]
+    // is smaller than or equal to one block size, so there is nothing to be
+    // merged. These rest elements will be merged when size = 2^k
+    // and 2^(k-1) &amp;lt; length - 2^k &amp;lt; 2^k,.
+    for (unsigned int i = 0 ; i &amp;lt; length - size ; i += 2 * size) {
+      // Merge the adjacent two blocks.
+      merge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
+      // mergeWithSentinel(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
+      // naiveInplaceMerge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1)); // Slower!
+
+      // Uncomment below to check when the rest items will be merged.
+      // if ((size/2 &amp;lt; length - size/2) &amp;amp;&amp;amp; (length - size &amp;lt; size)) {
+      //   std::cout &amp;lt;&amp;lt; &amp;quot;List length: &amp;quot; &amp;lt;&amp;lt; length &amp;lt;&amp;lt; std::endl;
+      //   std::cout &amp;lt;&amp;lt; &amp;quot;Merge the last &amp;quot; &amp;lt;&amp;lt; length - size &amp;lt;&amp;lt;
+      //                &amp;quot; items when size is &amp;quot; &amp;lt;&amp;lt; size &amp;lt;&amp;lt; std::endl;
+      //   assert(min(i + 2 * size - 1, length - 1) == length - 1);
+      // }
+    }
+  }
+}
+
+void mergeSort(int list[], const unsigned int length)
+{
+  assert(length);
+
+  // topDownMergeSort(list, 0, length - 1);
+  bottomUpMergeSort(list, length);
+}
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=merge_sort.cpp&quot;&gt; &lt;/script&gt;
+
+&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
+#define UTILS_H
+
+/*
+ * Utils
+ *
+ * These functions are used in different object files(.o) and then all those
+ * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
+ * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
+ * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
+ * is NOT sharable and they should NOT visible across each other.
+ */
+static void swap(int&amp;amp; a, int&amp;amp; b)
+{
+  if (a == b) {
+    return;
+  }
+
+  a = a ^ b;
+  b = a ^ b;
+  a = a ^ b;
+}
+
+// static void swap(int&amp;amp; a, int&amp;amp; b)
+// {
+//   if (a == b) {
+//     return;
+//   }
+//
+//   a = a + b;
+//   b = a - b;
+//   a = a - b;
+// }
+
+static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
+{
+  return (a &amp;lt; b) ? a : b;
+}
+
+#endif // #ifndef UTILS_H
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=utils.h&quot;&gt; &lt;/script&gt;
 
 &lt;h2 id=&quot;appendix&quot;&gt;Appendix&lt;/h2&gt;
 
@@ -947,7 +1198,7 @@ and &lt;script type=&quot;math/tex&quot;&gt;B^\prime = L[N+2...N+k+1]&lt;/script
   &lt;li&gt;&lt;a href=&quot;http://www.cs.mcgill.ca/~dprecup/courses/IntroCS/Lectures/comp250-lecture16.pdf&quot; title=&quot;Lecture 16: MergeSort proof of correctness, and running time&quot;&gt;COMP250&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.inf.unibz.it/~nutt/DSA1112/DSALabs/sols2.pdf&quot; title=&quot;Data Structures and Algorithms&quot;&gt;DSA1112&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.cs.rochester.edu/~gildea/csc282/slides/C02-start.pdf&quot; title=&quot;Getting Started&quot;&gt;CSC282&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Merge Sort
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Merge Sort
 
 This post series is synchronized with my book CodePlay
 and this post could be read here.
@@ -1407,15 +1658,266 @@ Implementation
 
 See the files on gist here.
 
+#include &amp;lt;cassert&amp;gt;
+#include &amp;lt;cstring&amp;gt;    // for memcpy
+#include &amp;quot;sorting.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
+
+/*
+ * Merge sort: O(n * log(n))
+ */
+// Basic merge: O(n)
+// The following is the most straightforward way to merge two sorted array.
+// However, it allocates extra memory for sorted results in every recursion.
+void merge(int list[],
+           const unsigned int left,
+           const unsigned int division,
+           const unsigned int right)
+{
+  assert(left &amp;lt;= right);
+  //      |&amp;lt;-- sorted --&amp;gt;|&amp;lt;-- sorted --&amp;gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  unsigned int i = left;
+  unsigned int j = division + 1;
+  const unsigned int size = right - left + 1;
+  int array[size];
+
+  // When left &amp;lt;= i &amp;lt;= div and div + 1 &amp;lt;= j &amp;lt;= right:
+  // Compare list[i] and list[j], if list[i] &amp;lt; list[j], then copy list[i] into
+  // the new array and let i = i + 1. Otherwise, copy list[j] into the new array
+  // and let j = j + 1. If i &amp;gt; div, it means list[left...div] is all compared
+  // and already copied, so we just need to put the rest list[j...right] into
+  // the array. In the same way, if j &amp;gt; right, then put the rest list[i...div]
+  // into the array.
+  unsigned int k = 0;
+  for (k = 0 ; k &amp;lt; size; ++k) {
+    array[k] = (j &amp;gt; right || (i &amp;lt;= division &amp;amp;&amp;amp; list[i] &amp;lt; list[j])) ? list[i++] : list[j++];
+  }
+
+  // while (i &amp;lt;= division &amp;amp;&amp;amp; j &amp;lt;= right) {
+  //   array[k++] = (list[i] &amp;lt; list[j]) ? list[i++] : list[j++];
+  //   // if (list[i] &amp;lt; list[j]) {
+  //   //   array[k] = list[i];
+  //   //   ++i;
+  //   // } else {
+  //   //   array[k] = list[j];
+  //   //   ++j;
+  //   // }
+  //   // ++k;
+  // }
+  //
+  // // In this case, j &amp;gt; right, so we put the rest list[i...div] into the array.
+  // while (i &amp;lt;= division) {
+  //   array[k++] = list[i++];
+  //   // array[k] = list[i];
+  //   // ++i;
+  //   // ++k;
+  // }
+  //
+  // // in this case, i &amp;gt; div, so we put the rest list[j...right] into the array.
+  // while (j &amp;lt;= right) {
+  //   array[k++] = list[j++];
+  //   // array[k] = list[j];
+  //   // ++j;
+  //   // ++k;
+  // }
+
+  assert(k == size);
+  assert(i == division + 1);
+  assert(j == right + 1);
+
+  // Overwrite list[left...right] by the new sorted array.
+  for (k = 0 ; k &amp;lt; size ; ++k) {
+    list[left + k] = array[k];
+  }
+  assert(left + k == right + 1);
+}
+
+// Append ∞ as the last sentinel element to the both ordered arrays for merging.
+void mergeWithSentinel(int list[], unsigned int left, unsigned int division, unsigned int right)
+{
+  assert(left &amp;lt;= right);
+  //      |&amp;lt;-- sorted --&amp;gt;|&amp;lt;-- sorted --&amp;gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  //      |&amp;lt;---  A&amp;#39;  ---&amp;gt;|&amp;lt;---  B&amp;#39;  ---&amp;gt;|
+
+  // Allocate list A = A&amp;#39; ∪ [INFINITY] and list B = B&amp;#39; ∪ [INFINITY]
+  const static int INFINITY = ((unsigned int)(-1) &amp;gt;&amp;gt; 1);
+  const unsigned int sizeA = division - left + 2; // (division - left + 1) + 1
+  const unsigned int sizeB = right - division + 1; // (right - (division + 1) + 1) + 1
+  int *A = new int[sizeA]; // 1 is for [ INFINITY ]
+  int *B = new int[sizeB];
+  // Copy elements from list[left...division] to A&amp;#39;[0...(sizeA - 2)].
+  memcpy((void*)A, (void*)(list + left), sizeof(int) * (sizeA - 1));
+  // Copy elements from list[(division + 1)...right] to B&amp;#39;[0...(sizeB - 2)].
+  memcpy((void*)B, (void*)(list + division + 1), sizeof(int) * (sizeB - 1));
+  // Set the last elements of A and B to INFINITY.
+  A[sizeA - 1] = B[sizeB - 1] = INFINITY;
+  // Move the sorted elements of A and B to list[left...right].
+  unsigned int i, j;
+  for (i = j = 0 ; left &amp;lt;= right ; ++left) {
+    list[left] = A[i] &amp;lt; B[j] ? A[i++] : B[j++];
+  }
+  free(A);
+  free(B);
+}
+
+// The following method demonstrates a in-place version of merge method.
+// However, it downgrades mergesort overall performance to quadratic O(n^2)!
+// Naive in-place merge: O(n^2)
+void naiveInplaceMerge(int list[],
+           const unsigned int left,
+           const unsigned int division,
+           const unsigned int right)
+{
+  assert(left &amp;lt;= right);
+  //      |&amp;lt;-- sorted --&amp;gt;|&amp;lt;-- sorted --&amp;gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  unsigned int anchor = left;
+  for (unsigned int i = division + 1 ; i &amp;lt;= right ; ++i) {
+    for (unsigned int j = i ; j &amp;gt; anchor ; --j) { // Replace anchor with left is fine.
+      // The following condition is definitely true and will be triggered.
+      // list[division + k + 1] &amp;gt;= list[division + k] where k &amp;gt;= 1
+      // is assertive because list[division + 1 .... right] is a sorted from
+      // minimal item to maximal one.
+      if (list[j] &amp;gt;= list[j-1]) {
+        anchor = j;
+        break;
+      }
+      swap(list[j], list[j-1]);
+    }
+  }
+}
+
+void topDownMergeSort(int list[], const unsigned int left, const unsigned int right)
+{
+  if (left &amp;gt;= right) {
+    return;
+  }
+
+  const unsigned int middle = (left + right) / 2;
+  topDownMergeSort(list, left, middle);
+  topDownMergeSort(list, middle + 1, right);
+  merge(list, left, middle, right);
+  // mergeWithSentinel(list, left, middle, right);
+  // naiveInplaceMerge(list, left, middle, right); // Slower!
+}
+
+void bottomUpMergeSort(int list[], const unsigned int length)
+{
+  // &amp;lt;----------  l = 2^k + r  ----------&amp;gt;  where k, r are integers, k &amp;gt;= 0,
+  // &amp;lt;-----  2^k  -----&amp;gt;|&amp;lt;-----  r  -----&amp;gt;  and 0 &amp;lt;= r &amp;lt; 2^k.
+  // +---+---+---------+---+---------+---+
+  // | 0 | 1 | ....... | n | ....... | m |
+  // +---+---+---------+---+---------+---+
+  //
+  // l            k  r
+  // 1 : 2^0 + 0  0  0
+  // 2 : 2^1 + 0  1  0
+  // 3 : 2^1 + 1  1  1
+  // 4 : 2^2 + 0  2  0
+  // 5 : 2^2 + 1  2  1
+  // 6 : 2^2 + 2  2  2
+  // 7 : 2^2 + 3  2  3
+  // 8 : 2^3 + 0  3  0
+  // 9 : 2^3 + 1  3  1
+  // ...
+  // ...
+  //
+  // When r = 0:  The length of list is powers of 2, denoted 2^k, so all the
+  //              size of blocks for merging must be same. At the round (k+1),
+  //              the size is 2^k, where k &amp;gt;= 0 is a integer.
+  // When r != 0: We can consider there are extra &amp;#39;r&amp;#39; elements added into the
+  //              above list whose length is powers of 2.
+  //              The extra &amp;#39;r&amp;#39; elements will be merged when the block size is
+  //              grown to 2^k, where k &amp;gt;= 0 and 0 &amp;lt; r &amp;lt; 2^k.
+  //
+  // Each round, the list is divided into blocks and then merged
+  // from size 1, 2, 4, ... to lenght/2.
+  for (unsigned int size = 1 ; size &amp;lt; length ; size *= 2) {
+    // If i &amp;gt;= length - size, then the rest elements list[i .. length - 1]
+    // is smaller than or equal to one block size, so there is nothing to be
+    // merged. These rest elements will be merged when size = 2^k
+    // and 2^(k-1) &amp;lt; length - 2^k &amp;lt; 2^k,.
+    for (unsigned int i = 0 ; i &amp;lt; length - size ; i += 2 * size) {
+      // Merge the adjacent two blocks.
+      merge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
+      // mergeWithSentinel(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
+      // naiveInplaceMerge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1)); // Slower!
+
+      // Uncomment below to check when the rest items will be merged.
+      // if ((size/2 &amp;lt; length - size/2) &amp;amp;&amp;amp; (length - size &amp;lt; size)) {
+      //   std::cout &amp;lt;&amp;lt; &amp;quot;List length: &amp;quot; &amp;lt;&amp;lt; length &amp;lt;&amp;lt; std::endl;
+      //   std::cout &amp;lt;&amp;lt; &amp;quot;Merge the last &amp;quot; &amp;lt;&amp;lt; length - size &amp;lt;&amp;lt;
+      //                &amp;quot; items when size is &amp;quot; &amp;lt;&amp;lt; size &amp;lt;&amp;lt; std::endl;
+      //   assert(min(i + 2 * size - 1, length - 1) == length - 1);
+      // }
+    }
+  }
+}
+
+void mergeSort(int list[], const unsigned int length)
+{
+  assert(length);
+
+  // topDownMergeSort(list, 0, length - 1);
+  bottomUpMergeSort(list, length);
+}
 
 
 
+#ifndef UTILS_H
+#define UTILS_H
 
+/*
+ * Utils
+ *
+ * These functions are used in different object files(.o) and then all those
+ * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
+ * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
+ * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
+ * is NOT sharable and they should NOT visible across each other.
+ */
+static void swap(int&amp;amp; a, int&amp;amp; b)
+{
+  if (a == b) {
+    return;
+  }
 
+  a = a ^ b;
+  b = a ^ b;
+  a = a ^ b;
+}
 
-The above gist files are imported by gist-embed.
+// static void swap(int&amp;amp; a, int&amp;amp; b)
+// {
+//   if (a == b) {
+//     return;
+//   }
+//
+//   a = a + b;
+//   b = a - b;
+//   a = a - b;
+// }
 
+static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
+{
+  return (a &amp;lt; b) ? a : b;
+}
 
+#endif // #ifndef UTILS_H
 
 
 
@@ -1766,17 +2268,76 @@ and its sum is:&lt;/p&gt;
 
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-14, 19-20, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;cassert&amp;gt;
+#include &amp;quot;sorting.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1, 6-21, 110-131&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+/*
+ * Bubble sort: O(n^2)
+ */
+void bubbleSort(int list[], const unsigned int length)
+{
+  assert(length);
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;1-44, 52-65, 82-89, 112-113&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+  // &amp;lt;--  unsorted  --&amp;gt;|&amp;lt;--  sorted  --&amp;gt;
+  // +---+---+---------+---+-------+---+
+  // | 0 | 1 | ....... | m | ..... | M |
+  // +---+---+---------+---+---+---+---+
+  //                     ^           ^
+  //              current min        Max
+  for (unsigned int i = 0 ; i &amp;lt; length - 1 ; ++i) {
+    for (unsigned int j = 0 ; j &amp;lt; length - 1 - i ; ++j) {
+      if (list[j] &amp;gt; list[j+1]) {
+        swap(list[j], list[j+1]);
+      }
+    }
+  }
+}
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=bubble_sort.cpp&quot;&gt; &lt;/script&gt;
 
-&lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
+&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
+#define UTILS_H
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+/*
+ * Utils
+ *
+ * These functions are used in different object files(.o) and then all those
+ * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
+ * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
+ * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
+ * is NOT sharable and they should NOT visible across each other.
+ */
+static void swap(int&amp;amp; a, int&amp;amp; b)
+{
+  if (a == b) {
+    return;
+  }
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Bubble Sort
+  a = a ^ b;
+  b = a ^ b;
+  a = a ^ b;
+}
+
+// static void swap(int&amp;amp; a, int&amp;amp; b)
+// {
+//   if (a == b) {
+//     return;
+//   }
+//
+//   a = a + b;
+//   b = a - b;
+//   a = a - b;
+// }
+
+static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
+{
+  return (a &amp;lt; b) ? a : b;
+}
+
+#endif // #ifndef UTILS_H
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=utils.h&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Bubble Sort
 
 This post series is synchronized with my book CodePlay
 and this post could be read here.
@@ -2022,13 +2583,74 @@ Implementation
 
 See the files on gist here.
 
+#include &amp;lt;cassert&amp;gt;
+#include &amp;quot;sorting.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
+
+/*
+ * Bubble sort: O(n^2)
+ */
+void bubbleSort(int list[], const unsigned int length)
+{
+  assert(length);
+
+  // &amp;lt;--  unsorted  --&amp;gt;|&amp;lt;--  sorted  --&amp;gt;
+  // +---+---+---------+---+-------+---+
+  // | 0 | 1 | ....... | m | ..... | M |
+  // +---+---+---------+---+---+---+---+
+  //                     ^           ^
+  //              current min        Max
+  for (unsigned int i = 0 ; i &amp;lt; length - 1 ; ++i) {
+    for (unsigned int j = 0 ; j &amp;lt; length - 1 - i ; ++j) {
+      if (list[j] &amp;gt; list[j+1]) {
+        swap(list[j], list[j+1]);
+      }
+    }
+  }
+}
 
 
 
+#ifndef UTILS_H
+#define UTILS_H
 
+/*
+ * Utils
+ *
+ * These functions are used in different object files(.o) and then all those
+ * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
+ * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
+ * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
+ * is NOT sharable and they should NOT visible across each other.
+ */
+static void swap(int&amp;amp; a, int&amp;amp; b)
+{
+  if (a == b) {
+    return;
+  }
 
+  a = a ^ b;
+  b = a ^ b;
+  a = a ^ b;
+}
 
-The above gist files are imported by gist-embed.</summary></entry><entry><title type="html">Insertion Sort</title><link href="http://localhost:4000/post/insertion-sort" rel="alternate" type="text/html" title="Insertion Sort" /><published>2016-12-30T00:00:00+08:00</published><updated>2016-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/insertion-sort</id><content type="html" xml:base="http://localhost:4000/post/insertion-sort">&lt;h1 id=&quot;insertion-sort&quot;&gt;Insertion sort&lt;/h1&gt;
+// static void swap(int&amp;amp; a, int&amp;amp; b)
+// {
+//   if (a == b) {
+//     return;
+//   }
+//
+//   a = a + b;
+//   b = a - b;
+//   a = a - b;
+// }
+
+static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
+{
+  return (a &amp;lt; b) ? a : b;
+}
+
+#endif // #ifndef UTILS_H</summary></entry><entry><title type="html">Insertion Sort</title><link href="http://localhost:4000/post/insertion-sort" rel="alternate" type="text/html" title="Insertion Sort" /><published>2016-12-30T00:00:00+08:00</published><updated>2016-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/insertion-sort</id><content type="html" xml:base="http://localhost:4000/post/insertion-sort">&lt;h1 id=&quot;insertion-sort&quot;&gt;Insertion sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/insertion_sort.html&quot; title=&quot;Insertion Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -2325,17 +2947,89 @@ Thus, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)
 
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-14, 17-18, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;cassert&amp;gt;
+#include &amp;quot;sorting.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1, 6-21, 75-109&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+/*
+ * Insertion sort: O(n^2)
+ */
+void insertionSort(int list[], const unsigned int length)
+{
+  assert(length);
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;1-44, 52-65, 74-81, 112-113&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+  // &amp;lt;-- sorted --&amp;gt;|&amp;lt;-- unsorted --&amp;gt;
+  // +---+-----+---+---------------+
+  // | 0 | ... | t | ............  |
+  // +---+-----+---+---------------+
+  //             ^
+  //       tail is the index of last item of sorted list.
+  for (unsigned int tail = 1 ; tail &amp;lt; length; ++tail) { // list[0] is sorted!
+    for (unsigned int j = tail; j &amp;gt; 0 &amp;amp;&amp;amp; list[j - 1] &amp;gt; list[j] ; --j) {
+      swap(list[j], list[j - 1]);
+    }
+  }
+}
 
-&lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
+// void insertionSort(int list[], const unsigned int length)
+// {
+//   assert(length);
+//
+//   for (unsigned int tail = 1 ; tail &amp;lt; length; ++tail) {
+//     int current = list[tail];
+//     unsigned int j = tail;
+//     while(j &amp;gt; 0 &amp;amp;&amp;amp; list[j-1] &amp;gt; current) {
+//       list[j] = list[j - 1];
+//       --j;
+//     }
+//     list[j] = current;
+//   }
+// }
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=insertion_sort.cpp&quot;&gt; &lt;/script&gt;
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
+#define UTILS_H
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Insertion sort
+/*
+ * Utils
+ *
+ * These functions are used in different object files(.o) and then all those
+ * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
+ * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
+ * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
+ * is NOT sharable and they should NOT visible across each other.
+ */
+static void swap(int&amp;amp; a, int&amp;amp; b)
+{
+  if (a == b) {
+    return;
+  }
+
+  a = a ^ b;
+  b = a ^ b;
+  a = a ^ b;
+}
+
+// static void swap(int&amp;amp; a, int&amp;amp; b)
+// {
+//   if (a == b) {
+//     return;
+//   }
+//
+//   a = a + b;
+//   b = a - b;
+//   a = a - b;
+// }
+
+static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
+{
+  return (a &amp;lt; b) ? a : b;
+}
+
+#endif // #ifndef UTILS_H
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=utils.h&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Insertion sort
 
 This post series is synchronized with my book CodePlay
 and this post could be read here.
@@ -2599,13 +3293,87 @@ Implementation
 
 See the files on gist here.
 
+#include &amp;lt;cassert&amp;gt;
+#include &amp;quot;sorting.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
+
+/*
+ * Insertion sort: O(n^2)
+ */
+void insertionSort(int list[], const unsigned int length)
+{
+  assert(length);
+
+  // &amp;lt;-- sorted --&amp;gt;|&amp;lt;-- unsorted --&amp;gt;
+  // +---+-----+---+---------------+
+  // | 0 | ... | t | ............  |
+  // +---+-----+---+---------------+
+  //             ^
+  //       tail is the index of last item of sorted list.
+  for (unsigned int tail = 1 ; tail &amp;lt; length; ++tail) { // list[0] is sorted!
+    for (unsigned int j = tail; j &amp;gt; 0 &amp;amp;&amp;amp; list[j - 1] &amp;gt; list[j] ; --j) {
+      swap(list[j], list[j - 1]);
+    }
+  }
+}
+
+// void insertionSort(int list[], const unsigned int length)
+// {
+//   assert(length);
+//
+//   for (unsigned int tail = 1 ; tail &amp;lt; length; ++tail) {
+//     int current = list[tail];
+//     unsigned int j = tail;
+//     while(j &amp;gt; 0 &amp;amp;&amp;amp; list[j-1] &amp;gt; current) {
+//       list[j] = list[j - 1];
+//       --j;
+//     }
+//     list[j] = current;
+//   }
+// }
 
 
 
+#ifndef UTILS_H
+#define UTILS_H
 
+/*
+ * Utils
+ *
+ * These functions are used in different object files(.o) and then all those
+ * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
+ * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
+ * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
+ * is NOT sharable and they should NOT visible across each other.
+ */
+static void swap(int&amp;amp; a, int&amp;amp; b)
+{
+  if (a == b) {
+    return;
+  }
 
+  a = a ^ b;
+  b = a ^ b;
+  a = a ^ b;
+}
 
-The above gist files are imported by gist-embed.</summary></entry><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/post/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/post/selection-sort</id><content type="html" xml:base="http://localhost:4000/post/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
+// static void swap(int&amp;amp; a, int&amp;amp; b)
+// {
+//   if (a == b) {
+//     return;
+//   }
+//
+//   a = a + b;
+//   b = a - b;
+//   a = a - b;
+// }
+
+static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
+{
+  return (a &amp;lt; b) ? a : b;
+}
+
+#endif // #ifndef UTILS_H</summary></entry><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/post/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/post/selection-sort</id><content type="html" xml:base="http://localhost:4000/post/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -2877,17 +3645,91 @@ where the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length
 &lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.h&quot; data-gist-line=&quot;1-16, 25&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;cassert&amp;gt;
+#include &amp;quot;sorting.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting.cpp&quot; data-gist-line=&quot;1, 6-21, 38-74&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+/*
+ * Selection sort: O(n^2)
+ */
+void selectionSort(int list[], const unsigned int length)
+{
+  assert(length);
 
-&lt;p&gt;&lt;code data-gist-id=&quot;dee9f3bd2ceab69726373ae006016edb&quot; data-gist-file=&quot;sorting_test.cpp&quot; data-gist-line=&quot;1-44, 52-73, 112-113&quot;&gt;&lt;/code&gt;&lt;/p&gt;
+  // &amp;lt;--  sorted  --&amp;gt;|&amp;lt;--  unsorted  --&amp;gt;
+  // +---+---+-------+---+---+---------+
+  // | 0 | 1 | ..... | h | i |  .....  |
+  // +---+---+-------+---+---+---------+
+  //                   ^
+  //                head is the begin index of unsorted list.
+  for (unsigned int head = 0 ; head &amp;lt; length - 1 ; ++head) {
+    // Assume the current head value is the minimal item.
+    int minIndex = head;
+    for (unsigned int i = head + 1 ; i &amp;lt; length ; ++i) {
+      if (list[i] &amp;lt; list[minIndex]) {
+        minIndex = i;
+      }
+    }
 
-&lt;p&gt;The above gist files are imported by &lt;a href=&quot;https://github.com/blairvanderhoof/gist-embed&quot; title=&quot;gist-embed&quot;&gt;gist-embed&lt;/a&gt;.&lt;/p&gt;
+    if (head != minIndex) {
+      swap(list[head], list[minIndex]);
+    }
+    // After swap with the minimal value of unsorted list, the head now
+    // is the tail of the sorted list.
+    //
+    // &amp;lt;--    sorted    --&amp;gt;|&amp;lt;-- unsorted --&amp;gt;
+    // +---+---+-------+---+---------------+
+    // | 0 | 1 | ..... | h | ............  |
+    // +---+---+-------+---+---------------+
+    //                   ^
+    //  head now is the last index of the sorted list.
+  }
+}
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=selection_sort.cpp&quot;&gt; &lt;/script&gt;
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
+#define UTILS_H
 
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js&quot;&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="sorting" /><summary type="html">Selection sort
+/*
+ * Utils
+ *
+ * These functions are used in different object files(.o) and then all those
+ * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
+ * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
+ * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
+ * is NOT sharable and they should NOT visible across each other.
+ */
+static void swap(int&amp;amp; a, int&amp;amp; b)
+{
+  if (a == b) {
+    return;
+  }
+
+  a = a ^ b;
+  b = a ^ b;
+  a = a ^ b;
+}
+
+// static void swap(int&amp;amp; a, int&amp;amp; b)
+// {
+//   if (a == b) {
+//     return;
+//   }
+//
+//   a = a + b;
+//   b = a - b;
+//   a = a - b;
+// }
+
+static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
+{
+  return (a &amp;lt; b) ? a : b;
+}
+
+#endif // #ifndef UTILS_H
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=utils.h&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Selection sort
 
 This post series is synchronized with my book CodePlay
 and this post could be read here.
@@ -3127,10 +3969,86 @@ where the  is the length of the list .
 Implementation
 See the files on gist here.
 
+#include &amp;lt;cassert&amp;gt;
+#include &amp;quot;sorting.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
+
+/*
+ * Selection sort: O(n^2)
+ */
+void selectionSort(int list[], const unsigned int length)
+{
+  assert(length);
+
+  // &amp;lt;--  sorted  --&amp;gt;|&amp;lt;--  unsorted  --&amp;gt;
+  // +---+---+-------+---+---+---------+
+  // | 0 | 1 | ..... | h | i |  .....  |
+  // +---+---+-------+---+---+---------+
+  //                   ^
+  //                head is the begin index of unsorted list.
+  for (unsigned int head = 0 ; head &amp;lt; length - 1 ; ++head) {
+    // Assume the current head value is the minimal item.
+    int minIndex = head;
+    for (unsigned int i = head + 1 ; i &amp;lt; length ; ++i) {
+      if (list[i] &amp;lt; list[minIndex]) {
+        minIndex = i;
+      }
+    }
+
+    if (head != minIndex) {
+      swap(list[head], list[minIndex]);
+    }
+    // After swap with the minimal value of unsorted list, the head now
+    // is the tail of the sorted list.
+    //
+    // &amp;lt;--    sorted    --&amp;gt;|&amp;lt;-- unsorted --&amp;gt;
+    // +---+---+-------+---+---------------+
+    // | 0 | 1 | ..... | h | ............  |
+    // +---+---+-------+---+---------------+
+    //                   ^
+    //  head now is the last index of the sorted list.
+  }
+}
 
 
 
+#ifndef UTILS_H
+#define UTILS_H
 
+/*
+ * Utils
+ *
+ * These functions are used in different object files(.o) and then all those
+ * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
+ * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
+ * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
+ * is NOT sharable and they should NOT visible across each other.
+ */
+static void swap(int&amp;amp; a, int&amp;amp; b)
+{
+  if (a == b) {
+    return;
+  }
 
+  a = a ^ b;
+  b = a ^ b;
+  a = a ^ b;
+}
 
-The above gist files are imported by gist-embed.</summary></entry></feed>
+// static void swap(int&amp;amp; a, int&amp;amp; b)
+// {
+//   if (a == b) {
+//     return;
+//   }
+//
+//   a = a + b;
+//   b = a - b;
+//   a = a - b;
+// }
+
+static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
+{
+  return (a &amp;lt; b) ? a : b;
+}
+
+#endif // #ifndef UTILS_H</summary></entry></feed>

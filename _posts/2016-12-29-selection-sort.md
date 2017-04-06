@@ -2,7 +2,7 @@
 layout: post
 title: Selection Sort
 category: Algorithm
-tags: [sorting]
+tags: [Sorting]
 comments: true
 mathjax: true
 ---
@@ -196,21 +196,9 @@ where the $$N$$ is the length of the list $$L$$.
 ## Implementation
 See the files on [gist here][gist].
 
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-16, 25"></code>
-
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1, 6-21, 38-74"></code>
-
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="1-44, 52-73, 112-113"></code>
-
-The above gist files are imported by [gist-embed][gist-embed].
-
+{% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb selection_sort.cpp %}
+{% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb utils.h %}
 
 [gist]: https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb "Sorting"
-[gist-embed]: https://github.com/blairvanderhoof/gist-embed "gist-embed"
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
-
-
 [codeplay]: https://www.gitbook.com/book/chunminchang/codeplay/details "CodePlay"
 [sel-sort]: https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html "Selection Sort"

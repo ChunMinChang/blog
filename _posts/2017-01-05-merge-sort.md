@@ -2,7 +2,7 @@
 layout: post
 title: Merge Sort
 category: Algorithm
-tags: [sorting]
+tags: [Sorting]
 comments: true
 mathjax: true
 ---
@@ -520,20 +520,8 @@ Thus, the time complexity is $$\mathcal{O}(N \log N)$$.
 
 See the files on [gist here][gist].
 
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.h" data-gist-line="1-14, 21-22, 25"></code>
-
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting.cpp" data-gist-line="1-2, 6-37, 132-344"></code>
-
-<code data-gist-id="dee9f3bd2ceab69726373ae006016edb" data-gist-file="sorting_test.cpp" data-gist-line="1-44, 52-65, 90-97, 112-113"></code>
-
-The above gist files are imported by [gist-embed][gist-embed].
-
-[gist]: https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb "Sorting"
-[gist-embed]: https://github.com/blairvanderhoof/gist-embed "gist-embed"
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
-
+{% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb merge_sort.cpp %}
+{% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb utils.h %}
 
 ## Appendix
 
@@ -609,6 +597,8 @@ $$
 [fib]: https://en.wikipedia.org/wiki/Fibonacci_number "Fibonacci number"
 
 [eleAlg]: https://github.com/liuxinyu95/AlgoXY/releases/download/v0.618033/elementary-algorithms.pdf "Elementary Algorithms"
+
+[gist]: https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb "Sorting"
 
 [codeplay]: https://www.gitbook.com/book/chunminchang/codeplay/details "CodePlay"
 [mer-sort]: https://chunminchang.gitbooks.io/codeplay/content/sorting/merge_sort.html "Merge Sort"

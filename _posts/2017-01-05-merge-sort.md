@@ -521,7 +521,6 @@ Thus, the time complexity is $$\mathcal{O}(N \log N)$$.
 See the files on [gist here][gist].
 
 {% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb merge_sort.cpp %}
-{% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb utils.h %}
 
 ## Appendix
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-06T14:13:09+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Running multiple Firefox at the same time</title><link href="http://localhost:4000/post/running-multiple-firefox-at-the-same-time" rel="alternate" type="text/html" title="Running multiple Firefox at the same time" /><published>2017-03-30T00:00:00+08:00</published><updated>2017-03-30T00:00:00+08:00</updated><id>http://localhost:4000/post/running-multiple-firefox-at-the-same-time</id><content type="html" xml:base="http://localhost:4000/post/running-multiple-firefox-at-the-same-time">&lt;h1 id=&quot;running-multiple-firefox-at-the-same-time&quot;&gt;Running multiple Firefox at the same time&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-08T13:08:29+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Running multiple Firefox at the same time</title><link href="http://localhost:4000/post/running-multiple-firefox-at-the-same-time" rel="alternate" type="text/html" title="Running multiple Firefox at the same time" /><published>2017-03-30T00:00:00+08:00</published><updated>2017-03-30T00:00:00+08:00</updated><id>http://localhost:4000/post/running-multiple-firefox-at-the-same-time</id><content type="html" xml:base="http://localhost:4000/post/running-multiple-firefox-at-the-same-time">&lt;h1 id=&quot;running-multiple-firefox-at-the-same-time&quot;&gt;Running multiple Firefox at the same time&lt;/h1&gt;
 
 &lt;p&gt;I have two firefox: Firefox(normal version) and Firefox Developer Edition.
 Today morning, I deleted the Firefox Developer Edition by &lt;em&gt;AppCleaner&lt;/em&gt;
@@ -848,10 +848,10 @@ T_{sort}(N)
 
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;cassert&amp;gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;algorithm&amp;gt;  // for std::min, std::swap
+#include &amp;lt;cassert&amp;gt;
 #include &amp;lt;cstring&amp;gt;    // for memcpy
 #include &amp;quot;sorting.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
 
 /*
  * Merge sort: O(n * log(n))
@@ -986,7 +986,7 @@ void naiveInplaceMerge(int list[],
         anchor = j;
         break;
       }
-      swap(list[j], list[j-1]);
+      std::swap(list[j], list[j-1]);
     }
   }
 }
@@ -1043,7 +1043,7 @@ void bottomUpMergeSort(int list[], const unsigned int length)
     // and 2^(k-1) &amp;lt; length - 2^k &amp;lt; 2^k,.
     for (unsigned int i = 0 ; i &amp;lt; length - size ; i += 2 * size) {
       // Merge the adjacent two blocks.
-      merge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
+      merge(list, i, i + size - 1, std::min(i + 2 * size - 1, length - 1));
       // mergeWithSentinel(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
       // naiveInplaceMerge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1)); // Slower!
 
@@ -1067,49 +1067,6 @@ void mergeSort(int list[], const unsigned int length)
 }
 &lt;/pre&gt;&lt;/noscript&gt;
 &lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=merge_sort.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
-#define UTILS_H
-
-/*
- * Utils
- *
- * These functions are used in different object files(.o) and then all those
- * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
- * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
- * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
- * is NOT sharable and they should NOT visible across each other.
- */
-static void swap(int&amp;amp; a, int&amp;amp; b)
-{
-  if (a == b) {
-    return;
-  }
-
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-}
-
-// static void swap(int&amp;amp; a, int&amp;amp; b)
-// {
-//   if (a == b) {
-//     return;
-//   }
-//
-//   a = a + b;
-//   b = a - b;
-//   a = a - b;
-// }
-
-static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
-{
-  return (a &amp;lt; b) ? a : b;
-}
-
-#endif // #ifndef UTILS_H
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=utils.h&quot;&gt; &lt;/script&gt;
 
 &lt;h2 id=&quot;appendix&quot;&gt;Appendix&lt;/h2&gt;
 
@@ -1658,10 +1615,10 @@ Implementation
 
 See the files on gist here.
 
+#include &amp;lt;algorithm&amp;gt;  // for std::min, std::swap
 #include &amp;lt;cassert&amp;gt;
 #include &amp;lt;cstring&amp;gt;    // for memcpy
 #include &amp;quot;sorting.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
 
 /*
  * Merge sort: O(n * log(n))
@@ -1796,7 +1753,7 @@ void naiveInplaceMerge(int list[],
         anchor = j;
         break;
       }
-      swap(list[j], list[j-1]);
+      std::swap(list[j], list[j-1]);
     }
   }
 }
@@ -1853,7 +1810,7 @@ void bottomUpMergeSort(int list[], const unsigned int length)
     // and 2^(k-1) &amp;lt; length - 2^k &amp;lt; 2^k,.
     for (unsigned int i = 0 ; i &amp;lt; length - size ; i += 2 * size) {
       // Merge the adjacent two blocks.
-      merge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
+      merge(list, i, i + size - 1, std::min(i + 2 * size - 1, length - 1));
       // mergeWithSentinel(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
       // naiveInplaceMerge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1)); // Slower!
 
@@ -1875,49 +1832,6 @@ void mergeSort(int list[], const unsigned int length)
   // topDownMergeSort(list, 0, length - 1);
   bottomUpMergeSort(list, length);
 }
-
-
-
-#ifndef UTILS_H
-#define UTILS_H
-
-/*
- * Utils
- *
- * These functions are used in different object files(.o) and then all those
- * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
- * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
- * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
- * is NOT sharable and they should NOT visible across each other.
- */
-static void swap(int&amp;amp; a, int&amp;amp; b)
-{
-  if (a == b) {
-    return;
-  }
-
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-}
-
-// static void swap(int&amp;amp; a, int&amp;amp; b)
-// {
-//   if (a == b) {
-//     return;
-//   }
-//
-//   a = a + b;
-//   b = a - b;
-//   a = a - b;
-// }
-
-static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
-{
-  return (a &amp;lt; b) ? a : b;
-}
-
-#endif // #ifndef UTILS_H
 
 
 
@@ -2268,9 +2182,9 @@ and its sum is:&lt;/p&gt;
 
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;cassert&amp;gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;algorithm&amp;gt;  // for std::swap
+#include &amp;lt;cassert&amp;gt;
 #include &amp;quot;sorting.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
 
 /*
  * Bubble sort: O(n^2)
@@ -2288,56 +2202,13 @@ void bubbleSort(int list[], const unsigned int length)
   for (unsigned int i = 0 ; i &amp;lt; length - 1 ; ++i) {
     for (unsigned int j = 0 ; j &amp;lt; length - 1 - i ; ++j) {
       if (list[j] &amp;gt; list[j+1]) {
-        swap(list[j], list[j+1]);
+        std::swap(list[j], list[j+1]);
       }
     }
   }
 }
 &lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=bubble_sort.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
-#define UTILS_H
-
-/*
- * Utils
- *
- * These functions are used in different object files(.o) and then all those
- * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
- * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
- * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
- * is NOT sharable and they should NOT visible across each other.
- */
-static void swap(int&amp;amp; a, int&amp;amp; b)
-{
-  if (a == b) {
-    return;
-  }
-
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-}
-
-// static void swap(int&amp;amp; a, int&amp;amp; b)
-// {
-//   if (a == b) {
-//     return;
-//   }
-//
-//   a = a + b;
-//   b = a - b;
-//   a = a - b;
-// }
-
-static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
-{
-  return (a &amp;lt; b) ? a : b;
-}
-
-#endif // #ifndef UTILS_H
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=utils.h&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Bubble Sort
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=bubble_sort.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Bubble Sort
 
 This post series is synchronized with my book CodePlay
 and this post could be read here.
@@ -2583,9 +2454,9 @@ Implementation
 
 See the files on gist here.
 
+#include &amp;lt;algorithm&amp;gt;  // for std::swap
 #include &amp;lt;cassert&amp;gt;
 #include &amp;quot;sorting.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
 
 /*
  * Bubble sort: O(n^2)
@@ -2603,54 +2474,11 @@ void bubbleSort(int list[], const unsigned int length)
   for (unsigned int i = 0 ; i &amp;lt; length - 1 ; ++i) {
     for (unsigned int j = 0 ; j &amp;lt; length - 1 - i ; ++j) {
       if (list[j] &amp;gt; list[j+1]) {
-        swap(list[j], list[j+1]);
+        std::swap(list[j], list[j+1]);
       }
     }
   }
-}
-
-
-
-#ifndef UTILS_H
-#define UTILS_H
-
-/*
- * Utils
- *
- * These functions are used in different object files(.o) and then all those
- * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
- * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
- * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
- * is NOT sharable and they should NOT visible across each other.
- */
-static void swap(int&amp;amp; a, int&amp;amp; b)
-{
-  if (a == b) {
-    return;
-  }
-
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-}
-
-// static void swap(int&amp;amp; a, int&amp;amp; b)
-// {
-//   if (a == b) {
-//     return;
-//   }
-//
-//   a = a + b;
-//   b = a - b;
-//   a = a - b;
-// }
-
-static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
-{
-  return (a &amp;lt; b) ? a : b;
-}
-
-#endif // #ifndef UTILS_H</summary></entry><entry><title type="html">Insertion Sort</title><link href="http://localhost:4000/post/insertion-sort" rel="alternate" type="text/html" title="Insertion Sort" /><published>2016-12-30T00:00:00+08:00</published><updated>2016-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/insertion-sort</id><content type="html" xml:base="http://localhost:4000/post/insertion-sort">&lt;h1 id=&quot;insertion-sort&quot;&gt;Insertion sort&lt;/h1&gt;
+}</summary></entry><entry><title type="html">Insertion Sort</title><link href="http://localhost:4000/post/insertion-sort" rel="alternate" type="text/html" title="Insertion Sort" /><published>2016-12-30T00:00:00+08:00</published><updated>2016-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/insertion-sort</id><content type="html" xml:base="http://localhost:4000/post/insertion-sort">&lt;h1 id=&quot;insertion-sort&quot;&gt;Insertion sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/insertion_sort.html&quot; title=&quot;Insertion Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -2947,9 +2775,9 @@ Thus, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)
 
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;cassert&amp;gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;algorithm&amp;gt;  // for std::swap
+#include &amp;lt;cassert&amp;gt;
 #include &amp;quot;sorting.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
 
 /*
  * Insertion sort: O(n^2)
@@ -2966,7 +2794,7 @@ void insertionSort(int list[], const unsigned int length)
   //       tail is the index of last item of sorted list.
   for (unsigned int tail = 1 ; tail &amp;lt; length; ++tail) { // list[0] is sorted!
     for (unsigned int j = tail; j &amp;gt; 0 &amp;amp;&amp;amp; list[j - 1] &amp;gt; list[j] ; --j) {
-      swap(list[j], list[j - 1]);
+      std::swap(list[j], list[j - 1]);
     }
   }
 }
@@ -2986,50 +2814,7 @@ void insertionSort(int list[], const unsigned int length)
 //   }
 // }
 &lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=insertion_sort.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
-#define UTILS_H
-
-/*
- * Utils
- *
- * These functions are used in different object files(.o) and then all those
- * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
- * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
- * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
- * is NOT sharable and they should NOT visible across each other.
- */
-static void swap(int&amp;amp; a, int&amp;amp; b)
-{
-  if (a == b) {
-    return;
-  }
-
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-}
-
-// static void swap(int&amp;amp; a, int&amp;amp; b)
-// {
-//   if (a == b) {
-//     return;
-//   }
-//
-//   a = a + b;
-//   b = a - b;
-//   a = a - b;
-// }
-
-static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
-{
-  return (a &amp;lt; b) ? a : b;
-}
-
-#endif // #ifndef UTILS_H
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=utils.h&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Insertion sort
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=insertion_sort.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Insertion sort
 
 This post series is synchronized with my book CodePlay
 and this post could be read here.
@@ -3293,9 +3078,9 @@ Implementation
 
 See the files on gist here.
 
+#include &amp;lt;algorithm&amp;gt;  // for std::swap
 #include &amp;lt;cassert&amp;gt;
 #include &amp;quot;sorting.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
 
 /*
  * Insertion sort: O(n^2)
@@ -3312,7 +3097,7 @@ void insertionSort(int list[], const unsigned int length)
   //       tail is the index of last item of sorted list.
   for (unsigned int tail = 1 ; tail &amp;lt; length; ++tail) { // list[0] is sorted!
     for (unsigned int j = tail; j &amp;gt; 0 &amp;amp;&amp;amp; list[j - 1] &amp;gt; list[j] ; --j) {
-      swap(list[j], list[j - 1]);
+      std::swap(list[j], list[j - 1]);
     }
   }
 }
@@ -3330,50 +3115,7 @@ void insertionSort(int list[], const unsigned int length)
 //     }
 //     list[j] = current;
 //   }
-// }
-
-
-
-#ifndef UTILS_H
-#define UTILS_H
-
-/*
- * Utils
- *
- * These functions are used in different object files(.o) and then all those
- * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
- * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
- * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
- * is NOT sharable and they should NOT visible across each other.
- */
-static void swap(int&amp;amp; a, int&amp;amp; b)
-{
-  if (a == b) {
-    return;
-  }
-
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-}
-
-// static void swap(int&amp;amp; a, int&amp;amp; b)
-// {
-//   if (a == b) {
-//     return;
-//   }
-//
-//   a = a + b;
-//   b = a - b;
-//   a = a - b;
-// }
-
-static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
-{
-  return (a &amp;lt; b) ? a : b;
-}
-
-#endif // #ifndef UTILS_H</summary></entry><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/post/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/post/selection-sort</id><content type="html" xml:base="http://localhost:4000/post/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
+// }</summary></entry><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/post/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/post/selection-sort</id><content type="html" xml:base="http://localhost:4000/post/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
 
 &lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
 and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
@@ -3645,9 +3387,9 @@ where the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length
 &lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
 &lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;cassert&amp;gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;algorithm&amp;gt;  // for std::swap
+#include &amp;lt;cassert&amp;gt;
 #include &amp;quot;sorting.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
 
 /*
  * Selection sort: O(n^2)
@@ -3672,7 +3414,7 @@ void selectionSort(int list[], const unsigned int length)
     }
 
     if (head != minIndex) {
-      swap(list[head], list[minIndex]);
+      std::swap(list[head], list[minIndex]);
     }
     // After swap with the minimal value of unsorted list, the head now
     // is the tail of the sorted list.
@@ -3686,50 +3428,7 @@ void selectionSort(int list[], const unsigned int length)
   }
 }
 &lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=selection_sort.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
-#define UTILS_H
-
-/*
- * Utils
- *
- * These functions are used in different object files(.o) and then all those
- * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
- * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
- * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
- * is NOT sharable and they should NOT visible across each other.
- */
-static void swap(int&amp;amp; a, int&amp;amp; b)
-{
-  if (a == b) {
-    return;
-  }
-
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-}
-
-// static void swap(int&amp;amp; a, int&amp;amp; b)
-// {
-//   if (a == b) {
-//     return;
-//   }
-//
-//   a = a + b;
-//   b = a - b;
-//   a = a - b;
-// }
-
-static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
-{
-  return (a &amp;lt; b) ? a : b;
-}
-
-#endif // #ifndef UTILS_H
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=utils.h&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Selection sort
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=selection_sort.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Selection sort
 
 This post series is synchronized with my book CodePlay
 and this post could be read here.
@@ -3969,9 +3668,9 @@ where the  is the length of the list .
 Implementation
 See the files on gist here.
 
+#include &amp;lt;algorithm&amp;gt;  // for std::swap
 #include &amp;lt;cassert&amp;gt;
 #include &amp;quot;sorting.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
 
 /*
  * Selection sort: O(n^2)
@@ -3996,7 +3695,7 @@ void selectionSort(int list[], const unsigned int length)
     }
 
     if (head != minIndex) {
-      swap(list[head], list[minIndex]);
+      std::swap(list[head], list[minIndex]);
     }
     // After swap with the minimal value of unsorted list, the head now
     // is the tail of the sorted list.
@@ -4008,47 +3707,4 @@ void selectionSort(int list[], const unsigned int length)
     //                   ^
     //  head now is the last index of the sorted list.
   }
-}
-
-
-
-#ifndef UTILS_H
-#define UTILS_H
-
-/*
- * Utils
- *
- * These functions are used in different object files(.o) and then all those
- * object files will be compiled together. To avoid &amp;quot;duplicate symbol&amp;quot; in
- * our object files, we need to define functions here with &amp;quot;static&amp;quot;.
- * Applying &amp;quot;static&amp;quot; will make functions local to each file since their state
- * is NOT sharable and they should NOT visible across each other.
- */
-static void swap(int&amp;amp; a, int&amp;amp; b)
-{
-  if (a == b) {
-    return;
-  }
-
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-}
-
-// static void swap(int&amp;amp; a, int&amp;amp; b)
-// {
-//   if (a == b) {
-//     return;
-//   }
-//
-//   a = a + b;
-//   b = a - b;
-//   a = a - b;
-// }
-
-static const unsigned int min(const unsigned int&amp;amp; a, const unsigned int&amp;amp; b)
-{
-  return (a &amp;lt; b) ? a : b;
-}
-
-#endif // #ifndef UTILS_H</summary></entry></feed>
+}</summary></entry></feed>

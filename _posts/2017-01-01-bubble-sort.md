@@ -198,7 +198,6 @@ Thus, the complexity is $$\mathcal{O}(N^2)$$.
 See the files on [gist here][gist].
 
 {% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb bubble_sort.cpp %}
-{% gist ChunMinChang/dee9f3bd2ceab69726373ae006016edb utils.h %}
 
 [gist]: https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb "Sorting"
 [codeplay]: https://www.gitbook.com/book/chunminchang/codeplay/details "CodePlay"

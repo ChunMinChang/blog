@@ -92,7 +92,7 @@ timezone:    Asia/Taipei
 future:      true
 markdown:    kramdown
 highlighter: rouge
-paginate:    3
+paginate:    6
 paginate_path: "/blog/:num/"
 
 # https://github.com/mojombo/jekyll/wiki/Permalinks

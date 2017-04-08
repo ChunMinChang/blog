@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "How to avoid duplicate symbols when compiling",
+      "category" : "Common",
+      "tags"     : "C/C++",
+      "url"      : "/post/how-to-avoid-duplicate-symbols-when-compiling",
+      "date"     : "2017-04-08 00:00:00 +0800",
+			"shortdate": "April 08, 2017"
+    } ,
+  
+    {
       "title"    : "Running multiple Firefox at the same time",
       "category" : "Mozilla",
       "tags"     : "Firefox",

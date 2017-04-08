@@ -1,4 +1,390 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-08T13:08:29+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Running multiple Firefox at the same time</title><link href="http://localhost:4000/post/running-multiple-firefox-at-the-same-time" rel="alternate" type="text/html" title="Running multiple Firefox at the same time" /><published>2017-03-30T00:00:00+08:00</published><updated>2017-03-30T00:00:00+08:00</updated><id>http://localhost:4000/post/running-multiple-firefox-at-the-same-time</id><content type="html" xml:base="http://localhost:4000/post/running-multiple-firefox-at-the-same-time">&lt;h1 id=&quot;running-multiple-firefox-at-the-same-time&quot;&gt;Running multiple Firefox at the same time&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-08T16:37:26+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">How to avoid duplicate symbols when compiling</title><link href="http://localhost:4000/post/how-to-avoid-duplicate-symbols-when-compiling" rel="alternate" type="text/html" title="How to avoid duplicate symbols when compiling" /><published>2017-04-08T00:00:00+08:00</published><updated>2017-04-08T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-avoid-duplicate-symbols-when-compiling</id><content type="html" xml:base="http://localhost:4000/post/how-to-avoid-duplicate-symbols-when-compiling">&lt;h1 id=&quot;how-to-avoid-duplicatesymbols-when-compiling&quot;&gt;How to avoid duplicate symbols when compiling&lt;/h1&gt;
+
+&lt;p&gt;The error: &lt;code class=&quot;highlighter-rouge&quot;&gt;duplicate symbol for architecture x86_64&lt;/code&gt; will be prompted
+if the following &lt;a href=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276&quot; title=&quot;gist&quot;&gt;files&lt;/a&gt; are compiled.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;makefile&lt;/li&gt;
+&lt;/ul&gt;
+&lt;noscript&gt;&lt;pre&gt;CXX=g++
+CFLAGS=-Wall
+EXEC=run
+
+all: bye.o hello.o
+	$(CXX) $(CFLAGS) main.cpp bye.o hello.o -o $(EXEC)
+
+bye.o: bye.cpp
+	$(CXX) -c $(CFLAGS) bye.cpp
+
+hello.o: hello.cpp
+	$(CXX) -c $(CFLAGS) hello.cpp
+
+clean:
+	rm $(EXEC) *.o
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=makefile&quot;&gt; &lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;main.cpp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;bye.h&amp;quot;
+#include &amp;quot;hello.h&amp;quot;
+
+int main()
+{
+  SayHello();
+  SayBye();
+  return 0;
+}
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=main.cpp&quot;&gt; &lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;utils.h&lt;/li&gt;
+&lt;/ul&gt;
+&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
+#define UTILS_H
+
+#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+
+void LOG(std::string s)
+{
+  std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
+}
+
+#endif /* UTILS_H */
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=utils.h&quot;&gt; &lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;hello.h&lt;/li&gt;
+&lt;/ul&gt;
+&lt;noscript&gt;&lt;pre&gt;#ifndef HELLO_H
+#define HELLO_H
+
+void SayHello();
+
+#endif /* HELLO_H */
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=hello.h&quot;&gt; &lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;hello.cpp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;hello.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
+
+void SayHello()
+{
+  LOG(&amp;quot;Hello&amp;quot;);
+}
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=hello.cpp&quot;&gt; &lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;bye.h&lt;/li&gt;
+&lt;/ul&gt;
+&lt;noscript&gt;&lt;pre&gt;#ifndef BYE_H
+#define BYE_H
+
+void SayBye();
+
+#endif /* BYE_H */
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=bye.h&quot;&gt; &lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;bye.cpp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;bye.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
+
+void SayBye()
+{
+  LOG(&amp;quot;Goodbye&amp;quot;);
+}
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=bye.cpp&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;You will see the &lt;code class=&quot;highlighter-rouge&quot;&gt;duplicate symbol for architecture x86_64&lt;/code&gt; error
+when you compile those files.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;make
+g++ -c -Wall bye.cpp
+g++ -c -Wall hello.cpp
+g++ -Wall main.cpp bye.o hello.o -o run
+duplicate symbol __Z3LOGNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE in:
+    bye.o
+    hello.o
+ld: 1 duplicate symbol for architecture x86_64
+clang: error: linker command failed with exit code 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use -v to see invocation&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+make: &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; [all] Error 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The reason is that we include the shared header(&lt;code class=&quot;highlighter-rouge&quot;&gt;utils.h&lt;/code&gt;)
+into different files(&lt;code class=&quot;highlighter-rouge&quot;&gt;bye.cpp&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hello.cpp&lt;/code&gt;),
+and compile those files into different libraries(&lt;code class=&quot;highlighter-rouge&quot;&gt;bye.o&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hello.o&lt;/code&gt;),
+so the functions in the shared header(&lt;code class=&quot;highlighter-rouge&quot;&gt;LOG&lt;/code&gt;)
+duplicate in those different libraries.&lt;/p&gt;
+
+&lt;p&gt;Thus, when we try using those different libraries(&lt;code class=&quot;highlighter-rouge&quot;&gt;bye.o&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hello.o&lt;/code&gt;)
+at the same time, there are duplicated symbols for functions(&lt;code class=&quot;highlighter-rouge&quot;&gt;LOG&lt;/code&gt;)
+included from the shared header(&lt;code class=&quot;highlighter-rouge&quot;&gt;utils.h&lt;/code&gt;).
+The program has no idea about which one it should call
+among those duplicated symbols.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution-1-using-macros-instead-of-functions&quot;&gt;Solution 1: Using macros instead of functions&lt;/h2&gt;
+&lt;p&gt;The macro is only textual substitution that expanded by the preprocessor,
+so there is no symbol generated.&lt;/p&gt;
+
+&lt;p&gt;You can replace function &lt;code class=&quot;highlighter-rouge&quot;&gt;LOG&lt;/code&gt; by&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#define LOG(s) (std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl)
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then the &lt;code class=&quot;highlighter-rouge&quot;&gt;SayBye()&lt;/code&gt; will be expanded into:&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SayBye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Goodbye&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can run: &lt;code class=&quot;highlighter-rouge&quot;&gt;$ g++ -E &amp;lt;file_name&amp;gt;.cpp&lt;/code&gt; to watch
+and confirm the preprocessor’s output.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution-2-make-functions-inline&quot;&gt;Solution 2: Make functions &lt;strong&gt;inline&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;It works almost same as macro.
+Inline functions are actual functions
+whose copy of the function body are injected directly into
+each place the function is called.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;LOG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The insertion occurs only if
+the compiler’s cost/benefit analysis shows it to be profitable.
+Same as the macros, inline expansion eliminates
+the overhead associated with function calls.&lt;/p&gt;
+
+&lt;p&gt;Inline functions are parsed by the compiler,
+whereas macros are expanded by the preprocessor.
+The preprocessor macros are just substitution patterns in code
+before the compilation,
+so there is no &lt;strong&gt;type-checking&lt;/strong&gt; at that time.
+While inline functions are actual functions, so compiler can keep an eye on
+type-checking issues to help debugging.&lt;/p&gt;
+
+&lt;p&gt;See &lt;a href=&quot;https://chunminchang.gitbooks.io/cplusplus-learning-note/content/Appendix/preprocessor_macros_vs_inline_functions.html#inline-functions&quot; title=&quot;Inline functions&quot;&gt;here&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;h2 id=&quot;solution-3-using-static-to-make-functions-local-in-each-file&quot;&gt;Solution 3: Using &lt;strong&gt;static&lt;/strong&gt; to make functions local in each file&lt;/h2&gt;
+&lt;p&gt;Since their states are &lt;strong&gt;not&lt;/strong&gt; sharable,
+they should &lt;strong&gt;not&lt;/strong&gt; visible across each other.
+Thus, the generated symbols are also local in each file.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;LOG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><summary type="html">How to avoid duplicate symbols when compiling
+
+The error: duplicate symbol for architecture x86_64 will be prompted
+if the following files are compiled.
+
+
+  makefile
+
+CXX=g++
+CFLAGS=-Wall
+EXEC=run
+
+all: bye.o hello.o
+	$(CXX) $(CFLAGS) main.cpp bye.o hello.o -o $(EXEC)
+
+bye.o: bye.cpp
+	$(CXX) -c $(CFLAGS) bye.cpp
+
+hello.o: hello.cpp
+	$(CXX) -c $(CFLAGS) hello.cpp
+
+clean:
+	rm $(EXEC) *.o
+
+
+
+
+  main.cpp
+
+#include &amp;quot;bye.h&amp;quot;
+#include &amp;quot;hello.h&amp;quot;
+
+int main()
+{
+  SayHello();
+  SayBye();
+  return 0;
+}
+
+
+
+
+  utils.h
+
+#ifndef UTILS_H
+#define UTILS_H
+
+#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;string&amp;gt;
+
+void LOG(std::string s)
+{
+  std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
+}
+
+#endif /* UTILS_H */
+
+
+
+
+  hello.h
+
+#ifndef HELLO_H
+#define HELLO_H
+
+void SayHello();
+
+#endif /* HELLO_H */
+
+
+
+
+  hello.cpp
+
+#include &amp;quot;hello.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
+
+void SayHello()
+{
+  LOG(&amp;quot;Hello&amp;quot;);
+}
+
+
+
+
+  bye.h
+
+#ifndef BYE_H
+#define BYE_H
+
+void SayBye();
+
+#endif /* BYE_H */
+
+
+
+
+  bye.cpp
+
+#include &amp;quot;bye.h&amp;quot;
+#include &amp;quot;utils.h&amp;quot;
+
+void SayBye()
+{
+  LOG(&amp;quot;Goodbye&amp;quot;);
+}
+
+
+
+You will see the duplicate symbol for architecture x86_64 error
+when you compile those files.
+$ make
+g++ -c -Wall bye.cpp
+g++ -c -Wall hello.cpp
+g++ -Wall main.cpp bye.o hello.o -o run
+duplicate symbol __Z3LOGNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE in:
+    bye.o
+    hello.o
+ld: 1 duplicate symbol for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [all] Error 1
+
+
+
+The reason is that we include the shared header(utils.h)
+into different files(bye.cpp and hello.cpp),
+and compile those files into different libraries(bye.o and hello.o),
+so the functions in the shared header(LOG)
+duplicate in those different libraries.
+
+Thus, when we try using those different libraries(bye.o and hello.o)
+at the same time, there are duplicated symbols for functions(LOG)
+included from the shared header(utils.h).
+The program has no idea about which one it should call
+among those duplicated symbols.
+
+Solution 1: Using macros instead of functions
+The macro is only textual substitution that expanded by the preprocessor,
+so there is no symbol generated.
+
+You can replace function LOG by
+#define LOG(s) (std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl)
+
+
+
+Then the SayBye() will be expanded into:
+void SayBye()
+{
+  (std::cout &amp;lt;&amp;lt; &quot;Goodbye&quot; &amp;lt;&amp;lt; std::endl);
+}
+
+
+
+You can run: $ g++ -E &amp;lt;file_name&amp;gt;.cpp to watch
+and confirm the preprocessor’s output.
+
+Solution 2: Make functions inline
+It works almost same as macro.
+Inline functions are actual functions
+whose copy of the function body are injected directly into
+each place the function is called.
+
+inline void LOG(std::string s)
+{
+  std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
+}
+
+
+
+The insertion occurs only if
+the compiler’s cost/benefit analysis shows it to be profitable.
+Same as the macros, inline expansion eliminates
+the overhead associated with function calls.
+
+Inline functions are parsed by the compiler,
+whereas macros are expanded by the preprocessor.
+The preprocessor macros are just substitution patterns in code
+before the compilation,
+so there is no type-checking at that time.
+While inline functions are actual functions, so compiler can keep an eye on
+type-checking issues to help debugging.
+
+See here for more details.
+
+Solution 3: Using static to make functions local in each file
+Since their states are not sharable,
+they should not visible across each other.
+Thus, the generated symbols are also local in each file.
+
+static void LOG(std::string s)
+{
+  std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
+}</summary></entry><entry><title type="html">Running multiple Firefox at the same time</title><link href="http://localhost:4000/post/running-multiple-firefox-at-the-same-time" rel="alternate" type="text/html" title="Running multiple Firefox at the same time" /><published>2017-03-30T00:00:00+08:00</published><updated>2017-03-30T00:00:00+08:00</updated><id>http://localhost:4000/post/running-multiple-firefox-at-the-same-time</id><content type="html" xml:base="http://localhost:4000/post/running-multiple-firefox-at-the-same-time">&lt;h1 id=&quot;running-multiple-firefox-at-the-same-time&quot;&gt;Running multiple Firefox at the same time&lt;/h1&gt;
 
 &lt;p&gt;I have two firefox: Firefox(normal version) and Firefox Developer Edition.
 Today morning, I deleted the Firefox Developer Edition by &lt;em&gt;AppCleaner&lt;/em&gt;

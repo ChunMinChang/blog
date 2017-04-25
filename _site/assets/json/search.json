@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "How to simulate a C++ class in C",
+      "category" : "Common",
+      "tags"     : "C/C++",
+      "url"      : "/post/how-to-simulate-a-c-class-in-c",
+      "date"     : "2017-04-25 00:00:00 +0800",
+			"shortdate": "April 25, 2017"
+    } ,
+  
+    {
       "title"    : "How to avoid duplicate symbols when compiling",
       "category" : "Common",
       "tags"     : "C/C++",

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+
+<meta name="keywords" content="C/C++">
+
+
+<!-- Begin Jekyll SEO tag v1.3.3 -->
+<title>How to simulate a C++ class in C - Peak Up</title>
+<meta property="og:title" content="How to simulate a C++ class in C" />
+<meta name="description" content="How to simulate a C++ class in CAfter learning C++, I am curious abouthow could I bring the object-oriented style to C.Could we simulate a C++ class by struct in C?To find the answer,I implement a simple linked list with object-oriented style in plain C.The key is to use function pointer in struct tosimulate a C++ member function.you can find my code hereTo compare, I also implement a linked list in C++.Class in C#ifndef LIST_H#define LIST_H#include &lt;stddef.h&gt; // for size_tstruct Node {  void* data; // Any data type can be stored in this node  struct Node* next;};typedef void (*Callback)(struct Node* node);struct List {  struct Node* head;  struct Node* cursor;  void (* const destroy)(struct List* self);  void (* const append)(struct List* self, void* data, size_t size);  void (* const prepend)(struct List* self, void* data, size_t size);  void (* const traverse)(struct List* self, Callback func);};extern const struct ListClass {  struct List (*new)();} /*ListProxy*/ List;#endif // LIST_H#include &quot;list.h&quot;#include &lt;assert.h&gt; // for assert// #include &lt;stddef.h&gt; // for NULL, size_t, they are already included in list.h#include &lt;stdlib.h&gt; // for calloc, free#include &lt;string.h&gt; // for memcpy// Using &quot;static&quot; prevents these functions from being exposed outside.static voiddestroy(struct List* self){  for (struct Node* cur = self-&gt;head ; cur != NULL ;) {    struct Node* next = cur-&gt;next;    free(cur-&gt;data);    free(cur);    cur = next;  }  self-&gt;head = self-&gt;cursor = NULL;}static voidappend(struct List* self, void* data, size_t size) {  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));  assert(n);  n-&gt;next = NULL;  n-&gt;data = calloc(1, size);  assert(n-&gt;data);  memcpy(n-&gt;data, data, size);  if (!self-&gt;head) { // The list is empty.    assert(!self-&gt;cursor); // cursor = head = NULL now.    self-&gt;head = n;  } else {    assert(self-&gt;cursor);    self-&gt;cursor-&gt;next = n;  }  self-&gt;cursor = n;}static voidprepend(struct List* self, void* data, size_t size) {  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));  assert(n);  n-&gt;next = self-&gt;head;  n-&gt;data = calloc(1, size);  assert(n-&gt;data);  memcpy(n-&gt;data, data, size);  self-&gt;head = n;  if(!self-&gt;cursor) { // The list is empty before inserting value.    self-&gt;cursor = n;  }}static voidtraverse(struct List* self, Callback func){  for (struct Node* cur = self-&gt;head ; cur != NULL ; cur = cur-&gt;next) {    func(cur);  }}static struct Listnew(){  return (struct List) {    .head = NULL,    .cursor = NULL,    .destroy = (void*) &amp;destroy,    .append = (void*) &amp;append,    .prepend = (void*) &amp;prepend,    .traverse = (void*) &amp;traverse  };}const struct ListClass /*ListProxy*/ List = {  .new = &amp;new,};#include &quot;list.h&quot;#include &lt;stdbool.h&gt;  // for bool#include &lt;stdio.h&gt;    // for printf#define VA_ARGS(...) , ##__VA_ARGS__#define CALL(obj, method, ...) ((obj).method(&amp;(obj) VA_ARGS(__VA_ARGS__)))void print(struct Node* node, bool is_float){  if (!node) {    return;  }  is_float ? printf(&quot;%f&quot;, *(float*)node-&gt;data) :             printf(&quot;%d&quot;, *(int*)node-&gt;data);  printf(&quot;%s&quot;, (node-&gt;next) ? &quot;-&gt;&quot; : &quot;\n&quot;);}void print_int(struct Node* node){  print(node, false);}void print_float(struct Node* node){  print(node, true);}int main(){  int data_int[6] = { 11, 22, 33, 44, 55, 66 };  float data_float[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };  struct List l = /*ListProxy*/List.new();  l.prepend(&amp;l, &amp;data_int[0], sizeof(data_int[0]));  l.append(&amp;l, &amp;data_int[1], sizeof(data_int[1]));  l.append(&amp;l, &amp;data_int[2], sizeof(data_int[2]));  l.prepend(&amp;l, &amp;data_int[3], sizeof(data_int[3]));  l.append(&amp;l, &amp;data_int[4], sizeof(data_int[4]));  l.prepend(&amp;l, &amp;data_int[5], sizeof(data_int[5]));  l.traverse(&amp;l, print_int);  l.destroy(&amp;l);  CALL(l, prepend,  &amp;data_float[0], sizeof(data_float[0]));  CALL(l, append,   &amp;data_float[1], sizeof(data_float[1]));  CALL(l, append,   &amp;data_float[2], sizeof(data_float[2]));  CALL(l, prepend,  &amp;data_float[3], sizeof(data_float[3]));  CALL(l, append,   &amp;data_float[4], sizeof(data_float[4]));  CALL(l, prepend,  &amp;data_float[5], sizeof(data_float[5]));  CALL(l, traverse, print_float);  CALL(l, destroy);  return 0;}C++ version#ifndef LIST_H#define LIST_H#include &lt;assert.h&gt; // for assert#include &lt;memory&gt;   // for std::unique_ptrtemplate&lt;typename T&gt;class List{public:  struct Node // All it&#39;s members are public by default.  {    Node(T aData, Node* aNext)      : mData(aData)      , mNext(aNext)    {}    ~Node() {}    T mData;    Node* mNext;  };  List();  ~List();  void Append(T aData);  void Prepend(T aData);  typedef void (*Callback)(Node* aNode);  void Traverse(Callback aCallback);private:  // No need to use smart pointer in low-level data structure.  // It&#39;s more efficient for managing memory on our own.  Node* mCursor;  Node* mHead;};// nullptr is introduced in C++11.template&lt;typename T&gt;List&lt;T&gt;::List()  : mCursor(nullptr)  , mHead(nullptr){}template&lt;typename T&gt;List&lt;T&gt;::~List(){  for (mCursor = mHead ; mCursor != nullptr ;) {    std::unique_ptr&lt;Node&gt; autoRelease(mCursor);    // Update mCursor here instead of afterthought in for-loop,    // in case mCursor is already released.    mCursor = mCursor-&gt;mNext;    // The memory chuck pointed by old mCursor will be destroyed    // upon leaving the &#39;}&#39;.  }}template&lt;typename T&gt;voidList&lt;T&gt;::Append(T aData){  Node* n = new Node(aData, nullptr);  if (!mHead) { // the list is empty.    assert(!mCursor);    mHead = n;  } else {    assert(mCursor);    mCursor-&gt;mNext = n;  }  mCursor = n;}template&lt;typename T&gt;voidList&lt;T&gt;::Prepend(T aData){  Node* n = new Node(aData, mHead);  mHead = n;  if (!mCursor) { // The list is empty before inserting value.    mCursor = n;  }}template&lt;typename T&gt;voidList&lt;T&gt;::Traverse(Callback aCallback){  for (Node* cur = mHead ; cur != nullptr ; cur = cur-&gt;mNext) {    aCallback(cur);  }}#endif // LIST_H#include &quot;list.h&quot;#include &lt;iostream&gt;template&lt;typename T&gt;void Print(T aData, bool aBreakline){  std::cout &lt;&lt; aData &lt;&lt; ((aBreakline)? &quot;-&gt;&quot; : &quot;\n&quot;);}void PrintInt(List&lt;int&gt;::Node* aNode){  Print(aNode-&gt;mData, aNode-&gt;mNext);}void PrintFloat(List&lt;float&gt;::Node* aNode){  Print(aNode-&gt;mData, aNode-&gt;mNext);}int main(){  int dataInt[6] = { 11, 22, 33, 44, 55, 66 };  float dataFloat[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };  List&lt;int&gt; li;  li.Prepend(dataInt[0]);  li.Append(dataInt[1]);  li.Append(dataInt[2]);  li.Prepend(dataInt[3]);  li.Append(dataInt[4]);  li.Prepend(dataInt[5]);  li.Traverse(PrintInt);  List&lt;float&gt; lf;  lf.Prepend(dataFloat[0]);  lf.Append(dataFloat[1]);  lf.Append(dataFloat[2]);  lf.Prepend(dataFloat[3]);  lf.Append(dataFloat[4]);  lf.Prepend(dataFloat[5]);  lf.Traverse(PrintFloat);  return 0;}Comparison  The C version needs to call destroy explicitly,while the C++ version will automatically run deconstructor ~List()to release the memory, or use smart pointerslike unique_ptr to help memory management.          To release Foo* n = new Foo(...), we need to use delete ninstead of n-&gt;~Foo()                  Calling a destructor releases the resources owned by the object,but it does not release the memory allocated to the object itself.                      We need to pass self pointer to the List structurefor calling functions to access list’s data,while we don’t need to do that in C++ versionbecause class object can get all data inside itself in its implementation.  To allow storing different data type in the list,the C++ version use template instead of void* in the C version.          The void* data with size_t sizeis regarded as memory chunk beyond types,pointed by data with size bytes,so we can store different types data in runtime.      While template&lt;typename T&gt; let us to declare a variablewith type T in compile time,so gcc/g++ can help us for debugging if there is any error.                  function with template cannot be separated in .cpp and .hbecause compiler needs to see both the template definitionand the specific types/whatever used to fill in the template.Please read this for more details.                      Replace NULL with nullptr          nullptr is always a pointer type. NULL(0) could cause ambiguitywhen we have functions: void f(int), void f(foo *),and we call f(NULL).      " />
+<meta property="og:description" content="How to simulate a C++ class in CAfter learning C++, I am curious abouthow could I bring the object-oriented style to C.Could we simulate a C++ class by struct in C?To find the answer,I implement a simple linked list with object-oriented style in plain C.The key is to use function pointer in struct tosimulate a C++ member function.you can find my code hereTo compare, I also implement a linked list in C++.Class in C#ifndef LIST_H#define LIST_H#include &lt;stddef.h&gt; // for size_tstruct Node {  void* data; // Any data type can be stored in this node  struct Node* next;};typedef void (*Callback)(struct Node* node);struct List {  struct Node* head;  struct Node* cursor;  void (* const destroy)(struct List* self);  void (* const append)(struct List* self, void* data, size_t size);  void (* const prepend)(struct List* self, void* data, size_t size);  void (* const traverse)(struct List* self, Callback func);};extern const struct ListClass {  struct List (*new)();} /*ListProxy*/ List;#endif // LIST_H#include &quot;list.h&quot;#include &lt;assert.h&gt; // for assert// #include &lt;stddef.h&gt; // for NULL, size_t, they are already included in list.h#include &lt;stdlib.h&gt; // for calloc, free#include &lt;string.h&gt; // for memcpy// Using &quot;static&quot; prevents these functions from being exposed outside.static voiddestroy(struct List* self){  for (struct Node* cur = self-&gt;head ; cur != NULL ;) {    struct Node* next = cur-&gt;next;    free(cur-&gt;data);    free(cur);    cur = next;  }  self-&gt;head = self-&gt;cursor = NULL;}static voidappend(struct List* self, void* data, size_t size) {  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));  assert(n);  n-&gt;next = NULL;  n-&gt;data = calloc(1, size);  assert(n-&gt;data);  memcpy(n-&gt;data, data, size);  if (!self-&gt;head) { // The list is empty.    assert(!self-&gt;cursor); // cursor = head = NULL now.    self-&gt;head = n;  } else {    assert(self-&gt;cursor);    self-&gt;cursor-&gt;next = n;  }  self-&gt;cursor = n;}static voidprepend(struct List* self, void* data, size_t size) {  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));  assert(n);  n-&gt;next = self-&gt;head;  n-&gt;data = calloc(1, size);  assert(n-&gt;data);  memcpy(n-&gt;data, data, size);  self-&gt;head = n;  if(!self-&gt;cursor) { // The list is empty before inserting value.    self-&gt;cursor = n;  }}static voidtraverse(struct List* self, Callback func){  for (struct Node* cur = self-&gt;head ; cur != NULL ; cur = cur-&gt;next) {    func(cur);  }}static struct Listnew(){  return (struct List) {    .head = NULL,    .cursor = NULL,    .destroy = (void*) &amp;destroy,    .append = (void*) &amp;append,    .prepend = (void*) &amp;prepend,    .traverse = (void*) &amp;traverse  };}const struct ListClass /*ListProxy*/ List = {  .new = &amp;new,};#include &quot;list.h&quot;#include &lt;stdbool.h&gt;  // for bool#include &lt;stdio.h&gt;    // for printf#define VA_ARGS(...) , ##__VA_ARGS__#define CALL(obj, method, ...) ((obj).method(&amp;(obj) VA_ARGS(__VA_ARGS__)))void print(struct Node* node, bool is_float){  if (!node) {    return;  }  is_float ? printf(&quot;%f&quot;, *(float*)node-&gt;data) :             printf(&quot;%d&quot;, *(int*)node-&gt;data);  printf(&quot;%s&quot;, (node-&gt;next) ? &quot;-&gt;&quot; : &quot;\n&quot;);}void print_int(struct Node* node){  print(node, false);}void print_float(struct Node* node){  print(node, true);}int main(){  int data_int[6] = { 11, 22, 33, 44, 55, 66 };  float data_float[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };  struct List l = /*ListProxy*/List.new();  l.prepend(&amp;l, &amp;data_int[0], sizeof(data_int[0]));  l.append(&amp;l, &amp;data_int[1], sizeof(data_int[1]));  l.append(&amp;l, &amp;data_int[2], sizeof(data_int[2]));  l.prepend(&amp;l, &amp;data_int[3], sizeof(data_int[3]));  l.append(&amp;l, &amp;data_int[4], sizeof(data_int[4]));  l.prepend(&amp;l, &amp;data_int[5], sizeof(data_int[5]));  l.traverse(&amp;l, print_int);  l.destroy(&amp;l);  CALL(l, prepend,  &amp;data_float[0], sizeof(data_float[0]));  CALL(l, append,   &amp;data_float[1], sizeof(data_float[1]));  CALL(l, append,   &amp;data_float[2], sizeof(data_float[2]));  CALL(l, prepend,  &amp;data_float[3], sizeof(data_float[3]));  CALL(l, append,   &amp;data_float[4], sizeof(data_float[4]));  CALL(l, prepend,  &amp;data_float[5], sizeof(data_float[5]));  CALL(l, traverse, print_float);  CALL(l, destroy);  return 0;}C++ version#ifndef LIST_H#define LIST_H#include &lt;assert.h&gt; // for assert#include &lt;memory&gt;   // for std::unique_ptrtemplate&lt;typename T&gt;class List{public:  struct Node // All it&#39;s members are public by default.  {    Node(T aData, Node* aNext)      : mData(aData)      , mNext(aNext)    {}    ~Node() {}    T mData;    Node* mNext;  };  List();  ~List();  void Append(T aData);  void Prepend(T aData);  typedef void (*Callback)(Node* aNode);  void Traverse(Callback aCallback);private:  // No need to use smart pointer in low-level data structure.  // It&#39;s more efficient for managing memory on our own.  Node* mCursor;  Node* mHead;};// nullptr is introduced in C++11.template&lt;typename T&gt;List&lt;T&gt;::List()  : mCursor(nullptr)  , mHead(nullptr){}template&lt;typename T&gt;List&lt;T&gt;::~List(){  for (mCursor = mHead ; mCursor != nullptr ;) {    std::unique_ptr&lt;Node&gt; autoRelease(mCursor);    // Update mCursor here instead of afterthought in for-loop,    // in case mCursor is already released.    mCursor = mCursor-&gt;mNext;    // The memory chuck pointed by old mCursor will be destroyed    // upon leaving the &#39;}&#39;.  }}template&lt;typename T&gt;voidList&lt;T&gt;::Append(T aData){  Node* n = new Node(aData, nullptr);  if (!mHead) { // the list is empty.    assert(!mCursor);    mHead = n;  } else {    assert(mCursor);    mCursor-&gt;mNext = n;  }  mCursor = n;}template&lt;typename T&gt;voidList&lt;T&gt;::Prepend(T aData){  Node* n = new Node(aData, mHead);  mHead = n;  if (!mCursor) { // The list is empty before inserting value.    mCursor = n;  }}template&lt;typename T&gt;voidList&lt;T&gt;::Traverse(Callback aCallback){  for (Node* cur = mHead ; cur != nullptr ; cur = cur-&gt;mNext) {    aCallback(cur);  }}#endif // LIST_H#include &quot;list.h&quot;#include &lt;iostream&gt;template&lt;typename T&gt;void Print(T aData, bool aBreakline){  std::cout &lt;&lt; aData &lt;&lt; ((aBreakline)? &quot;-&gt;&quot; : &quot;\n&quot;);}void PrintInt(List&lt;int&gt;::Node* aNode){  Print(aNode-&gt;mData, aNode-&gt;mNext);}void PrintFloat(List&lt;float&gt;::Node* aNode){  Print(aNode-&gt;mData, aNode-&gt;mNext);}int main(){  int dataInt[6] = { 11, 22, 33, 44, 55, 66 };  float dataFloat[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };  List&lt;int&gt; li;  li.Prepend(dataInt[0]);  li.Append(dataInt[1]);  li.Append(dataInt[2]);  li.Prepend(dataInt[3]);  li.Append(dataInt[4]);  li.Prepend(dataInt[5]);  li.Traverse(PrintInt);  List&lt;float&gt; lf;  lf.Prepend(dataFloat[0]);  lf.Append(dataFloat[1]);  lf.Append(dataFloat[2]);  lf.Prepend(dataFloat[3]);  lf.Append(dataFloat[4]);  lf.Prepend(dataFloat[5]);  lf.Traverse(PrintFloat);  return 0;}Comparison  The C version needs to call destroy explicitly,while the C++ version will automatically run deconstructor ~List()to release the memory, or use smart pointerslike unique_ptr to help memory management.          To release Foo* n = new Foo(...), we need to use delete ninstead of n-&gt;~Foo()                  Calling a destructor releases the resources owned by the object,but it does not release the memory allocated to the object itself.                      We need to pass self pointer to the List structurefor calling functions to access list’s data,while we don’t need to do that in C++ versionbecause class object can get all data inside itself in its implementation.  To allow storing different data type in the list,the C++ version use template instead of void* in the C version.          The void* data with size_t sizeis regarded as memory chunk beyond types,pointed by data with size bytes,so we can store different types data in runtime.      While template&lt;typename T&gt; let us to declare a variablewith type T in compile time,so gcc/g++ can help us for debugging if there is any error.                  function with template cannot be separated in .cpp and .hbecause compiler needs to see both the template definitionand the specific types/whatever used to fill in the template.Please read this for more details.                      Replace NULL with nullptr          nullptr is always a pointer type. NULL(0) could cause ambiguitywhen we have functions: void f(int), void f(foo *),and we call f(NULL).      " />
+<link rel="canonical" href="http://localhost:4000/post/how-to-simulate-a-c-class-in-c" />
+<meta property="og:url" content="http://localhost:4000/post/how-to-simulate-a-c-class-in-c" />
+<meta property="og:site_name" content="Peak Up" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-04-25T00:00:00+08:00" />
+<link rel="prev" href="http://localhost:4000/post/how-to-avoid-duplicate-symbols-when-compiling" title="How to avoid duplicate symbols when compiling" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to simulate a C++ class in C",
+    "datePublished": "2017-04-25T00:00:00+08:00",
+    "description": "How to simulate a C++ class in CAfter learning C++, I am curious abouthow could I bring the object-oriented style to C.Could we simulate a C++ class by struct in C?To find the answer,I implement a simple linked list with object-oriented style in plain C.The key is to use function pointer in struct tosimulate a C++ member function.you can find my code hereTo compare, I also implement a linked list in C++.Class in C#ifndef LIST_H#define LIST_H#include &lt;stddef.h&gt; // for size_tstruct Node {  void* data; // Any data type can be stored in this node  struct Node* next;};typedef void (*Callback)(struct Node* node);struct List {  struct Node* head;  struct Node* cursor;  void (* const destroy)(struct List* self);  void (* const append)(struct List* self, void* data, size_t size);  void (* const prepend)(struct List* self, void* data, size_t size);  void (* const traverse)(struct List* self, Callback func);};extern const struct ListClass {  struct List (*new)();} /*ListProxy*/ List;#endif // LIST_H#include &quot;list.h&quot;#include &lt;assert.h&gt; // for assert// #include &lt;stddef.h&gt; // for NULL, size_t, they are already included in list.h#include &lt;stdlib.h&gt; // for calloc, free#include &lt;string.h&gt; // for memcpy// Using &quot;static&quot; prevents these functions from being exposed outside.static voiddestroy(struct List* self){  for (struct Node* cur = self-&gt;head ; cur != NULL ;) {    struct Node* next = cur-&gt;next;    free(cur-&gt;data);    free(cur);    cur = next;  }  self-&gt;head = self-&gt;cursor = NULL;}static voidappend(struct List* self, void* data, size_t size) {  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));  assert(n);  n-&gt;next = NULL;  n-&gt;data = calloc(1, size);  assert(n-&gt;data);  memcpy(n-&gt;data, data, size);  if (!self-&gt;head) { // The list is empty.    assert(!self-&gt;cursor); // cursor = head = NULL now.    self-&gt;head = n;  } else {    assert(self-&gt;cursor);    self-&gt;cursor-&gt;next = n;  }  self-&gt;cursor = n;}static voidprepend(struct List* self, void* data, size_t size) {  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));  assert(n);  n-&gt;next = self-&gt;head;  n-&gt;data = calloc(1, size);  assert(n-&gt;data);  memcpy(n-&gt;data, data, size);  self-&gt;head = n;  if(!self-&gt;cursor) { // The list is empty before inserting value.    self-&gt;cursor = n;  }}static voidtraverse(struct List* self, Callback func){  for (struct Node* cur = self-&gt;head ; cur != NULL ; cur = cur-&gt;next) {    func(cur);  }}static struct Listnew(){  return (struct List) {    .head = NULL,    .cursor = NULL,    .destroy = (void*) &amp;destroy,    .append = (void*) &amp;append,    .prepend = (void*) &amp;prepend,    .traverse = (void*) &amp;traverse  };}const struct ListClass /*ListProxy*/ List = {  .new = &amp;new,};#include &quot;list.h&quot;#include &lt;stdbool.h&gt;  // for bool#include &lt;stdio.h&gt;    // for printf#define VA_ARGS(...) , ##__VA_ARGS__#define CALL(obj, method, ...) ((obj).method(&amp;(obj) VA_ARGS(__VA_ARGS__)))void print(struct Node* node, bool is_float){  if (!node) {    return;  }  is_float ? printf(&quot;%f&quot;, *(float*)node-&gt;data) :             printf(&quot;%d&quot;, *(int*)node-&gt;data);  printf(&quot;%s&quot;, (node-&gt;next) ? &quot;-&gt;&quot; : &quot;\\n&quot;);}void print_int(struct Node* node){  print(node, false);}void print_float(struct Node* node){  print(node, true);}int main(){  int data_int[6] = { 11, 22, 33, 44, 55, 66 };  float data_float[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };  struct List l = /*ListProxy*/List.new();  l.prepend(&amp;l, &amp;data_int[0], sizeof(data_int[0]));  l.append(&amp;l, &amp;data_int[1], sizeof(data_int[1]));  l.append(&amp;l, &amp;data_int[2], sizeof(data_int[2]));  l.prepend(&amp;l, &amp;data_int[3], sizeof(data_int[3]));  l.append(&amp;l, &amp;data_int[4], sizeof(data_int[4]));  l.prepend(&amp;l, &amp;data_int[5], sizeof(data_int[5]));  l.traverse(&amp;l, print_int);  l.destroy(&amp;l);  CALL(l, prepend,  &amp;data_float[0], sizeof(data_float[0]));  CALL(l, append,   &amp;data_float[1], sizeof(data_float[1]));  CALL(l, append,   &amp;data_float[2], sizeof(data_float[2]));  CALL(l, prepend,  &amp;data_float[3], sizeof(data_float[3]));  CALL(l, append,   &amp;data_float[4], sizeof(data_float[4]));  CALL(l, prepend,  &amp;data_float[5], sizeof(data_float[5]));  CALL(l, traverse, print_float);  CALL(l, destroy);  return 0;}C++ version#ifndef LIST_H#define LIST_H#include &lt;assert.h&gt; // for assert#include &lt;memory&gt;   // for std::unique_ptrtemplate&lt;typename T&gt;class List{public:  struct Node // All it&#39;s members are public by default.  {    Node(T aData, Node* aNext)      : mData(aData)      , mNext(aNext)    {}    ~Node() {}    T mData;    Node* mNext;  };  List();  ~List();  void Append(T aData);  void Prepend(T aData);  typedef void (*Callback)(Node* aNode);  void Traverse(Callback aCallback);private:  // No need to use smart pointer in low-level data structure.  // It&#39;s more efficient for managing memory on our own.  Node* mCursor;  Node* mHead;};// nullptr is introduced in C++11.template&lt;typename T&gt;List&lt;T&gt;::List()  : mCursor(nullptr)  , mHead(nullptr){}template&lt;typename T&gt;List&lt;T&gt;::~List(){  for (mCursor = mHead ; mCursor != nullptr ;) {    std::unique_ptr&lt;Node&gt; autoRelease(mCursor);    // Update mCursor here instead of afterthought in for-loop,    // in case mCursor is already released.    mCursor = mCursor-&gt;mNext;    // The memory chuck pointed by old mCursor will be destroyed    // upon leaving the &#39;}&#39;.  }}template&lt;typename T&gt;voidList&lt;T&gt;::Append(T aData){  Node* n = new Node(aData, nullptr);  if (!mHead) { // the list is empty.    assert(!mCursor);    mHead = n;  } else {    assert(mCursor);    mCursor-&gt;mNext = n;  }  mCursor = n;}template&lt;typename T&gt;voidList&lt;T&gt;::Prepend(T aData){  Node* n = new Node(aData, mHead);  mHead = n;  if (!mCursor) { // The list is empty before inserting value.    mCursor = n;  }}template&lt;typename T&gt;voidList&lt;T&gt;::Traverse(Callback aCallback){  for (Node* cur = mHead ; cur != nullptr ; cur = cur-&gt;mNext) {    aCallback(cur);  }}#endif // LIST_H#include &quot;list.h&quot;#include &lt;iostream&gt;template&lt;typename T&gt;void Print(T aData, bool aBreakline){  std::cout &lt;&lt; aData &lt;&lt; ((aBreakline)? &quot;-&gt;&quot; : &quot;\\n&quot;);}void PrintInt(List&lt;int&gt;::Node* aNode){  Print(aNode-&gt;mData, aNode-&gt;mNext);}void PrintFloat(List&lt;float&gt;::Node* aNode){  Print(aNode-&gt;mData, aNode-&gt;mNext);}int main(){  int dataInt[6] = { 11, 22, 33, 44, 55, 66 };  float dataFloat[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };  List&lt;int&gt; li;  li.Prepend(dataInt[0]);  li.Append(dataInt[1]);  li.Append(dataInt[2]);  li.Prepend(dataInt[3]);  li.Append(dataInt[4]);  li.Prepend(dataInt[5]);  li.Traverse(PrintInt);  List&lt;float&gt; lf;  lf.Prepend(dataFloat[0]);  lf.Append(dataFloat[1]);  lf.Append(dataFloat[2]);  lf.Prepend(dataFloat[3]);  lf.Append(dataFloat[4]);  lf.Prepend(dataFloat[5]);  lf.Traverse(PrintFloat);  return 0;}Comparison  The C version needs to call destroy explicitly,while the C++ version will automatically run deconstructor ~List()to release the memory, or use smart pointerslike unique_ptr to help memory management.          To release Foo* n = new Foo(...), we need to use delete ninstead of n-&gt;~Foo()                  Calling a destructor releases the resources owned by the object,but it does not release the memory allocated to the object itself.                      We need to pass self pointer to the List structurefor calling functions to access list’s data,while we don’t need to do that in C++ versionbecause class object can get all data inside itself in its implementation.  To allow storing different data type in the list,the C++ version use template instead of void* in the C version.          The void* data with size_t sizeis regarded as memory chunk beyond types,pointed by data with size bytes,so we can store different types data in runtime.      While template&lt;typename T&gt; let us to declare a variablewith type T in compile time,so gcc/g++ can help us for debugging if there is any error.                  function with template cannot be separated in .cpp and .hbecause compiler needs to see both the template definitionand the specific types/whatever used to fill in the template.Please read this for more details.                      Replace NULL with nullptr          nullptr is always a pointer type. NULL(0) could cause ambiguitywhen we have functions: void f(int), void f(foo *),and we call f(NULL).      ",
+    "logo": "http://localhost:4000mountain.png",
+    "url": "http://localhost:4000/post/how-to-simulate-a-c-class-in-c"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Peak Up" />
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/font-awesome.min.css" />
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/favicons/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/favicons/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/favicons/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/favicons/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">
+
+    
+<div class="search-wrapper">
+    <div class="search-form">
+        <input type="text" id="search-input" class="search-field" placeholder="Search...">
+        <i id="search-close" class="fa fa-times-circle"></i>
+        <h4>Search results</h4>
+        <ul id="results-container" class="search-results post-list">
+        </ul>
+        <!-- /.search-results -->
+    </div>
+    <!-- /.search-form -->
+</div>
+<!-- ./search-wrapper -->
+
+
+<div id="fade"></div>
+<a id="slide" class="animated fade">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+</a>
+<aside id="sidebar">
+    <nav id="navigation">
+        <h2>MENU</h2>
+        <hr>
+        <ul> 
+            <li>
+                <a href="http://localhost:4000/"><!-- <i class="fa fa-home"></i>&nbsp;-->Home</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/categories"><!-- <i class="fa fa-sitemap"></i>&nbsp;-->Categories</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/tags"><!-- <i class="fa fa-tags"></i>&nbsp;-->Tags</a>  </li>
+            
+            <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+        </ul>
+    </nav>
+</aside>
+
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom" style="background-image: url(http://localhost:4000/images/background/taiwan_1.jpg)"
+    itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <button class="menu-button animated fade dosearch">
+        <i class="fa fa-search"></i>
+    </button>
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="http://localhost:4000/" itemprop="url">
+                <img itemprop="logo" src="http://localhost:4000/images/mountain.png" alt="Peak Up Logo" />
+                <h1 class="blog-title light" itemprop="name">
+                    Peak Up
+                </h1>
+            </a>
+        </div>
+    </div>
+
+
+
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+
+</header>
+
+
+    <div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+        <div class="container">
+            <div class="row">
+                <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+                
+                
+                
+                
+
+                    <header class="post-header entry-header">
+
+                    
+
+                    
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">
+                        
+                            
+                        
+                        
+                        
+
+                        
+                            How to simulate a C++ class in C
+                        </h1>
+                    
+
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+
+                            <div class="post-info text-center small">
+                            
+                                <span class="entry-date date published updated">
+                            
+                            
+                                    <time datetime="2017-04-25T00:00:00+08:00" class="post-time" itemprop="datePublished">25 Apr 2017</time>
+                                </span>
+                            
+
+                                in <span class="post-tags">
+
+                            
+                                    <a href="http://localhost:4000/categories/index.html#Common" data-toggle="tooltip" title="Other posts from the Common category" rel="tag">Common</a>
+                                
+                            
+                                </span>
+                            
+                            &nbsp;
+                                <span class="post-tags"><i class="fa fa-clock-o"></i>&nbsp;
+
+                            
+
+                            
+                                    <span class="time">6.427777777777778</span> minutes read
+                            
+                                
+                            
+
+                                </span>
+                            
+                            </div>
+
+                    </header>
+
+                    <div class="post-body bordered-bottom" itemprop="description">
+                    
+
+                        <h1 id="how-to-simulate-a-c-class-in-c">How to simulate a C++ class in C</h1>
+
+<p>After learning <em>C++</em>, I am curious about
+how could I bring the <em>object-oriented</em> style to <em>C</em>.
+Could we simulate a <em>C++</em> <code class="highlighter-rouge">class</code> by <code class="highlighter-rouge">struct</code> in C?</p>
+
+<p>To find the answer,
+I implement a simple <em>linked list</em> with <em>object-oriented</em> style in plain <em>C</em>.
+The key is to use <em>function pointer</em> in <code class="highlighter-rouge">struct</code> to
+simulate a <em>C++</em> member function.
+you can find my code <a href="https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e" title="Class in C for linked-list implementation">here</a></p>
+
+<p>To compare, I also implement a <a href="https://gist.github.com/ChunMinChang/8e04130e778d77e0b30b8954cc5f2473" title="Linked-list in C++"><em>linked list</em> in <em>C++</em></a>.</p>
+
+<h2 id="class-in-c">Class in C</h2>
+<noscript><pre>#ifndef LIST_H
+#define LIST_H
+
+#include &lt;stddef.h&gt; // for size_t
+
+struct Node {
+  void* data; // Any data type can be stored in this node
+  struct Node* next;
+};
+
+typedef void (*Callback)(struct Node* node);
+struct List {
+  struct Node* head;
+  struct Node* cursor;
+
+  void (* const destroy)(struct List* self);
+  void (* const append)(struct List* self, void* data, size_t size);
+  void (* const prepend)(struct List* self, void* data, size_t size);
+  void (* const traverse)(struct List* self, Callback func);
+};
+
+extern const struct ListClass {
+  struct List (*new)();
+} /*ListProxy*/ List;
+
+#endif // LIST_H</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=list.h"> </script>
+
+<noscript><pre>#include &quot;list.h&quot;
+#include &lt;assert.h&gt; // for assert
+// #include &lt;stddef.h&gt; // for NULL, size_t, they are already included in list.h
+#include &lt;stdlib.h&gt; // for calloc, free
+#include &lt;string.h&gt; // for memcpy
+
+// Using &quot;static&quot; prevents these functions from being exposed outside.
+
+static void
+destroy(struct List* self)
+{
+  for (struct Node* cur = self-&gt;head ; cur != NULL ;) {
+    struct Node* next = cur-&gt;next;
+    free(cur-&gt;data);
+    free(cur);
+    cur = next;
+  }
+  self-&gt;head = self-&gt;cursor = NULL;
+}
+
+static void
+append(struct List* self, void* data, size_t size) {
+  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));
+  assert(n);
+
+  n-&gt;next = NULL;
+  n-&gt;data = calloc(1, size);
+  assert(n-&gt;data);
+  memcpy(n-&gt;data, data, size);
+
+  if (!self-&gt;head) { // The list is empty.
+    assert(!self-&gt;cursor); // cursor = head = NULL now.
+    self-&gt;head = n;
+  } else {
+    assert(self-&gt;cursor);
+    self-&gt;cursor-&gt;next = n;
+  }
+  self-&gt;cursor = n;
+}
+
+static void
+prepend(struct List* self, void* data, size_t size) {
+  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));
+  assert(n);
+
+  n-&gt;next = self-&gt;head;
+  n-&gt;data = calloc(1, size);
+  assert(n-&gt;data);
+  memcpy(n-&gt;data, data, size);
+
+  self-&gt;head = n;
+  if(!self-&gt;cursor) { // The list is empty before inserting value.
+    self-&gt;cursor = n;
+  }
+}
+
+static void
+traverse(struct List* self, Callback func)
+{
+  for (struct Node* cur = self-&gt;head ; cur != NULL ; cur = cur-&gt;next) {
+    func(cur);
+  }
+}
+
+static struct List
+new()
+{
+  return (struct List) {
+    .head = NULL,
+    .cursor = NULL,
+    .destroy = (void*) &amp;destroy,
+    .append = (void*) &amp;append,
+    .prepend = (void*) &amp;prepend,
+    .traverse = (void*) &amp;traverse
+  };
+}
+
+const struct ListClass /*ListProxy*/ List = {
+  .new = &amp;new,
+};</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=list.c"> </script>
+
+<noscript><pre>#include &quot;list.h&quot;
+#include &lt;stdbool.h&gt;  // for bool
+#include &lt;stdio.h&gt;    // for printf
+
+#define VA_ARGS(...) , ##__VA_ARGS__
+#define CALL(obj, method, ...) ((obj).method(&amp;(obj) VA_ARGS(__VA_ARGS__)))
+
+void print(struct Node* node, bool is_float)
+{
+  if (!node) {
+    return;
+  }
+  is_float ? printf(&quot;%f&quot;, *(float*)node-&gt;data) :
+             printf(&quot;%d&quot;, *(int*)node-&gt;data);
+  printf(&quot;%s&quot;, (node-&gt;next) ? &quot;-&gt;&quot; : &quot;\n&quot;);
+}
+
+void print_int(struct Node* node)
+{
+  print(node, false);
+}
+
+void print_float(struct Node* node)
+{
+  print(node, true);
+}
+
+int main()
+{
+  int data_int[6] = { 11, 22, 33, 44, 55, 66 };
+  float data_float[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };
+
+  struct List l = /*ListProxy*/List.new();
+  l.prepend(&amp;l, &amp;data_int[0], sizeof(data_int[0]));
+  l.append(&amp;l, &amp;data_int[1], sizeof(data_int[1]));
+  l.append(&amp;l, &amp;data_int[2], sizeof(data_int[2]));
+  l.prepend(&amp;l, &amp;data_int[3], sizeof(data_int[3]));
+  l.append(&amp;l, &amp;data_int[4], sizeof(data_int[4]));
+  l.prepend(&amp;l, &amp;data_int[5], sizeof(data_int[5]));
+  l.traverse(&amp;l, print_int);
+  l.destroy(&amp;l);
+
+  CALL(l, prepend,  &amp;data_float[0], sizeof(data_float[0]));
+  CALL(l, append,   &amp;data_float[1], sizeof(data_float[1]));
+  CALL(l, append,   &amp;data_float[2], sizeof(data_float[2]));
+  CALL(l, prepend,  &amp;data_float[3], sizeof(data_float[3]));
+  CALL(l, append,   &amp;data_float[4], sizeof(data_float[4]));
+  CALL(l, prepend,  &amp;data_float[5], sizeof(data_float[5]));
+  CALL(l, traverse, print_float);
+  CALL(l, destroy);
+
+  return 0;
+}</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=test.c"> </script>
+
+<h2 id="c-version">C++ version</h2>
+<noscript><pre>#ifndef LIST_H
+#define LIST_H
+
+#include &lt;assert.h&gt; // for assert
+#include &lt;memory&gt;   // for std::unique_ptr
+
+template&lt;typename T&gt;
+class List
+{
+public:
+  struct Node // All it&#39;s members are public by default.
+  {
+    Node(T aData, Node* aNext)
+      : mData(aData)
+      , mNext(aNext)
+    {}
+
+    ~Node() {}
+
+    T mData;
+    Node* mNext;
+  };
+
+  List();
+  ~List();
+
+  void Append(T aData);
+  void Prepend(T aData);
+
+  typedef void (*Callback)(Node* aNode);
+  void Traverse(Callback aCallback);
+
+private:
+  // No need to use smart pointer in low-level data structure.
+  // It&#39;s more efficient for managing memory on our own.
+  Node* mCursor;
+  Node* mHead;
+};
+
+// nullptr is introduced in C++11.
+template&lt;typename T&gt;
+List&lt;T&gt;::List()
+  : mCursor(nullptr)
+  , mHead(nullptr)
+{
+}
+
+template&lt;typename T&gt;
+List&lt;T&gt;::~List()
+{
+  for (mCursor = mHead ; mCursor != nullptr ;) {
+    std::unique_ptr&lt;Node&gt; autoRelease(mCursor);
+    // Update mCursor here instead of afterthought in for-loop,
+    // in case mCursor is already released.
+    mCursor = mCursor-&gt;mNext;
+    // The memory chuck pointed by old mCursor will be destroyed
+    // upon leaving the &#39;}&#39;.
+  }
+}
+
+template&lt;typename T&gt;
+void
+List&lt;T&gt;::Append(T aData)
+{
+  Node* n = new Node(aData, nullptr);
+  if (!mHead) { // the list is empty.
+    assert(!mCursor);
+    mHead = n;
+  } else {
+    assert(mCursor);
+    mCursor-&gt;mNext = n;
+  }
+  mCursor = n;
+}
+
+template&lt;typename T&gt;
+void
+List&lt;T&gt;::Prepend(T aData)
+{
+  Node* n = new Node(aData, mHead);
+  mHead = n;
+  if (!mCursor) { // The list is empty before inserting value.
+    mCursor = n;
+  }
+}
+
+template&lt;typename T&gt;
+void
+List&lt;T&gt;::Traverse(Callback aCallback)
+{
+  for (Node* cur = mHead ; cur != nullptr ; cur = cur-&gt;mNext) {
+    aCallback(cur);
+  }
+}
+
+#endif // LIST_H</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/8e04130e778d77e0b30b8954cc5f2473.js?file=list.h"> </script>
+
+<noscript><pre>#include &quot;list.h&quot;
+#include &lt;iostream&gt;
+
+template&lt;typename T&gt;
+void Print(T aData, bool aBreakline)
+{
+  std::cout &lt;&lt; aData &lt;&lt; ((aBreakline)? &quot;-&gt;&quot; : &quot;\n&quot;);
+}
+
+void PrintInt(List&lt;int&gt;::Node* aNode)
+{
+  Print(aNode-&gt;mData, aNode-&gt;mNext);
+}
+
+void PrintFloat(List&lt;float&gt;::Node* aNode)
+{
+  Print(aNode-&gt;mData, aNode-&gt;mNext);
+}
+
+int main()
+{
+  int dataInt[6] = { 11, 22, 33, 44, 55, 66 };
+  float dataFloat[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };
+
+  List&lt;int&gt; li;
+  li.Prepend(dataInt[0]);
+  li.Append(dataInt[1]);
+  li.Append(dataInt[2]);
+  li.Prepend(dataInt[3]);
+  li.Append(dataInt[4]);
+  li.Prepend(dataInt[5]);
+  li.Traverse(PrintInt);
+
+  List&lt;float&gt; lf;
+  lf.Prepend(dataFloat[0]);
+  lf.Append(dataFloat[1]);
+  lf.Append(dataFloat[2]);
+  lf.Prepend(dataFloat[3]);
+  lf.Append(dataFloat[4]);
+  lf.Prepend(dataFloat[5]);
+  lf.Traverse(PrintFloat);
+
+  return 0;
+}</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/8e04130e778d77e0b30b8954cc5f2473.js?file=test.cpp"> </script>
+
+<h2 id="comparison">Comparison</h2>
+<ul>
+  <li>The C version needs to call <code class="highlighter-rouge">destroy</code> explicitly,
+while the C++ version will automatically run deconstructor <code class="highlighter-rouge">~List()</code>
+to release the memory, or use smart pointers
+like <code class="highlighter-rouge">unique_ptr</code> to help memory management.
+    <ul>
+      <li>To release <code class="highlighter-rouge">Foo* n = new Foo(...)</code>, we need to use <code class="highlighter-rouge">delete n</code>
+instead of <code class="highlighter-rouge">n-&gt;~Foo()</code>
+        <ul>
+          <li>Calling a destructor releases the resources owned by the object,
+but it does not release the memory allocated to the object itself.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>We need to pass self pointer to the <code class="highlighter-rouge">List</code> structure
+for calling functions to access list’s data,
+while we don’t need to do that in C++ version
+because class object can get all data inside itself in its implementation.</li>
+  <li>To allow storing different data type in the list,
+the C++ version use <code class="highlighter-rouge">template</code> instead of <code class="highlighter-rouge">void*</code> in the C version.
+    <ul>
+      <li>The <code class="highlighter-rouge">void* data</code> with <code class="highlighter-rouge">size_t size</code>
+is regarded as memory chunk beyond types,
+pointed by <code class="highlighter-rouge">data</code> with <code class="highlighter-rouge">size</code> bytes,
+so we can store different types data in <strong>runtime</strong>.</li>
+      <li>While <code class="highlighter-rouge">template&lt;typename T&gt;</code> let us to declare a variable
+with type <code class="highlighter-rouge">T</code> in <strong>compile time</strong>,
+so <em>gcc/g++</em> can help us for debugging if there is any error.
+        <ul>
+          <li>function with <code class="highlighter-rouge">template</code> cannot be separated in <code class="highlighter-rouge">.cpp</code> and <code class="highlighter-rouge">.h</code>
+because compiler needs to see both the template definition
+and the specific types/whatever used to <strong>fill in</strong> the template.
+Please read <a href="https://isocpp.org/wiki/faq/templates#templates-defn-vs-decl" title="Why can’t I separate the definition of my templates class from its declaration and put it inside a .cpp file">this</a> for more details.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Replace <code class="highlighter-rouge">NULL</code> with <code class="highlighter-rouge">nullptr</code>
+    <ul>
+      <li><code class="highlighter-rouge">nullptr</code> is always a pointer type. <code class="highlighter-rouge">NULL</code>(0) could cause ambiguity
+when we have functions: <code class="highlighter-rouge">void f(int)</code>, <code class="highlighter-rouge">void f(foo *)</code>,
+and we call <code class="highlighter-rouge">f(NULL)</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+
+
+                        <br>
+
+                    
+                    
+                        <div class="entry-tags text-center">
+                            <i class="fa fa-tags"></i>&nbsp;
+                                Tagged with 
+                            
+                                <a href="http://localhost:4000/tags/index.html#C/C++" data-toggle="tooltip" title="Posts tagged with C/C++" rel="tag">C/C++</a>
+
+                                
+                            
+                        </div>
+                    
+                    </div>
+
+                    <footer class="post-footer entry-meta">
+                    
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=How+to+simulate+a+C%2B%2B+class+in+C%20http://localhost:4000/post/how-to-simulate-a-c-class-in-c%20via%20&#64;"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
+                title="Share on Twitter" itemprop="Twitter">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/how-to-simulate-a-c-class-in-c" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+                data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="fa fa-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/how-to-simulate-a-c-class-in-c" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+                data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                    
+
+                        <div class="post-author text-center">
+	<img src="http://localhost:4000/images/chunmin.jpg" alt="Chun-Min Chang's photo" itemprop="image" class="post-avatar img-circle img-responsive" />
+	<h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+		By <span itemprop="name" class="fn"><a href="http://localhost:4000/about" title="About Chun-Min Chang" itemprop="url">Chun-Min Chang</a></span>
+	</h4>
+	<p>I am a self-directed learner and a maker who enjoys building products from original ideas.</p>
+</div> 
+                        
+                    
+                        <div id="disqus_thread"></div><!-- /#disqus_thread -->
+                    
+                    </footer>
+
+                </article>
+            </div>
+        </div>
+    </div>
+
+    
+<footer id="footer" class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(http://localhost:4000/images/background/taiwan_1.jpg)">
+
+
+    <div class="inner">
+        <div class="container">
+            <ul class="social-icons">
+                    
+                <li>
+                    <a href="https://www.linkedin.com/in/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on LinkedIn" target="_blank">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                </li>
+                   
+                <li>
+                    <a href="http://github.com/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on Github" target="_blank">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </li>
+                
+            </ul>
+            <div>
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2017 &bull;
+                All rights reserved.
+            </div>
+            <ul class="menu-items">
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/"><i class="fa fa-home"></i>&nbsp;Home</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/categories"><i class="fa fa-sitemap"></i>&nbsp;Categories</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/tags"><i class="fa fa-tags"></i>&nbsp;Tags</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <div class="decor-wrapper">
+        <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+    
+
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.12.4.min.js"><\/script>')</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jekyll-search.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.fitvids.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.waypoints.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/main.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+<!-- Jekyll Simple Search option -->
+<script>
+
+   SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: 'http://localhost:4000/assets/json/search.json',
+        searchResultTemplate: '<li><article><a href="{url}">{title} <span class="entry-date"><time datetime="{date}">{shortdate}</time></span></a></article></li>',
+        noResultsText: '<p>Nothing found.</p>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+
+  (function( $, window, undefined ) {
+    
+     var bs = {
+          close: $("#search-close"),
+          searchform: $(".search-form"),
+          canvas: $("body"),
+          dothis: $('.dosearch')
+      };
+    
+    bs.dothis.on('click', function() {
+      $('.search-wrapper').css({ display: "block" });
+      bs.searchform.toggleClass('active');
+      bs.searchform.find('input').focus();
+      bs.canvas.toggleClass('search-overlay');
+    });
+    
+      bs.close.on('click', function() {
+        $('.search-wrapper').removeAttr( 'style' );
+        bs.searchform.toggleClass('active');
+        bs.canvas.removeClass('search-overlay');
+    });
+  })( jQuery, window );
+</script>
+
+
+ 
+
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'chunminchang-blog'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        
+</body>
+</html>

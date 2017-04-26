@@ -77,7 +77,7 @@ Tip: use --help to see the various command-line options.
 ...
 ```
 
-From above, we could run ```$ tools/android``` to install what we need:
+From above, we could run ```$ ./tools/android``` to install what we need:
 ![Android SDK Manager][android-sdk-mgr]
 After the selected items are installed, we can successfully build the fennec!
 

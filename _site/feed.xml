@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-25T17:53:52+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">How to simulate a C++ class in C</title><link href="http://localhost:4000/post/how-to-simulate-a-c-class-in-c" rel="alternate" type="text/html" title="How to simulate a C++ class in C" /><published>2017-04-25T00:00:00+08:00</published><updated>2017-04-25T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-simulate-a-c-class-in-c</id><content type="html" xml:base="http://localhost:4000/post/how-to-simulate-a-c-class-in-c">&lt;h1 id=&quot;how-to-simulate-a-c-class-in-c&quot;&gt;How to simulate a C++ class in C&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-26T11:17:53+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">How to simulate a C++ class in C</title><link href="http://localhost:4000/post/how-to-simulate-a-c-class-in-c" rel="alternate" type="text/html" title="How to simulate a C++ class in C" /><published>2017-04-25T00:00:00+08:00</published><updated>2017-04-25T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-simulate-a-c-class-in-c</id><content type="html" xml:base="http://localhost:4000/post/how-to-simulate-a-c-class-in-c">&lt;h1 id=&quot;how-to-simulate-a-c-class-in-c&quot;&gt;How to simulate a C++ class in C&lt;/h1&gt;
 
 &lt;p&gt;After learning &lt;em&gt;C++&lt;/em&gt;, I am curious about
 how could I bring the &lt;em&gt;object-oriented&lt;/em&gt; style to &lt;em&gt;C&lt;/em&gt;.
@@ -1261,7 +1261,7 @@ Tip: use --help to see the various command-line options.
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;From above, we could run &lt;code class=&quot;highlighter-rouge&quot;&gt;$ tools/android&lt;/code&gt; to install what we need:
+&lt;p&gt;From above, we could run &lt;code class=&quot;highlighter-rouge&quot;&gt;$ ./tools/android&lt;/code&gt; to install what we need:
 &lt;img src=&quot;../images/posts/android-sdk-manager.png&quot; alt=&quot;Android SDK Manager&quot; title=&quot;Android SDK Manager&quot; /&gt;
 After the selected items are installed, we can successfully build the fennec!&lt;/p&gt;
 
@@ -1346,7 +1346,7 @@ Tip: use --help to see the various command-line options.
 
 
 
-From above, we could run $ tools/android to install what we need:
+From above, we could run $ ./tools/android to install what we need:
 
 After the selected items are installed, we can successfully build the fennec!
 

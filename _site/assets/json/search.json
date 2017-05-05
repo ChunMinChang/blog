@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Deadlock when using AudioUnit",
+      "category" : "Media",
+      "tags"     : "CoreAudio",
+      "url"      : "/post/deadlock-when-using-audiounit",
+      "date"     : "2017-05-05 00:00:00 +0800",
+			"shortdate": "May 05, 2017"
+    } ,
+  
+    {
       "title"    : "How to simulate a C++ class in C",
       "category" : "Common",
       "tags"     : "C/C++",

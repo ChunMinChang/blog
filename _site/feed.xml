@@ -1,4 +1,932 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-04-26T11:17:53+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">How to simulate a C++ class in C</title><link href="http://localhost:4000/post/how-to-simulate-a-c-class-in-c" rel="alternate" type="text/html" title="How to simulate a C++ class in C" /><published>2017-04-25T00:00:00+08:00</published><updated>2017-04-25T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-simulate-a-c-class-in-c</id><content type="html" xml:base="http://localhost:4000/post/how-to-simulate-a-c-class-in-c">&lt;h1 id=&quot;how-to-simulate-a-c-class-in-c&quot;&gt;How to simulate a C++ class in C&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-05-05T08:30:06+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Deadlock when using AudioUnit</title><link href="http://localhost:4000/post/deadlock-when-using-audiounit" rel="alternate" type="text/html" title="Deadlock when using AudioUnit" /><published>2017-05-05T00:00:00+08:00</published><updated>2017-05-05T00:00:00+08:00</updated><id>http://localhost:4000/post/deadlock-when-using-audiounit</id><content type="html" xml:base="http://localhost:4000/post/deadlock-when-using-audiounit">&lt;p&gt;There was a deadlock occured when we tried to integrate my implementation
+for audio 5.1 into Firefox.
+You can see the &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1337805&quot;&gt;bug here&lt;/a&gt;.
+It &lt;strong&gt;only happens on OSX&lt;/strong&gt;.
+After &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1350511#c1&quot;&gt;analysis&lt;/a&gt;,
+I wrote a test to prevent others from getting into the same problem.
+The test is added to &lt;a href=&quot;https://github.com/ChunMinChang/cubeb&quot;&gt;cubeb&lt;/a&gt;,
+which is our cross-platform audio library for Firefox.
+We reproduced a simpler version of &lt;a href=&quot;https://github.com/ChunMinChang/cubeb/blob/8939c0d168a27b1d5047779caad46835ca4651b9/test/test_deadlock.cpp#L1-L43&quot;&gt;the deadlock&lt;/a&gt;)
+in the test.&lt;/p&gt;
+
+&lt;p&gt;However, the code is not easy enough for those who are not familir with &lt;em&gt;cubeb&lt;/em&gt;,
+so I wrote a general version to highlight the issue to
+everyone who uses &lt;em&gt;AudioUnit&lt;/em&gt; in their audio backend.
+You can find the code on &lt;a href=&quot;https://gist.github.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9&quot;&gt;gist here&lt;/a&gt;&lt;/p&gt;
+
+&lt;noscript&gt;&lt;pre&gt;// Deadlock
+//
+// In CoreAudio, the ouput callback will holds a mutex shared with AudioUnit
+// (hereinafter mutex_AU). Thus, if the callback requests another mutex M held
+// by another thread, without releasing mutex_AU, then it will cause a
+// deadlock when another thread holding the mutex M requests to use AudioUnit.
+//
+// The following figure illustrates the deadlock described above:
+//
+//    (Thread A)     holds
+//  data_callback &amp;lt;---------- mutext_AudioUnit(mutex_AU)
+//      |                            ^
+//      |                            |
+//      | request                    | request
+//      |                            |
+//      v           holds            |
+//   mutex_M -------------------&amp;gt; Thread B
+
+#include &amp;lt;assert.h&amp;gt;               // for assert
+#include &amp;lt;pthread.h&amp;gt;              // for pthread
+#include &amp;lt;signal.h&amp;gt;               // for signal
+#include &amp;lt;unistd.h&amp;gt;               // for sleep, usleep
+
+#include &amp;quot;AudioStream.h&amp;quot;          // for AudioStream
+#include &amp;quot;utils.h&amp;quot;                // for LOG
+#include &amp;quot;OwnedCriticalSection.h&amp;quot; // for OwnedCriticalSection
+
+// The signal alias for calling our thread killer.
+#define CALL_THREAD_KILLER SIGUSR1
+
+const unsigned int kFequency = 44100;
+const unsigned int kChannels = 2;
+
+// If we apply ERRORCHECK mode, then we can&amp;#39;t unlock a mutex locked by a
+// different thread.
+// OwnedCriticalSection gMutex(OwnedCriticalSection::Mode::ERRORCHECK);
+OwnedCriticalSection gMutex;
+using locker = std::lock_guard&amp;lt;OwnedCriticalSection&amp;gt;;
+
+// Indicating whether the test is passed.
+bool gPass = false;
+
+// Indicating whether the data callback is fired.
+bool gCalled = false;
+
+// Indicating whether the data callback is running.
+bool gCalling = false;
+
+// Indicating whether the assigned task is done.
+bool gTaskDone = false;
+
+// Indicating whether our pending task thread is killed by ourselves.
+bool gKilled = false;
+
+void killer(int aSignal)
+{
+  assert(aSignal == CALL_THREAD_KILLER);
+  LOG(&amp;quot;pending task thread is killed!\n&amp;quot;);
+  gKilled = true;
+}
+
+uint64_t getThreadId(pthread_t aThread = NULL)
+{
+  uint64_t tid;
+  // tid will be current thread id if aThread is null.
+  pthread_threadid_np(aThread, &amp;amp;tid);
+  return tid;
+}
+
+// The output callback fired from audio rendering mechanism, which is on
+// out-of-main thread.
+void callback(void* aBuffer, unsigned long aFrames)
+{
+  // The callback thread holds a mutex shared with AudioUnit.
+
+  gCalling = true;
+
+  uint64_t id = getThreadId();
+  !gCalled &amp;amp;&amp;amp; LOG(&amp;quot;Output callback is on thread %llu, holding mutex_AU\n&amp;quot;, id);
+  gCalled = true;
+
+  if (!gTaskDone) {
+    // Force to switch threads by sleeping 10 ms. Notice that anything over
+    // 10ms would produce a glitch. It&amp;#39;s intended for testing deadlock,
+    // so we ignore the fault here.
+    LOG(&amp;quot;[%llu] Force to switch threads\n&amp;quot;, id);
+    usleep(10000);
+  }
+
+  LOG(&amp;quot;[%llu] Try getting another mutex: gMutex...\n&amp;quot;, id);
+  locker guard(gMutex);
+
+  LOG(&amp;quot;[%llu] Got mutex finally!\n&amp;quot;, id);
+
+  gCalling = false;
+}
+
+void* task(void*)
+{
+  // Hold the mutex.
+  locker guard(gMutex);
+
+  uint64_t id = getThreadId();
+  LOG(&amp;quot;Task thread: %llu, holding gMutex, is created\n&amp;quot;, id);
+
+  while(!gCalling) {
+    LOG(&amp;quot;[%llu] waiting for output callback before running task\n&amp;quot;, id);
+    usleep(1000); // Force to switch threads by sleeping 1 ms.
+  }
+
+  // Creating another AudioUnit when we already one will cause a deadlock!
+  LOG(&amp;quot;[%llu] Try creating another AudioUnit (getting mutex_AU)...\n&amp;quot;, id);
+  AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
+
+  LOG(&amp;quot;[%llu] Another AudioUnit is created!\n&amp;quot;, id);
+  gTaskDone = true;
+
+  return NULL;
+}
+
+// We provide one possible solution here:
+// void* task(void*)
+// {
+//   uint64_t id = getThreadId();
+//   LOG(&amp;quot;Task thread: %llu is created\n&amp;quot;, id);
+//
+//   while(!gCalling) {
+//     LOG(&amp;quot;[%llu] waiting for output callback before running task\n&amp;quot;, id);
+//     usleep(1000); // Force to switch threads by sleeping 1 ms.
+//   }
+//
+//   // Creating another AudioUnit when we already one will cause a deadlock!
+//   LOG(&amp;quot;[%llu] Try creating another AudioUnit (getting mutex_AU)...\n&amp;quot;, id);
+//   AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
+//
+//   LOG(&amp;quot;[%llu] Another AudioUnit is created!\n&amp;quot;, id);
+//
+//   // Hold the mutex.
+//   LOG(&amp;quot;[%llu] Try getting another mutex: gMutex...\n&amp;quot;, id);
+//   locker guard(gMutex);
+//
+//   LOG(&amp;quot;[%llu] Got mutex finally!\n&amp;quot;, id);
+//
+//   gTaskDone = true;
+//
+//   return NULL;
+// }
+
+void* watchdog(void* aSubject)
+{
+  uint64_t id = getThreadId();
+
+  pthread_t subject = *((pthread_t *) aSubject);
+  uint64_t sid = getThreadId(subject);
+
+  LOG(&amp;quot;Monitor thread %llu on thread %llu\n&amp;quot;, sid, id);
+
+  unsigned int sec = 1;
+  LOG(&amp;quot;[%llu] sleep %d seconds before checking task for thread %llu\n&amp;quot;, id, sec, sid);
+  sleep(sec); // Force to switch threads.
+
+  if (!gTaskDone) {
+    LOG(&amp;quot;[%llu] Kill the task thread %llu!\n&amp;quot;, id, sid);
+    assert(!pthread_kill(subject, CALL_THREAD_KILLER));
+    assert(!pthread_detach(subject));
+    // The mutex held by the killed thread(subject) won&amp;#39;t be released,
+    // so we need unlock it manually. Notice that we can&amp;#39;t unlock a mutex held
+    // by other thread in OwnedCriticalSection::Mode::ERRORCHECK mode of gMutex.
+    gMutex.unlock();
+  }
+
+  LOG(&amp;quot;\n[%llu] Task is %sdone\n\n&amp;quot;, id, gTaskDone ? &amp;quot;&amp;quot;: &amp;quot;NOT &amp;quot;);
+  gPass = gTaskDone;
+
+  return NULL;
+}
+
+int main()
+{
+  AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
+
+  // Install signal handler.
+  signal(CALL_THREAD_KILLER, killer);
+
+  pthread_t subject, detector;
+  pthread_create(&amp;amp;subject, NULL, task, NULL);
+  pthread_create(&amp;amp;detector, NULL, watchdog, (void *) &amp;amp;subject);
+
+  as.Start();
+
+  pthread_join(subject, NULL);
+  pthread_join(detector, NULL);
+
+  as.Stop();
+
+  // If the callback is never fired, then the task must not be done.
+  // There is no to keep checking in this case.
+  assert(gCalled &amp;amp;&amp;amp; &amp;quot;Callback should be fired!&amp;quot;);
+
+  // The task thread might keep running after the deadlock is freed, so we use
+  // gPass instead of gTaskDone.
+  assert(gPass &amp;amp;&amp;amp; &amp;quot;Deadlock detected!&amp;quot;);
+
+  // False gPass implies there is a deadlock detected, so we need to kill the
+  // pending task thread to free the deadlock and set gKilled to true.
+  // True gPass means there is no deadlock and no need to kill any thread.
+  assert(gPass != gKilled &amp;amp;&amp;amp; &amp;quot;Killer is out of control!&amp;quot;);
+
+  return 0;
+}
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9.js?file=test_deadlock.cpp&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;The APIs called to play and stop the audio stream is:&lt;/p&gt;
+&lt;noscript&gt;&lt;pre&gt;#ifndef AUDIOSTREAM_H
+#define AUDIOSTREAM_H
+
+#include &amp;lt;AudioUnit/AudioUnit.h&amp;gt;
+
+typedef void (* AudioCallback)(void* buffer, unsigned long frames);
+
+class AudioStream
+{
+public:
+  // We only support output for now.
+  // enum Side
+  // {
+  //   OUTPUT,
+  //   INPUT
+  // }
+
+  enum Format
+  {
+    S16LE, // PCM signed 16-bit little-endian
+    S16BE, // PCM signed 16-bit big-endian
+    F32LE, // PCM 32-bit floating-point little-endian
+    F32BE  // PCM 32-bit floating-point big-endian
+  };
+
+  AudioStream(Format aFormat,
+              unsigned int aRate,
+              unsigned int aChannels,
+              AudioCallback aCallback);
+
+  ~AudioStream();
+
+  void Start();
+  void Stop();
+
+private:
+  void CreateAudioUnit();
+  void SetDescription(Format aFormat);
+  void SetCallback();
+  static OSStatus DataCallback(void* aRefCon,
+                        AudioUnitRenderActionFlags* aActionFlags,
+                        const AudioTimeStamp* aTimeStamp,
+                        UInt32 aBusNumber,
+                        UInt32 aNumFrames,
+                        AudioBufferList* aData);
+
+  unsigned int mRate;
+  unsigned int mChannels;
+  AudioStreamBasicDescription mDescription; // Format descriptions
+  // AudioUnit is a pointer to ComponentInstanceRecord
+  AudioUnit mUnit;
+  AudioCallback mCallback;
+};
+
+#endif // #ifndef AUDIOSTREAM_H
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9.js?file=AudioStream.h&quot;&gt; &lt;/script&gt;
+
+&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;assert.h&amp;gt;
+#include &amp;lt;CoreAudio/CoreAudio.h&amp;gt;
+
+#include &amp;quot;AudioStream.h&amp;quot;
+
+#define AU_OUT_BUS  0
+// #define AU_IN_BUS   1
+
+AudioStream::AudioStream(Format aFormat,
+                         unsigned int aRate,
+                         unsigned int aChannels,
+                         AudioCallback aCallback)
+  : mRate(aRate)
+  , mChannels(aChannels)
+  , mUnit(nullptr)
+  , mCallback(aCallback)
+{
+  assert(mRate &amp;amp;&amp;amp; mChannels);
+  CreateAudioUnit(); // Initialize mUnit
+  SetDescription(aFormat); // Initialize mDescription
+  SetCallback(); // Render output to DataCallback
+  assert(AudioUnitInitialize(mUnit) == noErr);
+}
+
+AudioStream::~AudioStream()
+{
+  assert(mUnit);
+  assert(AudioOutputUnitStop(mUnit) == noErr);
+  assert(AudioUnitUninitialize(mUnit) == noErr);
+  assert(AudioComponentInstanceDispose(mUnit) == noErr);
+}
+
+void
+AudioStream::Start()
+{
+  assert(mUnit);
+  assert(AudioOutputUnitStart(mUnit) == noErr);
+}
+
+void
+AudioStream::Stop()
+{
+  assert(mUnit);
+  assert(AudioOutputUnitStop(mUnit) == noErr);
+}
+
+void
+AudioStream::CreateAudioUnit()
+{
+  assert(!mUnit); // mUnit should be nullptr before initializing.
+
+  AudioComponentDescription desc;
+  desc.componentType = kAudioUnitType_Output;
+  desc.componentSubType = kAudioUnitSubType_DefaultOutput;
+  desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+  desc.componentFlags = 0;
+  desc.componentFlagsMask = 0;
+
+  AudioComponent comp = AudioComponentFindNext(NULL, &amp;amp;desc);
+  assert(comp); // comp will be nullptr if there is no matching audio hardware.
+
+  assert(AudioComponentInstanceNew(comp, &amp;amp;mUnit) == noErr);
+  assert(mUnit); // mUnit should NOT be nullptr after initializing.
+}
+
+void
+AudioStream::SetDescription(Format aFormat)
+{
+  memset(&amp;amp;mDescription, 0, sizeof(mDescription));
+  switch (aFormat) {
+    case S16LE:
+      mDescription.mBitsPerChannel = 16;
+      mDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger;
+      break;
+    case S16BE:
+      mDescription.mBitsPerChannel = 16;
+      mDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger |
+                                  kAudioFormatFlagIsBigEndian;
+      break;
+    case F32LE:
+      mDescription.mBitsPerChannel = 32;
+      mDescription.mFormatFlags = kAudioFormatFlagIsFloat;
+      break;
+    case F32BE:
+      mDescription.mBitsPerChannel = 32;
+      mDescription.mFormatFlags = kAudioFormatFlagIsFloat |
+                                  kAudioFormatFlagIsBigEndian;
+      break;
+    default:
+      assert(false);
+  }
+
+  // The mFormatFlags below should be set by &amp;quot;|&amp;quot; or operator,
+  // or the assigned flags above will be cleared.
+  mDescription.mFormatID = kAudioFormatLinearPCM;
+  mDescription.mFormatFlags |= kLinearPCMFormatFlagIsPacked;
+  mDescription.mSampleRate = mRate;
+  mDescription.mChannelsPerFrame = mChannels;
+
+  mDescription.mBytesPerFrame = (mDescription.mBitsPerChannel / 8) *
+                                mDescription.mChannelsPerFrame;
+
+  mDescription.mFramesPerPacket = 1;
+  mDescription.mBytesPerPacket = mDescription.mBytesPerFrame *
+                                 mDescription.mFramesPerPacket;
+  mDescription.mReserved = 0;
+
+  assert(AudioUnitSetProperty(mUnit,
+                              kAudioUnitProperty_StreamFormat,
+                              kAudioUnitScope_Input,
+                              AU_OUT_BUS,
+                              &amp;amp;mDescription,
+                              sizeof(mDescription)) == noErr);
+}
+
+void
+AudioStream::SetCallback()
+{
+  AURenderCallbackStruct aurcbs;
+  memset(&amp;amp;aurcbs, 0, sizeof(aurcbs));
+  aurcbs.inputProc = DataCallback;
+  aurcbs.inputProcRefCon = this; // Pass this as callback&amp;#39;s arguments
+
+  assert(AudioUnitSetProperty(mUnit,
+                              kAudioUnitProperty_SetRenderCallback,
+                              kAudioUnitScope_Global,
+                              AU_OUT_BUS,
+                              &amp;amp;aurcbs,
+                              sizeof(aurcbs)) == noErr);
+}
+
+/* static */ OSStatus
+AudioStream::DataCallback(void* aRefCon,
+                          AudioUnitRenderActionFlags* aActionFlags,
+                          const AudioTimeStamp* aTimeStamp,
+                          UInt32 aBusNumber,
+                          UInt32 aNumFrames,
+                          AudioBufferList* aData)
+{
+  assert(aBusNumber == AU_OUT_BUS);
+  assert(aData-&amp;gt;mNumberBuffers == 1);
+
+  AudioStream* as = static_cast&amp;lt;AudioStream*&amp;gt;(aRefCon); // Get arguments
+  void* buffer = aData-&amp;gt;mBuffers[0].mData;
+  as-&amp;gt;mCallback(buffer, aNumFrames);
+  return noErr;
+}
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9.js?file=AudioStream.cpp&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;The key why deadlock happend is that
+the audio callback thread holds a mutex(hereafter referred to as &lt;em&gt;Mutex-AU&lt;/em&gt;)
+shared with &lt;em&gt;AudioUnit&lt;/em&gt;.
+The &lt;em&gt;Mutex-AU&lt;/em&gt; is held inside it’s framework, so you don’t notice it.&lt;/p&gt;
+
+&lt;p&gt;Thus, if the callback thread requests another &lt;em&gt;mutex M&lt;/em&gt; held by the another
+thread, without releasing &lt;em&gt;mutex-AU&lt;/em&gt;, then it will cause a deadlock when the
+another thread, which holds the &lt;em&gt;mutex M&lt;/em&gt;, request to use AudioUnit.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That is,
+if we have a &lt;em&gt;thread T&lt;/em&gt;, holding the &lt;em&gt;mutex M&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and one &lt;em&gt;callback thread&lt;/em&gt; which holds the &lt;em&gt;mutex-AU&lt;/em&gt;,&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The deadlock will occur when the &lt;em&gt;callback thread&lt;/em&gt; requests the &lt;em&gt;mutex M&lt;/em&gt;
+(the callback thread is blocked for waiting the &lt;em&gt;mutex M&lt;/em&gt;)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and the &lt;em&gt;thread T&lt;/em&gt; requests the &lt;em&gt;mutex-AU&lt;/em&gt; to use AudioUnit&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Media" /><category term="CoreAudio" /><summary type="html">There was a deadlock occured when we tried to integrate my implementation
+for audio 5.1 into Firefox.
+You can see the bug here.
+It only happens on OSX.
+After analysis,
+I wrote a test to prevent others from getting into the same problem.
+The test is added to cubeb,
+which is our cross-platform audio library for Firefox.
+We reproduced a simpler version of the deadlock)
+in the test.
+
+However, the code is not easy enough for those who are not familir with cubeb,
+so I wrote a general version to highlight the issue to
+everyone who uses AudioUnit in their audio backend.
+You can find the code on gist here
+
+// Deadlock
+//
+// In CoreAudio, the ouput callback will holds a mutex shared with AudioUnit
+// (hereinafter mutex_AU). Thus, if the callback requests another mutex M held
+// by another thread, without releasing mutex_AU, then it will cause a
+// deadlock when another thread holding the mutex M requests to use AudioUnit.
+//
+// The following figure illustrates the deadlock described above:
+//
+//    (Thread A)     holds
+//  data_callback &amp;lt;---------- mutext_AudioUnit(mutex_AU)
+//      |                            ^
+//      |                            |
+//      | request                    | request
+//      |                            |
+//      v           holds            |
+//   mutex_M -------------------&amp;gt; Thread B
+
+#include &amp;lt;assert.h&amp;gt;               // for assert
+#include &amp;lt;pthread.h&amp;gt;              // for pthread
+#include &amp;lt;signal.h&amp;gt;               // for signal
+#include &amp;lt;unistd.h&amp;gt;               // for sleep, usleep
+
+#include &amp;quot;AudioStream.h&amp;quot;          // for AudioStream
+#include &amp;quot;utils.h&amp;quot;                // for LOG
+#include &amp;quot;OwnedCriticalSection.h&amp;quot; // for OwnedCriticalSection
+
+// The signal alias for calling our thread killer.
+#define CALL_THREAD_KILLER SIGUSR1
+
+const unsigned int kFequency = 44100;
+const unsigned int kChannels = 2;
+
+// If we apply ERRORCHECK mode, then we can&amp;#39;t unlock a mutex locked by a
+// different thread.
+// OwnedCriticalSection gMutex(OwnedCriticalSection::Mode::ERRORCHECK);
+OwnedCriticalSection gMutex;
+using locker = std::lock_guard&amp;lt;OwnedCriticalSection&amp;gt;;
+
+// Indicating whether the test is passed.
+bool gPass = false;
+
+// Indicating whether the data callback is fired.
+bool gCalled = false;
+
+// Indicating whether the data callback is running.
+bool gCalling = false;
+
+// Indicating whether the assigned task is done.
+bool gTaskDone = false;
+
+// Indicating whether our pending task thread is killed by ourselves.
+bool gKilled = false;
+
+void killer(int aSignal)
+{
+  assert(aSignal == CALL_THREAD_KILLER);
+  LOG(&amp;quot;pending task thread is killed! &amp;quot;);
+  gKilled = true;
+}
+
+uint64_t getThreadId(pthread_t aThread = NULL)
+{
+  uint64_t tid;
+  // tid will be current thread id if aThread is null.
+  pthread_threadid_np(aThread, &amp;amp;tid);
+  return tid;
+}
+
+// The output callback fired from audio rendering mechanism, which is on
+// out-of-main thread.
+void callback(void* aBuffer, unsigned long aFrames)
+{
+  // The callback thread holds a mutex shared with AudioUnit.
+
+  gCalling = true;
+
+  uint64_t id = getThreadId();
+  !gCalled &amp;amp;&amp;amp; LOG(&amp;quot;Output callback is on thread %llu, holding mutex_AU &amp;quot;, id);
+  gCalled = true;
+
+  if (!gTaskDone) {
+    // Force to switch threads by sleeping 10 ms. Notice that anything over
+    // 10ms would produce a glitch. It&amp;#39;s intended for testing deadlock,
+    // so we ignore the fault here.
+    LOG(&amp;quot;[%llu] Force to switch threads &amp;quot;, id);
+    usleep(10000);
+  }
+
+  LOG(&amp;quot;[%llu] Try getting another mutex: gMutex... &amp;quot;, id);
+  locker guard(gMutex);
+
+  LOG(&amp;quot;[%llu] Got mutex finally! &amp;quot;, id);
+
+  gCalling = false;
+}
+
+void* task(void*)
+{
+  // Hold the mutex.
+  locker guard(gMutex);
+
+  uint64_t id = getThreadId();
+  LOG(&amp;quot;Task thread: %llu, holding gMutex, is created &amp;quot;, id);
+
+  while(!gCalling) {
+    LOG(&amp;quot;[%llu] waiting for output callback before running task &amp;quot;, id);
+    usleep(1000); // Force to switch threads by sleeping 1 ms.
+  }
+
+  // Creating another AudioUnit when we already one will cause a deadlock!
+  LOG(&amp;quot;[%llu] Try creating another AudioUnit (getting mutex_AU)... &amp;quot;, id);
+  AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
+
+  LOG(&amp;quot;[%llu] Another AudioUnit is created! &amp;quot;, id);
+  gTaskDone = true;
+
+  return NULL;
+}
+
+// We provide one possible solution here:
+// void* task(void*)
+// {
+//   uint64_t id = getThreadId();
+//   LOG(&amp;quot;Task thread: %llu is created &amp;quot;, id);
+//
+//   while(!gCalling) {
+//     LOG(&amp;quot;[%llu] waiting for output callback before running task &amp;quot;, id);
+//     usleep(1000); // Force to switch threads by sleeping 1 ms.
+//   }
+//
+//   // Creating another AudioUnit when we already one will cause a deadlock!
+//   LOG(&amp;quot;[%llu] Try creating another AudioUnit (getting mutex_AU)... &amp;quot;, id);
+//   AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
+//
+//   LOG(&amp;quot;[%llu] Another AudioUnit is created! &amp;quot;, id);
+//
+//   // Hold the mutex.
+//   LOG(&amp;quot;[%llu] Try getting another mutex: gMutex... &amp;quot;, id);
+//   locker guard(gMutex);
+//
+//   LOG(&amp;quot;[%llu] Got mutex finally! &amp;quot;, id);
+//
+//   gTaskDone = true;
+//
+//   return NULL;
+// }
+
+void* watchdog(void* aSubject)
+{
+  uint64_t id = getThreadId();
+
+  pthread_t subject = *((pthread_t *) aSubject);
+  uint64_t sid = getThreadId(subject);
+
+  LOG(&amp;quot;Monitor thread %llu on thread %llu &amp;quot;, sid, id);
+
+  unsigned int sec = 1;
+  LOG(&amp;quot;[%llu] sleep %d seconds before checking task for thread %llu &amp;quot;, id, sec, sid);
+  sleep(sec); // Force to switch threads.
+
+  if (!gTaskDone) {
+    LOG(&amp;quot;[%llu] Kill the task thread %llu! &amp;quot;, id, sid);
+    assert(!pthread_kill(subject, CALL_THREAD_KILLER));
+    assert(!pthread_detach(subject));
+    // The mutex held by the killed thread(subject) won&amp;#39;t be released,
+    // so we need unlock it manually. Notice that we can&amp;#39;t unlock a mutex held
+    // by other thread in OwnedCriticalSection::Mode::ERRORCHECK mode of gMutex.
+    gMutex.unlock();
+  }
+
+  LOG(&amp;quot; [%llu] Task is %sdone  &amp;quot;, id, gTaskDone ? &amp;quot;&amp;quot;: &amp;quot;NOT &amp;quot;);
+  gPass = gTaskDone;
+
+  return NULL;
+}
+
+int main()
+{
+  AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
+
+  // Install signal handler.
+  signal(CALL_THREAD_KILLER, killer);
+
+  pthread_t subject, detector;
+  pthread_create(&amp;amp;subject, NULL, task, NULL);
+  pthread_create(&amp;amp;detector, NULL, watchdog, (void *) &amp;amp;subject);
+
+  as.Start();
+
+  pthread_join(subject, NULL);
+  pthread_join(detector, NULL);
+
+  as.Stop();
+
+  // If the callback is never fired, then the task must not be done.
+  // There is no to keep checking in this case.
+  assert(gCalled &amp;amp;&amp;amp; &amp;quot;Callback should be fired!&amp;quot;);
+
+  // The task thread might keep running after the deadlock is freed, so we use
+  // gPass instead of gTaskDone.
+  assert(gPass &amp;amp;&amp;amp; &amp;quot;Deadlock detected!&amp;quot;);
+
+  // False gPass implies there is a deadlock detected, so we need to kill the
+  // pending task thread to free the deadlock and set gKilled to true.
+  // True gPass means there is no deadlock and no need to kill any thread.
+  assert(gPass != gKilled &amp;amp;&amp;amp; &amp;quot;Killer is out of control!&amp;quot;);
+
+  return 0;
+}
+
+
+
+The APIs called to play and stop the audio stream is:
+#ifndef AUDIOSTREAM_H
+#define AUDIOSTREAM_H
+
+#include &amp;lt;AudioUnit/AudioUnit.h&amp;gt;
+
+typedef void (* AudioCallback)(void* buffer, unsigned long frames);
+
+class AudioStream
+{
+public:
+  // We only support output for now.
+  // enum Side
+  // {
+  //   OUTPUT,
+  //   INPUT
+  // }
+
+  enum Format
+  {
+    S16LE, // PCM signed 16-bit little-endian
+    S16BE, // PCM signed 16-bit big-endian
+    F32LE, // PCM 32-bit floating-point little-endian
+    F32BE  // PCM 32-bit floating-point big-endian
+  };
+
+  AudioStream(Format aFormat,
+              unsigned int aRate,
+              unsigned int aChannels,
+              AudioCallback aCallback);
+
+  ~AudioStream();
+
+  void Start();
+  void Stop();
+
+private:
+  void CreateAudioUnit();
+  void SetDescription(Format aFormat);
+  void SetCallback();
+  static OSStatus DataCallback(void* aRefCon,
+                        AudioUnitRenderActionFlags* aActionFlags,
+                        const AudioTimeStamp* aTimeStamp,
+                        UInt32 aBusNumber,
+                        UInt32 aNumFrames,
+                        AudioBufferList* aData);
+
+  unsigned int mRate;
+  unsigned int mChannels;
+  AudioStreamBasicDescription mDescription; // Format descriptions
+  // AudioUnit is a pointer to ComponentInstanceRecord
+  AudioUnit mUnit;
+  AudioCallback mCallback;
+};
+
+#endif // #ifndef AUDIOSTREAM_H
+
+
+
+#include &amp;lt;assert.h&amp;gt;
+#include &amp;lt;CoreAudio/CoreAudio.h&amp;gt;
+
+#include &amp;quot;AudioStream.h&amp;quot;
+
+#define AU_OUT_BUS  0
+// #define AU_IN_BUS   1
+
+AudioStream::AudioStream(Format aFormat,
+                         unsigned int aRate,
+                         unsigned int aChannels,
+                         AudioCallback aCallback)
+  : mRate(aRate)
+  , mChannels(aChannels)
+  , mUnit(nullptr)
+  , mCallback(aCallback)
+{
+  assert(mRate &amp;amp;&amp;amp; mChannels);
+  CreateAudioUnit(); // Initialize mUnit
+  SetDescription(aFormat); // Initialize mDescription
+  SetCallback(); // Render output to DataCallback
+  assert(AudioUnitInitialize(mUnit) == noErr);
+}
+
+AudioStream::~AudioStream()
+{
+  assert(mUnit);
+  assert(AudioOutputUnitStop(mUnit) == noErr);
+  assert(AudioUnitUninitialize(mUnit) == noErr);
+  assert(AudioComponentInstanceDispose(mUnit) == noErr);
+}
+
+void
+AudioStream::Start()
+{
+  assert(mUnit);
+  assert(AudioOutputUnitStart(mUnit) == noErr);
+}
+
+void
+AudioStream::Stop()
+{
+  assert(mUnit);
+  assert(AudioOutputUnitStop(mUnit) == noErr);
+}
+
+void
+AudioStream::CreateAudioUnit()
+{
+  assert(!mUnit); // mUnit should be nullptr before initializing.
+
+  AudioComponentDescription desc;
+  desc.componentType = kAudioUnitType_Output;
+  desc.componentSubType = kAudioUnitSubType_DefaultOutput;
+  desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+  desc.componentFlags = 0;
+  desc.componentFlagsMask = 0;
+
+  AudioComponent comp = AudioComponentFindNext(NULL, &amp;amp;desc);
+  assert(comp); // comp will be nullptr if there is no matching audio hardware.
+
+  assert(AudioComponentInstanceNew(comp, &amp;amp;mUnit) == noErr);
+  assert(mUnit); // mUnit should NOT be nullptr after initializing.
+}
+
+void
+AudioStream::SetDescription(Format aFormat)
+{
+  memset(&amp;amp;mDescription, 0, sizeof(mDescription));
+  switch (aFormat) {
+    case S16LE:
+      mDescription.mBitsPerChannel = 16;
+      mDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger;
+      break;
+    case S16BE:
+      mDescription.mBitsPerChannel = 16;
+      mDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger |
+                                  kAudioFormatFlagIsBigEndian;
+      break;
+    case F32LE:
+      mDescription.mBitsPerChannel = 32;
+      mDescription.mFormatFlags = kAudioFormatFlagIsFloat;
+      break;
+    case F32BE:
+      mDescription.mBitsPerChannel = 32;
+      mDescription.mFormatFlags = kAudioFormatFlagIsFloat |
+                                  kAudioFormatFlagIsBigEndian;
+      break;
+    default:
+      assert(false);
+  }
+
+  // The mFormatFlags below should be set by &amp;quot;|&amp;quot; or operator,
+  // or the assigned flags above will be cleared.
+  mDescription.mFormatID = kAudioFormatLinearPCM;
+  mDescription.mFormatFlags |= kLinearPCMFormatFlagIsPacked;
+  mDescription.mSampleRate = mRate;
+  mDescription.mChannelsPerFrame = mChannels;
+
+  mDescription.mBytesPerFrame = (mDescription.mBitsPerChannel / 8) *
+                                mDescription.mChannelsPerFrame;
+
+  mDescription.mFramesPerPacket = 1;
+  mDescription.mBytesPerPacket = mDescription.mBytesPerFrame *
+                                 mDescription.mFramesPerPacket;
+  mDescription.mReserved = 0;
+
+  assert(AudioUnitSetProperty(mUnit,
+                              kAudioUnitProperty_StreamFormat,
+                              kAudioUnitScope_Input,
+                              AU_OUT_BUS,
+                              &amp;amp;mDescription,
+                              sizeof(mDescription)) == noErr);
+}
+
+void
+AudioStream::SetCallback()
+{
+  AURenderCallbackStruct aurcbs;
+  memset(&amp;amp;aurcbs, 0, sizeof(aurcbs));
+  aurcbs.inputProc = DataCallback;
+  aurcbs.inputProcRefCon = this; // Pass this as callback&amp;#39;s arguments
+
+  assert(AudioUnitSetProperty(mUnit,
+                              kAudioUnitProperty_SetRenderCallback,
+                              kAudioUnitScope_Global,
+                              AU_OUT_BUS,
+                              &amp;amp;aurcbs,
+                              sizeof(aurcbs)) == noErr);
+}
+
+/* static */ OSStatus
+AudioStream::DataCallback(void* aRefCon,
+                          AudioUnitRenderActionFlags* aActionFlags,
+                          const AudioTimeStamp* aTimeStamp,
+                          UInt32 aBusNumber,
+                          UInt32 aNumFrames,
+                          AudioBufferList* aData)
+{
+  assert(aBusNumber == AU_OUT_BUS);
+  assert(aData-&amp;gt;mNumberBuffers == 1);
+
+  AudioStream* as = static_cast&amp;lt;AudioStream*&amp;gt;(aRefCon); // Get arguments
+  void* buffer = aData-&amp;gt;mBuffers[0].mData;
+  as-&amp;gt;mCallback(buffer, aNumFrames);
+  return noErr;
+}
+
+
+
+The key why deadlock happend is that
+the audio callback thread holds a mutex(hereafter referred to as Mutex-AU)
+shared with AudioUnit.
+The Mutex-AU is held inside it’s framework, so you don’t notice it.
+
+Thus, if the callback thread requests another mutex M held by the another
+thread, without releasing mutex-AU, then it will cause a deadlock when the
+another thread, which holds the mutex M, request to use AudioUnit.
+
+
+
+That is,
+if we have a thread T, holding the mutex M
+
+
+
+and one callback thread which holds the mutex-AU,
+
+
+
+The deadlock will occur when the callback thread requests the mutex M
+(the callback thread is blocked for waiting the mutex M)
+
+
+
+and the thread T requests the mutex-AU to use AudioUnit</summary></entry><entry><title type="html">How to simulate a C++ class in C</title><link href="http://localhost:4000/post/how-to-simulate-a-c-class-in-c" rel="alternate" type="text/html" title="How to simulate a C++ class in C" /><published>2017-04-25T00:00:00+08:00</published><updated>2017-04-25T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-simulate-a-c-class-in-c</id><content type="html" xml:base="http://localhost:4000/post/how-to-simulate-a-c-class-in-c">&lt;h1 id=&quot;how-to-simulate-a-c-class-in-c&quot;&gt;How to simulate a C++ class in C&lt;/h1&gt;
 
 &lt;p&gt;After learning &lt;em&gt;C++&lt;/em&gt;, I am curious about
 how could I bring the &lt;em&gt;object-oriented&lt;/em&gt; style to &lt;em&gt;C&lt;/em&gt;.
@@ -123,60 +1051,7 @@ const struct ListClass /*ListProxy*/ List = {
 };&lt;/pre&gt;&lt;/noscript&gt;
 &lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=list.c&quot;&gt; &lt;/script&gt;
 
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;list.h&amp;quot;
-#include &amp;lt;stdbool.h&amp;gt;  // for bool
-#include &amp;lt;stdio.h&amp;gt;    // for printf
-
-#define VA_ARGS(...) , ##__VA_ARGS__
-#define CALL(obj, method, ...) ((obj).method(&amp;amp;(obj) VA_ARGS(__VA_ARGS__)))
-
-void print(struct Node* node, bool is_float)
-{
-  if (!node) {
-    return;
-  }
-  is_float ? printf(&amp;quot;%f&amp;quot;, *(float*)node-&amp;gt;data) :
-             printf(&amp;quot;%d&amp;quot;, *(int*)node-&amp;gt;data);
-  printf(&amp;quot;%s&amp;quot;, (node-&amp;gt;next) ? &amp;quot;-&amp;gt;&amp;quot; : &amp;quot;\n&amp;quot;);
-}
-
-void print_int(struct Node* node)
-{
-  print(node, false);
-}
-
-void print_float(struct Node* node)
-{
-  print(node, true);
-}
-
-int main()
-{
-  int data_int[6] = { 11, 22, 33, 44, 55, 66 };
-  float data_float[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };
-
-  struct List l = /*ListProxy*/List.new();
-  l.prepend(&amp;amp;l, &amp;amp;data_int[0], sizeof(data_int[0]));
-  l.append(&amp;amp;l, &amp;amp;data_int[1], sizeof(data_int[1]));
-  l.append(&amp;amp;l, &amp;amp;data_int[2], sizeof(data_int[2]));
-  l.prepend(&amp;amp;l, &amp;amp;data_int[3], sizeof(data_int[3]));
-  l.append(&amp;amp;l, &amp;amp;data_int[4], sizeof(data_int[4]));
-  l.prepend(&amp;amp;l, &amp;amp;data_int[5], sizeof(data_int[5]));
-  l.traverse(&amp;amp;l, print_int);
-  l.destroy(&amp;amp;l);
-
-  CALL(l, prepend,  &amp;amp;data_float[0], sizeof(data_float[0]));
-  CALL(l, append,   &amp;amp;data_float[1], sizeof(data_float[1]));
-  CALL(l, append,   &amp;amp;data_float[2], sizeof(data_float[2]));
-  CALL(l, prepend,  &amp;amp;data_float[3], sizeof(data_float[3]));
-  CALL(l, append,   &amp;amp;data_float[4], sizeof(data_float[4]));
-  CALL(l, prepend,  &amp;amp;data_float[5], sizeof(data_float[5]));
-  CALL(l, traverse, print_float);
-  CALL(l, destroy);
-
-  return 0;
-}&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=test.c&quot;&gt; &lt;/script&gt;
+&lt;p&gt;true&lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=test.c&quot;&gt; &lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;c-version&quot;&gt;C++ version&lt;/h2&gt;
 &lt;noscript&gt;&lt;pre&gt;#ifndef LIST_H

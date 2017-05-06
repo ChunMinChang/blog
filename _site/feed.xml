@@ -1,4 +1,188 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-05-05T08:30:06+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Deadlock when using AudioUnit</title><link href="http://localhost:4000/post/deadlock-when-using-audiounit" rel="alternate" type="text/html" title="Deadlock when using AudioUnit" /><published>2017-05-05T00:00:00+08:00</published><updated>2017-05-05T00:00:00+08:00</updated><id>http://localhost:4000/post/deadlock-when-using-audiounit</id><content type="html" xml:base="http://localhost:4000/post/deadlock-when-using-audiounit">&lt;p&gt;There was a deadlock occured when we tried to integrate my implementation
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-05-06T12:09:45+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Pthread mutex with different types</title><link href="http://localhost:4000/post/pthread-mutex-with-different-types" rel="alternate" type="text/html" title="Pthread mutex with different types" /><published>2017-05-06T00:00:00+08:00</published><updated>2017-05-06T00:00:00+08:00</updated><id>http://localhost:4000/post/pthread-mutex-with-different-types</id><content type="html" xml:base="http://localhost:4000/post/pthread-mutex-with-different-types">&lt;p&gt;When I tried to &lt;a href=&quot;deadlock-when-using-audiounit&quot;&gt;produce a deadlock in &lt;em&gt;CoreAudio&lt;/em&gt;&lt;/a&gt; with pthread,
+I realized that the &lt;em&gt;mutex&lt;/em&gt; with &lt;strong&gt;NORMAL&lt;/strong&gt; type locked by one pthread
+could be unlocked by another pthread.
+Normally, this behavior should be &lt;strong&gt;disallowed&lt;/strong&gt;.
+It will result in undefined behaviors.
+If one pthread could unlock a mutex owned by other thread whenever it wants,
+then the mutex will be meaningless,
+unless it’s a expected behavior.&lt;/p&gt;
+
+&lt;p&gt;In my case, it’s exactly what I want, 
+because I need to break the deadlock to continue the program.
+However, in most case, this behavior should be &lt;strong&gt;forbidden&lt;/strong&gt;,
+so I do some research about
+what the behaviors of mutexes with different types are.&lt;/p&gt;
+
+&lt;p&gt;Here is my conclusion:&lt;/p&gt;
+
+&lt;noscript&gt;&lt;pre&gt;# pthread
+
+Sample code for demonstrating different behavior
+in different pthread type
+- *PTHREAD_MUTEX_NORMAL*
+  - This type of mutex does **not** detect deadlock
+  - A thread attempting to relock this mutex without first unlocking it
+    shall deadlock
+  - A thread attempting to unlock a mutex locked by a different thread
+    results in undefined behavior
+  - A thread attempting to unlock an unlocked mutex
+    results in undefined behavior
+- *PTHREAD_MUTEX_ERRORCHECK*
+  - This type of mutex provides error checking
+  - A thread attempting to relock this mutex without first unlocking
+    it shall return with an error
+  - A thread attempting to unlock a mutex which another thread has locked
+    shall return with an error
+  - A thread attempting to unlock an unlocked mutex
+    shall return with an error
+- *PTHREAD_MUTEX_RECURSIVE*
+  - A thread attempting to relock this mutex without first unlocking it
+    shall succeed in locking the mutex
+    - The relocking is allowd only in the **same** thread
+    - The relocking deadlock which can occur with mutexes of type
+      *PTHREAD_MUTEX_NORMAL* **cannot** occur with this type of mutex
+    - Multiple locks of this mutex shall require the same number of unlocks
+      to release the mutex before another thread can acquire the mutex
+  - A thread attempting to unlock a mutex which another thread has locked
+    shall return with an error
+  - A thread attempting to unlock an unlocked mutex
+    shall return with an error
+- *PTHREAD_MUTEX_DEFAULT*
+  - Its default value is set to *PTHREAD_MUTEX_NORMAL*
+  - It&amp;#39;s allowed to map its value to other types
+
+## Scenarios and results
+We have four scenarios:
+1. Lock a locked mutex in same thread
+2. Unlock a unlocked mutex
+3. (Wait to) Lock a locked mutex owned by another thread (__normal use case__)
+4. Unlock a locked mutex owned by another thread
+
+Unlocking a mutex owned by current thread is definitely ok,
+so it&amp;#39;s exclusive in our scenarios.
+
+The results of our scenarios in different type is:
+
+|            | 1 | 2 | 3 | 4 |
+|------------|---|---|---|---|
+| NORMAL     | ! | v | v | v |
+| ERRORCHECK |   |   | v |   |
+| RECURSIVE  | v |   | v |   |
+| DEFAULT    | ! | v | v | v |
+
+- ```!```: It works without any error, but it will be **self-deadlocked**
+- ```v```: It works without any error
+- empty: It can not works, with an error returned
+
+
+## TODO
+- Sample code for ```pthread_kill``` and ```pthread_detach```
+
+
+## Note
+
+### pthread_mutex_trylock
+The ```pthread_mutex_trylock()``` shall be equivalent
+to ```pthread_mutex_lock()```,
+except that if the mutex object referenced by mutex is currently locked
+(by any thread, including the current thread),
+the call shall return immediately.
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/fe46f3760e2230c09675e258ae1cf8eb.js?file=README.md&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;The test code can be found on &lt;a href=&quot;https://gist.github.com/ChunMinChang/fe46f3760e2230c09675e258ae1cf8eb&quot;&gt;gist here&lt;/a&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="Multithread" /><summary type="html">When I tried to produce a deadlock in CoreAudio with pthread,
+I realized that the mutex with NORMAL type locked by one pthread
+could be unlocked by another pthread.
+Normally, this behavior should be disallowed.
+It will result in undefined behaviors.
+If one pthread could unlock a mutex owned by other thread whenever it wants,
+then the mutex will be meaningless,
+unless it’s a expected behavior.
+
+In my case, it’s exactly what I want, 
+because I need to break the deadlock to continue the program.
+However, in most case, this behavior should be forbidden,
+so I do some research about
+what the behaviors of mutexes with different types are.
+
+Here is my conclusion:
+
+# pthread
+
+Sample code for demonstrating different behavior
+in different pthread type
+- *PTHREAD_MUTEX_NORMAL*
+  - This type of mutex does **not** detect deadlock
+  - A thread attempting to relock this mutex without first unlocking it
+    shall deadlock
+  - A thread attempting to unlock a mutex locked by a different thread
+    results in undefined behavior
+  - A thread attempting to unlock an unlocked mutex
+    results in undefined behavior
+- *PTHREAD_MUTEX_ERRORCHECK*
+  - This type of mutex provides error checking
+  - A thread attempting to relock this mutex without first unlocking
+    it shall return with an error
+  - A thread attempting to unlock a mutex which another thread has locked
+    shall return with an error
+  - A thread attempting to unlock an unlocked mutex
+    shall return with an error
+- *PTHREAD_MUTEX_RECURSIVE*
+  - A thread attempting to relock this mutex without first unlocking it
+    shall succeed in locking the mutex
+    - The relocking is allowd only in the **same** thread
+    - The relocking deadlock which can occur with mutexes of type
+      *PTHREAD_MUTEX_NORMAL* **cannot** occur with this type of mutex
+    - Multiple locks of this mutex shall require the same number of unlocks
+      to release the mutex before another thread can acquire the mutex
+  - A thread attempting to unlock a mutex which another thread has locked
+    shall return with an error
+  - A thread attempting to unlock an unlocked mutex
+    shall return with an error
+- *PTHREAD_MUTEX_DEFAULT*
+  - Its default value is set to *PTHREAD_MUTEX_NORMAL*
+  - It&amp;#39;s allowed to map its value to other types
+
+## Scenarios and results
+We have four scenarios:
+1. Lock a locked mutex in same thread
+2. Unlock a unlocked mutex
+3. (Wait to) Lock a locked mutex owned by another thread (__normal use case__)
+4. Unlock a locked mutex owned by another thread
+
+Unlocking a mutex owned by current thread is definitely ok,
+so it&amp;#39;s exclusive in our scenarios.
+
+The results of our scenarios in different type is:
+
+|            | 1 | 2 | 3 | 4 |
+|------------|---|---|---|---|
+| NORMAL     | ! | v | v | v |
+| ERRORCHECK |   |   | v |   |
+| RECURSIVE  | v |   | v |   |
+| DEFAULT    | ! | v | v | v |
+
+- ```!```: It works without any error, but it will be **self-deadlocked**
+- ```v```: It works without any error
+- empty: It can not works, with an error returned
+
+
+## TODO
+- Sample code for ```pthread_kill``` and ```pthread_detach```
+
+
+## Note
+
+### pthread_mutex_trylock
+The ```pthread_mutex_trylock()``` shall be equivalent
+to ```pthread_mutex_lock()```,
+except that if the mutex object referenced by mutex is currently locked
+(by any thread, including the current thread),
+the call shall return immediately.
+
+
+
+The test code can be found on gist here</summary></entry><entry><title type="html">Deadlock when using AudioUnit</title><link href="http://localhost:4000/post/deadlock-when-using-audiounit" rel="alternate" type="text/html" title="Deadlock when using AudioUnit" /><published>2017-05-05T00:00:00+08:00</published><updated>2017-05-05T00:00:00+08:00</updated><id>http://localhost:4000/post/deadlock-when-using-audiounit</id><content type="html" xml:base="http://localhost:4000/post/deadlock-when-using-audiounit">&lt;p&gt;There was a deadlock occured when we tried to integrate my implementation
 for audio 5.1 into Firefox.
 You can see the &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1337805&quot;&gt;bug here&lt;/a&gt;.
 It &lt;strong&gt;only happens on OSX&lt;/strong&gt;.
@@ -463,7 +647,7 @@ if we have a &lt;em&gt;thread T&lt;/em&gt;, holding the &lt;em&gt;mutex M&lt;/em
 
 &lt;p&gt;and the &lt;em&gt;thread T&lt;/em&gt; requests the &lt;em&gt;mutex-AU&lt;/em&gt; to use AudioUnit&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Media" /><category term="CoreAudio" /><summary type="html">There was a deadlock occured when we tried to integrate my implementation
+&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Media" /><category term="CoreAudio" /><category term="Multithread" /><summary type="html">There was a deadlock occured when we tried to integrate my implementation
 for audio 5.1 into Firefox.
 You can see the bug here.
 It only happens on OSX.
@@ -1051,7 +1235,60 @@ const struct ListClass /*ListProxy*/ List = {
 };&lt;/pre&gt;&lt;/noscript&gt;
 &lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=list.c&quot;&gt; &lt;/script&gt;
 
-&lt;p&gt;true&lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=test.c&quot;&gt; &lt;/script&gt;&lt;/p&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;list.h&amp;quot;
+#include &amp;lt;stdbool.h&amp;gt;  // for bool
+#include &amp;lt;stdio.h&amp;gt;    // for printf
+
+#define VA_ARGS(...) , ##__VA_ARGS__
+#define CALL(obj, method, ...) ((obj).method(&amp;amp;(obj) VA_ARGS(__VA_ARGS__)))
+
+void print(struct Node* node, bool is_float)
+{
+  if (!node) {
+    return;
+  }
+  is_float ? printf(&amp;quot;%f&amp;quot;, *(float*)node-&amp;gt;data) :
+             printf(&amp;quot;%d&amp;quot;, *(int*)node-&amp;gt;data);
+  printf(&amp;quot;%s&amp;quot;, (node-&amp;gt;next) ? &amp;quot;-&amp;gt;&amp;quot; : &amp;quot;\n&amp;quot;);
+}
+
+void print_int(struct Node* node)
+{
+  print(node, false);
+}
+
+void print_float(struct Node* node)
+{
+  print(node, true);
+}
+
+int main()
+{
+  int data_int[6] = { 11, 22, 33, 44, 55, 66 };
+  float data_float[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };
+
+  struct List l = /*ListProxy*/List.new();
+  l.prepend(&amp;amp;l, &amp;amp;data_int[0], sizeof(data_int[0]));
+  l.append(&amp;amp;l, &amp;amp;data_int[1], sizeof(data_int[1]));
+  l.append(&amp;amp;l, &amp;amp;data_int[2], sizeof(data_int[2]));
+  l.prepend(&amp;amp;l, &amp;amp;data_int[3], sizeof(data_int[3]));
+  l.append(&amp;amp;l, &amp;amp;data_int[4], sizeof(data_int[4]));
+  l.prepend(&amp;amp;l, &amp;amp;data_int[5], sizeof(data_int[5]));
+  l.traverse(&amp;amp;l, print_int);
+  l.destroy(&amp;amp;l);
+
+  CALL(l, prepend,  &amp;amp;data_float[0], sizeof(data_float[0]));
+  CALL(l, append,   &amp;amp;data_float[1], sizeof(data_float[1]));
+  CALL(l, append,   &amp;amp;data_float[2], sizeof(data_float[2]));
+  CALL(l, prepend,  &amp;amp;data_float[3], sizeof(data_float[3]));
+  CALL(l, append,   &amp;amp;data_float[4], sizeof(data_float[4]));
+  CALL(l, prepend,  &amp;amp;data_float[5], sizeof(data_float[5]));
+  CALL(l, traverse, print_float);
+  CALL(l, destroy);
+
+  return 0;
+}&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=test.c&quot;&gt; &lt;/script&gt;
 
 &lt;h2 id=&quot;c-version&quot;&gt;C++ version&lt;/h2&gt;
 &lt;noscript&gt;&lt;pre&gt;#ifndef LIST_H
@@ -5115,596 +5352,4 @@ void insertionSort(int list[], const unsigned int length)
 //     }
 //     list[j] = current;
 //   }
-// }</summary></entry><entry><title type="html">Selection Sort</title><link href="http://localhost:4000/post/selection-sort" rel="alternate" type="text/html" title="Selection Sort" /><published>2016-12-29T00:00:00+08:00</published><updated>2016-12-29T00:00:00+08:00</updated><id>http://localhost:4000/post/selection-sort</id><content type="html" xml:base="http://localhost:4000/post/selection-sort">&lt;h1 id=&quot;selection-sort&quot;&gt;Selection sort&lt;/h1&gt;
-
-&lt;p&gt;This post series is synchronized with my book &lt;a href=&quot;https://www.gitbook.com/book/chunminchang/codeplay/details&quot; title=&quot;CodePlay&quot;&gt;CodePlay&lt;/a&gt;
-and this post could be read &lt;a href=&quot;https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html&quot; title=&quot;Selection Sort&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;idea&quot;&gt;Idea&lt;/h2&gt;
-&lt;p&gt;The concept is quite straight.
-If we could get the minimal value from list &lt;strong&gt;one by one&lt;/strong&gt;,
-then we could re-arrange the list from minimal to maximal values.&lt;/p&gt;
-
-&lt;p&gt;Imagine we have two lists &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;,
-the &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; is a list contains several items with comparable values and
-the &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; is a sorted list of &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.
-At first, &lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = [ ]&lt;/script&gt; is empty.&lt;/p&gt;
-
-&lt;p&gt;Take &lt;script type=&quot;math/tex&quot;&gt;L = [ 5, 3, 1, 2, 3 ]&lt;/script&gt; as an example:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;At the first round, we get &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; as minimal value,
-so we move it into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;. Now,
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1 ]&lt;/script&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 5, 3, 2, 3 ]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;At the second round, we get &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; as minimal value, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1, 2 ]&lt;/script&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 5, 3, 3 ]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Next, &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is picked and moved from &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1, 2, 3 ]&lt;/script&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 5, 3 ]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Then, the current minimal value &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is moved from &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1, 2, 3, 3 ]&lt;/script&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ 5 ]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Finally, &lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt; is moved into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{sorted} = [ 1, 2, 3, 3, 5 ]&lt;/script&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = [ ]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;See! the idea is quite simple.
-In the same way, to sort the list from maximal to minimal values,
-the only different is to pick the maximal value from list each round
-instead of minimal value.&lt;/p&gt;
-
-&lt;h3 id=&quot;how-to-get-minimalor-maximal-value&quot;&gt;How to get minimal(or maximal) value&lt;/h3&gt;
-&lt;p&gt;The way to get minimal(or maximal) items in &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;
-is to linearly search the whole list:
-&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\begin{align}
-&amp; \text{Min($L$):} \\
-&amp; \space \space \space \space min = L[1] \\
-&amp; \space \space \space \space \text{for $i \leftarrow 1$ to $N$:} \\
-&amp; \space \space \space \space \space \space \space \space \text{if $L[i] &lt; min$:} \\
-&amp; \space \space \space \space \space \space \space \space \space \space \space \space min = L[i] \\
-\end{align} %]]&gt;&lt;/script&gt;
-or
-&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\begin{align}
-&amp; \text{Max($L$):} \\
-&amp; \space \space \space \space max = L[1] \\
-&amp; \space \space \space \space \text{for $i \leftarrow 1$ to $N$:} \\
-&amp; \space \space \space \space \space \space \space \space \text{if $L[i] &gt; max$:} \\
-&amp; \space \space \space \space \space \space \space \space \space \space \space \space max = L[i] \\
-\end{align} %]]&gt;&lt;/script&gt;
-, where &lt;script type=&quot;math/tex&quot;&gt;L[i]&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;th element in the list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;
-and &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length of &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;dividing-one-list-into-unsorted-list-and-sorted-list&quot;&gt;Dividing one list into unsorted list and sorted list&lt;/h3&gt;
-&lt;p&gt;In implementation, we usually divide the source list,
-which needs to be sorted, into two parts. One is sorted, the other is unsorted.
-This is better for memory usage than
-creating another list to put the sorted results.&lt;/p&gt;
-
-&lt;p&gt;That is, if we have a source list &lt;script type=&quot;math/tex&quot;&gt;L = [ 5, 3, 1, 2, 3 ]&lt;/script&gt;,
-it will be divided into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;.
-They are initialized to &lt;script type=&quot;math/tex&quot;&gt;[]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; respectively,
-so &lt;script type=&quot;math/tex&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ ] \cup [ 5, 3, 1, 2, 3 ]&lt;/script&gt;.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;In the first round, &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; is picked and moved
-from &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1 ] \cup [ 5, 3, 2, 3 ] = [1 \vert 5, 3, 2, 3]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;In the second round, &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; is picked and moved
-from &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1, 2 ] \cup [ 5, 3, 3 ] = [1, 2 \vert 5, 3, 3]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Next, &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is picked, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3 ] \cup [ 5, 3 ] = [1, 2, 3 \vert 5, 3]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Then, another &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; is picked, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3 ] \cup [ 5 ] = [1, 2, 3, 3 \vert 5]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Finally, &lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt; is picked, so
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;script type=&quot;math/tex; mode=display&quot;&gt;L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3, 5 ] \cup [ ] = [1, 2, 3, 3, 5]&lt;/script&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;algorithm&quot;&gt;Algorithm&lt;/h2&gt;
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\begin{align}
-&amp; \text{SelectionSort($L$):} \\
-&amp; \space \space \space \space \text{for $i \leftarrow 1$ to $\vert L \vert - 1$:} \\
-&amp; \space \space \space \space \space \space \space \space m \leftarrow i \\
-&amp; \space \space \space \space \space \space \space \space \text{for $j \leftarrow i + 1$ to $\vert L \vert$:} \\
-&amp; \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] &lt; L[m]$:} \\
-&amp; \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m \leftarrow j \\
-&amp; \space \space \space \space \space \space \space \space \text{swap $L[i]$ and $L[m]$} \\
-\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;The above method will divide &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt; into two parts.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L[1...i-1] = L_{sorted}&lt;/script&gt; is sorted&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L[i...N] = L_{unsorted}&lt;/script&gt; is unsorted,&lt;/li&gt;
-  &lt;li&gt;where &lt;script type=&quot;math/tex&quot;&gt;N = \vert L \vert&lt;/script&gt; is the length of &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The following are step by step explanation:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = 1&lt;/script&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = []&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[1...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;we need to find the minimal element in list &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;We use a value &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; to track the &lt;strong&gt;index&lt;/strong&gt; of the minimal element&lt;/li&gt;
-      &lt;li&gt;where &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is initialized to &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; will be updated to &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;2 \leq j \leq N&lt;/script&gt;, if &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-L[j] &lt; L[m] %]]&gt;&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;Repeatedly above instruction from &lt;script type=&quot;math/tex&quot;&gt;j = 2&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt;(searching whole &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;),
-&lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; would be the minimal value in &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;swap &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[i = 1]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;L[1]&lt;/script&gt; now can be considered as &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;so &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[2...N]&lt;/script&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = 2&lt;/script&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = L[1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[2...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;we need to find the minimal element in list &lt;script type=&quot;math/tex&quot;&gt;L[2...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;Same as above, &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is used to keep tracking the index of the minimal
-element in &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;where &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is initialized to &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;After searching the whole &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;,
-&lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; would be the minimal value in &lt;script type=&quot;math/tex&quot;&gt;L[2...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;We can put &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; into the &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; by swapping the &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[i = 2]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;Thus, &lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = L[1...2]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[3...N]&lt;/script&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = k&lt;/script&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = [1...k-1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[k...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is initialized to &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;After searching the whole &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt;,
-&lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; would be the minimal value in &lt;script type=&quot;math/tex&quot;&gt;L[k...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;Swapping &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[i = k]&lt;/script&gt; would put &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt; into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;Then, &lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = L[1...k]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[k+1...N]&lt;/script&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;When &lt;script type=&quot;math/tex&quot;&gt;i = N - 1&lt;/script&gt;(final round)
-    &lt;ul&gt;
-      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = [1...N-2]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[N-1...N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is initialized to &lt;script type=&quot;math/tex&quot;&gt;N-1&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;Pick a smaller one between &lt;script type=&quot;math/tex&quot;&gt;L[N-1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L[N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;and put it into the &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt; like above(by swapping with &lt;script type=&quot;math/tex&quot;&gt;L[m]&lt;/script&gt;)&lt;/li&gt;
-      &lt;li&gt;Then &lt;script type=&quot;math/tex&quot;&gt;L_{sorted} = [1...N-1]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted} = L[N]&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;The left one(now is &lt;script type=&quot;math/tex&quot;&gt;L[N]&lt;/script&gt;) is definitely the &lt;strong&gt;maximal&lt;/strong&gt; item
-in &lt;script type=&quot;math/tex&quot;&gt;L[1...N]&lt;/script&gt;, so we don’t need to do anything&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;proof&quot;&gt;Proof&lt;/h3&gt;
-
-&lt;h4 id=&quot;proof-by-contradiction&quot;&gt;Proof by contradiction&lt;/h4&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Assume this method can &lt;strong&gt;not&lt;/strong&gt; give us an ordered list&lt;/li&gt;
-  &lt;li&gt;so it exists one &lt;script type=&quot;math/tex&quot;&gt;L[p] &gt; L[q]&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-p &lt; q %]]&gt;&lt;/script&gt;, in the result list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;Before the result is computed, the unsorted list could be
-&lt;script type=&quot;math/tex&quot;&gt;L[..p..q..]&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;L[..q..p..]&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;It means that &lt;script type=&quot;math/tex&quot;&gt;L[p]&lt;/script&gt; is picked &lt;strong&gt;before&lt;/strong&gt; &lt;script type=&quot;math/tex&quot;&gt;L[q]&lt;/script&gt;
-because &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-p &lt; q %]]&gt;&lt;/script&gt; in the result list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;It means &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-L[p] &lt; L[q] %]]&gt;&lt;/script&gt; and it is contradictory to the assumption&lt;/li&gt;
-  &lt;li&gt;Thus, the assumption is wrong. This method will give us an ordered list.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;complexity&quot;&gt;Complexity&lt;/h2&gt;
-&lt;p&gt;We need to search whole &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; to find a minimal(or maximal) item.
-Suppose &lt;script type=&quot;math/tex&quot;&gt;\vert L_{unsorted} \vert = N&lt;/script&gt; at first.
-(the length of &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; is &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt;).&lt;/p&gt;
-
-&lt;p&gt;At the first round, we need to search &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; items
-to find the minimal(or maximal) item and move it into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;.
-After then, &lt;script type=&quot;math/tex&quot;&gt;\vert L_{unsorted} \vert = N - 1&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;At the second round, whole &lt;script type=&quot;math/tex&quot;&gt;N - 1&lt;/script&gt; items in &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; would be counted
-to find the minimal(or maximal) one.
-After the picked one is moved into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;,
-the size of &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; is reduced to &lt;script type=&quot;math/tex&quot;&gt;\vert L_{unsorted} \vert = N - 2&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;The procedure keep working until the list &lt;script type=&quot;math/tex&quot;&gt;L_{unsorted}&lt;/script&gt; is empty
-(&lt;script type=&quot;math/tex&quot;&gt;\vert L_{unsorted} \vert = 0&lt;/script&gt;).
-Thus, we need to search
-&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\begin{align}
-N + (N - 1) + (N - 2) + .... + 1
-&amp;= \frac{ N \cdot (N + 1) }{ 2 } \\
-&amp;= \frac{ 1 }{ 2 } \cdot N^2 + \frac{ 1 }{ 2 } N
-\end{align} %]]&gt;&lt;/script&gt;
-times to move all the items into &lt;script type=&quot;math/tex&quot;&gt;L_{sorted}&lt;/script&gt;.
-Thus, the complexity is &lt;script type=&quot;math/tex&quot;&gt;\mathcal{O}(N^2)&lt;/script&gt;,
-where the &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the length of the list &lt;script type=&quot;math/tex&quot;&gt;L&lt;/script&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
-&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb&quot; title=&quot;Sorting&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;algorithm&amp;gt;  // for std::swap
-#include &amp;lt;cassert&amp;gt;
-#include &amp;quot;sorting.h&amp;quot;
-
-/*
- * Selection sort: O(n^2)
- */
-void selectionSort(int list[], const unsigned int length)
-{
-  assert(length);
-
-  // &amp;lt;--  sorted  --&amp;gt;|&amp;lt;--  unsorted  --&amp;gt;
-  // +---+---+-------+---+---+---------+
-  // | 0 | 1 | ..... | h | i |  .....  |
-  // +---+---+-------+---+---+---------+
-  //                   ^
-  //                head is the begin index of unsorted list.
-  for (unsigned int head = 0 ; head &amp;lt; length - 1 ; ++head) {
-    // Assume the current head value is the minimal item.
-    int minIndex = head;
-    for (unsigned int i = head + 1 ; i &amp;lt; length ; ++i) {
-      if (list[i] &amp;lt; list[minIndex]) {
-        minIndex = i;
-      }
-    }
-
-    if (head != minIndex) {
-      std::swap(list[head], list[minIndex]);
-    }
-    // After swap with the minimal value of unsorted list, the head now
-    // is the tail of the sorted list.
-    //
-    // &amp;lt;--    sorted    --&amp;gt;|&amp;lt;-- unsorted --&amp;gt;
-    // +---+---+-------+---+---------------+
-    // | 0 | 1 | ..... | h | ............  |
-    // +---+---+-------+---+---------------+
-    //                   ^
-    //  head now is the last index of the sorted list.
-  }
-}
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=selection_sort.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Algorithm" /><category term="Sorting" /><summary type="html">Selection sort
-
-This post series is synchronized with my book CodePlay
-and this post could be read here.
-
-Idea
-The concept is quite straight.
-If we could get the minimal value from list one by one,
-then we could re-arrange the list from minimal to maximal values.
-
-Imagine we have two lists  and ,
-the  is a list contains several items with comparable values and
-the  is a sorted list of .
-At first,  is empty.
-
-Take  as an example:
-
-
-  At the first round, we get  as minimal value,
-so we move it into . Now,
-    
-      
-        
-      
-      
-        
-      
-    
-  
-  At the second round, we get  as minimal value, so
-    
-      
-        
-      
-      
-        
-      
-    
-  
-  Next,  is picked and moved from  to , so
-    
-      
-        
-      
-      
-        
-      
-    
-  
-  Then, the current minimal value  is moved from  to , so
-    
-      
-        
-      
-      
-        
-      
-    
-  
-  Finally,  is moved into , so
-    
-      
-        
-      
-      
-        
-      
-    
-  
-
-
-See! the idea is quite simple.
-In the same way, to sort the list from maximal to minimal values,
-the only different is to pick the maximal value from list each round
-instead of minimal value.
-
-How to get minimal(or maximal) value
-The way to get minimal(or maximal) items in 
-is to linearly search the whole list:
-
-or
-
-, where  is the th element in the list 
-and  is the length of .
-
-Dividing one list into unsorted list and sorted list
-In implementation, we usually divide the source list,
-which needs to be sorted, into two parts. One is sorted, the other is unsorted.
-This is better for memory usage than
-creating another list to put the sorted results.
-
-That is, if we have a source list ,
-it will be divided into  and .
-They are initialized to  and  respectively,
-so .
-
-
-  In the first round,  is picked and moved
-from  to , so
-    
-      
-        
-      
-    
-  
-  In the second round,  is picked and moved
-from  to , so
-    
-      
-        
-      
-    
-  
-  Next,  is picked, so
-    
-      
-        
-      
-    
-  
-  Then, another  is picked, so
-    
-      
-        
-      
-    
-  
-  Finally,  is picked, so
-    
-      
-        
-      
-    
-  
-
-
-Algorithm
-
-
-The above method will divide  into two parts.
-
-
-   is sorted
-   is unsorted,
-  where  is the length of 
-
-
-The following are step by step explanation:
-
-
-  When 
-    
-       and 
-      we need to find the minimal element in list 
-      We use a value  to track the index of the minimal element
-      where  is initialized to 
-       will be updated to , where , if 
-      Repeatedly above instruction from  to (searching whole ),
- would be the minimal value in 
-      swap  and 
-      then  now can be considered as 
-      so 
-    
-  
-  When 
-    
-       and 
-      we need to find the minimal element in list 
-      Same as above,  is used to keep tracking the index of the minimal
-element in 
-      where  is initialized to 
-      After searching the whole ,
- would be the minimal value in 
-      We can put  into the  by swapping the  and 
-      Thus,  and 
-    
-  
-  When 
-    
-       and 
-       is initialized to 
-      After searching the whole ,
- would be the minimal value in 
-      Swapping  and  would put  into 
-      Then,  and 
-    
-  
-  When (final round)
-    
-       and 
-       is initialized to 
-      Pick a smaller one between  and 
-      and put it into the  like above(by swapping with )
-      Then  and 
-      The left one(now is ) is definitely the maximal item
-in , so we don’t need to do anything
-    
-  
-
-
-Proof
-
-Proof by contradiction
-
-
-  Assume this method can not give us an ordered list
-  so it exists one , where , in the result list 
-  Before the result is computed, the unsorted list could be
- or 
-  It means that  is picked before 
-because  in the result list 
-  It means  and it is contradictory to the assumption
-  Thus, the assumption is wrong. This method will give us an ordered list.
-
-
-Complexity
-We need to search whole  to find a minimal(or maximal) item.
-Suppose  at first.
-(the length of  is ).
-
-At the first round, we need to search  items
-to find the minimal(or maximal) item and move it into .
-After then, .
-
-At the second round, whole  items in  would be counted
-to find the minimal(or maximal) one.
-After the picked one is moved into ,
-the size of  is reduced to .
-
-The procedure keep working until the list  is empty
-().
-Thus, we need to search
-
-times to move all the items into .
-Thus, the complexity is ,
-where the  is the length of the list .
-
-Implementation
-See the files on gist here.
-
-#include &amp;lt;algorithm&amp;gt;  // for std::swap
-#include &amp;lt;cassert&amp;gt;
-#include &amp;quot;sorting.h&amp;quot;
-
-/*
- * Selection sort: O(n^2)
- */
-void selectionSort(int list[], const unsigned int length)
-{
-  assert(length);
-
-  // &amp;lt;--  sorted  --&amp;gt;|&amp;lt;--  unsorted  --&amp;gt;
-  // +---+---+-------+---+---+---------+
-  // | 0 | 1 | ..... | h | i |  .....  |
-  // +---+---+-------+---+---+---------+
-  //                   ^
-  //                head is the begin index of unsorted list.
-  for (unsigned int head = 0 ; head &amp;lt; length - 1 ; ++head) {
-    // Assume the current head value is the minimal item.
-    int minIndex = head;
-    for (unsigned int i = head + 1 ; i &amp;lt; length ; ++i) {
-      if (list[i] &amp;lt; list[minIndex]) {
-        minIndex = i;
-      }
-    }
-
-    if (head != minIndex) {
-      std::swap(list[head], list[minIndex]);
-    }
-    // After swap with the minimal value of unsorted list, the head now
-    // is the tail of the sorted list.
-    //
-    // &amp;lt;--    sorted    --&amp;gt;|&amp;lt;-- unsorted --&amp;gt;
-    // +---+---+-------+---+---------------+
-    // | 0 | 1 | ..... | h | ............  |
-    // +---+---+-------+---+---------------+
-    //                   ^
-    //  head now is the last index of the sorted list.
-  }
-}</summary></entry></feed>
+// }</summary></entry></feed>

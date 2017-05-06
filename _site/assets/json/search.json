@@ -1,9 +1,18 @@
 [
   
     {
+      "title"    : "Pthread mutex with different types",
+      "category" : "Common",
+      "tags"     : "Multithread",
+      "url"      : "/post/pthread-mutex-with-different-types",
+      "date"     : "2017-05-06 00:00:00 +0800",
+			"shortdate": "May 06, 2017"
+    } ,
+  
+    {
       "title"    : "Deadlock when using AudioUnit",
       "category" : "Media",
-      "tags"     : "CoreAudio",
+      "tags"     : "CoreAudio, Multithread",
       "url"      : "/post/deadlock-when-using-audiounit",
       "date"     : "2017-05-05 00:00:00 +0800",
 			"shortdate": "May 05, 2017"

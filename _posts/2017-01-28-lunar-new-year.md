@@ -2,7 +2,7 @@
 layout: post
 title: Lunar New Year
 category: Life
-tags: [Goal, New Year]
+tags: [Goal]
 comments: true
 ---
 # 新年寄語

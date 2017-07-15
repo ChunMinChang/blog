@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Hash Table v.s. Mutable Array",
+      "category" : "Common",
+      "tags"     : "C/C++",
+      "url"      : "/post/hash-table-v-s-mutable-array",
+      "date"     : "2017-07-15 00:00:00 +0800",
+			"shortdate": "July 15, 2017"
+    } ,
+  
+    {
       "title"    : "Adding a IPDL into PContent",
       "category" : "Mozilla",
       "tags"     : "MultiProcess, Firefox",

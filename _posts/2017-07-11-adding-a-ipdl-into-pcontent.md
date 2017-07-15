@@ -2,7 +2,7 @@
 layout: post
 title: Adding a IPDL into PContent
 category: Mozilla
-tags: [MultiProcess, Firefox]
+tags: [Multiprocess, Firefox]
 ---
 This is my note for adding a IPDL into PContent.
 

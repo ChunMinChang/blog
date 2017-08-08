@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-08T14:27:10+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;a href=&quot;/post/refptr-v-s-shared-ptr&quot;&gt;last post&lt;/a&gt;,
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-08T14:30:29+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;a href=&quot;/post/refptr-v-s-shared-ptr&quot;&gt;last post&lt;/a&gt;,
 I introduced the &lt;code class=&quot;highlighter-rouge&quot;&gt;RefPtr&amp;lt;T&amp;gt;&lt;/code&gt; that can keep tracking the references to the
 object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; and the references are counted by object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; itself.&lt;/p&gt;
 
@@ -767,6 +767,8 @@ SharedPtr&amp;lt;T&amp;gt;::operator*() const
 #endif // REFPTR_H&lt;/pre&gt;&lt;/noscript&gt;
 &lt;script src=&quot;https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1.js?file=RefPtr.h&quot;&gt; &lt;/script&gt;
 
+&lt;p&gt;You can look &lt;a href=&quot;https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1&quot; title=&quot;RefPtr and SharedPtr&quot;&gt;here&lt;/a&gt; to see how to use it.&lt;/p&gt;
+
 &lt;p&gt;The above code is referenced from &lt;a href=&quot;http://www.aristeia.com/BookErrata/M29Source.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><category term="Firefox" /><summary type="html">When I tried to replace Mozilla’s RefPtr with standard C++
 smart-pointer to note one of my misusage of it,
 I used std::shard_ptr to do it.
@@ -1152,6 +1154,8 @@ SharedPtr&amp;lt;T&amp;gt;::operator*() const
 
 #endif // REFPTR_H
 
+
+You can look here to see how to use it.
 
 The above code is referenced from here</summary></entry><entry><title type="html">Development Notes for Mozilla</title><link href="http://localhost:4000/post/development-notes-for-mozilla" rel="alternate" type="text/html" title="Development Notes for Mozilla" /><published>2017-07-19T00:00:00+08:00</published><updated>2017-07-19T00:00:00+08:00</updated><id>http://localhost:4000/post/development-notes-for-mozilla</id><content type="html" xml:base="http://localhost:4000/post/development-notes-for-mozilla">&lt;p&gt;The following are some of my notes to develop the mozilla products.&lt;/p&gt;
 

@@ -85,6 +85,10 @@ so the ```class T``` must provide *reference-counted* interface.
 the reference is counted on the ```q``` itself.
 
 {% gist ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1 RefPtr.h %}
+
+You can look [here][gist] to see how to use it.
+
 The above code is referenced from [here](http://www.aristeia.com/BookErrata/M29Source.html)
 
 [moz_refptr]: http://searchfox.org/mozilla-central/source/mfbt/RefPtr.h "RefPtr"
+[gist]: https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1 "RefPtr and SharedPtr"

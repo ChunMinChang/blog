@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "The Misuse of RefPtr",
+      "category" : "Common",
+      "tags"     : "C/C++, Firefox",
+      "url"      : "/post/the-misuse-of-refptr",
+      "date"     : "2017-08-08 00:00:00 +0800",
+			"shortdate": "August 08, 2017"
+    } ,
+  
+    {
       "title"    : "RefPtr v.s. shared_ptr",
       "category" : "Common",
       "tags"     : "C/C++, Firefox",

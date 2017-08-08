@@ -1,4 +1,387 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-31T15:14:01+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">RefPtr v.s. shared_ptr</title><link href="http://localhost:4000/post/refptr-v-s-shared-ptr" rel="alternate" type="text/html" title="RefPtr v.s. shared_ptr" /><published>2017-07-31T00:00:00+08:00</published><updated>2017-07-31T00:00:00+08:00</updated><id>http://localhost:4000/post/refptr-v-s-shared-ptr</id><content type="html" xml:base="http://localhost:4000/post/refptr-v-s-shared-ptr">&lt;p&gt;When I tried to replace Mozilla’s &lt;a href=&quot;http://searchfox.org/mozilla-central/source/mfbt/RefPtr.h&quot; title=&quot;RefPtr&quot;&gt;RefPtr&lt;/a&gt; with standard C++
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-08T14:27:10+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;a href=&quot;/post/refptr-v-s-shared-ptr&quot;&gt;last post&lt;/a&gt;,
+I introduced the &lt;code class=&quot;highlighter-rouge&quot;&gt;RefPtr&amp;lt;T&amp;gt;&lt;/code&gt; that can keep tracking the references to the
+object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; and the references are counted by object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; itself.&lt;/p&gt;
+
+&lt;p&gt;Today, I will note my misuse of it several weeks ago.
+This is also why I want to write the posts about &lt;code class=&quot;highlighter-rouge&quot;&gt;RefPtr&amp;lt;T&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-behavior-i-want&quot;&gt;What behavior I want&lt;/h2&gt;
+&lt;p&gt;The following behavior is what I want when I was implementing one patch
+for Firefox:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RefPtr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Solder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// A list containing all of the solders.
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;RefPtr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Solder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Solder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;99&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Put the `s` into the list.
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// The `s` is destroyed, so it should be removed from the list now.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and we will put the &lt;code class=&quot;highlighter-rouge&quot;&gt;Solder&lt;/code&gt; instance into the &lt;code class=&quot;highlighter-rouge&quot;&gt;l&lt;/code&gt; when
+it’s created and remove it when it’s destroyed.&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Solder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Add&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;into&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Solder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Remove&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;why-it-doesnt-work&quot;&gt;Why it doesn’t work&lt;/h2&gt;
+&lt;p&gt;This is a wrong pattern to meet our expectation.
+The solders in the list will &lt;strong&gt;only&lt;/strong&gt; be destroyed and removed from the list
+when the whole program is ended.
+The solders are only removed from the list in its deconstructor.
+However, whenever the &lt;code class=&quot;highlighter-rouge&quot;&gt;RefPtr&amp;lt;Solder&amp;gt; s(new Solder())&lt;/code&gt;
+is deconstructed (by &lt;code class=&quot;highlighter-rouge&quot;&gt;~RefPtr&lt;/code&gt;) in the main function,
+the &lt;code class=&quot;highlighter-rouge&quot;&gt;~Solder()&lt;/code&gt; won’t be called
+since there must be one another &lt;code class=&quot;highlighter-rouge&quot;&gt;RefPtr&amp;lt;Solder&amp;gt; some&lt;/code&gt; in the list
+referencing the solder.
+Thus, the &lt;code class=&quot;highlighter-rouge&quot;&gt;~Solder()&lt;/code&gt; is only be called
+when the element in the list is decontructed.&lt;/p&gt;
+
+&lt;h2 id=&quot;sample-code&quot;&gt;Sample code&lt;/h2&gt;
+&lt;noscript&gt;&lt;pre&gt;// $ g++ test.cpp --std=c++11
+#include &amp;quot;RefPtr.h&amp;quot;
+#include &amp;lt;algorithm&amp;gt;  // std::remove
+#include &amp;lt;cassert&amp;gt;    // assert
+#include &amp;lt;iostream&amp;gt;   // std::cout, std::endl
+#include &amp;lt;vector&amp;gt;     // std::vector
+
+///////////////////////////////////////////////////////////////////////////////
+// Solder Interface
+class Solder: public ReferenceCount
+{
+public:
+  Solder(int n);
+  ~Solder();
+  int CountOff(); // Report the number.
+
+private:
+  int number;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Squad Interface
+class Squad
+{
+public:
+  static void Add(Solder* s);
+  static void Remove(Solder* s);
+  static void CountOff(); // Call all of the solders.
+  static unsigned int Size();
+private:
+  static std::vector&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; members;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Solder Implementation
+Solder::Solder(int n)
+  : number(n)
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Solder &amp;quot; &amp;lt;&amp;lt; number &amp;lt;&amp;lt; &amp;quot; is created.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  Squad::Add(this);
+}
+
+Solder::~Solder()
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Solder &amp;quot; &amp;lt;&amp;lt; number &amp;lt;&amp;lt; &amp;quot; is destroyed.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  Squad::Remove(this);
+}
+
+int
+Solder::CountOff()
+{
+  return number;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Squad Implementation
+std::vector&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; Squad::members;
+
+/* static */ void
+Squad::Add(Solder* s)
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Add Solder &amp;quot; &amp;lt;&amp;lt; s-&amp;gt;CountOff() &amp;lt;&amp;lt; &amp;quot; to members.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  members.push_back(s);
+}
+
+/* static */ void
+Squad::Remove(Solder* s)
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Remove Solder &amp;quot; &amp;lt;&amp;lt; s-&amp;gt;CountOff() &amp;lt;&amp;lt; &amp;quot; from members.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  members.erase(std::remove(members.begin(), members.end(), s), members.end());
+}
+
+/* static */ void
+Squad::CountOff()
+{
+  for (auto&amp;amp; m: members) {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Solder &amp;quot; &amp;lt;&amp;lt; m-&amp;gt;CountOff() &amp;lt;&amp;lt; &amp;quot; is here!&amp;quot; &amp;lt;&amp;lt; std::endl;
+  }
+}
+
+/* static */ unsigned int
+Squad::Size()
+{
+  return members.size();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// *** Wrong example to use RefPtr ***
+//   We will put the Solder instances into the squad when they are created,
+//   and remove the instances from the squad when they are destroyed.
+//   We expect the following behavior.
+//
+//   List&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; l;
+//   {
+//     RefPtr&amp;lt;Solder&amp;gt; s(new Solder(99)); // Put s into the list
+//   }
+//   // s is destroyed and removed from the list, so list is empty now.
+int main()
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Creating a solder and put it into squad.&amp;quot; &amp;lt;&amp;lt; std::endl;
+
+  {
+    RefPtr&amp;lt;Solder&amp;gt; s(new Solder(1));
+    Squad::CountOff();
+    // There should be one solder in the squad now.
+    assert(Squad::Size() == 1 &amp;amp;&amp;amp; s-&amp;gt;GetCount() == 2);
+  }
+
+  std::cout &amp;lt;&amp;lt; &amp;quot;Solder should be removed from squad and destroyed.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  // In our mind, we expect there is no solder in the squad now.
+  assert(Squad::Size() == 0); // Comment this to check the below one.
+  // But it&amp;#39;s wrong. The correct status of the memebers is:
+  // assert(Squad::Size() == 1);
+
+  // In our expectation, we expect the solder 1 will be destroyed and removed
+  // from the sqaud when the program is running out of &amp;#39;}&amp;#39; above.
+  // At that time, the ~RefPtr() will be called and check whether we need to
+  // release the solder 1. However, since we still have a reference to solder 1
+  // in the members list of the squal, the reference count to solder 1 is not 0.
+  // Therefore, it won&amp;#39;t be removed!
+
+  // Actually,
+  // ------------------------------------
+  // List&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; list
+  // Solder()
+  // {
+  //   Add &amp;#39;this&amp;#39; into the list
+  // }
+  // ~Solder()
+  // {
+  //   Remove &amp;#39;this&amp;#39; from the list
+  // }
+  // ------------------------------------
+  // is a wrong pattern to meet our expectation.
+  // The solders in the list will only be destroyed and removed from the list
+  // when the whole program is ended. The solders are only removed from
+  // the list in its deconstructor. However, whenever the
+  // RefPtr&amp;lt;Solder&amp;gt; s(new Solder(x)) is deconstructed (by ~RefPtr) in the main,
+  // the ~Solder() won&amp;#39;t be called since there must be one another
+  // RefPtr&amp;lt;Solder&amp;gt; in the list referencing the solder.
+  // Thus, the ~Solder() is only be called when the element in the list is
+  // decontructed.
+
+  return 0;
+}&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1.js?file=misuse.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><category term="Firefox" /><summary type="html">In last post,
+I introduced the RefPtr&amp;lt;T&amp;gt; that can keep tracking the references to the
+object T and the references are counted by object T itself.
+
+Today, I will note my misuse of it several weeks ago.
+This is also why I want to write the posts about RefPtr&amp;lt;T&amp;gt;.
+
+What behavior I want
+The following behavior is what I want when I was implementing one patch
+for Firefox:
+
+List&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; l; // A list containing all of the solders.
+{
+  RefPtr&amp;lt;Solder&amp;gt; s(new Solder(99)); // Put the `s` into the list.
+}
+// The `s` is destroyed, so it should be removed from the list now.
+
+
+
+and we will put the Solder instance into the l when
+it’s created and remove it when it’s destroyed.
+
+Solder()
+{
+  Add this into `l`
+}
+~Solder()
+{
+  Remove this from `l`
+}
+
+
+
+Why it doesn’t work
+This is a wrong pattern to meet our expectation.
+The solders in the list will only be destroyed and removed from the list
+when the whole program is ended.
+The solders are only removed from the list in its deconstructor.
+However, whenever the RefPtr&amp;lt;Solder&amp;gt; s(new Solder())
+is deconstructed (by ~RefPtr) in the main function,
+the ~Solder() won’t be called
+since there must be one another RefPtr&amp;lt;Solder&amp;gt; some in the list
+referencing the solder.
+Thus, the ~Solder() is only be called
+when the element in the list is decontructed.
+
+Sample code
+// $ g++ test.cpp --std=c++11
+#include &amp;quot;RefPtr.h&amp;quot;
+#include &amp;lt;algorithm&amp;gt;  // std::remove
+#include &amp;lt;cassert&amp;gt;    // assert
+#include &amp;lt;iostream&amp;gt;   // std::cout, std::endl
+#include &amp;lt;vector&amp;gt;     // std::vector
+
+///////////////////////////////////////////////////////////////////////////////
+// Solder Interface
+class Solder: public ReferenceCount
+{
+public:
+  Solder(int n);
+  ~Solder();
+  int CountOff(); // Report the number.
+
+private:
+  int number;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Squad Interface
+class Squad
+{
+public:
+  static void Add(Solder* s);
+  static void Remove(Solder* s);
+  static void CountOff(); // Call all of the solders.
+  static unsigned int Size();
+private:
+  static std::vector&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; members;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Solder Implementation
+Solder::Solder(int n)
+  : number(n)
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Solder &amp;quot; &amp;lt;&amp;lt; number &amp;lt;&amp;lt; &amp;quot; is created.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  Squad::Add(this);
+}
+
+Solder::~Solder()
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Solder &amp;quot; &amp;lt;&amp;lt; number &amp;lt;&amp;lt; &amp;quot; is destroyed.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  Squad::Remove(this);
+}
+
+int
+Solder::CountOff()
+{
+  return number;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Squad Implementation
+std::vector&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; Squad::members;
+
+/* static */ void
+Squad::Add(Solder* s)
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Add Solder &amp;quot; &amp;lt;&amp;lt; s-&amp;gt;CountOff() &amp;lt;&amp;lt; &amp;quot; to members.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  members.push_back(s);
+}
+
+/* static */ void
+Squad::Remove(Solder* s)
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Remove Solder &amp;quot; &amp;lt;&amp;lt; s-&amp;gt;CountOff() &amp;lt;&amp;lt; &amp;quot; from members.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  members.erase(std::remove(members.begin(), members.end(), s), members.end());
+}
+
+/* static */ void
+Squad::CountOff()
+{
+  for (auto&amp;amp; m: members) {
+    std::cout &amp;lt;&amp;lt; &amp;quot;Solder &amp;quot; &amp;lt;&amp;lt; m-&amp;gt;CountOff() &amp;lt;&amp;lt; &amp;quot; is here!&amp;quot; &amp;lt;&amp;lt; std::endl;
+  }
+}
+
+/* static */ unsigned int
+Squad::Size()
+{
+  return members.size();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// *** Wrong example to use RefPtr ***
+//   We will put the Solder instances into the squad when they are created,
+//   and remove the instances from the squad when they are destroyed.
+//   We expect the following behavior.
+//
+//   List&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; l;
+//   {
+//     RefPtr&amp;lt;Solder&amp;gt; s(new Solder(99)); // Put s into the list
+//   }
+//   // s is destroyed and removed from the list, so list is empty now.
+int main()
+{
+  std::cout &amp;lt;&amp;lt; &amp;quot;Creating a solder and put it into squad.&amp;quot; &amp;lt;&amp;lt; std::endl;
+
+  {
+    RefPtr&amp;lt;Solder&amp;gt; s(new Solder(1));
+    Squad::CountOff();
+    // There should be one solder in the squad now.
+    assert(Squad::Size() == 1 &amp;amp;&amp;amp; s-&amp;gt;GetCount() == 2);
+  }
+
+  std::cout &amp;lt;&amp;lt; &amp;quot;Solder should be removed from squad and destroyed.&amp;quot; &amp;lt;&amp;lt; std::endl;
+  // In our mind, we expect there is no solder in the squad now.
+  assert(Squad::Size() == 0); // Comment this to check the below one.
+  // But it&amp;#39;s wrong. The correct status of the memebers is:
+  // assert(Squad::Size() == 1);
+
+  // In our expectation, we expect the solder 1 will be destroyed and removed
+  // from the sqaud when the program is running out of &amp;#39;}&amp;#39; above.
+  // At that time, the ~RefPtr() will be called and check whether we need to
+  // release the solder 1. However, since we still have a reference to solder 1
+  // in the members list of the squal, the reference count to solder 1 is not 0.
+  // Therefore, it won&amp;#39;t be removed!
+
+  // Actually,
+  // ------------------------------------
+  // List&amp;lt;RefPtr&amp;lt;Solder&amp;gt;&amp;gt; list
+  // Solder()
+  // {
+  //   Add &amp;#39;this&amp;#39; into the list
+  // }
+  // ~Solder()
+  // {
+  //   Remove &amp;#39;this&amp;#39; from the list
+  // }
+  // ------------------------------------
+  // is a wrong pattern to meet our expectation.
+  // The solders in the list will only be destroyed and removed from the list
+  // when the whole program is ended. The solders are only removed from
+  // the list in its deconstructor. However, whenever the
+  // RefPtr&amp;lt;Solder&amp;gt; s(new Solder(x)) is deconstructed (by ~RefPtr) in the main,
+  // the ~Solder() won&amp;#39;t be called since there must be one another
+  // RefPtr&amp;lt;Solder&amp;gt; in the list referencing the solder.
+  // Thus, the ~Solder() is only be called when the element in the list is
+  // decontructed.
+
+  return 0;
+}</summary></entry><entry><title type="html">RefPtr v.s. shared_ptr</title><link href="http://localhost:4000/post/refptr-v-s-shared-ptr" rel="alternate" type="text/html" title="RefPtr v.s. shared_ptr" /><published>2017-07-31T00:00:00+08:00</published><updated>2017-07-31T00:00:00+08:00</updated><id>http://localhost:4000/post/refptr-v-s-shared-ptr</id><content type="html" xml:base="http://localhost:4000/post/refptr-v-s-shared-ptr">&lt;p&gt;When I tried to replace Mozilla’s &lt;a href=&quot;http://searchfox.org/mozilla-central/source/mfbt/RefPtr.h&quot; title=&quot;RefPtr&quot;&gt;RefPtr&lt;/a&gt; with standard C++
 smart-pointer to note one of my misusage of it,
 I used &lt;em&gt;std::shard_ptr&lt;/em&gt; to do it.
 However, it didn’t work since there is a huge difference between
@@ -146,7 +529,7 @@ ReferenceCount::Release()
 {
   if (!--count) {
 #ifdef DEBUG
-    fprintf(stderr, &amp;quot;Delete %s @ %p\n&amp;quot;, typeid(*this).name() + 1,this);
+    fprintf(stderr, &amp;quot;Release %s @ %p\n&amp;quot;, typeid(*this).name() + 1,this);
 #endif
     delete this;
   }
@@ -184,6 +567,10 @@ public:
   T* operator-&amp;gt;() const;
 
   T&amp;amp; operator*() const;
+
+  bool operator==(const RefPtr&amp;amp; rhs);
+
+  bool operator==(const T* rawPtr);
 
 private:
   T *pointee;
@@ -257,6 +644,20 @@ RefPtr&amp;lt;T&amp;gt;::operator*() const
 {
   assert(pointee);
   return *pointee;
+}
+
+template&amp;lt;class T&amp;gt;
+bool
+RefPtr&amp;lt;T&amp;gt;::operator==(const RefPtr&amp;amp; rhs)
+{
+  return pointee == rhs.pointee;
+}
+
+template&amp;lt;class T&amp;gt;
+bool
+RefPtr&amp;lt;T&amp;gt;::operator==(const T* rawPtr)
+{
+  return pointee == rawPtr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -514,7 +915,7 @@ ReferenceCount::Release()
 {
   if (!--count) {
 #ifdef DEBUG
-    fprintf(stderr, &amp;quot;Delete %s @ %p &amp;quot;, typeid(*this).name() + 1,this);
+    fprintf(stderr, &amp;quot;Release %s @ %p &amp;quot;, typeid(*this).name() + 1,this);
 #endif
     delete this;
   }
@@ -552,6 +953,10 @@ public:
   T* operator-&amp;gt;() const;
 
   T&amp;amp; operator*() const;
+
+  bool operator==(const RefPtr&amp;amp; rhs);
+
+  bool operator==(const T* rawPtr);
 
 private:
   T *pointee;
@@ -625,6 +1030,20 @@ RefPtr&amp;lt;T&amp;gt;::operator*() const
 {
   assert(pointee);
   return *pointee;
+}
+
+template&amp;lt;class T&amp;gt;
+bool
+RefPtr&amp;lt;T&amp;gt;::operator==(const RefPtr&amp;amp; rhs)
+{
+  return pointee == rhs.pointee;
+}
+
+template&amp;lt;class T&amp;gt;
+bool
+RefPtr&amp;lt;T&amp;gt;::operator==(const T* rawPtr)
+{
+  return pointee == rawPtr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3144,172 +3563,4 @@ to make sure everything is fine.
 
 
 I wrote this to remember how I fix it,
-in case the same problem happens again.</summary></entry><entry><title type="html">Requiring Android build-tools for Fennec</title><link href="http://localhost:4000/post/requiring-android-build-tools-for-fennec" rel="alternate" type="text/html" title="Requiring Android build-tools for Fennec" /><published>2017-03-22T00:00:00+08:00</published><updated>2017-03-22T00:00:00+08:00</updated><id>http://localhost:4000/post/requiring-android-build-tools-for-fennec</id><content type="html" xml:base="http://localhost:4000/post/requiring-android-build-tools-for-fennec">&lt;h1 id=&quot;requiring-android-build-tools-for-fennec&quot;&gt;Requiring Android build-tools for Fennec&lt;/h1&gt;
-
-&lt;p&gt;To build fennec, I run &lt;code class=&quot;highlighter-rouge&quot;&gt;$./mach bootstrap&lt;/code&gt; under my &lt;em&gt;gecko-dev&lt;/em&gt; repo
-and select &lt;em&gt;Firefox for Android&lt;/em&gt; to install all stuff for development.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Please choose the version of Firefox you want to build:
-1. Firefox for Desktop Artifact Mode
-2. Firefox for Desktop
-3. Firefox for Android Artifact Mode
-4. Firefox for Android
-
-Note on Artifact Mode:
-...
-...
-
-Your choice: 4
-
-Looks like you have Homebrew installed. We will install all required packages via Homebrew.
-
-...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Next, I create/modify the &lt;em&gt;mozconfig&lt;/em&gt;(or &lt;em&gt;.mozconfig&lt;/em&gt;) under my &lt;em&gt;gecko-dev&lt;/em&gt; repo:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Build Firefox for Android:
-ac_add_options --enable-application=mobile/android
-ac_add_options --target=arm-linux-androideabi
-
-# With the following Android SDK and NDK:
-ac_add_options --with-android-sdk=&quot;/Users/cchang/.mozbuild/android-sdk-macosx&quot;
-ac_add_options --with-android-ndk=&quot;/Users/cchang/.mozbuild/android-ndk-r11c&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;However, there are still error shown when I build by &lt;code class=&quot;highlighter-rouge&quot;&gt;./mach build&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
-...
- 0:09.78 DEBUG: configure:10912: checking if app-specific confvars.sh exists
- 0:09.78 DEBUG: configure:11077: checking for Android SDK platform version 23
- 0:09.78 DEBUG: configure:11085: checking for Android build-tools
- 0:09.78 DEBUG: configure: error: You must install the Android build-tools version 23.0.3.  Try |mach bootstrap|.  (Looked for /Users/cchang/.mozbuild/android-sdk-macosx/build-tools/23.0.3)
- 0:09.78 ERROR: old-configure failed
- 0:09.82 *** Fix above errors and then restart with               &quot;/Applications/Xcode.app/Contents/Developer/usr/bin/make -f client.mk build&quot;
- 0:09.82 make: *** [configure] Error 1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;To solve this, I check whether &lt;code class=&quot;highlighter-rouge&quot;&gt;/Users/cchang/.mozbuild/android-sdk-macosx/build-tools/23.0.3&lt;/code&gt; exists.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls /Users/cchang/.mozbuild/android-sdk-macosx/
-SDK Readme.txt	extras		platforms		tools
-add-ons		platform-tools	temp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;There is really no &lt;code class=&quot;highlighter-rouge&quot;&gt;build-tools&lt;/code&gt;, so I need to install it by my own.&lt;/p&gt;
-
-&lt;p&gt;I open the &lt;em&gt;SDK Readme.txt&lt;/em&gt; to know what I could do:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd /Users/cchang/.mozbuild/android-sdk-macosx/
-$ vim SDK\ Readme.txt
-...
-...
-To start the SDK Manager, please execute the program &quot;android&quot;.
-
-From the command-line you can also directly trigger an update by
-executing:
-  tools/android update sdk --no-ui
-
-Tip: use --help to see the various command-line options.
-...
-...
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;From above, we could run &lt;code class=&quot;highlighter-rouge&quot;&gt;$ ./tools/android&lt;/code&gt; to install what we need:
-&lt;img src=&quot;../images/posts/android-sdk-manager.png&quot; alt=&quot;Android SDK Manager&quot; title=&quot;Android SDK Manager&quot; /&gt;
-After the selected items are installed, we can successfully build the fennec!&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
-...
-61:33.64 Overall system resources - Wall time: 3687s; CPU: 97%; Read bytes: 3304162816; Write bytes: 6230259712; Read time: 45476; Write time: 36725
-61:33.64 Swap in/out (MB): 4092/2
-61:34.40 /usr/local/bin/terminal-notifier -title Mozilla Build System -group mozbuild -message Build complete
-61:34.69 We know it took a while, but your build finally finished successfully!
-To view resource usage of the build, run |mach resource-usage|.
-For more information on what to do now, see https://developer.mozilla.org/docs/Developer_Guide/So_You_Just_Built_Firefox
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Mozilla" /><category term="Fennec" /><summary type="html">Requiring Android build-tools for Fennec
-
-To build fennec, I run $./mach bootstrap under my gecko-dev repo
-and select Firefox for Android to install all stuff for development.
-
-Please choose the version of Firefox you want to build:
-1. Firefox for Desktop Artifact Mode
-2. Firefox for Desktop
-3. Firefox for Android Artifact Mode
-4. Firefox for Android
-
-Note on Artifact Mode:
-...
-...
-
-Your choice: 4
-
-Looks like you have Homebrew installed. We will install all required packages via Homebrew.
-
-...
-
-
-
-Next, I create/modify the mozconfig(or .mozconfig) under my gecko-dev repo:
-# Build Firefox for Android:
-ac_add_options --enable-application=mobile/android
-ac_add_options --target=arm-linux-androideabi
-
-# With the following Android SDK and NDK:
-ac_add_options --with-android-sdk=&quot;/Users/cchang/.mozbuild/android-sdk-macosx&quot;
-ac_add_options --with-android-ndk=&quot;/Users/cchang/.mozbuild/android-ndk-r11c&quot;
-
-
-
-However, there are still error shown when I build by ./mach build:
-...
-...
- 0:09.78 DEBUG: configure:10912: checking if app-specific confvars.sh exists
- 0:09.78 DEBUG: configure:11077: checking for Android SDK platform version 23
- 0:09.78 DEBUG: configure:11085: checking for Android build-tools
- 0:09.78 DEBUG: configure: error: You must install the Android build-tools version 23.0.3.  Try |mach bootstrap|.  (Looked for /Users/cchang/.mozbuild/android-sdk-macosx/build-tools/23.0.3)
- 0:09.78 ERROR: old-configure failed
- 0:09.82 *** Fix above errors and then restart with               &quot;/Applications/Xcode.app/Contents/Developer/usr/bin/make -f client.mk build&quot;
- 0:09.82 make: *** [configure] Error 1
-
-
-
-To solve this, I check whether /Users/cchang/.mozbuild/android-sdk-macosx/build-tools/23.0.3 exists.
-$ ls /Users/cchang/.mozbuild/android-sdk-macosx/
-SDK Readme.txt	extras		platforms		tools
-add-ons		platform-tools	temp
-
-
-There is really no build-tools, so I need to install it by my own.
-
-I open the SDK Readme.txt to know what I could do:
-$ cd /Users/cchang/.mozbuild/android-sdk-macosx/
-$ vim SDK\ Readme.txt
-...
-...
-To start the SDK Manager, please execute the program &quot;android&quot;.
-
-From the command-line you can also directly trigger an update by
-executing:
-  tools/android update sdk --no-ui
-
-Tip: use --help to see the various command-line options.
-...
-...
-
-
-
-From above, we could run $ ./tools/android to install what we need:
-
-After the selected items are installed, we can successfully build the fennec!
-
-...
-...
-61:33.64 Overall system resources - Wall time: 3687s; CPU: 97%; Read bytes: 3304162816; Write bytes: 6230259712; Read time: 45476; Write time: 36725
-61:33.64 Swap in/out (MB): 4092/2
-61:34.40 /usr/local/bin/terminal-notifier -title Mozilla Build System -group mozbuild -message Build complete
-61:34.69 We know it took a while, but your build finally finished successfully!
-To view resource usage of the build, run |mach resource-usage|.
-For more information on what to do now, see https://developer.mozilla.org/docs/Developer_Guide/So_You_Just_Built_Firefox</summary></entry></feed>
+in case the same problem happens again.</summary></entry></feed>

@@ -1,4 +1,134 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-08T14:30:29+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;a href=&quot;/post/refptr-v-s-shared-ptr&quot;&gt;last post&lt;/a&gt;,
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-13T21:32:37+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Closed Form for the Fibonacci Sequence</title><link href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" rel="alternate" type="text/html" title="Closed Form for the Fibonacci Sequence" /><published>2017-08-13T00:00:00+08:00</published><updated>2017-08-13T00:00:00+08:00</updated><id>http://localhost:4000/post/closed-form-for-the-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number can be defined as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;F_0 = 0, F_1 = 1&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Assume &lt;script type=&quot;math/tex&quot;&gt;F_n = s \cdot r^n&lt;/script&gt;,
+then &lt;script type=&quot;math/tex&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt; can be rewritten into:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;s \cdot r^n = s \cdot r^{n-1} + s \cdot r^{n-2}&lt;/script&gt;
+
+&lt;p&gt;Thus,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;s \cdot r^{n-2} \cdot (r^2 - r - 1) = 0&lt;/script&gt;
+
+&lt;p&gt;and &lt;script type=&quot;math/tex&quot;&gt;r = \frac{1\pm \sqrt{5}}{2}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;p = \frac{1 + \sqrt{5}}{2}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;r = \frac{1 - \sqrt{5}}{2}&lt;/script&gt;,
+and &lt;script type=&quot;math/tex&quot;&gt;x_k = u \cdot p^k + v \cdot q^k&lt;/script&gt;,
+we now show that &lt;script type=&quot;math/tex&quot;&gt;x_k&lt;/script&gt; is also a solution for &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt;.
+That is, we need to show &lt;script type=&quot;math/tex&quot;&gt;x_k = x_{k-1} + x_{k-2}&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Proof&lt;/em&gt;:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+x_{k-1} + x_{k-2}
+&amp;= u \cdot p^{k-1} + v \cdot q^{k-1} + u \cdot p^{k-2} + v \cdot q^{k-2} \\
+&amp;= u \cdot p^{k-2} \cdot (1 + p) + v \cdot q^{k-2} \cdot (1 + q) \\
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;r + 1 = r^2(\text{by } r^2 - r - 1 = 0)&lt;/script&gt;,
+we know &lt;script type=&quot;math/tex&quot;&gt;p + 1 = p^2&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;q + 1 = q^2&lt;/script&gt;
+Thus,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+x_{k-1} + x_{k-2}
+&amp;= u \cdot p^{k-2} \cdot (1 + p) + v \cdot q^{k-2} \cdot (1 + q) \\
+&amp;= u \cdot p^{k-2} \cdot p^2 + v \cdot q^{k-2} \cdot q^2 \\
+&amp;= u \cdot p^k + v \cdot q^k \\
+&amp;= x_k
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Next, if we take &lt;script type=&quot;math/tex&quot;&gt;x_k&lt;/script&gt; as our closed form for the &lt;em&gt;Fibonacci&lt;/em&gt; number,
+we also need to know what &lt;script type=&quot;math/tex&quot;&gt;u, v&lt;/script&gt; are.
+Fortunately, by the definition, we already know &lt;script type=&quot;math/tex&quot;&gt;F_0 = 0, F_1 = 1&lt;/script&gt;,
+so&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+x_0 &amp;= 0 = u \cdot p^0+ v \cdot q^0 = u + v \\
+x_1 &amp;= 1 = u \cdot p + v \cdot q
+= u \cdot \frac{1 + \sqrt{5}}{2} + v \cdot \frac{1 - \sqrt{5}}{2} \\
+\Rightarrow 2 &amp;= u + u \cdot \sqrt{5} + v - v \cdot \sqrt{5} \\
+&amp;= (u + v) + \sqrt{5} \cdot (u - v) \\
+&amp;= \sqrt{5} \cdot (u - v)
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;By &lt;script type=&quot;math/tex&quot;&gt;u + v = 0&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;u - v = \frac{2}{\sqrt{5}}&lt;/script&gt;, we know that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+u &amp;= \frac{1}{\sqrt{5}} \\
+v &amp;= \frac{-1}{\sqrt{5}}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;As a result,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+x_k &amp;= u \cdot p^k + v \cdot q^k \\
+&amp;= \frac{1}{\sqrt{5}} \cdot (\frac{1 + \sqrt{5}}{2})^k - \frac{1}{\sqrt{5}} \cdot (\frac{1 - \sqrt{5}}{2})^k \\
+&amp;= \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^k -  (\frac{1 - \sqrt{5}}{2})^k ]
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;http://math.ucr.edu/~res/math153/history07a.pdf&lt;/li&gt;
+  &lt;li&gt;http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Math" /><category term="Fibonacci" /><summary type="html">The Fibonacci number can be defined as:
+
+
+
+where .
+
+Assume ,
+then  can be rewritten into:
+
+
+
+Thus,
+
+
+
+and 
+
+Let , ,
+and ,
+we now show that  is also a solution for .
+That is, we need to show .
+
+Proof:
+
+
+
+Since ,
+we know  and 
+Thus,
+
+
+
+Next, if we take  as our closed form for the Fibonacci number,
+we also need to know what  are.
+Fortunately, by the definition, we already know ,
+so
+
+
+
+By  and , we know that
+
+
+
+As a result,
+
+
+
+References
+
+  http://math.ucr.edu/~res/math153/history07a.pdf
+  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm</summary></entry><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;a href=&quot;/post/refptr-v-s-shared-ptr&quot;&gt;last post&lt;/a&gt;,
 I introduced the &lt;code class=&quot;highlighter-rouge&quot;&gt;RefPtr&amp;lt;T&amp;gt;&lt;/code&gt; that can keep tracking the references to the
 object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; and the references are counted by object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; itself.&lt;/p&gt;
 
@@ -3501,70 +3631,4 @@ Thus, the generated symbols are also local in each file.
 static void LOG(std::string s)
 {
   std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
-}</summary></entry><entry><title type="html">Running multiple Firefox at the same time</title><link href="http://localhost:4000/post/running-multiple-firefox-at-the-same-time" rel="alternate" type="text/html" title="Running multiple Firefox at the same time" /><published>2017-03-30T00:00:00+08:00</published><updated>2017-03-30T00:00:00+08:00</updated><id>http://localhost:4000/post/running-multiple-firefox-at-the-same-time</id><content type="html" xml:base="http://localhost:4000/post/running-multiple-firefox-at-the-same-time">&lt;h1 id=&quot;running-multiple-firefox-at-the-same-time&quot;&gt;Running multiple Firefox at the same time&lt;/h1&gt;
-
-&lt;p&gt;I have two firefox: Firefox(normal version) and Firefox Developer Edition.
-Today morning, I deleted the Firefox Developer Edition by &lt;em&gt;AppCleaner&lt;/em&gt;
-and re-installed it, then something weird happened.&lt;/p&gt;
-
-&lt;p&gt;When I opened the new Firefox Developer Edition
-then launched my unchanged Firefox, the Firefox cannot be opened
-and it showed an error: &lt;strong&gt;A copy of Firefox is already open.
-Only one copy of Firefox an be opened at a time.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/posts/a-copy-of-firefox-is-alreay-open.png&quot; alt=&quot;&quot; title=&quot;A copy of Firefox is already open&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;AFAIK, the multiple Firefox instances are able to run at the same time,
-if they use &lt;strong&gt;different profiles&lt;/strong&gt;.
-Therefore, I opened &lt;code class=&quot;highlighter-rouge&quot;&gt;about:profiles&lt;/code&gt; on Firefox to check it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/posts/firefox-about-profiles-wrong.png&quot; alt=&quot;&quot; title=&quot;Firefox - about:profiles(incorrect)&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;From above, the setting was incorrect.
-It should use &lt;em&gt;Profile: default&lt;/em&gt; instead of &lt;em&gt;Profile: dev-edition-default&lt;/em&gt;.
-That’s why I cannot open Firefox and FirefoxDeveloperEdition at the same time.&lt;/p&gt;
-
-&lt;p&gt;To fix the problem, I simply click &lt;em&gt;Set a default profile&lt;/em&gt;
-under &lt;em&gt;Profile: default&lt;/em&gt;, then closed it, and relaunched it to check the setting.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/posts/firefox-about-profiles-right.png&quot; alt=&quot;&quot; title=&quot;Firefox - about:profiles(correct)&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I also checked the FirefoxDeveloperEdition’s setting
-to make sure everything is fine.
-&lt;img src=&quot;../images/posts/firefoxdeveloperedition-about-profiles.png&quot; alt=&quot;&quot; title=&quot;FirefoxDeveloperEdition - about:profiles&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I wrote this to remember how I fix it,
-in case the same problem happens again.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Mozilla" /><category term="Firefox" /><summary type="html">Running multiple Firefox at the same time
-
-I have two firefox: Firefox(normal version) and Firefox Developer Edition.
-Today morning, I deleted the Firefox Developer Edition by AppCleaner
-and re-installed it, then something weird happened.
-
-When I opened the new Firefox Developer Edition
-then launched my unchanged Firefox, the Firefox cannot be opened
-and it showed an error: A copy of Firefox is already open.
-Only one copy of Firefox an be opened at a time.
-
-
-
-AFAIK, the multiple Firefox instances are able to run at the same time,
-if they use different profiles.
-Therefore, I opened about:profiles on Firefox to check it.
-
-
-
-From above, the setting was incorrect.
-It should use Profile: default instead of Profile: dev-edition-default.
-That’s why I cannot open Firefox and FirefoxDeveloperEdition at the same time.
-
-To fix the problem, I simply click Set a default profile
-under Profile: default, then closed it, and relaunched it to check the setting.
-
-
-
-I also checked the FirefoxDeveloperEdition’s setting
-to make sure everything is fine.
-
-
-I wrote this to remember how I fix it,
-in case the same problem happens again.</summary></entry></feed>
+}</summary></entry></feed>

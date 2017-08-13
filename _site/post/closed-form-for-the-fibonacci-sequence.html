@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+
+<meta name="keywords" content="Fibonacci">
+
+
+<!-- Begin Jekyll SEO tag v1.3.3 -->
+<title>Closed Form for the Fibonacci Sequence - Peak Up</title>
+<meta property="og:title" content="Closed Form for the Fibonacci Sequence" />
+<meta name="description" content="The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm" />
+<meta property="og:description" content="The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm" />
+<link rel="canonical" href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" />
+<meta property="og:url" content="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" />
+<meta property="og:site_name" content="Peak Up" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-08-13T00:00:00+08:00" />
+<link rel="prev" href="http://localhost:4000/post/the-misuse-of-refptr" title="The Misuse of RefPtr" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Closed Form for the Fibonacci Sequence",
+    "datePublished": "2017-08-13T00:00:00+08:00",
+    "description": "The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm",
+    "logo": "http://localhost:4000mountain.png",
+    "url": "http://localhost:4000/post/closed-form-for-the-fibonacci-sequence"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Peak Up" />
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/font-awesome.min.css" />
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
+
+
+<!--Load Mathjax-->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+        MathJax.Hub.Config({
+            config: ["MMLorHTML.js"],
+            extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+            jax: ["input/TeX"],
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: false
+            },
+            TeX: {
+                TagSide: "right",
+                TagIndent: ".8em",
+                MultLineWidth: "85%",
+                equationNumbers: {
+                   autoNumber: "AMS",
+                },
+                unicode: {
+                   fonts: "STIXGeneral,'Arial Unicode MS'"
+                }
+            },
+            showProcessingMessages: false
+        });
+</script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/favicons/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/favicons/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/favicons/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/favicons/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">
+
+    
+<div class="search-wrapper">
+    <div class="search-form">
+        <input type="text" id="search-input" class="search-field" placeholder="Search...">
+        <i id="search-close" class="fa fa-times-circle"></i>
+        <h4>Search results</h4>
+        <ul id="results-container" class="search-results post-list">
+        </ul>
+        <!-- /.search-results -->
+    </div>
+    <!-- /.search-form -->
+</div>
+<!-- ./search-wrapper -->
+
+
+<div id="fade"></div>
+<a id="slide" class="animated fade">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+</a>
+<aside id="sidebar">
+    <nav id="navigation">
+        <h2>MENU</h2>
+        <hr>
+        <ul> 
+            <li>
+                <a href="http://localhost:4000/"><!-- <i class="fa fa-home"></i>&nbsp;-->Home</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/categories"><!-- <i class="fa fa-sitemap"></i>&nbsp;-->Categories</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/tags"><!-- <i class="fa fa-tags"></i>&nbsp;-->Tags</a>  </li>
+            
+            <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+        </ul>
+    </nav>
+</aside>
+
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom" style="background-image: url(http://localhost:4000/images/background/taiwan_1.jpg)"
+    itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <button class="menu-button animated fade dosearch">
+        <i class="fa fa-search"></i>
+    </button>
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="http://localhost:4000/" itemprop="url">
+                <img itemprop="logo" src="http://localhost:4000/images/mountain.png" alt="Peak Up Logo" />
+                <h1 class="blog-title light" itemprop="name">
+                    Peak Up
+                </h1>
+            </a>
+        </div>
+    </div>
+
+
+
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+
+</header>
+
+
+    <div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+        <div class="container">
+            <div class="row">
+                <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+                
+                
+                
+                
+
+                    <header class="post-header entry-header">
+
+                    
+
+                    
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">
+                        
+                            
+                        
+                        
+                        
+
+                        
+                            Closed Form for the Fibonacci Sequence
+                        </h1>
+                    
+
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+
+                            <div class="post-info text-center small">
+                            
+                                <span class="entry-date date published updated">
+                            
+                            
+                                    <time datetime="2017-08-13T00:00:00+08:00" class="post-time" itemprop="datePublished">13 Aug 2017</time>
+                                </span>
+                            
+
+                                in <span class="post-tags">
+
+                            
+                                    <a href="http://localhost:4000/categories/index.html#Math" data-toggle="tooltip" title="Other posts from the Math category" rel="tag">Math</a>
+                                
+                            
+                                </span>
+                            
+                            &nbsp;
+                                <span class="post-tags"><i class="fa fa-clock-o"></i>&nbsp;
+
+                            
+
+                            
+                                
+                            
+                                    Less than 1 minute read
+                            
+
+                                </span>
+                            
+                            </div>
+
+                    </header>
+
+                    <div class="post-body bordered-bottom" itemprop="description">
+                    
+
+                        <p>The <em>Fibonacci</em> number can be defined as:</p>
+
+<script type="math/tex; mode=display">F_n = F_{n-1} + F_{n-2}</script>
+
+<p>where <script type="math/tex">F_0 = 0, F_1 = 1</script>.</p>
+
+<p>Assume <script type="math/tex">F_n = s \cdot r^n</script>,
+then <script type="math/tex">F_n = F_{n-1} + F_{n-2}</script> can be rewritten into:</p>
+
+<script type="math/tex; mode=display">s \cdot r^n = s \cdot r^{n-1} + s \cdot r^{n-2}</script>
+
+<p>Thus,</p>
+
+<script type="math/tex; mode=display">s \cdot r^{n-2} \cdot (r^2 - r - 1) = 0</script>
+
+<p>and <script type="math/tex">r = \frac{1\pm \sqrt{5}}{2}</script></p>
+
+<p>Let <script type="math/tex">p = \frac{1 + \sqrt{5}}{2}</script>, <script type="math/tex">r = \frac{1 - \sqrt{5}}{2}</script>,
+and <script type="math/tex">x_k = u \cdot p^k + v \cdot q^k</script>,
+we now show that <script type="math/tex">x_k</script> is also a solution for <script type="math/tex">F_k</script>.
+That is, we need to show <script type="math/tex">x_k = x_{k-1} + x_{k-2}</script>.</p>
+
+<p><em>Proof</em>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+x_{k-1} + x_{k-2}
+&= u \cdot p^{k-1} + v \cdot q^{k-1} + u \cdot p^{k-2} + v \cdot q^{k-2} \\
+&= u \cdot p^{k-2} \cdot (1 + p) + v \cdot q^{k-2} \cdot (1 + q) \\
+\end{align} %]]></script>
+
+<p>Since <script type="math/tex">r + 1 = r^2(\text{by } r^2 - r - 1 = 0)</script>,
+we know <script type="math/tex">p + 1 = p^2</script> and <script type="math/tex">q + 1 = q^2</script>
+Thus,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+x_{k-1} + x_{k-2}
+&= u \cdot p^{k-2} \cdot (1 + p) + v \cdot q^{k-2} \cdot (1 + q) \\
+&= u \cdot p^{k-2} \cdot p^2 + v \cdot q^{k-2} \cdot q^2 \\
+&= u \cdot p^k + v \cdot q^k \\
+&= x_k
+\end{align} %]]></script>
+
+<p>Next, if we take <script type="math/tex">x_k</script> as our closed form for the <em>Fibonacci</em> number,
+we also need to know what <script type="math/tex">u, v</script> are.
+Fortunately, by the definition, we already know <script type="math/tex">F_0 = 0, F_1 = 1</script>,
+so</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+x_0 &= 0 = u \cdot p^0+ v \cdot q^0 = u + v \\
+x_1 &= 1 = u \cdot p + v \cdot q
+= u \cdot \frac{1 + \sqrt{5}}{2} + v \cdot \frac{1 - \sqrt{5}}{2} \\
+\Rightarrow 2 &= u + u \cdot \sqrt{5} + v - v \cdot \sqrt{5} \\
+&= (u + v) + \sqrt{5} \cdot (u - v) \\
+&= \sqrt{5} \cdot (u - v)
+\end{align} %]]></script>
+
+<p>By <script type="math/tex">u + v = 0</script> and <script type="math/tex">u - v = \frac{2}{\sqrt{5}}</script>, we know that</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+u &= \frac{1}{\sqrt{5}} \\
+v &= \frac{-1}{\sqrt{5}}
+\end{align} %]]></script>
+
+<p>As a result,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+x_k &= u \cdot p^k + v \cdot q^k \\
+&= \frac{1}{\sqrt{5}} \cdot (\frac{1 + \sqrt{5}}{2})^k - \frac{1}{\sqrt{5}} \cdot (\frac{1 - \sqrt{5}}{2})^k \\
+&= \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^k -  (\frac{1 - \sqrt{5}}{2})^k ]
+\end{align} %]]></script>
+
+<h2 id="references">References</h2>
+<ul>
+  <li>http://math.ucr.edu/~res/math153/history07a.pdf</li>
+  <li>http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm</li>
+</ul>
+
+
+                        <br>
+
+                    
+                    
+                        <div class="entry-tags text-center">
+                            <i class="fa fa-tags"></i>&nbsp;
+                                Tagged with 
+                            
+                                <a href="http://localhost:4000/tags/index.html#Fibonacci" data-toggle="tooltip" title="Posts tagged with Fibonacci" rel="tag">Fibonacci</a>
+
+                                
+                            
+                        </div>
+                    
+                    </div>
+
+                    <footer class="post-footer entry-meta">
+                    
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=Closed+Form+for+the+Fibonacci+Sequence%20http://localhost:4000/post/closed-form-for-the-fibonacci-sequence%20via%20&#64;"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
+                title="Share on Twitter" itemprop="Twitter">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+                data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="fa fa-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+                data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                    
+
+                        <div class="post-author text-center">
+	<img src="http://localhost:4000/images/chunmin.jpg" alt="Chun-Min Chang's photo" itemprop="image" class="post-avatar img-circle img-responsive" />
+	<h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+		By <span itemprop="name" class="fn"><a href="http://localhost:4000/about" title="About Chun-Min Chang" itemprop="url">Chun-Min Chang</a></span>
+	</h4>
+	<p>I am a self-directed learner and a maker who enjoys building products from original ideas.</p>
+</div> 
+                        
+                    
+                        <div id="disqus_thread"></div><!-- /#disqus_thread -->
+                    
+                    </footer>
+
+                </article>
+            </div>
+        </div>
+    </div>
+
+    
+<footer id="footer" class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(http://localhost:4000/images/background/taiwan_1.jpg)">
+
+
+    <div class="inner">
+        <div class="container">
+            <ul class="social-icons">
+                    
+                <li>
+                    <a href="https://www.linkedin.com/in/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on LinkedIn" target="_blank">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                </li>
+                   
+                <li>
+                    <a href="http://github.com/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on Github" target="_blank">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </li>
+                
+            </ul>
+            <div>
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2017 &bull;
+                All rights reserved.
+            </div>
+            <ul class="menu-items">
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/"><i class="fa fa-home"></i>&nbsp;Home</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/categories"><i class="fa fa-sitemap"></i>&nbsp;Categories</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/tags"><i class="fa fa-tags"></i>&nbsp;Tags</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <div class="decor-wrapper">
+        <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+    
+
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.12.4.min.js"><\/script>')</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jekyll-search.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.fitvids.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.waypoints.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/main.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+<!-- Jekyll Simple Search option -->
+<script>
+
+   SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: 'http://localhost:4000/assets/json/search.json',
+        searchResultTemplate: '<li><article><a href="{url}">{title} <span class="entry-date"><time datetime="{date}">{shortdate}</time></span></a></article></li>',
+        noResultsText: '<p>Nothing found.</p>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+
+  (function( $, window, undefined ) {
+    
+     var bs = {
+          close: $("#search-close"),
+          searchform: $(".search-form"),
+          canvas: $("body"),
+          dothis: $('.dosearch')
+      };
+    
+    bs.dothis.on('click', function() {
+      $('.search-wrapper').css({ display: "block" });
+      bs.searchform.toggleClass('active');
+      bs.searchform.find('input').focus();
+      bs.canvas.toggleClass('search-overlay');
+    });
+    
+      bs.close.on('click', function() {
+        $('.search-wrapper').removeAttr( 'style' );
+        bs.searchform.toggleClass('active');
+        bs.canvas.removeClass('search-overlay');
+    });
+  })( jQuery, window );
+</script>
+
+
+ 
+
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'chunminchang-blog'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        
+</body>
+</html>

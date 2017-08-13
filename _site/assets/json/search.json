@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Closed Form for the Fibonacci Sequence",
+      "category" : "Math",
+      "tags"     : "Fibonacci",
+      "url"      : "/post/closed-form-for-the-fibonacci-sequence",
+      "date"     : "2017-08-13 00:00:00 +0800",
+			"shortdate": "August 13, 2017"
+    } ,
+  
+    {
       "title"    : "The Misuse of RefPtr",
       "category" : "Common",
       "tags"     : "C/C++, Firefox",

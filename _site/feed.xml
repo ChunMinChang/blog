@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-13T21:32:37+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Closed Form for the Fibonacci Sequence</title><link href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" rel="alternate" type="text/html" title="Closed Form for the Fibonacci Sequence" /><published>2017-08-13T00:00:00+08:00</published><updated>2017-08-13T00:00:00+08:00</updated><id>http://localhost:4000/post/closed-form-for-the-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number can be defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-14T11:23:10+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Closed Form for the Fibonacci Sequence</title><link href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" rel="alternate" type="text/html" title="Closed Form for the Fibonacci Sequence" /><published>2017-08-13T00:00:00+08:00</published><updated>2017-08-13T00:00:00+08:00</updated><id>http://localhost:4000/post/closed-form-for-the-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number can be defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -74,10 +74,22 @@ x_k &amp;= u \cdot p^k + v \cdot q^k \\
 &amp;= \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^k -  (\frac{1 - \sqrt{5}}{2})^k ]
 \end{align} %]]&gt;&lt;/script&gt;
 
+&lt;h2 id=&quot;graph&quot;&gt;Graph&lt;/h2&gt;
+&lt;p&gt;See the online &lt;a href=&quot;https://www.wolframalpha.com/input/?i=(((1%2Bsqrt(5))%2F2)%5Ex+-+((1-sqrt(5))%2F2)%5Ex)%2Fsqrt(5)&quot;&gt;graph here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;questions&quot;&gt;Questions&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Why we assume &lt;script type=&quot;math/tex&quot;&gt;F_n = s \cdot r^n&lt;/script&gt;?&lt;/li&gt;
+  &lt;li&gt;Why we use &lt;script type=&quot;math/tex&quot;&gt;F_n = u \cdot p^n + v \cdot q^n&lt;/script&gt;
+instead of &lt;script type=&quot;math/tex&quot;&gt;F_n = s \cdot r^n&lt;/script&gt; as our closed form?&lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;http://math.ucr.edu/~res/math153/history07a.pdf&lt;/li&gt;
   &lt;li&gt;http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm&lt;/li&gt;
+  &lt;li&gt;https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence&lt;/li&gt;
+  &lt;li&gt;http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html&lt;/li&gt;
 &lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Math" /><category term="Fibonacci" /><summary type="html">The Fibonacci number can be defined as:
 
 
@@ -125,10 +137,22 @@ As a result,
 
 
 
+Graph
+See the online graph here
+
+Questions
+
+  Why we assume ?
+  Why we use 
+instead of  as our closed form?
+
+
 References
 
   http://math.ucr.edu/~res/math153/history07a.pdf
-  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm</summary></entry><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;a href=&quot;/post/refptr-v-s-shared-ptr&quot;&gt;last post&lt;/a&gt;,
+  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm
+  https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence
+  http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html</summary></entry><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;a href=&quot;/post/refptr-v-s-shared-ptr&quot;&gt;last post&lt;/a&gt;,
 I introduced the &lt;code class=&quot;highlighter-rouge&quot;&gt;RefPtr&amp;lt;T&amp;gt;&lt;/code&gt; that can keep tracking the references to the
 object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; and the references are counted by object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; itself.&lt;/p&gt;
 

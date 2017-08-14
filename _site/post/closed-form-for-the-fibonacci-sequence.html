@@ -11,8 +11,8 @@
 <!-- Begin Jekyll SEO tag v1.3.3 -->
 <title>Closed Form for the Fibonacci Sequence - Peak Up</title>
 <meta property="og:title" content="Closed Form for the Fibonacci Sequence" />
-<meta name="description" content="The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm" />
-<meta property="og:description" content="The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm" />
+<meta name="description" content="The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,GraphSee the online graph hereQuestions  Why we assume ?  Why we use instead of  as our closed form?References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm  https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence  http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html" />
+<meta property="og:description" content="The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,GraphSee the online graph hereQuestions  Why we assume ?  Why we use instead of  as our closed form?References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm  https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence  http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html" />
 <link rel="canonical" href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" />
 <meta property="og:url" content="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" />
 <meta property="og:site_name" content="Peak Up" />
@@ -25,7 +25,7 @@
     "@type": "BlogPosting",
     "headline": "Closed Form for the Fibonacci Sequence",
     "datePublished": "2017-08-13T00:00:00+08:00",
-    "description": "The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm",
+    "description": "The Fibonacci number can be defined as:where .Assume ,then  can be rewritten into:Thus,and Let , ,and ,we now show that  is also a solution for .That is, we need to show .Proof:Since ,we know  and Thus,Next, if we take  as our closed form for the Fibonacci number,we also need to know what  are.Fortunately, by the definition, we already know ,soBy  and , we know thatAs a result,GraphSee the online graph hereQuestions  Why we assume ?  Why we use instead of  as our closed form?References  http://math.ucr.edu/~res/math153/history07a.pdf  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm  https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence  http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html",
     "logo": "http://localhost:4000mountain.png",
     "url": "http://localhost:4000/post/closed-form-for-the-fibonacci-sequence"
   }
@@ -315,10 +315,22 @@ x_k &= u \cdot p^k + v \cdot q^k \\
 &= \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^k -  (\frac{1 - \sqrt{5}}{2})^k ]
 \end{align} %]]></script>
 
+<h2 id="graph">Graph</h2>
+<p>See the online <a href="https://www.wolframalpha.com/input/?i=(((1%2Bsqrt(5))%2F2)%5Ex+-+((1-sqrt(5))%2F2)%5Ex)%2Fsqrt(5)">graph here</a></p>
+
+<h2 id="questions">Questions</h2>
+<ul>
+  <li>Why we assume <script type="math/tex">F_n = s \cdot r^n</script>?</li>
+  <li>Why we use <script type="math/tex">F_n = u \cdot p^n + v \cdot q^n</script>
+instead of <script type="math/tex">F_n = s \cdot r^n</script> as our closed form?</li>
+</ul>
+
 <h2 id="references">References</h2>
 <ul>
   <li>http://math.ucr.edu/~res/math153/history07a.pdf</li>
   <li>http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm</li>
+  <li>https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence</li>
+  <li>http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html</li>
 </ul>
 
 

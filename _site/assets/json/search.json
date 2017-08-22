@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Exponentiation by squaring",
+      "category" : "AlgorithmMath",
+      "tags"     : "power",
+      "url"      : "/post/exponentiation-by-squaring",
+      "date"     : "2017-08-19 00:00:00 +0800",
+			"shortdate": "August 19, 2017"
+    } ,
+  
+    {
       "title"    : "Closed Form for the Fibonacci Sequence",
       "category" : "Math",
       "tags"     : "Fibonacci",

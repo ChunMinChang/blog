@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+
+<meta name="keywords" content="power">
+
+
+<!-- Begin Jekyll SEO tag v1.3.3 -->
+<title>Exponentiation by squaring - Peak Up</title>
+<meta property="og:title" content="Exponentiation by squaring" />
+<meta name="description" content="What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Recursive approachIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}Iterative approachIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}All the above code are on gist here." />
+<meta property="og:description" content="What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Recursive approachIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}Iterative approachIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}All the above code are on gist here." />
+<link rel="canonical" href="http://localhost:4000/post/exponentiation-by-squaring" />
+<meta property="og:url" content="http://localhost:4000/post/exponentiation-by-squaring" />
+<meta property="og:site_name" content="Peak Up" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-08-19T00:00:00+08:00" />
+<link rel="prev" href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" title="Closed Form for the Fibonacci Sequence" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Exponentiation by squaring",
+    "datePublished": "2017-08-19T00:00:00+08:00",
+    "description": "What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Recursive approachIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}Iterative approachIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}All the above code are on gist here.",
+    "logo": "http://localhost:4000mountain.png",
+    "url": "http://localhost:4000/post/exponentiation-by-squaring"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Peak Up" />
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/font-awesome.min.css" />
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
+
+
+<!--Load Mathjax-->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+        MathJax.Hub.Config({
+            config: ["MMLorHTML.js"],
+            extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+            jax: ["input/TeX"],
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: false
+            },
+            TeX: {
+                TagSide: "right",
+                TagIndent: ".8em",
+                MultLineWidth: "85%",
+                equationNumbers: {
+                   autoNumber: "AMS",
+                },
+                unicode: {
+                   fonts: "STIXGeneral,'Arial Unicode MS'"
+                }
+            },
+            showProcessingMessages: false
+        });
+</script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/favicons/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/favicons/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/favicons/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/favicons/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">
+
+    
+<div class="search-wrapper">
+    <div class="search-form">
+        <input type="text" id="search-input" class="search-field" placeholder="Search...">
+        <i id="search-close" class="fa fa-times-circle"></i>
+        <h4>Search results</h4>
+        <ul id="results-container" class="search-results post-list">
+        </ul>
+        <!-- /.search-results -->
+    </div>
+    <!-- /.search-form -->
+</div>
+<!-- ./search-wrapper -->
+
+
+<div id="fade"></div>
+<a id="slide" class="animated fade">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+</a>
+<aside id="sidebar">
+    <nav id="navigation">
+        <h2>MENU</h2>
+        <hr>
+        <ul> 
+            <li>
+                <a href="http://localhost:4000/"><!-- <i class="fa fa-home"></i>&nbsp;-->Home</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/categories"><!-- <i class="fa fa-sitemap"></i>&nbsp;-->Categories</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/tags"><!-- <i class="fa fa-tags"></i>&nbsp;-->Tags</a>  </li>
+            
+            <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+        </ul>
+    </nav>
+</aside>
+
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom" style="background-image: url(http://localhost:4000/images/background/taiwan_1.jpg)"
+    itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <button class="menu-button animated fade dosearch">
+        <i class="fa fa-search"></i>
+    </button>
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="http://localhost:4000/" itemprop="url">
+                <img itemprop="logo" src="http://localhost:4000/images/mountain.png" alt="Peak Up Logo" />
+                <h1 class="blog-title light" itemprop="name">
+                    Peak Up
+                </h1>
+            </a>
+        </div>
+    </div>
+
+
+
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+
+</header>
+
+
+    <div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+        <div class="container">
+            <div class="row">
+                <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+                
+                
+                
+                
+
+                    <header class="post-header entry-header">
+
+                    
+
+                    
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">
+                        
+                            
+                        
+                        
+                        
+
+                        
+                            Exponentiation by squaring
+                        </h1>
+                    
+
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+
+                            <div class="post-info text-center small">
+                            
+                                <span class="entry-date date published updated">
+                            
+                            
+                                    <time datetime="2017-08-19T00:00:00+08:00" class="post-time" itemprop="datePublished">19 Aug 2017</time>
+                                </span>
+                            
+
+                                in <span class="post-tags">
+
+                            
+                                    <a href="http://localhost:4000/categories/index.html#AlgorithmMath" data-toggle="tooltip" title="Other posts from the Algorithm category" rel="tag">Algorithm</a>
+                                
+                                    &nbsp;&bull;&nbsp;
+                                
+                            
+                                    <a href="http://localhost:4000/categories/index.html#AlgorithmMath" data-toggle="tooltip" title="Other posts from the Math category" rel="tag">Math</a>
+                                
+                            
+                                </span>
+                            
+                            &nbsp;
+                                <span class="post-tags"><i class="fa fa-clock-o"></i>&nbsp;
+
+                            
+
+                            
+                                    <span class="time">5.788888888888889</span> minutes read
+                            
+                                
+                            
+
+                                </span>
+                            
+                            </div>
+
+                    </header>
+
+                    <div class="post-body bordered-bottom" itemprop="description">
+                    
+
+                        <p>What is the time complexity of the computation for <script type="math/tex">k^n</script>?
+We might intuitively think it’s <script type="math/tex">O(n)</script>.
+In fact, it can be done in <script type="math/tex">O(\log n)</script>
+by <a href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring">exponentiation by squaring</a>.</p>
+
+<p>The key idea is:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+k^n =
+\begin{cases}
+(k^\frac{n}{2})^2,  & \text{if $n$ is even} \\
+k \cdot (k^\frac{n-1}{2})^2, & \text{if $n$ is odd}
+\end{cases} %]]></script>
+
+<p>or</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+k^n =
+\begin{cases}
+(k^2)^\frac{n}{2},  & \text{if $n$ is even} \\
+k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
+\end{cases} %]]></script>
+
+<p>By dividing <script type="math/tex">n</script> to <script type="math/tex">\frac{n}{2}</script> again and again,
+then stop when <script type="math/tex">n = 0</script>,
+we could solve <script type="math/tex">k^n</script> in <script type="math/tex">O(\log n)</script>.</p>
+
+<h2 id="recursive-approach">Recursive approach</h2>
+
+<p>If we apply the first conversion, we could get the following code:</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow1</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="n">pow1</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">pow1</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">pow1</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">pow1</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>The above program uses two same recursions, <code class="highlighter-rouge">... * pow1(...) * pow1(...)</code>,
+as the returned value, so it will duplicate two same stacks.
+On the other hand, if we apply the second conversion,
+then there is no duplicated stack needed.
+It could save almost half computation time of the <code class="highlighter-rouge">pow1</code>
+since it only uses half recursions than <code class="highlighter-rouge">pow1</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow2</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="n">pow2</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">pow2</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>The above code still could be simplified.
+The result of the division <script type="math/tex">y = \frac{x}{2}</script> is
+actually <script type="math/tex">y = \lfloor \frac{x}{2} \rfloor</script> in the world of <em>C</em> and <em>C++</em>,
+if <script type="math/tex">y</script> is an integer.</p>
+
+<p>That is, if <code class="highlighter-rouge">n</code> is an <strong>odd</strong> integer,
+then the result of <code class="highlighter-rouge">n = (n - 1) / 2</code> is same as <code class="highlighter-rouge">n = n / 2</code>.</p>
+
+<p>Thus, the code could be simplified as fellow:</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow3</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">uint64_t</span> <span class="n">x</span> <span class="o">=</span> <span class="n">pow3</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="c1">// so x = (k^2)^(n/2),      if n is even
+</span>  <span class="c1">//     or (k^2)^((n-1)/2),  if n is odd
+</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">k</span><span class="p">;</span> <span class="c1">// so x = k * (k^2)^((n-1)/2)
+</span>  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Another trick is that We could replace <code class="highlighter-rouge">a = b / 2</code> by <code class="highlighter-rouge">a = b &gt;&gt; 1</code>
+and <code class="highlighter-rouge">a = b % 2</code> by <code class="highlighter-rouge">a = b &amp; 0x01</code>.
+(But I guess your compiler might already do that for you.)</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow4</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">uint64_t</span> <span class="n">x</span> <span class="o">=</span> <span class="n">pow4</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="n">x</span> <span class="o">*</span> <span class="n">k</span> <span class="o">:</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h2 id="iterative-approach">Iterative approach</h2>
+<p>If we could rewrite a recursive algorithm into an iterative version,
+it usually run faster.</p>
+
+<p>If <script type="math/tex">n</script> is always even, then it’s easy to calculate in a loop.
+For example, when <script type="math/tex">k = 3, n = 8</script>, we can calculate <script type="math/tex">k^n = 3^8</script>
+by <script type="math/tex">3^8 = (3^2)^4 = ((3^2)^2)^2 = (((3^2)^2)^2)^1</script>.</p>
+
+<p>Thus, we can find <script type="math/tex">k^n</script> by:</p>
+<ol>
+  <li><script type="math/tex">k_1 = 3, n_1 = 8</script>, now <script type="math/tex">k^n = k_1^{n_1}</script></li>
+  <li><script type="math/tex">k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 4</script>, now <script type="math/tex">k^n = k_2^{n_2}</script></li>
+  <li><script type="math/tex">k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2}{2} = 2</script>, now <script type="math/tex">k^n = k_3^{n_3}</script></li>
+  <li><script type="math/tex">k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1</script>, now <script type="math/tex">k^n = k_4^{n_4}</script></li>
+  <li><script type="math/tex">n_4 = 1</script>, so <script type="math/tex">k^n = k_4^{n_4} = k_4 = 3^8</script></li>
+</ol>
+
+<p><br />
+On the other hand, if <script type="math/tex">n</script> is not always even,
+then we need to deal with the single leading <script type="math/tex">k</script>
+in the <script type="math/tex">k \cdot (k^2)^\frac{n-1}{2}</script>,
+which will not used to square.
+For example, when <script type="math/tex">k = 3, n = 7</script>, we can calculate <script type="math/tex">k^n = 3^7</script>
+by <script type="math/tex">3 \cdot (3^2)^3 = 3 \cdot (3^2 \cdot ((3^2)^2)^1)</script>.</p>
+
+<p>In this case, we need one more variable <script type="math/tex">r</script>
+to track the single leading <script type="math/tex">k</script>.
+That is, we can find <script type="math/tex">k^n</script> by:</p>
+<ol>
+  <li><script type="math/tex">k_1 = 3, n_1 = 7, r_1 = 1</script>, now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
+  <li><script type="math/tex">k_2 = k_1^2 = 3^2, n_2 = \frac{n_1 - 1}{2} = 3, r_2 = r_1 \cdot k_1 = 3</script>,
+now <script type="math/tex">k^n = r_2 \cdot k_2^{n_2}</script></li>
+  <li><script type="math/tex">k_3 = k_2^2 = 3^4, n_3 = \frac{n_2 - 1}{2} = 1, r_3 = r_2 \cdot k_2 = 3^3</script>,
+now <script type="math/tex">k^n = r_3 \cdot k_3^{n_3}</script></li>
+  <li><script type="math/tex">n_3 = 1</script>, so <script type="math/tex">k^n = r_3 \cdot k_3^{n_3} = 3^3 \cdot 3^4</script></li>
+</ol>
+
+<p>Wrapping up the above ideas, we could summarize the following code:</p>
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow5</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">uint64_t</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// The remaining part for the squaring.
+</span>  <span class="k">while</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">r</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">k</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">k</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="n">k</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>The <script type="math/tex">r</script> is the product of all the single leading <script type="math/tex">k</script>.
+The loop finishes when <script type="math/tex">n = 1</script> in above code and return <script type="math/tex">r \cdot k</script>.</p>
+
+<p>We could see there is a duplicated <code class="highlighter-rouge">r * k</code> in above.
+If we keep looping when <script type="math/tex">n = 1</script>, then the <code class="highlighter-rouge">r = r * k</code> is our final answer.
+Moreover, when <script type="math/tex">n = 0</script>, the initial <code class="highlighter-rouge">r = 1</code> is also correct,
+so the beginning <code class="highlighter-rouge">if</code> could be saved.
+However, we will waste a little time to compute the useless <code class="highlighter-rouge">k = k * k</code>.</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow6</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// The `r` should be the remaining part for the squaring(in pow5).
+</span>  <span class="c1">// However, we notice that the `r * k` is duplicated in pow5. We will get
+</span>  <span class="c1">// the answer by `r * k` when n = 1. If we keep looping when n = 1,
+</span>  <span class="c1">// `r` is our answer. Nevertheless, we will waste time to do `k *= k`
+</span>  <span class="c1">// when n = 1.
+</span>  <span class="kt">uint64_t</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">r</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">k</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">k</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>There is different angle to see the above algorithm.
+Actually, we can define <script type="math/tex">k^n</script> by:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+k^n =
+\begin{cases}
+r \cdot (k^2)^\frac{n}{2}, r = 1 & \text{if $n$ is even} \\
+r \cdot (k^2)^\frac{n-1}{2}, r = k & \text{if $n$ is odd}
+\end{cases} %]]></script>
+
+<p>Thus, we could also use <script type="math/tex">r</script> to find <script type="math/tex">k^n</script>.
+By the example above when <script type="math/tex">k = 3, n = 8</script>:</p>
+<ol>
+  <li><script type="math/tex">k_1 = 3, n_1 = 8, r_1 = 1</script>, now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
+  <li><script type="math/tex">k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 4, r_2 = r_1 \cdot 1 = 1</script>, now <script type="math/tex">k^n = r_2 \cdot k_2^{n_2}</script></li>
+  <li><script type="math/tex">k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2}{2} = 2, r_3 = r_2 \cdot 1</script>, now <script type="math/tex">k^n = r_3 \cdot k_3^{n_3}</script></li>
+  <li><script type="math/tex">k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1, r_4 = r_3 \cdot 1</script>, now <script type="math/tex">k^n = r_4 \cdot k_4^{n_4}</script></li>
+  <li><script type="math/tex">k_5 = (k_4)^2 = 3^16, n_5 = \frac{n_4 - 1}{2} = 0, r_5 = r_4 \cdot k_4 = 3^8</script>,
+now <script type="math/tex">k^n = r_5 \cdot k_5^{n_5}</script></li>
+  <li><script type="math/tex">n_5 = 0</script>, so <script type="math/tex">k^n = r_5 = 3^8</script></li>
+</ol>
+
+<p>We could see a more general case when <script type="math/tex">k = 3, n = 10</script>:</p>
+<ol>
+  <li><script type="math/tex">k_1 = 3, n_1 = 10, r_1 = 1</script>, now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
+  <li><script type="math/tex">k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 5, r_2 = r_1 \cdot 1 = 1</script>, now <script type="math/tex">k^n = r_2 \cdot k_2^{n_2}</script></li>
+  <li><script type="math/tex">k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2 - 1}{2} = 2, r_3 = r_2 \cdot k_2 = 3^2</script>, now <script type="math/tex">k^n = r_3 \cdot k_3^{n_3}</script></li>
+  <li><script type="math/tex">k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1, r_4 = r_3 \cdot 1 = 3^2</script>, now <script type="math/tex">k^n =  r_4 \cdot k_4^{n_4}</script></li>
+  <li><script type="math/tex">k_5 = (k_4)^2 = 3^{16}, n_5 = \frac{n_4 - 1}{2} = 0, r_5 = r_4 \cdot k_4 = 3^{10}</script>,
+now <script type="math/tex">k^n = r_5 \cdot k_5^{n_5}</script></li>
+  <li><script type="math/tex">n_5 = 0</script>, so <script type="math/tex">k^n = r_5 = 3^{10}</script></li>
+</ol>
+
+<p>As a result, the algorithm is:</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow6</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">uint64_t</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">r</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">k</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">r</span> <span class="o">*=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// This could be saved!
+</span>      <span class="n">k</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+      <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Like what we mentioned in recursive part,
+If <code class="highlighter-rouge">n</code> is an <strong>odd</strong> integer,
+then the result of <code class="highlighter-rouge">n = (n - 1) / 2</code> is same as <code class="highlighter-rouge">n = n / 2</code>.
+nd we can also replace <code class="highlighter-rouge">a = b / 2</code> by <code class="highlighter-rouge">a = b &gt;&gt; 1</code>
+and <code class="highlighter-rouge">a = b % 2</code> by <code class="highlighter-rouge">a = b &amp; 0x01</code>.
+Finally, the algorithm can be shorten as:</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow7</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">uint64_t</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// n % 2
+</span>      <span class="n">r</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">k</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>
+    <span class="n">n</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// n = n / 2;
+</span>  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>All the above code are on <a href="https://gist.github.com/ChunMinChang/9753c72e2441343e14757f5a9ac95a98" title="Exponentiation by squaring">gist here</a>.</p>
+
+
+
+                        <br>
+
+                    
+                    
+                        <div class="entry-tags text-center">
+                            <i class="fa fa-tags"></i>&nbsp;
+                                Tagged with 
+                            
+                                <a href="http://localhost:4000/tags/index.html#power" data-toggle="tooltip" title="Posts tagged with power" rel="tag">power</a>
+
+                                
+                            
+                        </div>
+                    
+                    </div>
+
+                    <footer class="post-footer entry-meta">
+                    
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=Exponentiation+by+squaring%20http://localhost:4000/post/exponentiation-by-squaring%20via%20&#64;"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
+                title="Share on Twitter" itemprop="Twitter">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/exponentiation-by-squaring" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+                data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="fa fa-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/exponentiation-by-squaring" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+                data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                    
+
+                        <div class="post-author text-center">
+	<img src="http://localhost:4000/images/chunmin.jpg" alt="Chun-Min Chang's photo" itemprop="image" class="post-avatar img-circle img-responsive" />
+	<h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+		By <span itemprop="name" class="fn"><a href="http://localhost:4000/about" title="About Chun-Min Chang" itemprop="url">Chun-Min Chang</a></span>
+	</h4>
+	<p>I am a self-directed learner and a maker who enjoys building products from original ideas.</p>
+</div> 
+                        
+                    
+                        <div id="disqus_thread"></div><!-- /#disqus_thread -->
+                    
+                    </footer>
+
+                </article>
+            </div>
+        </div>
+    </div>
+
+    
+<footer id="footer" class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(http://localhost:4000/images/background/taiwan_1.jpg)">
+
+
+    <div class="inner">
+        <div class="container">
+            <ul class="social-icons">
+                    
+                <li>
+                    <a href="https://www.linkedin.com/in/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on LinkedIn" target="_blank">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                </li>
+                   
+                <li>
+                    <a href="http://github.com/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on Github" target="_blank">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </li>
+                
+            </ul>
+            <div>
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2017 &bull;
+                All rights reserved.
+            </div>
+            <ul class="menu-items">
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/"><i class="fa fa-home"></i>&nbsp;Home</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/categories"><i class="fa fa-sitemap"></i>&nbsp;Categories</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/tags"><i class="fa fa-tags"></i>&nbsp;Tags</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <div class="decor-wrapper">
+        <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+    
+
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.12.4.min.js"><\/script>')</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jekyll-search.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.fitvids.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.waypoints.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/main.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+<!-- Jekyll Simple Search option -->
+<script>
+
+   SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: 'http://localhost:4000/assets/json/search.json',
+        searchResultTemplate: '<li><article><a href="{url}">{title} <span class="entry-date"><time datetime="{date}">{shortdate}</time></span></a></article></li>',
+        noResultsText: '<p>Nothing found.</p>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+
+  (function( $, window, undefined ) {
+    
+     var bs = {
+          close: $("#search-close"),
+          searchform: $(".search-form"),
+          canvas: $("body"),
+          dothis: $('.dosearch')
+      };
+    
+    bs.dothis.on('click', function() {
+      $('.search-wrapper').css({ display: "block" });
+      bs.searchform.toggleClass('active');
+      bs.searchform.find('input').focus();
+      bs.canvas.toggleClass('search-overlay');
+    });
+    
+      bs.close.on('click', function() {
+        $('.search-wrapper').removeAttr( 'style' );
+        bs.searchform.toggleClass('active');
+        bs.canvas.removeClass('search-overlay');
+    });
+  })( jQuery, window );
+</script>
+
+
+ 
+
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'chunminchang-blog'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        
+</body>
+</html>

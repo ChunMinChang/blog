@@ -1,4 +1,561 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-14T11:23:10+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Closed Form for the Fibonacci Sequence</title><link href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" rel="alternate" type="text/html" title="Closed Form for the Fibonacci Sequence" /><published>2017-08-13T00:00:00+08:00</published><updated>2017-08-13T00:00:00+08:00</updated><id>http://localhost:4000/post/closed-form-for-the-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number can be defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-22T13:12:07+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Exponentiation by squaring</title><link href="http://localhost:4000/post/exponentiation-by-squaring" rel="alternate" type="text/html" title="Exponentiation by squaring" /><published>2017-08-19T00:00:00+08:00</published><updated>2017-08-19T00:00:00+08:00</updated><id>http://localhost:4000/post/exponentiation-by-squaring</id><content type="html" xml:base="http://localhost:4000/post/exponentiation-by-squaring">&lt;p&gt;What is the time complexity of the computation for &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt;?
+We might intuitively think it’s &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;.
+In fact, it can be done in &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt;
+by &lt;a href=&quot;https://en.wikipedia.org/wiki/Exponentiation_by_squaring&quot;&gt;exponentiation by squaring&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The key idea is:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+k^n =
+\begin{cases}
+(k^\frac{n}{2})^2,  &amp; \text{if $n$ is even} \\
+k \cdot (k^\frac{n-1}{2})^2, &amp; \text{if $n$ is odd}
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+k^n =
+\begin{cases}
+(k^2)^\frac{n}{2},  &amp; \text{if $n$ is even} \\
+k \cdot (k^2)^\frac{n-1}{2}, &amp; \text{if $n$ is odd}
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;By dividing &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;\frac{n}{2}&lt;/script&gt; again and again,
+then stop when &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;,
+we could solve &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;recursive-approach&quot;&gt;Recursive approach&lt;/h2&gt;
+
+&lt;p&gt;If we apply the first conversion, we could get the following code:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above program uses two same recursions, &lt;code class=&quot;highlighter-rouge&quot;&gt;... * pow1(...) * pow1(...)&lt;/code&gt;,
+as the returned value, so it will duplicate two same stacks.
+On the other hand, if we apply the second conversion,
+then there is no duplicated stack needed.
+It could save almost half computation time of the &lt;code class=&quot;highlighter-rouge&quot;&gt;pow1&lt;/code&gt;
+since it only uses half recursions than &lt;code class=&quot;highlighter-rouge&quot;&gt;pow1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above code still could be simplified.
+The result of the division &lt;script type=&quot;math/tex&quot;&gt;y = \frac{x}{2}&lt;/script&gt; is
+actually &lt;script type=&quot;math/tex&quot;&gt;y = \lfloor \frac{x}{2} \rfloor&lt;/script&gt; in the world of &lt;em&gt;C&lt;/em&gt; and &lt;em&gt;C++&lt;/em&gt;,
+if &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is an integer.&lt;/p&gt;
+
+&lt;p&gt;That is, if &lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt; is an &lt;strong&gt;odd&lt;/strong&gt; integer,
+then the result of &lt;code class=&quot;highlighter-rouge&quot;&gt;n = (n - 1) / 2&lt;/code&gt; is same as &lt;code class=&quot;highlighter-rouge&quot;&gt;n = n / 2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thus, the code could be simplified as fellow:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// so x = (k^2)^(n/2),      if n is even
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//     or (k^2)^((n-1)/2),  if n is odd
+&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// so x = k * (k^2)^((n-1)/2)
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Another trick is that We could replace &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b / 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b &amp;gt;&amp;gt; 1&lt;/code&gt;
+and &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b % 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b &amp;amp; 0x01&lt;/code&gt;.
+(But I guess your compiler might already do that for you.)&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;iterative-approach&quot;&gt;Iterative approach&lt;/h2&gt;
+&lt;p&gt;If we could rewrite a recursive algorithm into an iterative version,
+it usually run faster.&lt;/p&gt;
+
+&lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is always even, then it’s easy to calculate in a loop.
+For example, when &lt;script type=&quot;math/tex&quot;&gt;k = 3, n = 8&lt;/script&gt;, we can calculate &lt;script type=&quot;math/tex&quot;&gt;k^n = 3^8&lt;/script&gt;
+by &lt;script type=&quot;math/tex&quot;&gt;3^8 = (3^2)^4 = ((3^2)^2)^2 = (((3^2)^2)^2)^1&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thus, we can find &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt; by:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = 3, n_1 = 8&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 4&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2}{2} = 2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_4^{n_4}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_4 = 1&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = k_4^{n_4} = k_4 = 3^8&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;
+On the other hand, if &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is not always even,
+then we need to deal with the single leading &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;
+in the &lt;script type=&quot;math/tex&quot;&gt;k \cdot (k^2)^\frac{n-1}{2}&lt;/script&gt;,
+which will not used to square.
+For example, when &lt;script type=&quot;math/tex&quot;&gt;k = 3, n = 7&lt;/script&gt;, we can calculate &lt;script type=&quot;math/tex&quot;&gt;k^n = 3^7&lt;/script&gt;
+by &lt;script type=&quot;math/tex&quot;&gt;3 \cdot (3^2)^3 = 3 \cdot (3^2 \cdot ((3^2)^2)^1)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this case, we need one more variable &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;
+to track the single leading &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;.
+That is, we can find &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt; by:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = 3, n_1 = 7, r_1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^2, n_2 = \frac{n_1 - 1}{2} = 3, r_2 = r_1 \cdot k_1 = 3&lt;/script&gt;,
+now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = k_2^2 = 3^4, n_3 = \frac{n_2 - 1}{2} = 1, r_3 = r_2 \cdot k_2 = 3^3&lt;/script&gt;,
+now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_3 = 1&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3} = 3^3 \cdot 3^4&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Wrapping up the above ideas, we could summarize the following code:&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// The remaining part for the squaring.
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; is the product of all the single leading &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;.
+The loop finishes when &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt; in above code and return &lt;script type=&quot;math/tex&quot;&gt;r \cdot k&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;We could see there is a duplicated &lt;code class=&quot;highlighter-rouge&quot;&gt;r * k&lt;/code&gt; in above.
+If we keep looping when &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt;, then the &lt;code class=&quot;highlighter-rouge&quot;&gt;r = r * k&lt;/code&gt; is our final answer.
+Moreover, when &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;, the initial &lt;code class=&quot;highlighter-rouge&quot;&gt;r = 1&lt;/code&gt; is also correct,
+so the beginning &lt;code class=&quot;highlighter-rouge&quot;&gt;if&lt;/code&gt; could be saved.
+However, we will waste a little time to compute the useless &lt;code class=&quot;highlighter-rouge&quot;&gt;k = k * k&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// The `r` should be the remaining part for the squaring(in pow5).
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// However, we notice that the `r * k` is duplicated in pow5. We will get
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// the answer by `r * k` when n = 1. If we keep looping when n = 1,
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// `r` is our answer. Nevertheless, we will waste time to do `k *= k`
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// when n = 1.
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There is different angle to see the above algorithm.
+Actually, we can define &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt; by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+k^n =
+\begin{cases}
+r \cdot (k^2)^\frac{n}{2}, r = 1 &amp; \text{if $n$ is even} \\
+r \cdot (k^2)^\frac{n-1}{2}, r = k &amp; \text{if $n$ is odd}
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Thus, we could also use &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; to find &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt;.
+By the example above when &lt;script type=&quot;math/tex&quot;&gt;k = 3, n = 8&lt;/script&gt;:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = 3, n_1 = 8, r_1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 4, r_2 = r_1 \cdot 1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2}{2} = 2, r_3 = r_2 \cdot 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1, r_4 = r_3 \cdot 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_4 \cdot k_4^{n_4}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_5 = (k_4)^2 = 3^16, n_5 = \frac{n_4 - 1}{2} = 0, r_5 = r_4 \cdot k_4 = 3^8&lt;/script&gt;,
+now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_5 \cdot k_5^{n_5}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_5 = 0&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_5 = 3^8&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We could see a more general case when &lt;script type=&quot;math/tex&quot;&gt;k = 3, n = 10&lt;/script&gt;:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = 3, n_1 = 10, r_1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 5, r_2 = r_1 \cdot 1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2 - 1}{2} = 2, r_3 = r_2 \cdot k_2 = 3^2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1, r_4 = r_3 \cdot 1 = 3^2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n =  r_4 \cdot k_4^{n_4}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_5 = (k_4)^2 = 3^{16}, n_5 = \frac{n_4 - 1}{2} = 0, r_5 = r_4 \cdot k_4 = 3^{10}&lt;/script&gt;,
+now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_5 \cdot k_5^{n_5}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_5 = 0&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_5 = 3^{10}&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;As a result, the algorithm is:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// This could be saved!
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Like what we mentioned in recursive part,
+If &lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt; is an &lt;strong&gt;odd&lt;/strong&gt; integer,
+then the result of &lt;code class=&quot;highlighter-rouge&quot;&gt;n = (n - 1) / 2&lt;/code&gt; is same as &lt;code class=&quot;highlighter-rouge&quot;&gt;n = n / 2&lt;/code&gt;.
+nd we can also replace &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b / 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b &amp;gt;&amp;gt; 1&lt;/code&gt;
+and &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b % 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b &amp;amp; 0x01&lt;/code&gt;.
+Finally, the algorithm can be shorten as:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n % 2
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n = n / 2;
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/9753c72e2441343e14757f5a9ac95a98&quot; title=&quot;Exponentiation by squaring&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="power" /><summary type="html">What is the time complexity of the computation for ?
+We might intuitively think it’s .
+In fact, it can be done in 
+by exponentiation by squaring.
+
+The key idea is:
+
+
+
+or
+
+
+
+By dividing  to  again and again,
+then stop when ,
+we could solve  in .
+
+Recursive approach
+
+If we apply the first conversion, we could get the following code:
+
+uint64_t pow1(unsigned int k, unsigned int n)
+{
+  if (!n) {
+    return 1;
+  }
+
+  if (n % 2) {
+    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);
+  } else {
+    return pow1(k, n / 2) * pow1(k, n / 2);
+  }
+}
+
+
+
+The above program uses two same recursions, ... * pow1(...) * pow1(...),
+as the returned value, so it will duplicate two same stacks.
+On the other hand, if we apply the second conversion,
+then there is no duplicated stack needed.
+It could save almost half computation time of the pow1
+since it only uses half recursions than pow1.
+
+uint64_t pow2(unsigned int k, unsigned int n)
+{
+  if (!n) {
+    return 1;
+  }
+
+  if (n % 2) {
+    return k * pow2(k * k, (n - 1) / 2);
+  } else {
+    return pow2(k * k, n / 2);
+  }
+}
+
+
+
+The above code still could be simplified.
+The result of the division  is
+actually  in the world of C and C++,
+if  is an integer.
+
+That is, if n is an odd integer,
+then the result of n = (n - 1) / 2 is same as n = n / 2.
+
+Thus, the code could be simplified as fellow:
+
+uint64_t pow3(unsigned int k, unsigned int n)
+{
+  if (!n) {
+    return 1;
+  }
+
+  uint64_t x = pow3(k * k, n / 2);
+  // so x = (k^2)^(n/2),      if n is even
+  //     or (k^2)^((n-1)/2),  if n is odd
+
+  if (n % 2) {
+    x = x * k; // so x = k * (k^2)^((n-1)/2)
+  }
+  return x;
+}
+
+
+
+Another trick is that We could replace a = b / 2 by a = b &amp;gt;&amp;gt; 1
+and a = b % 2 by a = b &amp;amp; 0x01.
+(But I guess your compiler might already do that for you.)
+
+uint64_t pow4(unsigned int k, unsigned int n)
+{
+  if (!n) {
+    return 1;
+  }
+
+  uint64_t x = pow4(k * k, n &amp;gt;&amp;gt; 1);
+  return (n &amp;amp; 1) ? x * k : x;
+}
+
+
+
+Iterative approach
+If we could rewrite a recursive algorithm into an iterative version,
+it usually run faster.
+
+If  is always even, then it’s easy to calculate in a loop.
+For example, when , we can calculate 
+by .
+
+Thus, we can find  by:
+
+  , now 
+  , now 
+  , now 
+  , now 
+  , so 
+
+
+
+On the other hand, if  is not always even,
+then we need to deal with the single leading 
+in the ,
+which will not used to square.
+For example, when , we can calculate 
+by .
+
+In this case, we need one more variable 
+to track the single leading .
+That is, we can find  by:
+
+  , now 
+  ,
+now 
+  ,
+now 
+  , so 
+
+
+Wrapping up the above ideas, we could summarize the following code:
+uint64_t pow5(unsigned int k, unsigned int n)
+{
+  if (!n) {
+    return 1;
+  }
+
+  uint64_t r = 1; // The remaining part for the squaring.
+  while (n &amp;gt; 1) {
+    if (n % 2) {
+      r *= k;
+      k *= k;
+      n = (n - 1) / 2;
+    } else {
+      k *= k;
+      n = n / 2;
+    }
+  }
+
+  return r * k;
+}
+
+
+
+The  is the product of all the single leading .
+The loop finishes when  in above code and return .
+
+We could see there is a duplicated r * k in above.
+If we keep looping when , then the r = r * k is our final answer.
+Moreover, when , the initial r = 1 is also correct,
+so the beginning if could be saved.
+However, we will waste a little time to compute the useless k = k * k.
+
+uint64_t pow6(unsigned int k, unsigned int n)
+{
+  // The `r` should be the remaining part for the squaring(in pow5).
+  // However, we notice that the `r * k` is duplicated in pow5. We will get
+  // the answer by `r * k` when n = 1. If we keep looping when n = 1,
+  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`
+  // when n = 1.
+  uint64_t r = 1;
+
+  while (n) {
+    if (n % 2) {
+      r *= k;
+      k *= k;
+      n = (n - 1) / 2;
+    } else {
+      k *= k;
+      n = n / 2;
+    }
+  }
+
+  return r;
+}
+
+
+
+There is different angle to see the above algorithm.
+Actually, we can define  by:
+
+
+
+Thus, we could also use  to find .
+By the example above when :
+
+  , now 
+  , now 
+  , now 
+  , now 
+  ,
+now 
+  , so 
+
+
+We could see a more general case when :
+
+  , now 
+  , now 
+  , now 
+  , now 
+  ,
+now 
+  , so 
+
+
+As a result, the algorithm is:
+
+uint64_t pow6(unsigned int k, unsigned int n)
+{
+  uint64_t r = 1;
+
+  while (n) {
+    if (n % 2) {
+      r *= k;
+      k *= k;
+      n = (n - 1) / 2;
+    } else {
+      r *= 1; // This could be saved!
+      k *= k;
+      n = n / 2;
+    }
+  }
+
+  return r;
+}
+
+
+
+Like what we mentioned in recursive part,
+If n is an odd integer,
+then the result of n = (n - 1) / 2 is same as n = n / 2.
+nd we can also replace a = b / 2 by a = b &amp;gt;&amp;gt; 1
+and a = b % 2 by a = b &amp;amp; 0x01.
+Finally, the algorithm can be shorten as:
+
+uint64_t pow7(unsigned int k, unsigned int n)
+{
+  uint64_t r = 1;
+  while (n) {
+    if (n &amp;amp; 1) { // n % 2
+      r *= k;
+    }
+    k *= k;
+    n &amp;gt;&amp;gt;= 1; // n = n / 2;
+  }
+
+  return r;
+}
+
+
+
+All the above code are on gist here.</summary></entry><entry><title type="html">Closed Form for the Fibonacci Sequence</title><link href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" rel="alternate" type="text/html" title="Closed Form for the Fibonacci Sequence" /><published>2017-08-13T00:00:00+08:00</published><updated>2017-08-13T00:00:00+08:00</updated><id>http://localhost:4000/post/closed-form-for-the-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number can be defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -3269,390 +3826,4 @@ Please read this for more details.
     
       nullptr is always a pointer type. NULL(0) could cause ambiguity
 when we have functions: void f(int), void f(foo *),
-and we call f(NULL).</summary></entry><entry><title type="html">How to avoid duplicate symbols when compiling</title><link href="http://localhost:4000/post/how-to-avoid-duplicate-symbols-when-compiling" rel="alternate" type="text/html" title="How to avoid duplicate symbols when compiling" /><published>2017-04-08T00:00:00+08:00</published><updated>2017-04-08T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-avoid-duplicate-symbols-when-compiling</id><content type="html" xml:base="http://localhost:4000/post/how-to-avoid-duplicate-symbols-when-compiling">&lt;h1 id=&quot;how-to-avoid-duplicatesymbols-when-compiling&quot;&gt;How to avoid duplicate symbols when compiling&lt;/h1&gt;
-
-&lt;p&gt;The error: &lt;code class=&quot;highlighter-rouge&quot;&gt;duplicate symbol for architecture x86_64&lt;/code&gt; will be prompted
-if the following &lt;a href=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276&quot; title=&quot;gist&quot;&gt;files&lt;/a&gt; are compiled.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;makefile&lt;/li&gt;
-&lt;/ul&gt;
-&lt;noscript&gt;&lt;pre&gt;CXX=g++
-CFLAGS=-Wall
-EXEC=run
-
-all: bye.o hello.o
-	$(CXX) $(CFLAGS) main.cpp bye.o hello.o -o $(EXEC)
-
-bye.o: bye.cpp
-	$(CXX) -c $(CFLAGS) bye.cpp
-
-hello.o: hello.cpp
-	$(CXX) -c $(CFLAGS) hello.cpp
-
-clean:
-	rm $(EXEC) *.o
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=makefile&quot;&gt; &lt;/script&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;main.cpp&lt;/li&gt;
-&lt;/ul&gt;
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;bye.h&amp;quot;
-#include &amp;quot;hello.h&amp;quot;
-
-int main()
-{
-  SayHello();
-  SayBye();
-  return 0;
-}
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=main.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;utils.h&lt;/li&gt;
-&lt;/ul&gt;
-&lt;noscript&gt;&lt;pre&gt;#ifndef UTILS_H
-#define UTILS_H
-
-#include &amp;lt;iostream&amp;gt;
-#include &amp;lt;string&amp;gt;
-
-void LOG(std::string s)
-{
-  std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
-}
-
-#endif /* UTILS_H */
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=utils.h&quot;&gt; &lt;/script&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;hello.h&lt;/li&gt;
-&lt;/ul&gt;
-&lt;noscript&gt;&lt;pre&gt;#ifndef HELLO_H
-#define HELLO_H
-
-void SayHello();
-
-#endif /* HELLO_H */
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=hello.h&quot;&gt; &lt;/script&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;hello.cpp&lt;/li&gt;
-&lt;/ul&gt;
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;hello.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
-
-void SayHello()
-{
-  LOG(&amp;quot;Hello&amp;quot;);
-}
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=hello.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;bye.h&lt;/li&gt;
-&lt;/ul&gt;
-&lt;noscript&gt;&lt;pre&gt;#ifndef BYE_H
-#define BYE_H
-
-void SayBye();
-
-#endif /* BYE_H */
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=bye.h&quot;&gt; &lt;/script&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;bye.cpp&lt;/li&gt;
-&lt;/ul&gt;
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;bye.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
-
-void SayBye()
-{
-  LOG(&amp;quot;Goodbye&amp;quot;);
-}
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/553962a80ac4d873454597d82227c276.js?file=bye.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;You will see the &lt;code class=&quot;highlighter-rouge&quot;&gt;duplicate symbol for architecture x86_64&lt;/code&gt; error
-when you compile those files.&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;make
-g++ -c -Wall bye.cpp
-g++ -c -Wall hello.cpp
-g++ -Wall main.cpp bye.o hello.o -o run
-duplicate symbol __Z3LOGNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE in:
-    bye.o
-    hello.o
-ld: 1 duplicate symbol for architecture x86_64
-clang: error: linker command failed with exit code 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;use -v to see invocation&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-make: &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; [all] Error 1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The reason is that we include the shared header(&lt;code class=&quot;highlighter-rouge&quot;&gt;utils.h&lt;/code&gt;)
-into different files(&lt;code class=&quot;highlighter-rouge&quot;&gt;bye.cpp&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hello.cpp&lt;/code&gt;),
-and compile those files into different libraries(&lt;code class=&quot;highlighter-rouge&quot;&gt;bye.o&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hello.o&lt;/code&gt;),
-so the functions in the shared header(&lt;code class=&quot;highlighter-rouge&quot;&gt;LOG&lt;/code&gt;)
-duplicate in those different libraries.&lt;/p&gt;
-
-&lt;p&gt;Thus, when we try using those different libraries(&lt;code class=&quot;highlighter-rouge&quot;&gt;bye.o&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;hello.o&lt;/code&gt;)
-at the same time, there are duplicated symbols for functions(&lt;code class=&quot;highlighter-rouge&quot;&gt;LOG&lt;/code&gt;)
-included from the shared header(&lt;code class=&quot;highlighter-rouge&quot;&gt;utils.h&lt;/code&gt;).
-The program has no idea about which one it should call
-among those duplicated symbols.&lt;/p&gt;
-
-&lt;h2 id=&quot;solution-1-using-macros-instead-of-functions&quot;&gt;Solution 1: Using macros instead of functions&lt;/h2&gt;
-&lt;p&gt;The macro is only textual substitution that expanded by the preprocessor,
-so there is no symbol generated.&lt;/p&gt;
-
-&lt;p&gt;You can replace function &lt;code class=&quot;highlighter-rouge&quot;&gt;LOG&lt;/code&gt; by&lt;/p&gt;
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#define LOG(s) (std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Then the &lt;code class=&quot;highlighter-rouge&quot;&gt;SayBye()&lt;/code&gt; will be expanded into:&lt;/p&gt;
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SayBye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Goodbye&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You can run: &lt;code class=&quot;highlighter-rouge&quot;&gt;$ g++ -E &amp;lt;file_name&amp;gt;.cpp&lt;/code&gt; to watch
-and confirm the preprocessor’s output.&lt;/p&gt;
-
-&lt;h2 id=&quot;solution-2-make-functions-inline&quot;&gt;Solution 2: Make functions &lt;strong&gt;inline&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;It works almost same as macro.
-Inline functions are actual functions
-whose copy of the function body are injected directly into
-each place the function is called.&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;LOG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The insertion occurs only if
-the compiler’s cost/benefit analysis shows it to be profitable.
-Same as the macros, inline expansion eliminates
-the overhead associated with function calls.&lt;/p&gt;
-
-&lt;p&gt;Inline functions are parsed by the compiler,
-whereas macros are expanded by the preprocessor.
-The preprocessor macros are just substitution patterns in code
-before the compilation,
-so there is no &lt;strong&gt;type-checking&lt;/strong&gt; at that time.
-While inline functions are actual functions, so compiler can keep an eye on
-type-checking issues to help debugging.&lt;/p&gt;
-
-&lt;p&gt;See &lt;a href=&quot;https://chunminchang.gitbooks.io/cplusplus-learning-note/content/Appendix/preprocessor_macros_vs_inline_functions.html#inline-functions&quot; title=&quot;Inline functions&quot;&gt;here&lt;/a&gt; for more details.&lt;/p&gt;
-
-&lt;h2 id=&quot;solution-3-using-static-to-make-functions-local-in-each-file&quot;&gt;Solution 3: Using &lt;strong&gt;static&lt;/strong&gt; to make functions local in each file&lt;/h2&gt;
-&lt;p&gt;Since their states are &lt;strong&gt;not&lt;/strong&gt; sharable,
-they should &lt;strong&gt;not&lt;/strong&gt; visible across each other.
-Thus, the generated symbols are also local in each file.&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;LOG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><summary type="html">How to avoid duplicate symbols when compiling
-
-The error: duplicate symbol for architecture x86_64 will be prompted
-if the following files are compiled.
-
-
-  makefile
-
-CXX=g++
-CFLAGS=-Wall
-EXEC=run
-
-all: bye.o hello.o
-	$(CXX) $(CFLAGS) main.cpp bye.o hello.o -o $(EXEC)
-
-bye.o: bye.cpp
-	$(CXX) -c $(CFLAGS) bye.cpp
-
-hello.o: hello.cpp
-	$(CXX) -c $(CFLAGS) hello.cpp
-
-clean:
-	rm $(EXEC) *.o
-
-
-
-
-  main.cpp
-
-#include &amp;quot;bye.h&amp;quot;
-#include &amp;quot;hello.h&amp;quot;
-
-int main()
-{
-  SayHello();
-  SayBye();
-  return 0;
-}
-
-
-
-
-  utils.h
-
-#ifndef UTILS_H
-#define UTILS_H
-
-#include &amp;lt;iostream&amp;gt;
-#include &amp;lt;string&amp;gt;
-
-void LOG(std::string s)
-{
-  std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
-}
-
-#endif /* UTILS_H */
-
-
-
-
-  hello.h
-
-#ifndef HELLO_H
-#define HELLO_H
-
-void SayHello();
-
-#endif /* HELLO_H */
-
-
-
-
-  hello.cpp
-
-#include &amp;quot;hello.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
-
-void SayHello()
-{
-  LOG(&amp;quot;Hello&amp;quot;);
-}
-
-
-
-
-  bye.h
-
-#ifndef BYE_H
-#define BYE_H
-
-void SayBye();
-
-#endif /* BYE_H */
-
-
-
-
-  bye.cpp
-
-#include &amp;quot;bye.h&amp;quot;
-#include &amp;quot;utils.h&amp;quot;
-
-void SayBye()
-{
-  LOG(&amp;quot;Goodbye&amp;quot;);
-}
-
-
-
-You will see the duplicate symbol for architecture x86_64 error
-when you compile those files.
-$ make
-g++ -c -Wall bye.cpp
-g++ -c -Wall hello.cpp
-g++ -Wall main.cpp bye.o hello.o -o run
-duplicate symbol __Z3LOGNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE in:
-    bye.o
-    hello.o
-ld: 1 duplicate symbol for architecture x86_64
-clang: error: linker command failed with exit code 1 (use -v to see invocation)
-make: *** [all] Error 1
-
-
-
-The reason is that we include the shared header(utils.h)
-into different files(bye.cpp and hello.cpp),
-and compile those files into different libraries(bye.o and hello.o),
-so the functions in the shared header(LOG)
-duplicate in those different libraries.
-
-Thus, when we try using those different libraries(bye.o and hello.o)
-at the same time, there are duplicated symbols for functions(LOG)
-included from the shared header(utils.h).
-The program has no idea about which one it should call
-among those duplicated symbols.
-
-Solution 1: Using macros instead of functions
-The macro is only textual substitution that expanded by the preprocessor,
-so there is no symbol generated.
-
-You can replace function LOG by
-#define LOG(s) (std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl)
-
-
-
-Then the SayBye() will be expanded into:
-void SayBye()
-{
-  (std::cout &amp;lt;&amp;lt; &quot;Goodbye&quot; &amp;lt;&amp;lt; std::endl);
-}
-
-
-
-You can run: $ g++ -E &amp;lt;file_name&amp;gt;.cpp to watch
-and confirm the preprocessor’s output.
-
-Solution 2: Make functions inline
-It works almost same as macro.
-Inline functions are actual functions
-whose copy of the function body are injected directly into
-each place the function is called.
-
-inline void LOG(std::string s)
-{
-  std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
-}
-
-
-
-The insertion occurs only if
-the compiler’s cost/benefit analysis shows it to be profitable.
-Same as the macros, inline expansion eliminates
-the overhead associated with function calls.
-
-Inline functions are parsed by the compiler,
-whereas macros are expanded by the preprocessor.
-The preprocessor macros are just substitution patterns in code
-before the compilation,
-so there is no type-checking at that time.
-While inline functions are actual functions, so compiler can keep an eye on
-type-checking issues to help debugging.
-
-See here for more details.
-
-Solution 3: Using static to make functions local in each file
-Since their states are not sharable,
-they should not visible across each other.
-Thus, the generated symbols are also local in each file.
-
-static void LOG(std::string s)
-{
-  std::cout &amp;lt;&amp;lt; s &amp;lt;&amp;lt; std::endl;
-}</summary></entry></feed>
+and we call f(NULL).</summary></entry></feed>

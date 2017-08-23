@@ -1,4 +1,225 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-22T13:12:07+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Exponentiation by squaring</title><link href="http://localhost:4000/post/exponentiation-by-squaring" rel="alternate" type="text/html" title="Exponentiation by squaring" /><published>2017-08-19T00:00:00+08:00</published><updated>2017-08-19T00:00:00+08:00</updated><id>http://localhost:4000/post/exponentiation-by-squaring</id><content type="html" xml:base="http://localhost:4000/post/exponentiation-by-squaring">&lt;p&gt;What is the time complexity of the computation for &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt;?
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-23T14:32:22+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Matrix difference equation for Fibonacci Sequence</title><link href="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence" rel="alternate" type="text/html" title="Matrix difference equation for Fibonacci Sequence" /><published>2017-08-22T00:00:00+08:00</published><updated>2017-08-22T00:00:00+08:00</updated><id>http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence">&lt;h2 id=&quot;recurrence-relation&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Recurrence_relation&quot; title=&quot;Recurrence relation&quot;&gt;Recurrence relation&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Suppose we have a difference equation defined by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;x_n = a \cdot x_{n - 1} + b \cdot x_{n - 2}&lt;/script&gt;
+
+&lt;p&gt;Then,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+x_n &amp;= a \cdot x_{n - 1} + b \cdot x_{n - 2}
+\\
+x_{n - 1} &amp;= 1 \cdot x_{n - 1} + 0 \cdot x_{n - 2}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;could be written into a matrix form(&lt;a href=&quot;https://en.wikipedia.org/wiki/Matrix_difference_equation&quot; title=&quot;Matrix difference equation&quot;&gt;&lt;em&gt;matrix difference equation&lt;/em&gt;&lt;/a&gt;):&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\vec{x_n} =
+\begin{bmatrix} x_n \\ x_{n - 1} \end{bmatrix}
+=
+\begin{bmatrix} a &amp; b \\ 1 &amp; 0 \end{bmatrix}
+\cdot
+\begin{bmatrix} x_{n - 1} \\ x_{n - 2} \end{bmatrix}
+=
+S \cdot \vec{x_{n-1}} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; can transit the state from \vec{x_{n-1}} to \vec{x_n},
+the state vector can be expanded by adding any pair &lt;script type=&quot;math/tex&quot;&gt;\vec{x_{t-1}}, \vec{x_t}&lt;/script&gt;
+to the above equation.&lt;/p&gt;
+
+&lt;p&gt;For example,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+x_t, x_n &amp;= a \cdot x_{t - 1} + b \cdot x_{t - 2}, a \cdot x_{n - 1} + b \cdot x_{n - 2}
+\\
+x_{t - 1}, x_{n - 1} &amp;= 1 \cdot x_{t - 1} + 0 \cdot x_{t - 2}, 1 \cdot x_{n - 1} + 0 \cdot x_{n - 2}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;can be written into&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{bmatrix} x_t &amp; x_n \\ x_{t - 1} &amp; x_{n - 1} \end{bmatrix}
+=
+\begin{bmatrix} a &amp; b \\ 1 &amp; 0 \end{bmatrix}
+\cdot
+\begin{bmatrix} x_{t - 1} &amp; x_{n - 1} \\ x_{t - 2} &amp; x_{n - 2} \end{bmatrix} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;In fact, this can be generalized.
+Given &lt;script type=&quot;math/tex&quot;&gt;y_n&lt;/script&gt; by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;y_n = c_{n - 1} \cdot y_{n - 1} +
+      c_{n - 2} \cdot y_{n - 2} +
+      ... +
+      c_0 \cdot y_0&lt;/script&gt;
+
+&lt;p&gt;then we can rewritten the equations into:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\vec{y_n} =
+\begin{bmatrix}
+  y_n \\
+  y_{n - 1} \\
+  ... \\
+  y_1
+\end{bmatrix}
+=
+\begin{bmatrix}
+  c_{n - 1} &amp; c_{n - 2} &amp; ... &amp; c_1 &amp; c_0 \\
+  1 &amp; 0 &amp; ... &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; ... &amp; 0 &amp; 0 \\
+  ... \\
+  0 &amp; 0 &amp; ... &amp; 1 &amp; 0
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+  y_{n - 1} \\
+  y_{n - 2} \\
+  ... \\
+  y_0
+\end{bmatrix}
+= C \cdot\ \vec{y_{n - 1}} %]]&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;fibonacci-sequence&quot;&gt;Fibonacci Sequence&lt;/h2&gt;
+
+&lt;p&gt;Fibonacci number is defined by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n - 1} + F_{n - 2}, \text{where } F_0 = 0 \text{ and } F_1 = 0&lt;/script&gt;
+
+&lt;p&gt;Obviously, &lt;em&gt;Fibonacci&lt;/em&gt; sequence is a &lt;a href=&quot;https://en.wikipedia.org/wiki/Recurrence_relation&quot; title=&quot;Recurrence relation&quot;&gt;&lt;em&gt;difference equation&lt;/em&gt;&lt;/a&gt;
+(&lt;script type=&quot;math/tex&quot;&gt;a = b = 1&lt;/script&gt; in above example) and it could be written in:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\vec{F_n} =
+\begin{bmatrix} F_n \\ F_{F - 1} \end{bmatrix}
+=
+\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}
+\cdot
+\begin{bmatrix} F_{n - 1} \\ F_{n - 2} \end{bmatrix}
+=
+S \cdot \vec{F_{n-1}} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;matrix-form&quot;&gt;Matrix Form&lt;/h3&gt;
+
+&lt;p&gt;If we expand the &lt;script type=&quot;math/tex&quot;&gt;\vec{F_n}&lt;/script&gt; by taking &lt;script type=&quot;math/tex&quot;&gt;t = n + 1&lt;/script&gt; in above example,
+then&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\begin{bmatrix} F_{n+1} &amp; F_n \\ F_n &amp; F_{n - 1} \end{bmatrix}
+&amp;=
+\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}
+\cdot
+\begin{bmatrix} F_n &amp; F_{n - 1} \\ F_{n - 1} &amp; F_{n - 2} \end{bmatrix}
+\\
+&amp;=
+{\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^2
+\cdot
+\begin{bmatrix} F_{n - 1} &amp; F_{n - 2} \\ F_{n - 2} &amp; F_{n - 3} \end{bmatrix}
+\\
+&amp;= ...
+\\
+&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^{n - 1}
+\cdot
+\begin{bmatrix} F_2 &amp; F_1 \\ F_1 &amp; F_0 \end{bmatrix}
+\\
+&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^{n - 1}
+\cdot
+\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}
+\\
+&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^n
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;fast-doubling&quot;&gt;Fast Doubling&lt;/h3&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\begin{bmatrix} F_{2n+1} &amp; F_2n \\ F_n &amp; F_{2n - 1} \end{bmatrix}
+&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^{2n}
+\\
+&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^n
+\cdot
+{\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^n
+\\
+&amp;= \begin{bmatrix} F_{n+1} &amp; F_n \\ F_n &amp; F_{n - 1} \end{bmatrix}
+\cdot \begin{bmatrix} F_{n+1} &amp; F_n \\ F_n &amp; F_{n - 1} \end{bmatrix}
+\\
+&amp;=
+\begin{bmatrix}
+  {F_{n+1}}^2 + {F_n}^2 &amp; F_n \cdot (F_{n+1} + F_{n-1}) \\
+  F_n \cdot (F_{n+1} + F_{n-1}) &amp; {F_n}^2 + {F_{n-1}}^2
+\end{bmatrix}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Thus, &lt;script type=&quot;math/tex&quot;&gt;F_{2n}, F_{2n + 1}&lt;/script&gt; can be calculated by &lt;script type=&quot;math/tex&quot;&gt;F_n, F_{n+1}&lt;/script&gt; since&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+F_{2n+1} &amp;= {F_{n+1}}^2 + {F_n}^2
+\\
+F_{2n} &amp;= F_n \cdot (F_{n+1} + F_{n-1}) \\
+       &amp;= F_n \cdot (F_{n+1} + (F_{n+1} - F_n)) \\
+       &amp;= F_n \cdot (2 \cdot F_{n+1} - F_n)
+\end{align} %]]&gt;&lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">Recurrence relation
+
+Suppose we have a difference equation defined by:
+
+
+
+Then,
+
+
+
+could be written into a matrix form(matrix difference equation):
+
+
+
+Since  can transit the state from \vec{x_{n-1}} to \vec{x_n},
+the state vector can be expanded by adding any pair 
+to the above equation.
+
+For example,
+
+
+
+can be written into
+
+
+
+In fact, this can be generalized.
+Given  by:
+
+
+
+then we can rewritten the equations into:
+
+
+
+Fibonacci Sequence
+
+Fibonacci number is defined by:
+
+
+
+Obviously, Fibonacci sequence is a difference equation
+( in above example) and it could be written in:
+
+
+
+Matrix Form
+
+If we expand the  by taking  in above example,
+then
+
+
+
+Fast Doubling
+
+
+
+Thus,  can be calculated by  since</summary></entry><entry><title type="html">Exponentiation by squaring</title><link href="http://localhost:4000/post/exponentiation-by-squaring" rel="alternate" type="text/html" title="Exponentiation by squaring" /><published>2017-08-19T00:00:00+08:00</published><updated>2017-08-19T00:00:00+08:00</updated><id>http://localhost:4000/post/exponentiation-by-squaring</id><content type="html" xml:base="http://localhost:4000/post/exponentiation-by-squaring">&lt;p&gt;What is the time complexity of the computation for &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt;?
 We might intuitively think it’s &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;.
 In fact, it can be done in &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt;
 by &lt;a href=&quot;https://en.wikipedia.org/wiki/Exponentiation_by_squaring&quot;&gt;exponentiation by squaring&lt;/a&gt;.&lt;/p&gt;
@@ -3087,743 +3308,4 @@ The deadlock will occur when the callback thread requests the mutex M
 
 
 
-and the thread T requests the mutex-AU to use AudioUnit</summary></entry><entry><title type="html">How to simulate a C++ class in C</title><link href="http://localhost:4000/post/how-to-simulate-a-c-class-in-c" rel="alternate" type="text/html" title="How to simulate a C++ class in C" /><published>2017-04-25T00:00:00+08:00</published><updated>2017-04-25T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-simulate-a-c-class-in-c</id><content type="html" xml:base="http://localhost:4000/post/how-to-simulate-a-c-class-in-c">&lt;h1 id=&quot;how-to-simulate-a-c-class-in-c&quot;&gt;How to simulate a C++ class in C&lt;/h1&gt;
-
-&lt;p&gt;After learning &lt;em&gt;C++&lt;/em&gt;, I am curious about
-how could I bring the &lt;em&gt;object-oriented&lt;/em&gt; style to &lt;em&gt;C&lt;/em&gt;.
-Could we simulate a &lt;em&gt;C++&lt;/em&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;class&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;struct&lt;/code&gt; in C?&lt;/p&gt;
-
-&lt;p&gt;To find the answer,
-I implement a simple &lt;em&gt;linked list&lt;/em&gt; with &lt;em&gt;object-oriented&lt;/em&gt; style in plain &lt;em&gt;C&lt;/em&gt;.
-The key is to use &lt;em&gt;function pointer&lt;/em&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;struct&lt;/code&gt; to
-simulate a &lt;em&gt;C++&lt;/em&gt; member function.
-you can find my code &lt;a href=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e&quot; title=&quot;Class in C for linked-list implementation&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;To compare, I also implement a &lt;a href=&quot;https://gist.github.com/ChunMinChang/8e04130e778d77e0b30b8954cc5f2473&quot; title=&quot;Linked-list in C++&quot;&gt;&lt;em&gt;linked list&lt;/em&gt; in &lt;em&gt;C++&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;class-in-c&quot;&gt;Class in C&lt;/h2&gt;
-&lt;noscript&gt;&lt;pre&gt;#ifndef LIST_H
-#define LIST_H
-
-#include &amp;lt;stddef.h&amp;gt; // for size_t
-
-struct Node {
-  void* data; // Any data type can be stored in this node
-  struct Node* next;
-};
-
-typedef void (*Callback)(struct Node* node);
-struct List {
-  struct Node* head;
-  struct Node* cursor;
-
-  void (* const destroy)(struct List* self);
-  void (* const append)(struct List* self, void* data, size_t size);
-  void (* const prepend)(struct List* self, void* data, size_t size);
-  void (* const traverse)(struct List* self, Callback func);
-};
-
-extern const struct ListClass {
-  struct List (*new)();
-} /*ListProxy*/ List;
-
-#endif // LIST_H&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=list.h&quot;&gt; &lt;/script&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;list.h&amp;quot;
-#include &amp;lt;assert.h&amp;gt; // for assert
-// #include &amp;lt;stddef.h&amp;gt; // for NULL, size_t, they are already included in list.h
-#include &amp;lt;stdlib.h&amp;gt; // for calloc, free
-#include &amp;lt;string.h&amp;gt; // for memcpy
-
-// Using &amp;quot;static&amp;quot; prevents these functions from being exposed outside.
-
-static void
-destroy(struct List* self)
-{
-  for (struct Node* cur = self-&amp;gt;head ; cur != NULL ;) {
-    struct Node* next = cur-&amp;gt;next;
-    free(cur-&amp;gt;data);
-    free(cur);
-    cur = next;
-  }
-  self-&amp;gt;head = self-&amp;gt;cursor = NULL;
-}
-
-static void
-append(struct List* self, void* data, size_t size) {
-  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));
-  assert(n);
-
-  n-&amp;gt;next = NULL;
-  n-&amp;gt;data = calloc(1, size);
-  assert(n-&amp;gt;data);
-  memcpy(n-&amp;gt;data, data, size);
-
-  if (!self-&amp;gt;head) { // The list is empty.
-    assert(!self-&amp;gt;cursor); // cursor = head = NULL now.
-    self-&amp;gt;head = n;
-  } else {
-    assert(self-&amp;gt;cursor);
-    self-&amp;gt;cursor-&amp;gt;next = n;
-  }
-  self-&amp;gt;cursor = n;
-}
-
-static void
-prepend(struct List* self, void* data, size_t size) {
-  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));
-  assert(n);
-
-  n-&amp;gt;next = self-&amp;gt;head;
-  n-&amp;gt;data = calloc(1, size);
-  assert(n-&amp;gt;data);
-  memcpy(n-&amp;gt;data, data, size);
-
-  self-&amp;gt;head = n;
-  if(!self-&amp;gt;cursor) { // The list is empty before inserting value.
-    self-&amp;gt;cursor = n;
-  }
-}
-
-static void
-traverse(struct List* self, Callback func)
-{
-  for (struct Node* cur = self-&amp;gt;head ; cur != NULL ; cur = cur-&amp;gt;next) {
-    func(cur);
-  }
-}
-
-static struct List
-new()
-{
-  return (struct List) {
-    .head = NULL,
-    .cursor = NULL,
-    .destroy = (void*) &amp;amp;destroy,
-    .append = (void*) &amp;amp;append,
-    .prepend = (void*) &amp;amp;prepend,
-    .traverse = (void*) &amp;amp;traverse
-  };
-}
-
-const struct ListClass /*ListProxy*/ List = {
-  .new = &amp;amp;new,
-};&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=list.c&quot;&gt; &lt;/script&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;list.h&amp;quot;
-#include &amp;lt;stdbool.h&amp;gt;  // for bool
-#include &amp;lt;stdio.h&amp;gt;    // for printf
-
-#define VA_ARGS(...) , ##__VA_ARGS__
-#define CALL(obj, method, ...) ((obj).method(&amp;amp;(obj) VA_ARGS(__VA_ARGS__)))
-
-void print(struct Node* node, bool is_float)
-{
-  if (!node) {
-    return;
-  }
-  is_float ? printf(&amp;quot;%f&amp;quot;, *(float*)node-&amp;gt;data) :
-             printf(&amp;quot;%d&amp;quot;, *(int*)node-&amp;gt;data);
-  printf(&amp;quot;%s&amp;quot;, (node-&amp;gt;next) ? &amp;quot;-&amp;gt;&amp;quot; : &amp;quot;\n&amp;quot;);
-}
-
-void print_int(struct Node* node)
-{
-  print(node, false);
-}
-
-void print_float(struct Node* node)
-{
-  print(node, true);
-}
-
-int main()
-{
-  int data_int[6] = { 11, 22, 33, 44, 55, 66 };
-  float data_float[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };
-
-  struct List l = /*ListProxy*/List.new();
-  l.prepend(&amp;amp;l, &amp;amp;data_int[0], sizeof(data_int[0]));
-  l.append(&amp;amp;l, &amp;amp;data_int[1], sizeof(data_int[1]));
-  l.append(&amp;amp;l, &amp;amp;data_int[2], sizeof(data_int[2]));
-  l.prepend(&amp;amp;l, &amp;amp;data_int[3], sizeof(data_int[3]));
-  l.append(&amp;amp;l, &amp;amp;data_int[4], sizeof(data_int[4]));
-  l.prepend(&amp;amp;l, &amp;amp;data_int[5], sizeof(data_int[5]));
-  l.traverse(&amp;amp;l, print_int);
-  l.destroy(&amp;amp;l);
-
-  CALL(l, prepend,  &amp;amp;data_float[0], sizeof(data_float[0]));
-  CALL(l, append,   &amp;amp;data_float[1], sizeof(data_float[1]));
-  CALL(l, append,   &amp;amp;data_float[2], sizeof(data_float[2]));
-  CALL(l, prepend,  &amp;amp;data_float[3], sizeof(data_float[3]));
-  CALL(l, append,   &amp;amp;data_float[4], sizeof(data_float[4]));
-  CALL(l, prepend,  &amp;amp;data_float[5], sizeof(data_float[5]));
-  CALL(l, traverse, print_float);
-  CALL(l, destroy);
-
-  return 0;
-}&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e.js?file=test.c&quot;&gt; &lt;/script&gt;
-
-&lt;h2 id=&quot;c-version&quot;&gt;C++ version&lt;/h2&gt;
-&lt;noscript&gt;&lt;pre&gt;#ifndef LIST_H
-#define LIST_H
-
-#include &amp;lt;assert.h&amp;gt; // for assert
-#include &amp;lt;memory&amp;gt;   // for std::unique_ptr
-
-template&amp;lt;typename T&amp;gt;
-class List
-{
-public:
-  struct Node // All it&amp;#39;s members are public by default.
-  {
-    Node(T aData, Node* aNext)
-      : mData(aData)
-      , mNext(aNext)
-    {}
-
-    ~Node() {}
-
-    T mData;
-    Node* mNext;
-  };
-
-  List();
-  ~List();
-
-  void Append(T aData);
-  void Prepend(T aData);
-
-  typedef void (*Callback)(Node* aNode);
-  void Traverse(Callback aCallback);
-
-private:
-  // No need to use smart pointer in low-level data structure.
-  // It&amp;#39;s more efficient for managing memory on our own.
-  Node* mCursor;
-  Node* mHead;
-};
-
-// nullptr is introduced in C++11.
-template&amp;lt;typename T&amp;gt;
-List&amp;lt;T&amp;gt;::List()
-  : mCursor(nullptr)
-  , mHead(nullptr)
-{
-}
-
-template&amp;lt;typename T&amp;gt;
-List&amp;lt;T&amp;gt;::~List()
-{
-  for (mCursor = mHead ; mCursor != nullptr ;) {
-    std::unique_ptr&amp;lt;Node&amp;gt; autoRelease(mCursor);
-    // Update mCursor here instead of afterthought in for-loop,
-    // in case mCursor is already released.
-    mCursor = mCursor-&amp;gt;mNext;
-    // The memory chuck pointed by old mCursor will be destroyed
-    // upon leaving the &amp;#39;}&amp;#39;.
-  }
-}
-
-template&amp;lt;typename T&amp;gt;
-void
-List&amp;lt;T&amp;gt;::Append(T aData)
-{
-  Node* n = new Node(aData, nullptr);
-  if (!mHead) { // the list is empty.
-    assert(!mCursor);
-    mHead = n;
-  } else {
-    assert(mCursor);
-    mCursor-&amp;gt;mNext = n;
-  }
-  mCursor = n;
-}
-
-template&amp;lt;typename T&amp;gt;
-void
-List&amp;lt;T&amp;gt;::Prepend(T aData)
-{
-  Node* n = new Node(aData, mHead);
-  mHead = n;
-  if (!mCursor) { // The list is empty before inserting value.
-    mCursor = n;
-  }
-}
-
-template&amp;lt;typename T&amp;gt;
-void
-List&amp;lt;T&amp;gt;::Traverse(Callback aCallback)
-{
-  for (Node* cur = mHead ; cur != nullptr ; cur = cur-&amp;gt;mNext) {
-    aCallback(cur);
-  }
-}
-
-#endif // LIST_H&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/8e04130e778d77e0b30b8954cc5f2473.js?file=list.h&quot;&gt; &lt;/script&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;list.h&amp;quot;
-#include &amp;lt;iostream&amp;gt;
-
-template&amp;lt;typename T&amp;gt;
-void Print(T aData, bool aBreakline)
-{
-  std::cout &amp;lt;&amp;lt; aData &amp;lt;&amp;lt; ((aBreakline)? &amp;quot;-&amp;gt;&amp;quot; : &amp;quot;\n&amp;quot;);
-}
-
-void PrintInt(List&amp;lt;int&amp;gt;::Node* aNode)
-{
-  Print(aNode-&amp;gt;mData, aNode-&amp;gt;mNext);
-}
-
-void PrintFloat(List&amp;lt;float&amp;gt;::Node* aNode)
-{
-  Print(aNode-&amp;gt;mData, aNode-&amp;gt;mNext);
-}
-
-int main()
-{
-  int dataInt[6] = { 11, 22, 33, 44, 55, 66 };
-  float dataFloat[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };
-
-  List&amp;lt;int&amp;gt; li;
-  li.Prepend(dataInt[0]);
-  li.Append(dataInt[1]);
-  li.Append(dataInt[2]);
-  li.Prepend(dataInt[3]);
-  li.Append(dataInt[4]);
-  li.Prepend(dataInt[5]);
-  li.Traverse(PrintInt);
-
-  List&amp;lt;float&amp;gt; lf;
-  lf.Prepend(dataFloat[0]);
-  lf.Append(dataFloat[1]);
-  lf.Append(dataFloat[2]);
-  lf.Prepend(dataFloat[3]);
-  lf.Append(dataFloat[4]);
-  lf.Prepend(dataFloat[5]);
-  lf.Traverse(PrintFloat);
-
-  return 0;
-}&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/8e04130e778d77e0b30b8954cc5f2473.js?file=test.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;h2 id=&quot;comparison&quot;&gt;Comparison&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;The C version needs to call &lt;code class=&quot;highlighter-rouge&quot;&gt;destroy&lt;/code&gt; explicitly,
-while the C++ version will automatically run deconstructor &lt;code class=&quot;highlighter-rouge&quot;&gt;~List()&lt;/code&gt;
-to release the memory, or use smart pointers
-like &lt;code class=&quot;highlighter-rouge&quot;&gt;unique_ptr&lt;/code&gt; to help memory management.
-    &lt;ul&gt;
-      &lt;li&gt;To release &lt;code class=&quot;highlighter-rouge&quot;&gt;Foo* n = new Foo(...)&lt;/code&gt;, we need to use &lt;code class=&quot;highlighter-rouge&quot;&gt;delete n&lt;/code&gt;
-instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;n-&amp;gt;~Foo()&lt;/code&gt;
-        &lt;ul&gt;
-          &lt;li&gt;Calling a destructor releases the resources owned by the object,
-but it does not release the memory allocated to the object itself.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;We need to pass self pointer to the &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt; structure
-for calling functions to access list’s data,
-while we don’t need to do that in C++ version
-because class object can get all data inside itself in its implementation.&lt;/li&gt;
-  &lt;li&gt;To allow storing different data type in the list,
-the C++ version use &lt;code class=&quot;highlighter-rouge&quot;&gt;template&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;void*&lt;/code&gt; in the C version.
-    &lt;ul&gt;
-      &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;void* data&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;size_t size&lt;/code&gt;
-is regarded as memory chunk beyond types,
-pointed by &lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;size&lt;/code&gt; bytes,
-so we can store different types data in &lt;strong&gt;runtime&lt;/strong&gt;.&lt;/li&gt;
-      &lt;li&gt;While &lt;code class=&quot;highlighter-rouge&quot;&gt;template&amp;lt;typename T&amp;gt;&lt;/code&gt; let us to declare a variable
-with type &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; in &lt;strong&gt;compile time&lt;/strong&gt;,
-so &lt;em&gt;gcc/g++&lt;/em&gt; can help us for debugging if there is any error.
-        &lt;ul&gt;
-          &lt;li&gt;function with &lt;code class=&quot;highlighter-rouge&quot;&gt;template&lt;/code&gt; cannot be separated in &lt;code class=&quot;highlighter-rouge&quot;&gt;.cpp&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;.h&lt;/code&gt;
-because compiler needs to see both the template definition
-and the specific types/whatever used to &lt;strong&gt;fill in&lt;/strong&gt; the template.
-Please read &lt;a href=&quot;https://isocpp.org/wiki/faq/templates#templates-defn-vs-decl&quot; title=&quot;Why can’t I separate the definition of my templates class from its declaration and put it inside a .cpp file&quot;&gt;this&lt;/a&gt; for more details.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Replace &lt;code class=&quot;highlighter-rouge&quot;&gt;NULL&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;nullptr&lt;/code&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;nullptr&lt;/code&gt; is always a pointer type. &lt;code class=&quot;highlighter-rouge&quot;&gt;NULL&lt;/code&gt;(0) could cause ambiguity
-when we have functions: &lt;code class=&quot;highlighter-rouge&quot;&gt;void f(int)&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;void f(foo *)&lt;/code&gt;,
-and we call &lt;code class=&quot;highlighter-rouge&quot;&gt;f(NULL)&lt;/code&gt;.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><summary type="html">How to simulate a C++ class in C
-
-After learning C++, I am curious about
-how could I bring the object-oriented style to C.
-Could we simulate a C++ class by struct in C?
-
-To find the answer,
-I implement a simple linked list with object-oriented style in plain C.
-The key is to use function pointer in struct to
-simulate a C++ member function.
-you can find my code here
-
-To compare, I also implement a linked list in C++.
-
-Class in C
-#ifndef LIST_H
-#define LIST_H
-
-#include &amp;lt;stddef.h&amp;gt; // for size_t
-
-struct Node {
-  void* data; // Any data type can be stored in this node
-  struct Node* next;
-};
-
-typedef void (*Callback)(struct Node* node);
-struct List {
-  struct Node* head;
-  struct Node* cursor;
-
-  void (* const destroy)(struct List* self);
-  void (* const append)(struct List* self, void* data, size_t size);
-  void (* const prepend)(struct List* self, void* data, size_t size);
-  void (* const traverse)(struct List* self, Callback func);
-};
-
-extern const struct ListClass {
-  struct List (*new)();
-} /*ListProxy*/ List;
-
-#endif // LIST_H
-
-
-#include &amp;quot;list.h&amp;quot;
-#include &amp;lt;assert.h&amp;gt; // for assert
-// #include &amp;lt;stddef.h&amp;gt; // for NULL, size_t, they are already included in list.h
-#include &amp;lt;stdlib.h&amp;gt; // for calloc, free
-#include &amp;lt;string.h&amp;gt; // for memcpy
-
-// Using &amp;quot;static&amp;quot; prevents these functions from being exposed outside.
-
-static void
-destroy(struct List* self)
-{
-  for (struct Node* cur = self-&amp;gt;head ; cur != NULL ;) {
-    struct Node* next = cur-&amp;gt;next;
-    free(cur-&amp;gt;data);
-    free(cur);
-    cur = next;
-  }
-  self-&amp;gt;head = self-&amp;gt;cursor = NULL;
-}
-
-static void
-append(struct List* self, void* data, size_t size) {
-  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));
-  assert(n);
-
-  n-&amp;gt;next = NULL;
-  n-&amp;gt;data = calloc(1, size);
-  assert(n-&amp;gt;data);
-  memcpy(n-&amp;gt;data, data, size);
-
-  if (!self-&amp;gt;head) { // The list is empty.
-    assert(!self-&amp;gt;cursor); // cursor = head = NULL now.
-    self-&amp;gt;head = n;
-  } else {
-    assert(self-&amp;gt;cursor);
-    self-&amp;gt;cursor-&amp;gt;next = n;
-  }
-  self-&amp;gt;cursor = n;
-}
-
-static void
-prepend(struct List* self, void* data, size_t size) {
-  struct Node* n = (struct Node*)calloc(1, sizeof(struct Node));
-  assert(n);
-
-  n-&amp;gt;next = self-&amp;gt;head;
-  n-&amp;gt;data = calloc(1, size);
-  assert(n-&amp;gt;data);
-  memcpy(n-&amp;gt;data, data, size);
-
-  self-&amp;gt;head = n;
-  if(!self-&amp;gt;cursor) { // The list is empty before inserting value.
-    self-&amp;gt;cursor = n;
-  }
-}
-
-static void
-traverse(struct List* self, Callback func)
-{
-  for (struct Node* cur = self-&amp;gt;head ; cur != NULL ; cur = cur-&amp;gt;next) {
-    func(cur);
-  }
-}
-
-static struct List
-new()
-{
-  return (struct List) {
-    .head = NULL,
-    .cursor = NULL,
-    .destroy = (void*) &amp;amp;destroy,
-    .append = (void*) &amp;amp;append,
-    .prepend = (void*) &amp;amp;prepend,
-    .traverse = (void*) &amp;amp;traverse
-  };
-}
-
-const struct ListClass /*ListProxy*/ List = {
-  .new = &amp;amp;new,
-};
-
-
-#include &amp;quot;list.h&amp;quot;
-#include &amp;lt;stdbool.h&amp;gt;  // for bool
-#include &amp;lt;stdio.h&amp;gt;    // for printf
-
-#define VA_ARGS(...) , ##__VA_ARGS__
-#define CALL(obj, method, ...) ((obj).method(&amp;amp;(obj) VA_ARGS(__VA_ARGS__)))
-
-void print(struct Node* node, bool is_float)
-{
-  if (!node) {
-    return;
-  }
-  is_float ? printf(&amp;quot;%f&amp;quot;, *(float*)node-&amp;gt;data) :
-             printf(&amp;quot;%d&amp;quot;, *(int*)node-&amp;gt;data);
-  printf(&amp;quot;%s&amp;quot;, (node-&amp;gt;next) ? &amp;quot;-&amp;gt;&amp;quot; : &amp;quot; &amp;quot;);
-}
-
-void print_int(struct Node* node)
-{
-  print(node, false);
-}
-
-void print_float(struct Node* node)
-{
-  print(node, true);
-}
-
-int main()
-{
-  int data_int[6] = { 11, 22, 33, 44, 55, 66 };
-  float data_float[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };
-
-  struct List l = /*ListProxy*/List.new();
-  l.prepend(&amp;amp;l, &amp;amp;data_int[0], sizeof(data_int[0]));
-  l.append(&amp;amp;l, &amp;amp;data_int[1], sizeof(data_int[1]));
-  l.append(&amp;amp;l, &amp;amp;data_int[2], sizeof(data_int[2]));
-  l.prepend(&amp;amp;l, &amp;amp;data_int[3], sizeof(data_int[3]));
-  l.append(&amp;amp;l, &amp;amp;data_int[4], sizeof(data_int[4]));
-  l.prepend(&amp;amp;l, &amp;amp;data_int[5], sizeof(data_int[5]));
-  l.traverse(&amp;amp;l, print_int);
-  l.destroy(&amp;amp;l);
-
-  CALL(l, prepend,  &amp;amp;data_float[0], sizeof(data_float[0]));
-  CALL(l, append,   &amp;amp;data_float[1], sizeof(data_float[1]));
-  CALL(l, append,   &amp;amp;data_float[2], sizeof(data_float[2]));
-  CALL(l, prepend,  &amp;amp;data_float[3], sizeof(data_float[3]));
-  CALL(l, append,   &amp;amp;data_float[4], sizeof(data_float[4]));
-  CALL(l, prepend,  &amp;amp;data_float[5], sizeof(data_float[5]));
-  CALL(l, traverse, print_float);
-  CALL(l, destroy);
-
-  return 0;
-}
-
-
-C++ version
-#ifndef LIST_H
-#define LIST_H
-
-#include &amp;lt;assert.h&amp;gt; // for assert
-#include &amp;lt;memory&amp;gt;   // for std::unique_ptr
-
-template&amp;lt;typename T&amp;gt;
-class List
-{
-public:
-  struct Node // All it&amp;#39;s members are public by default.
-  {
-    Node(T aData, Node* aNext)
-      : mData(aData)
-      , mNext(aNext)
-    {}
-
-    ~Node() {}
-
-    T mData;
-    Node* mNext;
-  };
-
-  List();
-  ~List();
-
-  void Append(T aData);
-  void Prepend(T aData);
-
-  typedef void (*Callback)(Node* aNode);
-  void Traverse(Callback aCallback);
-
-private:
-  // No need to use smart pointer in low-level data structure.
-  // It&amp;#39;s more efficient for managing memory on our own.
-  Node* mCursor;
-  Node* mHead;
-};
-
-// nullptr is introduced in C++11.
-template&amp;lt;typename T&amp;gt;
-List&amp;lt;T&amp;gt;::List()
-  : mCursor(nullptr)
-  , mHead(nullptr)
-{
-}
-
-template&amp;lt;typename T&amp;gt;
-List&amp;lt;T&amp;gt;::~List()
-{
-  for (mCursor = mHead ; mCursor != nullptr ;) {
-    std::unique_ptr&amp;lt;Node&amp;gt; autoRelease(mCursor);
-    // Update mCursor here instead of afterthought in for-loop,
-    // in case mCursor is already released.
-    mCursor = mCursor-&amp;gt;mNext;
-    // The memory chuck pointed by old mCursor will be destroyed
-    // upon leaving the &amp;#39;}&amp;#39;.
-  }
-}
-
-template&amp;lt;typename T&amp;gt;
-void
-List&amp;lt;T&amp;gt;::Append(T aData)
-{
-  Node* n = new Node(aData, nullptr);
-  if (!mHead) { // the list is empty.
-    assert(!mCursor);
-    mHead = n;
-  } else {
-    assert(mCursor);
-    mCursor-&amp;gt;mNext = n;
-  }
-  mCursor = n;
-}
-
-template&amp;lt;typename T&amp;gt;
-void
-List&amp;lt;T&amp;gt;::Prepend(T aData)
-{
-  Node* n = new Node(aData, mHead);
-  mHead = n;
-  if (!mCursor) { // The list is empty before inserting value.
-    mCursor = n;
-  }
-}
-
-template&amp;lt;typename T&amp;gt;
-void
-List&amp;lt;T&amp;gt;::Traverse(Callback aCallback)
-{
-  for (Node* cur = mHead ; cur != nullptr ; cur = cur-&amp;gt;mNext) {
-    aCallback(cur);
-  }
-}
-
-#endif // LIST_H
-
-
-#include &amp;quot;list.h&amp;quot;
-#include &amp;lt;iostream&amp;gt;
-
-template&amp;lt;typename T&amp;gt;
-void Print(T aData, bool aBreakline)
-{
-  std::cout &amp;lt;&amp;lt; aData &amp;lt;&amp;lt; ((aBreakline)? &amp;quot;-&amp;gt;&amp;quot; : &amp;quot; &amp;quot;);
-}
-
-void PrintInt(List&amp;lt;int&amp;gt;::Node* aNode)
-{
-  Print(aNode-&amp;gt;mData, aNode-&amp;gt;mNext);
-}
-
-void PrintFloat(List&amp;lt;float&amp;gt;::Node* aNode)
-{
-  Print(aNode-&amp;gt;mData, aNode-&amp;gt;mNext);
-}
-
-int main()
-{
-  int dataInt[6] = { 11, 22, 33, 44, 55, 66 };
-  float dataFloat[6] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f };
-
-  List&amp;lt;int&amp;gt; li;
-  li.Prepend(dataInt[0]);
-  li.Append(dataInt[1]);
-  li.Append(dataInt[2]);
-  li.Prepend(dataInt[3]);
-  li.Append(dataInt[4]);
-  li.Prepend(dataInt[5]);
-  li.Traverse(PrintInt);
-
-  List&amp;lt;float&amp;gt; lf;
-  lf.Prepend(dataFloat[0]);
-  lf.Append(dataFloat[1]);
-  lf.Append(dataFloat[2]);
-  lf.Prepend(dataFloat[3]);
-  lf.Append(dataFloat[4]);
-  lf.Prepend(dataFloat[5]);
-  lf.Traverse(PrintFloat);
-
-  return 0;
-}
-
-
-Comparison
-
-  The C version needs to call destroy explicitly,
-while the C++ version will automatically run deconstructor ~List()
-to release the memory, or use smart pointers
-like unique_ptr to help memory management.
-    
-      To release Foo* n = new Foo(...), we need to use delete n
-instead of n-&amp;gt;~Foo()
-        
-          Calling a destructor releases the resources owned by the object,
-but it does not release the memory allocated to the object itself.
-        
-      
-    
-  
-  We need to pass self pointer to the List structure
-for calling functions to access list’s data,
-while we don’t need to do that in C++ version
-because class object can get all data inside itself in its implementation.
-  To allow storing different data type in the list,
-the C++ version use template instead of void* in the C version.
-    
-      The void* data with size_t size
-is regarded as memory chunk beyond types,
-pointed by data with size bytes,
-so we can store different types data in runtime.
-      While template&amp;lt;typename T&amp;gt; let us to declare a variable
-with type T in compile time,
-so gcc/g++ can help us for debugging if there is any error.
-        
-          function with template cannot be separated in .cpp and .h
-because compiler needs to see both the template definition
-and the specific types/whatever used to fill in the template.
-Please read this for more details.
-        
-      
-    
-  
-  Replace NULL with nullptr
-    
-      nullptr is always a pointer type. NULL(0) could cause ambiguity
-when we have functions: void f(int), void f(foo *),
-and we call f(NULL).</summary></entry></feed>
+and the thread T requests the mutex-AU to use AudioUnit</summary></entry></feed>

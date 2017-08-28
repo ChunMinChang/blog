@@ -38,7 +38,7 @@ $$
 S \cdot \vec{x_{n-1}}
 $$
 
-Since $$S$$ can transit the state from \vec{x_{n-1}} to \vec{x_n},
+Since $$S$$ can transit the state from $$\vec{x_{n-1}}$$ to $$\vec{x_n}$$,
 the state vector can be expanded by adding any pair $$\vec{x_{t-1}}, \vec{x_t}$$
 to the above equation.
 
@@ -66,12 +66,16 @@ $$
 In fact, this can be generalized.
 Given $$y_n$$ by:
 
+
 $$
 y_n = c_{n - 1} \cdot y_{n - 1} +
       c_{n - 2} \cdot y_{n - 2} +
       ... +
       c_0 \cdot y_0
 $$
+
+
+, where $$c_k$$ is constant and $$k \in [0, n-1] $$ is a integer.
 
 then we can rewritten the equations into:
 
@@ -99,6 +103,32 @@ $$
   y_0
 \end{bmatrix}
 = C \cdot\ \vec{y_{n - 1}}
+$$
+
+and we could expand the matrix to
+
+$$
+\begin{bmatrix}
+  y_{2n - 1} & ... & y_{n + 1} & y_n \\
+  y_{2n - 2} & ... & y_n & y_{n - 1} \\
+  ... \\
+  y_n & ... & y_2 & y_1
+\end{bmatrix}
+=
+\begin{bmatrix}
+  c_{n - 1} & c_{n - 2} & ... & c_1 & c_0 \\
+  1 & 0 & ... & 0 & 0 \\
+  0 & 1 & ... & 0 & 0 \\
+  ... \\
+  0 & 0 & ... & 1 & 0
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+  y_{2n - 2} & ... & y_n & y_{n - 1} \\
+  y_{2n - 3} & ... & y_{n - 1} & y_{n - 2} \\
+  ... \\
+  y_{n - 1} & ... & y_1 & y_0
+\end{bmatrix}
 $$
 
 ## Fibonacci Sequence

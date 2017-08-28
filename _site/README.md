@@ -24,3 +24,6 @@ to log my working notes.
   - Integration with mathjax
     - http://cyruschiu.github.io/2016/07/02/github-pages-with-hexo/
     - http://liuhongjiang.github.io/hexotech/2015/08/12/mathjax-in-hexo/
+
+### Post
+- Add algorithm and implementation for _Matrix Difference Equation for Fibonacci Sequence_

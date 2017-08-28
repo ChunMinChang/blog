@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-23T14:32:22+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Matrix difference equation for Fibonacci Sequence</title><link href="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence" rel="alternate" type="text/html" title="Matrix difference equation for Fibonacci Sequence" /><published>2017-08-22T00:00:00+08:00</published><updated>2017-08-22T00:00:00+08:00</updated><id>http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence">&lt;h2 id=&quot;recurrence-relation&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Recurrence_relation&quot; title=&quot;Recurrence relation&quot;&gt;Recurrence relation&lt;/a&gt;&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-28T10:29:38+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Matrix Difference Equation for Fibonacci Sequence</title><link href="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence" rel="alternate" type="text/html" title="Matrix Difference Equation for Fibonacci Sequence" /><published>2017-08-22T00:00:00+08:00</published><updated>2017-08-22T00:00:00+08:00</updated><id>http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence">&lt;h2 id=&quot;recurrence-relation&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Recurrence_relation&quot; title=&quot;Recurrence relation&quot;&gt;Recurrence relation&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;Suppose we have a difference equation defined by:&lt;/p&gt;
 
@@ -25,7 +25,7 @@ x_{n - 1} &amp;= 1 \cdot x_{n - 1} + 0 \cdot x_{n - 2}
 =
 S \cdot \vec{x_{n-1}} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; can transit the state from \vec{x_{n-1}} to \vec{x_n},
+&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; can transit the state from &lt;script type=&quot;math/tex&quot;&gt;\vec{x_{n-1}}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;\vec{x_n}&lt;/script&gt;,
 the state vector can be expanded by adding any pair &lt;script type=&quot;math/tex&quot;&gt;\vec{x_{t-1}}, \vec{x_t}&lt;/script&gt;
 to the above equation.&lt;/p&gt;
 
@@ -55,6 +55,8 @@ Given &lt;script type=&quot;math/tex&quot;&gt;y_n&lt;/script&gt; by:&lt;/p&gt;
       ... +
       c_0 \cdot y_0&lt;/script&gt;
 
+&lt;p&gt;, where &lt;script type=&quot;math/tex&quot;&gt;c_k&lt;/script&gt; is constant and &lt;script type=&quot;math/tex&quot;&gt;k \in [0, n-1]&lt;/script&gt; is a integer.&lt;/p&gt;
+
 &lt;p&gt;then we can rewritten the equations into:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
@@ -81,6 +83,31 @@ Given &lt;script type=&quot;math/tex&quot;&gt;y_n&lt;/script&gt; by:&lt;/p&gt;
   y_0
 \end{bmatrix}
 = C \cdot\ \vec{y_{n - 1}} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;and we could expand the matrix to&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{bmatrix}
+  y_{2n - 1} &amp; ... &amp; y_{n + 1} &amp; y_n \\
+  y_{2n - 2} &amp; ... &amp; y_n &amp; y_{n - 1} \\
+  ... \\
+  y_n &amp; ... &amp; y_2 &amp; y_1
+\end{bmatrix}
+=
+\begin{bmatrix}
+  c_{n - 1} &amp; c_{n - 2} &amp; ... &amp; c_1 &amp; c_0 \\
+  1 &amp; 0 &amp; ... &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; ... &amp; 0 &amp; 0 \\
+  ... \\
+  0 &amp; 0 &amp; ... &amp; 1 &amp; 0
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+  y_{2n - 2} &amp; ... &amp; y_n &amp; y_{n - 1} \\
+  y_{2n - 3} &amp; ... &amp; y_{n - 1} &amp; y_{n - 2} \\
+  ... \\
+  y_{n - 1} &amp; ... &amp; y_1 &amp; y_0
+\end{bmatrix} %]]&gt;&lt;/script&gt;
 
 &lt;h2 id=&quot;fibonacci-sequence&quot;&gt;Fibonacci Sequence&lt;/h2&gt;
 
@@ -176,7 +203,7 @@ could be written into a matrix form(matrix difference equation):
 
 
 
-Since  can transit the state from \vec{x_{n-1}} to \vec{x_n},
+Since  can transit the state from  to ,
 the state vector can be expanded by adding any pair 
 to the above equation.
 
@@ -193,7 +220,13 @@ Given  by:
 
 
 
+, where  is constant and  is a integer.
+
 then we can rewritten the equations into:
+
+
+
+and we could expand the matrix to
 
 
 

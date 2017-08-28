@@ -11,8 +11,8 @@
 <!-- Begin Jekyll SEO tag v1.3.3 -->
 <title>Matrix Difference Equation for Fibonacci Sequence - Peak Up</title>
 <meta property="og:title" content="Matrix Difference Equation for Fibonacci Sequence" />
-<meta name="description" content="Recurrence relationSuppose we have a difference equation defined by:Then,could be written into a matrix form(matrix difference equation):Since  can transit the state from  to ,the state vector can be expanded by adding any pair to the above equation.For example,can be written intoIn fact, this can be generalized.Given  by:, where  is constant and  is a integer.then we can rewritten the equations into:and we could expand the matrix toFibonacci SequenceFibonacci number is defined by:Obviously, Fibonacci sequence is a difference equation( in above example) and it could be written in:Matrix FormIf we expand the  by taking  in above example,thenFast DoublingThus,  can be calculated by  since" />
-<meta property="og:description" content="Recurrence relationSuppose we have a difference equation defined by:Then,could be written into a matrix form(matrix difference equation):Since  can transit the state from  to ,the state vector can be expanded by adding any pair to the above equation.For example,can be written intoIn fact, this can be generalized.Given  by:, where  is constant and  is a integer.then we can rewritten the equations into:and we could expand the matrix toFibonacci SequenceFibonacci number is defined by:Obviously, Fibonacci sequence is a difference equation( in above example) and it could be written in:Matrix FormIf we expand the  by taking  in above example,thenFast DoublingThus,  can be calculated by  since" />
+<meta name="description" content="Recurrence relationSuppose we have a difference equation defined by:Then,could be written into a matrix form(matrix difference equation):Since  can transit the state from  to ,the state vector can be expanded by adding any pair to the above equation.For example,can be written intoIn fact, this can be generalized.Given  by:, where  is constant and  is a integer.then we can rewritten the equations into:and we could expand the matrix toFibonacci SequenceFibonacci number is defined by:Obviously, Fibonacci sequence is a difference equation( in above example) and it could be written in:Matrix FormIf we expand the  by taking  in above example,thenComputing Fibonacci number by exponentiationBy the above formula, the Fibonacci number can be calculated in .The key is to compute the exponentiation by squaring.I explained how to do it in my last post.Please read it if you need.As a result, we can compute Fibonacci number  as fellow:///////////////////////////////////////////////////////////////////////////////// Power by matrix exponentiation: O(log(n))// Matrix A://  &lt;---     n     ---&gt;// +-                 -+// | A11, A12, ... A1n | ^// | A21, A22, ... A2n | |// | ...               | m// | ...               | |// | Am1, Am2, ... Amn | v// +-                 -+// could be written into 2D vector like:// { { A11, A12, ... A1n },//   { A21, A22, ... A2n },//   ...///  { Am1, Am2, ... Amn } }typedef std::vector&lt;std::vector&lt;unsigned int&gt;&gt; Matrix;bool isMatrix(Matrix&amp; x){  assert(x.size());  for (unsigned int i = 0 ; i &lt; x.size(); ++i) {    if (x[i].size() != x[0].size()) {      return false;    }  }  return true;}Matrix mul(Matrix&amp; x, Matrix&amp; y){  // Comment the assertion so it will run faster.  // assert(isMatrix(x) &amp;&amp; isMatrix(y)); // Check if the 2D vectors are martix.  // assert(x[0].size() == y.size()); // Check if they can be multiplied.  Matrix z;  z.resize(x.size());  for (unsigned int i = 0 ; i &lt; x.size() ; ++i) {    z[i].resize(y[0].size());    for (unsigned int j = 0 ; j &lt; y[0].size(); ++j) {      for (unsigned int k = 0 ; k &lt; y.size(); ++k) {        z[i][j] += x[i][k] * y[k][j];      }    }  }  return z;}// Returns identity matrix with size * sizeMatrix identity(unsigned int size){  Matrix z;  z.resize(size);  for (unsigned int i = 0 ; i &lt; size ; ++i) {    for (unsigned int j = 0 ; j &lt; size ; ++j) {      z[i].push_back(i == j);    }  }  return z;}// Calculate the power by fast doubling://   P ^ n = (P ^ 2) ^ (n / 2)            if n is even//        or P x (P ^ 2) ^ ((n - 1) / 2)  if n is oddMatrix pow(Matrix&amp; x, unsigned int n){  // Comment the assertion so it will run faster.  // assert(isMatrix(x) &amp;&amp; x.size() == x[0].size()); // Check it&#39;s square matrix.  Matrix r = identity(x.size());  while (n) {    if (/*n % 2*/ n &amp; 1) {      r = mul(x, r);    }    x = mul(x, x);    n &gt;&gt;= 1 ;  }  return r;}// The Fibonacci matrix can be written into the following equation:// +-             -+   +-    -+^n// | F(n+1)   F(n) |   | 1  1 |// |               | = |      |// | F(n)   F(n-1) |   | 1  0 |// +-             -+   +-    -+uint64_t fibonacci_matrix(unsigned int n){  Matrix r { {1, 1},             {1, 0} };  // Using r[0][1] instead of r[0][0] since n might be 0.  // (we need to power by n - 1 if we return r[0][0].)  r = pow(r, n); // When n = 0, the identity matrix of r[0][1] is 0.  return r[0][1];}Fast DoublingIf we calculate  directly, we can get the equation as fellow:Thus,  can be calculated by  sinceThis two equations help us to calculate  in  time,since  can be derived from  or .Recursive implementation///////////////////////////////////////////////////////////////////////////////// Fast doubling: O(log(n))//   Using 2n to the Fibonacci matrix above, we can derive that://     F(2n)   = F(n) * [ 2 * F(n+1) – F(n) ]//     F(2n+1) = F(n+1)^2 + F(n)^2//     (and F(2n-1) = F(n)^2 + F(n-1)^2)uint64_t fib(unsigned int n){  // When n = 2: k = 1 and we want to use F(k+1) to calculate F(2k),  // However, F(2k) = F(k+1) = F(2) is unknown then.  if (n &lt; 2) {    return n; // F(0) = 0, F(1) = 1.  } else if (n == 2) {    return 1; // F(2) = 1  }  unsigned int k = 0;  if (n % 2) { // By F(2k+1) = F(k+1)^2 + F(k)^2, where 2k + 1 = n    k = (n - 1) / 2; // 2N + 1 = n    return fib(k + 1) * fib(k + 1) + fib(k) * fib(k);  } else { // By F(2k) = F(k) * [ 2 * F(k+1) – F(k) ], where 2k = n    k = n / 2; // 2k = n    return fib(k) * (2 * fib(k + 1) - fib(k));  }}Iterative implementationuint64_t fib(unsigned int n){  std::stack&lt;unsigned int&gt; s;  while (n) {    s.push(n);    // n /= 2;    n &gt;&gt;= 1;  }  uint64_t a = 0; // F(0) = 0  uint64_t b = 1; // F(1) = 1  while (!s.empty()) {    unsigned int k = s.top(); s.pop();    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2    if (/*k % 2*/ k &amp; 1) {      a = d;      b = c + d;    } else {      a = c;      b = d;    }  }  return a;}The above two implementation are easy to understandbut it still has room to improve.We will discuss it in next post.Stay tuned!" />
+<meta property="og:description" content="Recurrence relationSuppose we have a difference equation defined by:Then,could be written into a matrix form(matrix difference equation):Since  can transit the state from  to ,the state vector can be expanded by adding any pair to the above equation.For example,can be written intoIn fact, this can be generalized.Given  by:, where  is constant and  is a integer.then we can rewritten the equations into:and we could expand the matrix toFibonacci SequenceFibonacci number is defined by:Obviously, Fibonacci sequence is a difference equation( in above example) and it could be written in:Matrix FormIf we expand the  by taking  in above example,thenComputing Fibonacci number by exponentiationBy the above formula, the Fibonacci number can be calculated in .The key is to compute the exponentiation by squaring.I explained how to do it in my last post.Please read it if you need.As a result, we can compute Fibonacci number  as fellow:///////////////////////////////////////////////////////////////////////////////// Power by matrix exponentiation: O(log(n))// Matrix A://  &lt;---     n     ---&gt;// +-                 -+// | A11, A12, ... A1n | ^// | A21, A22, ... A2n | |// | ...               | m// | ...               | |// | Am1, Am2, ... Amn | v// +-                 -+// could be written into 2D vector like:// { { A11, A12, ... A1n },//   { A21, A22, ... A2n },//   ...///  { Am1, Am2, ... Amn } }typedef std::vector&lt;std::vector&lt;unsigned int&gt;&gt; Matrix;bool isMatrix(Matrix&amp; x){  assert(x.size());  for (unsigned int i = 0 ; i &lt; x.size(); ++i) {    if (x[i].size() != x[0].size()) {      return false;    }  }  return true;}Matrix mul(Matrix&amp; x, Matrix&amp; y){  // Comment the assertion so it will run faster.  // assert(isMatrix(x) &amp;&amp; isMatrix(y)); // Check if the 2D vectors are martix.  // assert(x[0].size() == y.size()); // Check if they can be multiplied.  Matrix z;  z.resize(x.size());  for (unsigned int i = 0 ; i &lt; x.size() ; ++i) {    z[i].resize(y[0].size());    for (unsigned int j = 0 ; j &lt; y[0].size(); ++j) {      for (unsigned int k = 0 ; k &lt; y.size(); ++k) {        z[i][j] += x[i][k] * y[k][j];      }    }  }  return z;}// Returns identity matrix with size * sizeMatrix identity(unsigned int size){  Matrix z;  z.resize(size);  for (unsigned int i = 0 ; i &lt; size ; ++i) {    for (unsigned int j = 0 ; j &lt; size ; ++j) {      z[i].push_back(i == j);    }  }  return z;}// Calculate the power by fast doubling://   P ^ n = (P ^ 2) ^ (n / 2)            if n is even//        or P x (P ^ 2) ^ ((n - 1) / 2)  if n is oddMatrix pow(Matrix&amp; x, unsigned int n){  // Comment the assertion so it will run faster.  // assert(isMatrix(x) &amp;&amp; x.size() == x[0].size()); // Check it&#39;s square matrix.  Matrix r = identity(x.size());  while (n) {    if (/*n % 2*/ n &amp; 1) {      r = mul(x, r);    }    x = mul(x, x);    n &gt;&gt;= 1 ;  }  return r;}// The Fibonacci matrix can be written into the following equation:// +-             -+   +-    -+^n// | F(n+1)   F(n) |   | 1  1 |// |               | = |      |// | F(n)   F(n-1) |   | 1  0 |// +-             -+   +-    -+uint64_t fibonacci_matrix(unsigned int n){  Matrix r { {1, 1},             {1, 0} };  // Using r[0][1] instead of r[0][0] since n might be 0.  // (we need to power by n - 1 if we return r[0][0].)  r = pow(r, n); // When n = 0, the identity matrix of r[0][1] is 0.  return r[0][1];}Fast DoublingIf we calculate  directly, we can get the equation as fellow:Thus,  can be calculated by  sinceThis two equations help us to calculate  in  time,since  can be derived from  or .Recursive implementation///////////////////////////////////////////////////////////////////////////////// Fast doubling: O(log(n))//   Using 2n to the Fibonacci matrix above, we can derive that://     F(2n)   = F(n) * [ 2 * F(n+1) – F(n) ]//     F(2n+1) = F(n+1)^2 + F(n)^2//     (and F(2n-1) = F(n)^2 + F(n-1)^2)uint64_t fib(unsigned int n){  // When n = 2: k = 1 and we want to use F(k+1) to calculate F(2k),  // However, F(2k) = F(k+1) = F(2) is unknown then.  if (n &lt; 2) {    return n; // F(0) = 0, F(1) = 1.  } else if (n == 2) {    return 1; // F(2) = 1  }  unsigned int k = 0;  if (n % 2) { // By F(2k+1) = F(k+1)^2 + F(k)^2, where 2k + 1 = n    k = (n - 1) / 2; // 2N + 1 = n    return fib(k + 1) * fib(k + 1) + fib(k) * fib(k);  } else { // By F(2k) = F(k) * [ 2 * F(k+1) – F(k) ], where 2k = n    k = n / 2; // 2k = n    return fib(k) * (2 * fib(k + 1) - fib(k));  }}Iterative implementationuint64_t fib(unsigned int n){  std::stack&lt;unsigned int&gt; s;  while (n) {    s.push(n);    // n /= 2;    n &gt;&gt;= 1;  }  uint64_t a = 0; // F(0) = 0  uint64_t b = 1; // F(1) = 1  while (!s.empty()) {    unsigned int k = s.top(); s.pop();    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2    if (/*k % 2*/ k &amp; 1) {      a = d;      b = c + d;    } else {      a = c;      b = d;    }  }  return a;}The above two implementation are easy to understandbut it still has room to improve.We will discuss it in next post.Stay tuned!" />
 <link rel="canonical" href="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence" />
 <meta property="og:url" content="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence" />
 <meta property="og:site_name" content="Peak Up" />
@@ -25,7 +25,7 @@
     "@type": "BlogPosting",
     "headline": "Matrix Difference Equation for Fibonacci Sequence",
     "datePublished": "2017-08-22T00:00:00+08:00",
-    "description": "Recurrence relationSuppose we have a difference equation defined by:Then,could be written into a matrix form(matrix difference equation):Since  can transit the state from  to ,the state vector can be expanded by adding any pair to the above equation.For example,can be written intoIn fact, this can be generalized.Given  by:, where  is constant and  is a integer.then we can rewritten the equations into:and we could expand the matrix toFibonacci SequenceFibonacci number is defined by:Obviously, Fibonacci sequence is a difference equation( in above example) and it could be written in:Matrix FormIf we expand the  by taking  in above example,thenFast DoublingThus,  can be calculated by  since",
+    "description": "Recurrence relationSuppose we have a difference equation defined by:Then,could be written into a matrix form(matrix difference equation):Since  can transit the state from  to ,the state vector can be expanded by adding any pair to the above equation.For example,can be written intoIn fact, this can be generalized.Given  by:, where  is constant and  is a integer.then we can rewritten the equations into:and we could expand the matrix toFibonacci SequenceFibonacci number is defined by:Obviously, Fibonacci sequence is a difference equation( in above example) and it could be written in:Matrix FormIf we expand the  by taking  in above example,thenComputing Fibonacci number by exponentiationBy the above formula, the Fibonacci number can be calculated in .The key is to compute the exponentiation by squaring.I explained how to do it in my last post.Please read it if you need.As a result, we can compute Fibonacci number  as fellow:///////////////////////////////////////////////////////////////////////////////// Power by matrix exponentiation: O(log(n))// Matrix A://  &lt;---     n     ---&gt;// +-                 -+// | A11, A12, ... A1n | ^// | A21, A22, ... A2n | |// | ...               | m// | ...               | |// | Am1, Am2, ... Amn | v// +-                 -+// could be written into 2D vector like:// { { A11, A12, ... A1n },//   { A21, A22, ... A2n },//   ...///  { Am1, Am2, ... Amn } }typedef std::vector&lt;std::vector&lt;unsigned int&gt;&gt; Matrix;bool isMatrix(Matrix&amp; x){  assert(x.size());  for (unsigned int i = 0 ; i &lt; x.size(); ++i) {    if (x[i].size() != x[0].size()) {      return false;    }  }  return true;}Matrix mul(Matrix&amp; x, Matrix&amp; y){  // Comment the assertion so it will run faster.  // assert(isMatrix(x) &amp;&amp; isMatrix(y)); // Check if the 2D vectors are martix.  // assert(x[0].size() == y.size()); // Check if they can be multiplied.  Matrix z;  z.resize(x.size());  for (unsigned int i = 0 ; i &lt; x.size() ; ++i) {    z[i].resize(y[0].size());    for (unsigned int j = 0 ; j &lt; y[0].size(); ++j) {      for (unsigned int k = 0 ; k &lt; y.size(); ++k) {        z[i][j] += x[i][k] * y[k][j];      }    }  }  return z;}// Returns identity matrix with size * sizeMatrix identity(unsigned int size){  Matrix z;  z.resize(size);  for (unsigned int i = 0 ; i &lt; size ; ++i) {    for (unsigned int j = 0 ; j &lt; size ; ++j) {      z[i].push_back(i == j);    }  }  return z;}// Calculate the power by fast doubling://   P ^ n = (P ^ 2) ^ (n / 2)            if n is even//        or P x (P ^ 2) ^ ((n - 1) / 2)  if n is oddMatrix pow(Matrix&amp; x, unsigned int n){  // Comment the assertion so it will run faster.  // assert(isMatrix(x) &amp;&amp; x.size() == x[0].size()); // Check it&#39;s square matrix.  Matrix r = identity(x.size());  while (n) {    if (/*n % 2*/ n &amp; 1) {      r = mul(x, r);    }    x = mul(x, x);    n &gt;&gt;= 1 ;  }  return r;}// The Fibonacci matrix can be written into the following equation:// +-             -+   +-    -+^n// | F(n+1)   F(n) |   | 1  1 |// |               | = |      |// | F(n)   F(n-1) |   | 1  0 |// +-             -+   +-    -+uint64_t fibonacci_matrix(unsigned int n){  Matrix r { {1, 1},             {1, 0} };  // Using r[0][1] instead of r[0][0] since n might be 0.  // (we need to power by n - 1 if we return r[0][0].)  r = pow(r, n); // When n = 0, the identity matrix of r[0][1] is 0.  return r[0][1];}Fast DoublingIf we calculate  directly, we can get the equation as fellow:Thus,  can be calculated by  sinceThis two equations help us to calculate  in  time,since  can be derived from  or .Recursive implementation///////////////////////////////////////////////////////////////////////////////// Fast doubling: O(log(n))//   Using 2n to the Fibonacci matrix above, we can derive that://     F(2n)   = F(n) * [ 2 * F(n+1) – F(n) ]//     F(2n+1) = F(n+1)^2 + F(n)^2//     (and F(2n-1) = F(n)^2 + F(n-1)^2)uint64_t fib(unsigned int n){  // When n = 2: k = 1 and we want to use F(k+1) to calculate F(2k),  // However, F(2k) = F(k+1) = F(2) is unknown then.  if (n &lt; 2) {    return n; // F(0) = 0, F(1) = 1.  } else if (n == 2) {    return 1; // F(2) = 1  }  unsigned int k = 0;  if (n % 2) { // By F(2k+1) = F(k+1)^2 + F(k)^2, where 2k + 1 = n    k = (n - 1) / 2; // 2N + 1 = n    return fib(k + 1) * fib(k + 1) + fib(k) * fib(k);  } else { // By F(2k) = F(k) * [ 2 * F(k+1) – F(k) ], where 2k = n    k = n / 2; // 2k = n    return fib(k) * (2 * fib(k + 1) - fib(k));  }}Iterative implementationuint64_t fib(unsigned int n){  std::stack&lt;unsigned int&gt; s;  while (n) {    s.push(n);    // n /= 2;    n &gt;&gt;= 1;  }  uint64_t a = 0; // F(0) = 0  uint64_t b = 1; // F(1) = 1  while (!s.empty()) {    unsigned int k = s.top(); s.pop();    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2    if (/*k % 2*/ k &amp; 1) {      a = d;      b = c + d;    } else {      a = c;      b = d;    }  }  return a;}The above two implementation are easy to understandbut it still has room to improve.We will discuss it in next post.Stay tuned!",
     "logo": "http://localhost:4000mountain.png",
     "url": "http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence"
   }
@@ -214,7 +214,12 @@
                                 in <span class="post-tags">
 
                             
-                                    <a href="http://localhost:4000/categories/index.html#Math" data-toggle="tooltip" title="Other posts from the Math category" rel="tag">Math</a>
+                                    <a href="http://localhost:4000/categories/index.html#AlgorithmMath" data-toggle="tooltip" title="Other posts from the Algorithm category" rel="tag">Algorithm</a>
+                                
+                                    &nbsp;&bull;&nbsp;
+                                
+                            
+                                    <a href="http://localhost:4000/categories/index.html#AlgorithmMath" data-toggle="tooltip" title="Other posts from the Math category" rel="tag">Math</a>
                                 
                             
                                 </span>
@@ -225,9 +230,9 @@
                             
 
                             
-                                
+                                    <span class="time">5.516666666666667</span> minutes read
                             
-                                    Less than 1 minute read
+                                
                             
 
                                 </span>
@@ -293,7 +298,7 @@ Given <script type="math/tex">y_n</script> by:</p>
 
 <script type="math/tex; mode=display">y_n = c_{n - 1} \cdot y_{n - 1} +
       c_{n - 2} \cdot y_{n - 2} +
-      ... +
+      \cdots +
       c_0 \cdot y_0</script>
 
 <p>, where <script type="math/tex">c_k</script> is constant and <script type="math/tex">k \in [0, n-1]</script> is a integer.</p>
@@ -305,22 +310,22 @@ Given <script type="math/tex">y_n</script> by:</p>
 \begin{bmatrix}
   y_n \\
   y_{n - 1} \\
-  ... \\
+  \vdots \\
   y_1
 \end{bmatrix}
 =
 \begin{bmatrix}
-  c_{n - 1} & c_{n - 2} & ... & c_1 & c_0 \\
-  1 & 0 & ... & 0 & 0 \\
-  0 & 1 & ... & 0 & 0 \\
-  ... \\
-  0 & 0 & ... & 1 & 0
+  c_{n - 1} & c_{n - 2} & \cdots & c_1 & c_0 \\
+  1 & 0 & \cdots & 0 & 0 \\
+  0 & 1 & \cdots & 0 & 0 \\
+  \vdots \\
+  0 & 0 & \cdots & 1 & 0
 \end{bmatrix}
 \cdot
 \begin{bmatrix}
   y_{n - 1} \\
   y_{n - 2} \\
-  ... \\
+  \vdots \\
   y_0
 \end{bmatrix}
 = C \cdot\ \vec{y_{n - 1}} %]]></script>
@@ -329,25 +334,25 @@ Given <script type="math/tex">y_n</script> by:</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{bmatrix}
-  y_{2n - 1} & ... & y_{n + 1} & y_n \\
-  y_{2n - 2} & ... & y_n & y_{n - 1} \\
-  ... \\
-  y_n & ... & y_2 & y_1
+  y_{2n - 1} & \cdots & y_{n + 1} & y_n \\
+  y_{2n - 2} & \cdots & y_n & y_{n - 1} \\
+  \vdots \\
+  y_n & \cdots & y_2 & y_1
 \end{bmatrix}
 =
 \begin{bmatrix}
-  c_{n - 1} & c_{n - 2} & ... & c_1 & c_0 \\
-  1 & 0 & ... & 0 & 0 \\
-  0 & 1 & ... & 0 & 0 \\
-  ... \\
-  0 & 0 & ... & 1 & 0
+  c_{n - 1} & c_{n - 2} & \cdots & c_1 & c_0 \\
+  1 & 0 & \cdots & 0 & 0 \\
+  0 & 1 & \cdots & 0 & 0 \\
+  \vdots \\
+  0 & 0 & \cdots & 1 & 0
 \end{bmatrix}
 \cdot
 \begin{bmatrix}
-  y_{2n - 2} & ... & y_n & y_{n - 1} \\
-  y_{2n - 3} & ... & y_{n - 1} & y_{n - 2} \\
-  ... \\
-  y_{n - 1} & ... & y_1 & y_0
+  y_{2n - 2} & \cdots & y_n & y_{n - 1} \\
+  y_{2n - 3} & \cdots & y_{n - 1} & y_{n - 2} \\
+  \vdots \\
+  y_{n - 1} & \cdots & y_1 & y_0
 \end{bmatrix} %]]></script>
 
 <h2 id="fibonacci-sequence">Fibonacci Sequence</h2>
@@ -387,7 +392,7 @@ then</p>
 \cdot
 \begin{bmatrix} F_{n - 1} & F_{n - 2} \\ F_{n - 2} & F_{n - 3} \end{bmatrix}
 \\
-&= ...
+\vdots
 \\
 &= {\begin{bmatrix} 1 & 1 \\ 1 & 0 \end{bmatrix}}^{n - 1}
 \cdot
@@ -400,11 +405,131 @@ then</p>
 &= {\begin{bmatrix} 1 & 1 \\ 1 & 0 \end{bmatrix}}^n
 \end{align} %]]></script>
 
+<h4 id="computing-fibonacci-number-by-exponentiation">Computing <em>Fibonacci</em> number by exponentiation</h4>
+<p>By the above formula, the <em>Fibonacci</em> number <script type="math/tex">F_n</script>
+can be calculated in <script type="math/tex">O(\log n)</script>.
+The key is to compute the exponentiation by squaring.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+k^n =
+\begin{cases}
+(k^2)^\frac{n}{2},  & \text{if $n$ is even} \\
+k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
+\end{cases} %]]></script>
+
+<p>I explained how to do it in my <a href="/post/exponentiation-by-squaring">last post</a>.
+Please read it if you need.</p>
+
+<p>As a result, we can compute <em>Fibonacci</em> number <script type="math/tex">F_n</script> as fellow:</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////
+// Power by matrix exponentiation: O(log(n))
+// Matrix A:
+//  &lt;---     n     ---&gt;
+// +-                 -+
+// | A11, A12, ... A1n | ^
+// | A21, A22, ... A2n | |
+// | ...               | m
+// | ...               | |
+// | Am1, Am2, ... Amn | v
+// +-                 -+
+// could be written into 2D vector like:
+// { { A11, A12, ... A1n },
+//   { A21, A22, ... A2n },
+//   ...
+///  { Am1, Am2, ... Amn } }
+</span><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">Matrix</span><span class="p">;</span>
+
+<span class="kt">bool</span> <span class="nf">isMatrix</span><span class="p">(</span><span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">assert</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Matrix</span> <span class="nf">mul</span><span class="p">(</span><span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// Comment the assertion so it will run faster.
+</span>  <span class="c1">// assert(isMatrix(x) &amp;&amp; isMatrix(y)); // Check if the 2D vectors are martix.
+</span>  <span class="c1">// assert(x[0].size() == y.size()); // Check if they can be multiplied.
+</span>
+  <span class="n">Matrix</span> <span class="n">z</span><span class="p">;</span>
+  <span class="n">z</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">resize</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">());</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Returns identity matrix with size * size
+</span><span class="n">Matrix</span> <span class="nf">identity</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">Matrix</span> <span class="n">z</span><span class="p">;</span>
+  <span class="n">z</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Calculate the power by fast doubling:
+//   P ^ n = (P ^ 2) ^ (n / 2)            if n is even
+//        or P x (P ^ 2) ^ ((n - 1) / 2)  if n is odd
+</span><span class="n">Matrix</span> <span class="nf">pow</span><span class="p">(</span><span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// Comment the assertion so it will run faster.
+</span>  <span class="c1">// assert(isMatrix(x) &amp;&amp; x.size() == x[0].size()); // Check it's square matrix.
+</span>
+  <span class="n">Matrix</span> <span class="n">r</span> <span class="o">=</span> <span class="n">identity</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="cm">/*n % 2*/</span> <span class="n">n</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">r</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+    <span class="n">n</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span> <span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// The Fibonacci matrix can be written into the following equation:
+// +-             -+   +-    -+^n
+// | F(n+1)   F(n) |   | 1  1 |
+// |               | = |      |
+// | F(n)   F(n-1) |   | 1  0 |
+// +-             -+   +-    -+
+</span><span class="kt">uint64_t</span> <span class="nf">fibonacci_matrix</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">Matrix</span> <span class="n">r</span> <span class="p">{</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
+             <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">}</span> <span class="p">};</span>
+  <span class="c1">// Using r[0][1] instead of r[0][0] since n might be 0.
+</span>  <span class="c1">// (we need to power by n - 1 if we return r[0][0].)
+</span>  <span class="n">r</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span> <span class="c1">// When n = 0, the identity matrix of r[0][1] is 0.
+</span>  <span class="k">return</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
 <h3 id="fast-doubling">Fast Doubling</h3>
+
+<p>If we calculate <script type="math/tex">F_{2n}</script> directly, we can get the equation as fellow:</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{align}
-\begin{bmatrix} F_{2n+1} & F_2n \\ F_n & F_{2n - 1} \end{bmatrix}
+\begin{bmatrix} F_{2n+1} & F_{2n} \\ F_{2n} & F_{2n - 1} \end{bmatrix}
 &= {\begin{bmatrix} 1 & 1 \\ 1 & 0 \end{bmatrix}}^{2n}
 \\
 &= {\begin{bmatrix} 1 & 1 \\ 1 & 0 \end{bmatrix}}^n
@@ -431,6 +556,76 @@ F_{2n} &= F_n \cdot (F_{n+1} + F_{n-1}) \\
        &= F_n \cdot (F_{n+1} + (F_{n+1} - F_n)) \\
        &= F_n \cdot (2 \cdot F_{n+1} - F_n)
 \end{align} %]]></script>
+
+<p>This two equations help us to calculate <script type="math/tex">F_{N}</script> in <script type="math/tex">O(\log N)</script> time,
+since <script type="math/tex">F_{N}</script> can be derived from <script type="math/tex">F_{2N'}</script> or <script type="math/tex">F_{2N' + 1}</script>.</p>
+
+<h4 id="recursive-implementation">Recursive implementation</h4>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////
+// Fast doubling: O(log(n))
+//   Using 2n to the Fibonacci matrix above, we can derive that:
+//     F(2n)   = F(n) * [ 2 * F(n+1) – F(n) ]
+//     F(2n+1) = F(n+1)^2 + F(n)^2
+//     (and F(2n-1) = F(n)^2 + F(n-1)^2)
+</span><span class="kt">uint64_t</span> <span class="nf">fib</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// When n = 2: k = 1 and we want to use F(k+1) to calculate F(2k),
+</span>  <span class="c1">// However, F(2k) = F(k+1) = F(2) is unknown then.
+</span>  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">n</span><span class="p">;</span> <span class="c1">// F(0) = 0, F(1) = 1.
+</span>  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// F(2) = 1
+</span>  <span class="p">}</span>
+
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// By F(2k+1) = F(k+1)^2 + F(k)^2, where 2k + 1 = n
+</span>    <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// 2N + 1 = n
+</span>    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">fib</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">fib</span><span class="p">(</span><span class="n">k</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">// By F(2k) = F(k) * [ 2 * F(k+1) – F(k) ], where 2k = n
+</span>    <span class="n">k</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// 2k = n
+</span>    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">fib</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">fib</span><span class="p">(</span><span class="n">k</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h4 id="iterative-implementation">Iterative implementation</h4>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">fib</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">stack</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">;</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="c1">// n /= 2;
+</span>    <span class="n">n</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// F(0) = 0
+</span>  <span class="kt">uint64_t</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// F(1) = 1
+</span>  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">();</span> <span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+    <span class="kt">uint64_t</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">);</span> <span class="c1">// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+</span>    <span class="kt">uint64_t</span> <span class="n">d</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>   <span class="c1">// F(2k+1) = F(k)^2 + F(k+1)^2
+</span>
+    <span class="k">if</span> <span class="p">(</span><span class="cm">/*k % 2*/</span> <span class="n">k</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">a</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>
+      <span class="n">b</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+      <span class="n">b</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>The above two implementation are easy to understand
+but it still has room to improve.
+We will discuss it in next post.
+Stay tuned!</p>
 
 
 

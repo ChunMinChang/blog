@@ -363,11 +363,11 @@ uint64_t fib(unsigned int n)
   }
 
   unsigned int k = 0;
-  if (n % 2) { // By F(2k+1) = F(k+1)^2 + F(k)^2, where 2k + 1 = n
-    k = (n - 1) / 2; // 2N + 1 = n
+  if (n % 2) { // By F(n) = F(2k+1) = F(k+1)^2 + F(k)^2
+    k = (n - 1) / 2;
     return fib(k + 1) * fib(k + 1) + fib(k) * fib(k);
-  } else { // By F(2k) = F(k) * [ 2 * F(k+1) – F(k) ], where 2k = n
-    k = n / 2; // 2k = n
+  } else { // By F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    k = n / 2;
     return fib(k) * (2 * fib(k + 1) - fib(k));
   }
 }

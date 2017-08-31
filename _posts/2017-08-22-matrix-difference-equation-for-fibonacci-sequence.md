@@ -343,7 +343,7 @@ $$
 This two equations help us to calculate $$F_{N}$$ in $$O(\log N)$$ time,
 since $$F_{N}$$ can be derived from $$F_{2N'}$$ or $$F_{2N' + 1}$$.
 
-#### Recursive implementation
+#### implementation
 
 ```cpp
 ///////////////////////////////////////////////////////////////////////////////
@@ -372,41 +372,8 @@ uint64_t fib(unsigned int n)
   }
 }
 ```
-
-#### Iterative implementation
-
-```cpp
-uint64_t fib(unsigned int n)
-{
-  std::stack<unsigned int> s;
-  while (n) {
-    s.push(n);
-    // n /= 2;
-    n >>= 1;
-  }
-
-  uint64_t a = 0; // F(0) = 0
-  uint64_t b = 1; // F(1) = 1
-  while (!s.empty()) {
-    unsigned int k = s.top(); s.pop();
-    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
-    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
-
-    if (/*k % 2*/ k & 1) {
-      a = d;
-      b = c + d;
-    } else {
-      a = c;
-      b = d;
-    }
-  }
-
-  return a;
-}
-```
-
-The above two implementation are easy to understand
-but it still has room to improve.
+The implementation are easy to understand
+but it still has a lot of room to improve.
 We will discuss it in next post.
 Stay tuned!
 

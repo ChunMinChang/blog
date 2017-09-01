@@ -198,7 +198,7 @@ k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
 \end{cases}
 $$
 
-I explained how to do it in my [last post]({% post_url 2017-08-19-exponentiation-by-squaring %}).
+I explained how to do it in my [previous post]({% post_url 2017-08-19-exponentiation-by-squaring %}).
 Please read it if you need.
 
 As a result, we can compute _Fibonacci_ number $$F_n$$ as fellow:
@@ -374,7 +374,7 @@ uint64_t fib(unsigned int n)
 ```
 The implementation are easy to understand
 but it still has a lot of room to improve.
-We will discuss it in next post.
+We will discuss it in [next post]({% post_url 2017-08-31-calculating-fibonacci-numbers-by-fast-doubling %}).
 Stay tuned!
 
 [rr]: https://en.wikipedia.org/wiki/Recurrence_relation "Recurrence relation"

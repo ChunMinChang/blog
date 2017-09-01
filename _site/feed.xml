@@ -1,4 +1,1277 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-31T16:43:45+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Matrix Difference Equation for Fibonacci Sequence</title><link href="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence" rel="alternate" type="text/html" title="Matrix Difference Equation for Fibonacci Sequence" /><published>2017-08-22T00:00:00+08:00</published><updated>2017-08-22T00:00:00+08:00</updated><id>http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence">&lt;h2 id=&quot;recurrence-relation&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Recurrence_relation&quot; title=&quot;Recurrence relation&quot;&gt;Recurrence relation&lt;/a&gt;&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-01T11:53:40+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
+we learned how to calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers by &lt;em&gt;Fast Doubling&lt;/em&gt; in math.
+Today, we will apply it in programming and optimize it step by step.&lt;/p&gt;
+
+&lt;h2 id=&quot;fast-doubling&quot;&gt;Fast Doubling&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+F_{2n+1} &amp;= {F_{n+1}}^2 + {F_n}^2
+\\
+F_{2n} &amp;= F_n \cdot (F_{n+1} + F_{n-1}) \\
+       &amp;= F_n \cdot (F_{n+1} + (F_{n+1} - F_n)) \\
+       &amp;= F_n \cdot (2 \cdot F_{n+1} - F_n)
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;It’s natural to write a recursive implementation by the above definition.
+In the following steps, we will implement recursive versions first,
+then try converting it into iterative versions.&lt;/p&gt;
+
+&lt;h3 id=&quot;recursive&quot;&gt;Recursive&lt;/h3&gt;
+
+&lt;p&gt;Given a &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;, we could calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; by:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n is odd: F(n) = F(((n-1)/2) + 1)^2 + F((n-1) / 2)^2
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n is even: F(n) = F(n/2) * [ 2 * F(n/2 + 1) - F(n/2) ]
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;From above code, we can know that the code stack will be entered again and again,
+so we need to define when to stop it.&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0.
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = F(2) = 0.
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// Keep call itself recursively to get the answer.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// Put the main body here.
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We only calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers from &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;,
+so we need to stop when &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;.
+The &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(0)&lt;/code&gt; may be asked from calculating &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(1) = fib(0)*fib(0) + fib(1)*fib(1)&lt;/code&gt;
+(by setting &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_{2n+1} = {F_{n+1}}^2 + {F_n}^2&lt;/script&gt;,
+so we also need to define &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(1) = 1&lt;/code&gt; directly,
+or it will cause an endless recursive loop.&lt;/p&gt;
+
+&lt;p&gt;Similarly, the &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(1)&lt;/code&gt; may be asked from calculating &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(2) = fib(1) * [2 * fib(2) - fib(1)]&lt;/code&gt;
+(by setting &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_{2n} = F_n \cdot (2 \cdot F_{n+1} - F_n)&lt;/script&gt;,
+so &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(2) = 1&lt;/code&gt; also needs to be returned directly.&lt;/p&gt;
+
+&lt;p&gt;As the result, the code can be written into:&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
+// Fast doubling: O(log(n))
+//   Using 2n to the Fibonacci matrix above, we can derive that:
+//     F(2n)   = F(n) * [ 2 * F(n+1) – F(n) ]
+//     F(2n+1) = F(n+1)^2 + F(n)^2
+//     (and F(2n-1) = F(n)^2 + F(n-1)^2)
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0.
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = F(2) = 0.
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// By F(n) = F(2k+1) = F(k+1)^2 + F(k)^2
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// By F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now, let we look where we could improve from this simple version.
+We use duplicated &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(k)&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(k + 1)&lt;/code&gt; to calculate &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(n)&lt;/code&gt;.
+That is, we will have two duplicated recursive processes to do the same work.
+It would be a waste of the time.&lt;/p&gt;
+
+&lt;p&gt;Another trick is that we could use &lt;code class=&quot;highlighter-rouge&quot;&gt;n = n / 2&lt;/code&gt; in both cases
+(&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is odd or even) since the result of &lt;code class=&quot;highlighter-rouge&quot;&gt;n = (n - 1) / 2&lt;/code&gt; is same
+as &lt;code class=&quot;highlighter-rouge&quot;&gt;n = n / 2&lt;/code&gt; in &lt;em&gt;C/C++&lt;/em&gt;’s world if &lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt; is an &lt;strong&gt;odd&lt;/strong&gt; integer.&lt;/p&gt;
+
+&lt;p&gt;Thus, we can rewrite the code into:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0.
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = F(2) = 1.
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// k = n/2 if n is even. k = (n-1)/2 if n is odd.
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// By F(n) = F(2k+1) = F(k+1)^2 + F(k)^2
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// By F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;memoization&quot;&gt;Memoization&lt;/h4&gt;
+
+&lt;p&gt;Do we save all duplicated task now? No.
+Suppose we need to find &lt;script type=&quot;math/tex&quot;&gt;F_6&lt;/script&gt;, then we need to get &lt;script type=&quot;math/tex&quot;&gt;F_3, F_4&lt;/script&gt; ….&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{matrix}
+ &amp; &amp; &amp; &amp; &amp; 6 &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
+ &amp; &amp; &amp; &amp; \diagup &amp; &amp; \diagdown &amp; &amp; &amp; &amp; &amp; &amp; \\
+ &amp; &amp; &amp; \diagup &amp; &amp; &amp; &amp; \diagdown &amp; &amp; &amp; &amp; &amp; \\
+ &amp; &amp; 3 &amp; &amp; &amp; &amp; &amp; &amp; 4 &amp; &amp; &amp; &amp; \\
+ &amp; \diagup &amp; &amp; \diagdown &amp; &amp; &amp; &amp; \diagup &amp; &amp; \diagdown &amp; &amp; &amp; \\
+ 1 &amp; &amp; &amp; &amp; 2 &amp; &amp; 2 &amp; &amp; &amp; &amp; 3 &amp; &amp; \\
+ &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \diagup &amp; &amp; \diagdown &amp; \\
+ &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; 1 &amp; &amp; &amp; &amp; 2
+\end{matrix} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;It’s clear that we have a duplicated &lt;script type=&quot;math/tex&quot;&gt;F_1, F_2, F_3&lt;/script&gt; on above figure.
+&lt;script type=&quot;math/tex&quot;&gt;F_1, F_2&lt;/script&gt; can return value directly, while &lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt; can not.
+Therefore, the sub-tree(sub-process) whose root is &lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt; will be executed twice.&lt;/p&gt;
+
+&lt;p&gt;The larger the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is, the more duplicated sub-process will be executed.
+To avoid the waste, we can add an &lt;em&gt;array&lt;/em&gt; to save all the calculated value.
+We check the &lt;em&gt;array&lt;/em&gt; first when &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; is calculated.
+If there is already a saved value in the &lt;em&gt;array&lt;/em&gt; at &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;,
+then we can use it directly.
+Otherwise, it will be calculated as usual.
+It’s called &lt;em&gt;memoization&lt;/em&gt;.
+We will save &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; as the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; element in the &lt;em&gt;array&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this case, the &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; is not calculated successively.
+For example, to get &lt;script type=&quot;math/tex&quot;&gt;F_6&lt;/script&gt;, we only need &lt;script type=&quot;math/tex&quot;&gt;F_4, F_3, F_2, F_1, F_0&lt;/script&gt;.
+We don’t need &lt;script type=&quot;math/tex&quot;&gt;F_5&lt;/script&gt;, so there is no value at the &lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt; element in the &lt;em&gt;array&lt;/em&gt;.
+You can use &lt;em&gt;hash map&lt;/em&gt; instead of &lt;em&gt;array&lt;/em&gt; to avoid the waste of memory.
+However, retrieving data from &lt;em&gt;array&lt;/em&gt; is faster than &lt;em&gt;hash map&lt;/em&gt;,
+so we apply &lt;em&gt;array&lt;/em&gt; in our sample code:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SIZE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// 4 is not a fibonacci number, so using it as initialized value.
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// In this case, F is not calculated successively. For example,
+// To get F(6), we only need F(4), F(3), F(2), F(1), F(0) (no F(5)),
+// so the other elements in F is still INIT.
+// Another way is to use hash map(std::unordered_map), however,
+// it will be slower.
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIZE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SIZE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0.
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = F(2) = 1.
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// k = n/2 if n is even. k = (n-1)/2 if n is odd.
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// By F(n) = F(2k+1) = F(k+1)^2 + F(k)^2, if n is odd.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//    F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ], if n is even.
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;state-vector&quot;&gt;State vector&lt;/h4&gt;
+&lt;p&gt;Although we can speed up the calculating by applying &lt;em&gt;memoization&lt;/em&gt; above,
+the memory consumption with this approach grows with &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;.
+Is it possible to use a fixed memory no matter how big &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is?
+The answer is yes. Actually, we could just use a two-elements array to do it.&lt;/p&gt;
+
+&lt;p&gt;From the formula, we can calculate &lt;script type=&quot;math/tex&quot;&gt;[F_{2n}, F_{2n+1}]&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n+1}]&lt;/script&gt;.
+For example, to calculate &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_5, F_6&lt;/script&gt;.
+To calculate &lt;script type=&quot;math/tex&quot;&gt;F_5&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_2, F_3&lt;/script&gt;.
+To calculate &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_1, F_0&lt;/script&gt;.
+To calculate &lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt;
+(so we need to stop here since &lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt; is the dead end).&lt;/p&gt;
+
+&lt;p&gt;However, how do we get &lt;script type=&quot;math/tex&quot;&gt;F_6&lt;/script&gt;
+when we only have &lt;script type=&quot;math/tex&quot;&gt;F_2, F_3&lt;/script&gt; to calculate &lt;script type=&quot;math/tex&quot;&gt;F_5&lt;/script&gt;?
+Or how to get &lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt;
+when we only have &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt; to calculate &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt; …?&lt;/p&gt;
+
+&lt;p&gt;By applying &lt;script type=&quot;math/tex&quot;&gt;n = 2&lt;/script&gt; to formula, we can use &lt;script type=&quot;math/tex&quot;&gt;F_2, F_3&lt;/script&gt; to get &lt;script type=&quot;math/tex&quot;&gt;F_4, F_5&lt;/script&gt;.
+Then we can get &lt;script type=&quot;math/tex&quot;&gt;F_6 = F_4 + F_5&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thus, we are able to get &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/script&gt; by the following procedure:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{AMScd}
+\begin{CD}
+\left(
+  \begin{array}{c}
+    F_0 \\
+    F_1
+  \end{array}
+\right)
+@&gt;{2n+1, 2n+2}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_1 \\
+    F_2
+  \end{array}
+\right)
+@&gt;{2n, 2n+1}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_2 \\
+    F_3
+  \end{array}
+\right)
+@&gt;{2n+1, 2n+2}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_5 \\
+    F_6
+  \end{array}
+\right)
+@&gt;{2n, 2n+1}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_{10} \\
+    F_{11}
+  \end{array}
+\right)
+\end{CD}&lt;/script&gt;
+
+&lt;p&gt;Thus, we could keep using two-elements array
+for &lt;script type=&quot;math/tex&quot;&gt;\begin{bmatrix} F_n \\ F_{n+1} \end{bmatrix}&lt;/script&gt;
+to compute what we want and update it step by step.&lt;/p&gt;
+
+&lt;p&gt;But how to determine the state we should update from &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n + 1}]&lt;/script&gt;,
+&lt;script type=&quot;math/tex&quot;&gt;[F_{2n}, F_{2n + 1}]&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;[F_{2n + 1}, F_{2n + 2}]&lt;/script&gt; ?&lt;/p&gt;
+
+&lt;p&gt;It’s simple. If &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is even, we need to find &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt;
+, where &lt;script type=&quot;math/tex&quot;&gt;k = \frac{n}{2}&lt;/script&gt; since &lt;script type=&quot;math/tex&quot;&gt;n = 2x&lt;/script&gt;.
+Then we can use &lt;script type=&quot;math/tex&quot;&gt;[F_k, F_{k+1}] = [F_{n/2}, F_{n/2 + 1}]&lt;/script&gt;
+to calculate &lt;script type=&quot;math/tex&quot;&gt;[F_{2k}, F_{2k + 1}] = [F_n, F_{n + 1}]&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Otherwise, if &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is odd, we need to find &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt;
+, where &lt;script type=&quot;math/tex&quot;&gt;k = \frac{n-1}{2}&lt;/script&gt; since &lt;script type=&quot;math/tex&quot;&gt;n = 2k + 1&lt;/script&gt;.
+Then we can use &lt;script type=&quot;math/tex&quot;&gt;[F_k, F_{k+1}] = [F_{(n-1)/2}, F_{(n-1)/2 + 1}]&lt;/script&gt;
+to calculate &lt;script type=&quot;math/tex&quot;&gt;[F_{2k}, F_{2k+1}] = [F_{n-1}, F_n]&lt;/script&gt;
+and then get &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n + 1}]&lt;/script&gt; by &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n-1} + F_n]&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;In summary, the procedure can be organized as fellows:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;k_i&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;k_5&lt;/script&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;n(= k_i)&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is odd&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;v&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;v&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_{2k_{i+1}}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_4&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_0&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_5&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_0&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_{n+1}&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_6&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The last two rows, &lt;script type=&quot;math/tex&quot;&gt;F_n, F_{n+1}(= F_{k_i}, F_{k_i+1})&lt;/script&gt;, are the state vector
+that contains our answer.&lt;/p&gt;
+
+&lt;p&gt;The first row &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;, is the index of the first element
+of the state vector &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;.
+The second row indicates that whether &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is odd or not.
+If &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is odd(recall what we discuss above),&lt;/p&gt;
+
+&lt;p&gt;From the top-down perspective, to get &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_5, F_6&lt;/script&gt;.
+To get &lt;script type=&quot;math/tex&quot;&gt;F_5, F_6&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_2, F_3&lt;/script&gt;.
+To get &lt;script type=&quot;math/tex&quot;&gt;F_2, F_3&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_1, F_2&lt;/script&gt;.
+To get &lt;script type=&quot;math/tex&quot;&gt;F_1, F_2&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt;.
+We will demonstrate how we do it recursively below.&lt;/p&gt;
+
+&lt;p&gt;From the bottom-up perspective, we can use &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt;
+to get &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1, F_2&lt;/script&gt;,
+then &lt;script type=&quot;math/tex&quot;&gt;F_1, F_2&lt;/script&gt; to get &lt;script type=&quot;math/tex&quot;&gt;F_2, F_3&lt;/script&gt;,
+&lt;script type=&quot;math/tex&quot;&gt;F_2, F_3&lt;/script&gt; to get &lt;script type=&quot;math/tex&quot;&gt;F_4, F_5, F_6&lt;/script&gt;,
+&lt;script type=&quot;math/tex&quot;&gt;F_5, F_6&lt;/script&gt; to get &lt;script type=&quot;math/tex&quot;&gt;F_10&lt;/script&gt;.
+We will demonstrate how we do it in iterative section.&lt;/p&gt;
+
+&lt;p&gt;The recursive approach is easier to understand.
+By what we summarized above, the simplest implementation will be:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Set f[0], f[1] to F(n), F(n+1).
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 4 is not a fibonacci number, so using it as initialized value.
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// F(k) = F((n-1)/2)
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// F(k + 1) = F((n- )/2 + 1)
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(n-1) = F(2k) = F(k) * [2 * F(k + 1) - F(k)]
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(n) = F(2k + 1) = F(k)^2 + F(k+1)^2
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                     &lt;span class=&quot;c1&quot;&gt;// F(n)
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                 &lt;span class=&quot;c1&quot;&gt;// F(n+1) = F(n-1) + F(n)
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// F(k) = F(n/2)
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// F(k + 1) = F(n/2 + 1)
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;// F(n) = F(2k) = F(k) * [2 * F(k + 1) - F(k)]
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;         &lt;span class=&quot;c1&quot;&gt;// F(n + 1) = F(2k + 1) = F(k)^2 + F(k+1)^2
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above &lt;code class=&quot;highlighter-rouge&quot;&gt;fib_helper&lt;/code&gt; is quite tedious,
+we can be simplify it into:&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Set f[0], f[1] to F(n), F(n+1).
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// k = floor(n/2), so k = n / 2 if n is even, k = (n - 1) / 2 if n is odd.
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(k)
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(k+1)
+&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k+1)^2 + F(k)^2
+&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// k = (n - 1) / 2, so F(2k) = F(n-1), F(2k+1) = F(n).
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;// F(n) = F(2k+1).
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(n+1) = F(n-1) + F(n) = F(2k) + F(2k+1).
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;// k = n / 2, so F(2k) = F(n), F(2k+1) = F(n+1).
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;// F(n) = F(2k).
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;// F(n+1) = F(2k).
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You could also replace &lt;em&gt;array&lt;/em&gt; with &lt;em&gt;std::vector&lt;/em&gt;,
+so the code will looks more elegant.
+However, it will be slower than using &lt;em&gt;array&lt;/em&gt; directly.&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Return vector [ F(n), F(n+1) ].
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// [F(0), F(1)] = [0 , 1]
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fib_helper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// k = floor(n/2), so k = n / 2 if n is even, k = (n - 1) / 2 if n is odd.
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(k)
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(k+1)
+&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k+1)^2 + F(k)^2
+&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// k = (n - 1) / 2, so F(2k) = F(n-1), F(2k+1) = F(n).
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// [F(n), F(n+1)] = [F(2k+1), F(2k+2)] = [F(2k+1), F(2k) + F(2k+1)]
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// k = n / 2, so F(2k) = F(n), F(2k+1) = F(n+1).
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// [F(n), F(n+1)] = [F(2k), F(2k+1)].
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;iterative&quot;&gt;Iterative&lt;/h3&gt;
+
+&lt;p&gt;The recursive approach is implemented from the top-down perspective.
+We could also do it in bottom-up way.&lt;/p&gt;
+
+&lt;p&gt;To convert the recursive steps into an iterative loop,
+we need to find the &lt;em&gt;initialized state&lt;/em&gt; and the &lt;em&gt;stop condition&lt;/em&gt;.
+In the recursive approach, no matter what &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is, the final state vector
+(when the recursive steps stops) is always &lt;script type=&quot;math/tex&quot;&gt;[F_0, F_1]&lt;/script&gt;,
+, and it must be called from calculating the state &lt;script type=&quot;math/tex&quot;&gt;&lt;/script&gt;[F_1, F_2]&lt;script type=&quot;math/tex&quot;&gt;&lt;/script&gt;.
+Recall how we calculate &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/script&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We recursively calculate &lt;script type=&quot;math/tex&quot;&gt;n = \lfloor \frac{n}{2} \rfloor&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;,
+    &lt;ul&gt;
+      &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;n = \lfloor \frac{10}{2} \rfloor = 5&lt;/script&gt;,&lt;/li&gt;
+      &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;n = \lfloor \frac{5}{2} \rfloor = 2&lt;/script&gt;,&lt;/li&gt;
+      &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;n = \lfloor \frac{2}{2} \rfloor = 1&lt;/script&gt;,&lt;/li&gt;
+      &lt;li&gt;then stop recursive steps when &lt;script type=&quot;math/tex&quot;&gt;n = \lfloor \frac{1}{2} \rfloor = 0&lt;/script&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Next, we get the state vector &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n+1}]&lt;/script&gt; for &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;,
+    &lt;ul&gt;
+      &lt;li&gt;then return in the same route to calculate the state vector for &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt;,&lt;/li&gt;
+      &lt;li&gt;then for &lt;script type=&quot;math/tex&quot;&gt;n = 2&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;then for &lt;script type=&quot;math/tex&quot;&gt;n = 5&lt;/script&gt;,&lt;/li&gt;
+      &lt;li&gt;and finally get the answer for &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{AMScd}
+\begin{CD}
+\left(
+  \begin{array}{c}
+    F_0 \\
+    F_1
+  \end{array}
+\right)
+@&gt;{2n+1, 2n+2}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_1 \\
+    F_2
+  \end{array}
+\right)
+@&gt;{2n, 2n+1}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_2 \\
+    F_3
+  \end{array}
+\right)
+@&gt;{2n+1, 2n+2}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_5 \\
+    F_6
+  \end{array}
+\right)
+@&gt;{2n, 2n+1}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_{10} \\
+    F_{11}
+  \end{array}
+\right)
+\end{CD}&lt;/script&gt;
+
+&lt;p&gt;The recursive steps are used to get the route
+from &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;1, 2, 5, 10&lt;/script&gt;,
+then calculate &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n+1}]&lt;/script&gt; for each &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;To remove the recursive steps, we need to have a way to compute the route.
+We can use a &lt;em&gt;stack&lt;/em&gt; to track the change for &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;, starting push &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;
+from &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;, then &lt;script type=&quot;math/tex&quot;&gt;n = 5&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;n = 2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;,
+then the route can be get from popping them from &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thus, the &lt;em&gt;initialized state&lt;/em&gt; is &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;
+and the &lt;em&gt;stop condition&lt;/em&gt; is to check whether the stack is empty.&lt;/p&gt;
+
+&lt;p&gt;(Using &lt;em&gt;stack&lt;/em&gt; is one common approach to
+convert recursive code into the iterative one.)&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// To compute the route from n, n/2, ... 0.
+&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n = floor(n/2)
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n = 0 now.
+&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(n)
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(n+1)
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Initializing a, b.
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = 1
+&lt;/span&gt;      &lt;span class=&quot;k&quot;&gt;continue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Let k = floor(m/2), so `a` is F(k) and `b` is F(k+1) now.
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// k = m/2, if m is even. k = (m-1)/2, if m is odd.
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k)^2 + F(k+1)^2
+&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// m = 2k+1:
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m) = F(2k+1)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;// m = 2k:
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m) = F(2k)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m+1) = F(2k+1)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above code is a bit ugly for simulating the recursive steps like:
+&lt;script type=&quot;math/tex&quot;&gt;\require{AMScd}
+\underbrace{
+\begin{CD}
+\left(
+  \begin{array}{c}
+    \boldsymbol{a} = F_0 \\
+    \boldsymbol{b} = F_1
+  \end{array}
+\right)
+@&gt;{2n+1, 2n+2}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_1 \\
+    F_2
+  \end{array}
+\right)
+@&gt;{2n, 2n+1}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_2 \\
+    F_3
+  \end{array}
+\right)
+@&gt;{2n+1, 2n+2}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_5 \\
+    F_6
+  \end{array}
+\right)
+@&gt;{2n, 2n+1}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_{10} \\
+    F_{11}
+  \end{array}
+\right)
+\end{CD}
+}_{loop}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;initialized state&lt;/em&gt; is usually set outside of the loop directly like below:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = 1
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{AMScd}
+\begin{CD}
+\left(
+  \begin{array}{c}
+    \boldsymbol{a} = F_0 \\
+    \boldsymbol{b} = F_1
+  \end{array}
+\right)
+\end{CD}
+\underbrace{
+\begin{CD}
+@&gt;{2n+1, 2n+2}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_1 \\
+    F_2
+  \end{array}
+\right)
+@&gt;{2n, 2n+1}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_2 \\
+    F_3
+  \end{array}
+\right)
+@&gt;{2n+1, 2n+2}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_5 \\
+    F_6
+  \end{array}
+\right)
+@&gt;{2n, 2n+1}&gt;&gt;
+\left(
+  \begin{array}{c}
+    F_{10} \\
+    F_{11}
+  \end{array}
+\right)
+\end{CD}
+}_{loop}&lt;/script&gt;
+
+&lt;p&gt;Since &lt;em&gt;initialized state&lt;/em&gt; is set before the loop,
+we should start the route from &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;2, 5, 10&lt;/script&gt;:&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// No `s.push(n); // n = 0 now.` here!
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Therefore, the code will be:&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = 1
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Let k = floor(m/2), so `a` is F(k) and `b` is F(k+1) now.
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// k = m/2, if m is even. k = (m-1)/2, if m is odd.
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k)^2 + F(k+1)^2
+&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// m = 2k+1:
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m) = F(2k+1)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;// m = 2k:
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m) = F(2k)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m+1) = F(2k+1)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Another trick is that you can replace &lt;code class=&quot;highlighter-rouge&quot;&gt;n /= 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;n &amp;gt;&amp;gt;= 1&lt;/code&gt;
+and &lt;code class=&quot;highlighter-rouge&quot;&gt;m % 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;m &amp;amp; 1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/f80ef4decca23b88df16f2f7846049b6&quot; title=&quot;Calculating Fibonacci Numbers by Fast Doubling&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">In previous post,
+we learned how to calculate Fibonacci numbers by Fast Doubling in math.
+Today, we will apply it in programming and optimize it step by step.
+
+Fast Doubling
+
+
+
+It’s natural to write a recursive implementation by the above definition.
+In the following steps, we will implement recursive versions first,
+then try converting it into iterative versions.
+
+Recursive
+
+Given a , we could calculate Fibonacci numbers  by:
+
+if (n % 2) { // n is odd: F(n) = F(((n-1)/2) + 1)^2 + F((n-1) / 2)^2
+  unsigned int k = (n - 1) / 2;
+  return fib(k) * fib(k) + fib(k + 1) * fib(k + 1);
+} else { // n is even: F(n) = F(n/2) * [ 2 * F(n/2 + 1) - F(n/2) ]
+  unsigned int k = n / 2;
+  return fib(k) * [ 2 * fib(k + 1) - fib(k) ];
+}
+
+
+
+From above code, we can know that the code stack will be entered again and again,
+so we need to define when to stop it.
+
+if (n == 0) {
+  return 0; // F(0) = 0.
+} else if (n &amp;lt;= 2) {
+  return 1; // F(1) = F(2) = 0.
+} else {
+  // Keep call itself recursively to get the answer.
+  // Put the main body here.
+}
+
+
+
+We only calculate Fibonacci numbers from ,
+so we need to stop when .
+The fib(0) may be asked from calculating fib(1) = fib(0)*fib(0) + fib(1)*fib(1)
+(by setting  to ,
+so we also need to define fib(1) = 1 directly,
+or it will cause an endless recursive loop.
+
+Similarly, the fib(1) may be asked from calculating fib(2) = fib(1) * [2 * fib(2) - fib(1)]
+(by setting  to ,
+so fib(2) = 1 also needs to be returned directly.
+
+As the result, the code can be written into:
+///////////////////////////////////////////////////////////////////////////////
+// Fast doubling: O(log(n))
+//   Using 2n to the Fibonacci matrix above, we can derive that:
+//     F(2n)   = F(n) * [ 2 * F(n+1) – F(n) ]
+//     F(2n+1) = F(n+1)^2 + F(n)^2
+//     (and F(2n-1) = F(n)^2 + F(n-1)^2)
+uint64_t fib(unsigned int n)
+{
+  if (n == 0) {
+    return 0; // F(0) = 0.
+  } else if (n &amp;lt;= 2) {
+    return 1; // F(1) = F(2) = 0.
+  }
+
+  unsigned int k = 0;
+  if (n % 2) { // By F(n) = F(2k+1) = F(k+1)^2 + F(k)^2
+    k = (n - 1) / 2;
+    return fib(k) * fib(k) + fib(k + 1) * fib(k + 1);
+  } else { // By F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    k = n / 2;
+    return fib(k) * (2 * fib(k + 1) - fib(k));
+  }
+}
+
+
+
+Now, let we look where we could improve from this simple version.
+We use duplicated fib(k) and fib(k + 1) to calculate fib(n).
+That is, we will have two duplicated recursive processes to do the same work.
+It would be a waste of the time.
+
+Another trick is that we could use n = n / 2 in both cases
+( is odd or even) since the result of n = (n - 1) / 2 is same
+as n = n / 2 in C/C++’s world if n is an odd integer.
+
+Thus, we can rewrite the code into:
+
+uint64_t fib(unsigned int n)
+{
+  if (n == 0) {
+    return 0; // F(0) = 0.
+  } else if (n &amp;lt;= 2) {
+    return 1; // F(1) = F(2) = 1.
+  }
+
+  unsigned int k = n / 2; // k = n/2 if n is even. k = (n-1)/2 if n is odd.
+  uint64_t a = fib(k);
+  uint64_t b = fib(k + 1);
+
+  if (n % 2) { // By F(n) = F(2k+1) = F(k+1)^2 + F(k)^2
+    return a * a + b * b;
+  } else { // By F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    return a * (2 * b - a);
+  }
+}
+
+
+
+Memoization
+
+Do we save all duplicated task now? No.
+Suppose we need to find , then we need to get  ….
+
+
+
+It’s clear that we have a duplicated  on above figure.
+ can return value directly, while  can not.
+Therefore, the sub-tree(sub-process) whose root is  will be executed twice.
+
+The larger the  is, the more duplicated sub-process will be executed.
+To avoid the waste, we can add an array to save all the calculated value.
+We check the array first when  is calculated.
+If there is already a saved value in the array at ,
+then we can use it directly.
+Otherwise, it will be calculated as usual.
+It’s called memoization.
+We will save  as the  element in the array.
+
+In this case, the  is not calculated successively.
+For example, to get , we only need .
+We don’t need , so there is no value at the  element in the array.
+You can use hash map instead of array to avoid the waste of memory.
+However, retrieving data from array is faster than hash map,
+so we apply array in our sample code:
+
+const unsigned int SIZE = 100;
+// 4 is not a fibonacci number, so using it as initialized value.
+const uint64_t INIT = 4;
+// In this case, F is not calculated successively. For example,
+// To get F(6), we only need F(4), F(3), F(2), F(1), F(0) (no F(5)),
+// so the other elements in F is still INIT.
+// Another way is to use hash map(std::unordered_map), however,
+// it will be slower.
+uint64_t MEM[SIZE] = { [0 ... SIZE-1] = INIT };
+uint64_t fib(unsigned int n)
+{
+  if (MEM[n] != INIT) {
+    return MEM[n];
+  }
+
+  if (n == 0) {
+    return (MEM[n] = 0); // F(0) = 0.
+  } else if (n &amp;lt;= 2) {
+    return (MEM[n] = 1); // F(1) = F(2) = 1.
+  }
+
+  unsigned int k = n / 2; // k = n/2 if n is even. k = (n-1)/2 if n is odd.
+  uint64_t a = fib(k);
+  uint64_t b = fib(k + 1);
+
+  // By F(n) = F(2k+1) = F(k+1)^2 + F(k)^2, if n is odd.
+  //    F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ], if n is even.
+  return (MEM[n] = (n % 2) ? a * a + b * b : a * (2 * b - a));
+}
+
+
+
+State vector
+Although we can speed up the calculating by applying memoization above,
+the memory consumption with this approach grows with .
+Is it possible to use a fixed memory no matter how big  is?
+The answer is yes. Actually, we could just use a two-elements array to do it.
+
+From the formula, we can calculate  from .
+For example, to calculate , we need .
+To calculate , we need .
+To calculate , we need .
+To calculate , we need 
+(so we need to stop here since  is the dead end).
+
+However, how do we get 
+when we only have  to calculate ?
+Or how to get 
+when we only have  to calculate  …?
+
+By applying  to formula, we can use  to get .
+Then we can get .
+
+Thus, we are able to get  by the following procedure:
+
+
+
+Thus, we could keep using two-elements array
+for 
+to compute what we want and update it step by step.
+
+But how to determine the state we should update from ,
+ or  ?
+
+It’s simple. If  is even, we need to find 
+, where  since .
+Then we can use 
+to calculate .
+
+Otherwise, if  is odd, we need to find 
+, where  since .
+Then we can use 
+to calculate 
+and then get  by .
+
+In summary, the procedure can be organized as fellows:
+
+
+  
+    
+      
+      
+      
+      
+      
+      
+    
+  
+  
+    
+      
+      10
+      5
+      2
+      1
+      0
+    
+    
+       is odd
+       
+      v
+       
+      v
+       
+    
+    
+      
+       
+      
+       
+      
+       
+    
+    
+      
+      
+      
+      
+      
+      
+    
+    
+      
+       
+      
+      
+      
+      
+    
+  
+
+
+The last two rows, , are the state vector
+that contains our answer.
+
+The first row , is the index of the first element
+of the state vector .
+The second row indicates that whether  is odd or not.
+If  is odd(recall what we discuss above),
+
+From the top-down perspective, to get , we need .
+To get , we need .
+To get , we need .
+To get , we need .
+We will demonstrate how we do it recursively below.
+
+From the bottom-up perspective, we can use 
+to get ,
+then  to get ,
+ to get ,
+ to get .
+We will demonstrate how we do it in iterative section.
+
+The recursive approach is easier to understand.
+By what we summarized above, the simplest implementation will be:
+
+// Set f[0], f[1] to F(n), F(n+1).
+void fib_helper(unsigned int n, uint64_t f[]);
+
+// 4 is not a fibonacci number, so using it as initialized value.
+const uint64_t INIT = 4;
+
+uint64_t fib(unsigned int n)
+{
+  uint64_t f[2] = { INIT, INIT };
+  fib_helper(n, f);
+  return f[0];
+}
+
+void fib_helper(unsigned int n, uint64_t f[])
+{
+  if (n == 0) {
+    f[0] = 0; f[1] = 1;
+    return;
+  }
+
+  unsigned int k = 0;
+  if (n % 2) {
+    k = (n - 1) / 2;
+    fib_helper(k, f);
+    uint64_t a = f[0];            // F(k) = F((n-1)/2)
+    uint64_t b = f[1];            // F(k + 1) = F((n- )/2 + 1)
+    uint64_t c = a * (2 * b - a); // F(n-1) = F(2k) = F(k) * [2 * F(k + 1) - F(k)]
+    uint64_t d = a * a + b * b;   // F(n) = F(2k + 1) = F(k)^2 + F(k+1)^2
+    f[0] = d;                     // F(n)
+    f[1] = c + d;                 // F(n+1) = F(n-1) + F(n)
+  } else {
+    k = n / 2;
+    fib_helper(k, f);
+    uint64_t a = f[0];            // F(k) = F(n/2)
+    uint64_t b = f[1];            // F(k + 1) = F(n/2 + 1)
+    f[0] = a * (2 * b - a);       // F(n) = F(2k) = F(k) * [2 * F(k + 1) - F(k)]
+    f[1] = a * a + b * b;         // F(n + 1) = F(2k + 1) = F(k)^2 + F(k+1)^2
+  }
+}
+
+
+
+The above fib_helper is quite tedious,
+we can be simplify it into:
+// Set f[0], f[1] to F(n), F(n+1).
+void fib_helper(unsigned int n, uint64_t f[])
+{
+  if (!n) {
+    f[0] = 0;
+    f[1] = 1;
+    return;
+  }
+
+  fib_helper(n / 2, f);
+  // k = floor(n/2), so k = n / 2 if n is even, k = (n - 1) / 2 if n is odd.
+  uint64_t a = f[0]; // F(k)
+  uint64_t b = f[1]; // F(k+1)
+
+  uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+  uint64_t d = a * a + b * b;   // F(2k+1) = F(k+1)^2 + F(k)^2
+
+  if (n % 2) {    // k = (n - 1) / 2, so F(2k) = F(n-1), F(2k+1) = F(n).
+    f[0] = d;     // F(n) = F(2k+1).
+    f[1] = c + d; // F(n+1) = F(n-1) + F(n) = F(2k) + F(2k+1).
+  } else {        // k = n / 2, so F(2k) = F(n), F(2k+1) = F(n+1).
+    f[0] = c;     // F(n) = F(2k).
+    f[1] = d;     // F(n+1) = F(2k).
+  }
+}
+
+
+
+You could also replace array with std::vector,
+so the code will looks more elegant.
+However, it will be slower than using array directly.
+// Return vector [ F(n), F(n+1) ].
+std::vector&amp;lt;uint64_t&amp;gt; fib_helper(unsigned int n);
+
+uint64_t fib(unsigned int n)
+{
+  return fib_helper(n)[0];
+}
+
+std::vector&amp;lt;uint64_t&amp;gt; fib_helper(unsigned int n)
+{
+  if (!n) {
+    // [F(0), F(1)] = [0 , 1]
+    return { 0 , 1 };
+  }
+
+  std::vector&amp;lt;uint64_t&amp;gt; f(fib_helper(n / 2));
+  // k = floor(n/2), so k = n / 2 if n is even, k = (n - 1) / 2 if n is odd.
+  uint64_t a = f[0]; // F(k)
+  uint64_t b = f[1]; // F(k+1)
+
+  uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+  uint64_t d = a * a + b * b;   // F(2k+1) = F(k+1)^2 + F(k)^2
+
+  if (n % 2) { // k = (n - 1) / 2, so F(2k) = F(n-1), F(2k+1) = F(n).
+    // [F(n), F(n+1)] = [F(2k+1), F(2k+2)] = [F(2k+1), F(2k) + F(2k+1)]
+    return { d, c + d };
+  } else { // k = n / 2, so F(2k) = F(n), F(2k+1) = F(n+1).
+    // [F(n), F(n+1)] = [F(2k), F(2k+1)].
+    return { c, d };
+  }
+}
+
+
+
+Iterative
+
+The recursive approach is implemented from the top-down perspective.
+We could also do it in bottom-up way.
+
+To convert the recursive steps into an iterative loop,
+we need to find the initialized state and the stop condition.
+In the recursive approach, no matter what  is, the final state vector
+(when the recursive steps stops) is always ,
+, and it must be called from calculating the state [F_1, F_2].
+Recall how we calculate :
+
+
+  We recursively calculate  from ,
+    
+      then ,
+      then ,
+      then ,
+      then stop recursive steps when .
+    
+  
+  Next, we get the state vector  for ,
+    
+      then return in the same route to calculate the state vector for ,
+      then for 
+      then for ,
+      and finally get the answer for .
+    
+  
+
+
+
+
+The recursive steps are used to get the route
+from  to ,
+then calculate  for each .
+
+To remove the recursive steps, we need to have a way to compute the route.
+We can use a stack to track the change for , starting push 
+from , then , , , ,
+then the route can be get from popping them from  to .
+
+Thus, the initialized state is 
+and the stop condition is to check whether the stack is empty.
+
+(Using stack is one common approach to
+convert recursive code into the iterative one.)
+
+uint64_t fib(unsigned int n)
+{
+  // To compute the route from n, n/2, ... 0.
+  std::stack&amp;lt;unsigned int&amp;gt; s;
+  while(n) {
+    s.push(n);
+    n /= 2; // n = floor(n/2)
+  }
+  s.push(n); // n = 0 now.
+
+  uint64_t a; // F(n)
+  uint64_t b; // F(n+1)
+  while (!s.empty()) {
+    unsigned int m = s.top(); s.pop();
+
+    if (m == 0) { // Initializing a, b.
+      a = 0; // F(0) = 0
+      b = 1; // F(1) = 1
+      continue;
+    }
+
+    // Let k = floor(m/2), so `a` is F(k) and `b` is F(k+1) now.
+    // k = m/2, if m is even. k = (m-1)/2, if m is odd.
+    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
+
+    if (m % 2) {  // m = 2k+1:
+      a = d;      //  F(m) = F(2k+1)
+      b = c + d;  //  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
+    } else {      // m = 2k:
+      a = c;      //  F(m) = F(2k)
+      b = d;      //  F(m+1) = F(2k+1)
+    }
+  }
+
+  return a;
+}
+
+
+
+The above code is a bit ugly for simulating the recursive steps like:
+
+
+The initialized state is usually set outside of the loop directly like below:
+
+...
+uint64_t a = 0; // F(0) = 0
+uint64_t b = 1; // F(1) = 1
+while (!s.empty()) {
+  ...
+}
+...
+
+
+
+
+
+Since initialized state is set before the loop,
+we should start the route from  to :
+std::stack&amp;lt;unsigned int&amp;gt; s;
+while (n) {
+  s.push(n);
+  n /= 2;
+}
+// No `s.push(n); // n = 0 now.` here!
+
+
+
+Therefore, the code will be:
+uint64_t fib(unsigned int n)
+{
+  std::stack&amp;lt;unsigned int&amp;gt; s;
+  while (n) {
+    s.push(n);
+    n /= 2;
+  }
+
+  uint64_t a = 0; // F(0) = 0
+  uint64_t b = 1; // F(1) = 1
+  while (!s.empty()) {
+    unsigned int m = s.top(); s.pop();
+
+    // Let k = floor(m/2), so `a` is F(k) and `b` is F(k+1) now.
+    // k = m/2, if m is even. k = (m-1)/2, if m is odd.
+    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
+
+    if (m % 2) {  // m = 2k+1:
+      a = d;      //  F(m) = F(2k+1)
+      b = c + d;  //  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
+    } else {      // m = 2k:
+      a = c;      //  F(m) = F(2k)
+      b = d;      //  F(m+1) = F(2k+1)
+    }
+  }
+
+  return a;
+}
+
+
+Another trick is that you can replace n /= 2 by n &amp;gt;&amp;gt;= 1
+and m % 2 by m &amp;amp; 1
+
+All the above code are on gist here.</summary></entry><entry><title type="html">Matrix Difference Equation for Fibonacci Sequence</title><link href="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence" rel="alternate" type="text/html" title="Matrix Difference Equation for Fibonacci Sequence" /><published>2017-08-22T00:00:00+08:00</published><updated>2017-08-22T00:00:00+08:00</updated><id>http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence">&lt;h2 id=&quot;recurrence-relation&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Recurrence_relation&quot; title=&quot;Recurrence relation&quot;&gt;Recurrence relation&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;Suppose we have a difference equation defined by:&lt;/p&gt;
 
@@ -171,7 +1444,7 @@ k^n =
 k \cdot (k^2)^\frac{n-1}{2}, &amp; \text{if $n$ is odd}
 \end{cases} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;I explained how to do it in my &lt;a href=&quot;/post/exponentiation-by-squaring&quot;&gt;last post&lt;/a&gt;.
+&lt;p&gt;I explained how to do it in my &lt;a href=&quot;/post/exponentiation-by-squaring&quot;&gt;previous post&lt;/a&gt;.
 Please read it if you need.&lt;/p&gt;
 
 &lt;p&gt;As a result, we can compute &lt;em&gt;Fibonacci&lt;/em&gt; number &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; as fellow:&lt;/p&gt;
@@ -345,7 +1618,7 @@ since &lt;script type=&quot;math/tex&quot;&gt;F_{N}&lt;/script&gt; can be derive
 &lt;/div&gt;
 &lt;p&gt;The implementation are easy to understand
 but it still has a lot of room to improve.
-We will discuss it in next post.
+We will discuss it in &lt;a href=&quot;/post/calculating-fibonacci-numbers-by-fast-doubling&quot;&gt;next post&lt;/a&gt;.
 Stay tuned!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">Recurrence relation
 
 Suppose we have a difference equation defined by:
@@ -412,7 +1685,7 @@ The key is to compute the exponentiation by squaring.
 
 
 
-I explained how to do it in my last post.
+I explained how to do it in my previous post.
 Please read it if you need.
 
 As a result, we can compute Fibonacci number  as fellow:
@@ -2724,932 +3997,4 @@ the call shall return immediately.
 
 
 
-The test code can be found on gist here</summary></entry><entry><title type="html">Deadlock when using AudioUnit</title><link href="http://localhost:4000/post/deadlock-when-using-audiounit" rel="alternate" type="text/html" title="Deadlock when using AudioUnit" /><published>2017-05-05T00:00:00+08:00</published><updated>2017-05-05T00:00:00+08:00</updated><id>http://localhost:4000/post/deadlock-when-using-audiounit</id><content type="html" xml:base="http://localhost:4000/post/deadlock-when-using-audiounit">&lt;p&gt;There was a deadlock occured when we tried to integrate my implementation
-for audio 5.1 into Firefox.
-You can see the &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1337805&quot;&gt;bug here&lt;/a&gt;.
-It &lt;strong&gt;only happens on OSX&lt;/strong&gt;.
-After &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1350511#c1&quot;&gt;analysis&lt;/a&gt;,
-I wrote a test to prevent others from getting into the same problem.
-The test is added to &lt;a href=&quot;https://github.com/ChunMinChang/cubeb&quot;&gt;cubeb&lt;/a&gt;,
-which is our cross-platform audio library for Firefox.
-We reproduced a simpler version of &lt;a href=&quot;https://github.com/ChunMinChang/cubeb/blob/8939c0d168a27b1d5047779caad46835ca4651b9/test/test_deadlock.cpp#L1-L43&quot;&gt;the deadlock&lt;/a&gt;)
-in the test.&lt;/p&gt;
-
-&lt;p&gt;However, the code is not easy enough for those who are not familir with &lt;em&gt;cubeb&lt;/em&gt;,
-so I wrote a general version to highlight the issue to
-everyone who uses &lt;em&gt;AudioUnit&lt;/em&gt; in their audio backend.
-You can find the code on &lt;a href=&quot;https://gist.github.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9&quot;&gt;gist here&lt;/a&gt;&lt;/p&gt;
-
-&lt;noscript&gt;&lt;pre&gt;// Deadlock
-//
-// In CoreAudio, the ouput callback will holds a mutex shared with AudioUnit
-// (hereinafter mutex_AU). Thus, if the callback requests another mutex M held
-// by another thread, without releasing mutex_AU, then it will cause a
-// deadlock when another thread holding the mutex M requests to use AudioUnit.
-//
-// The following figure illustrates the deadlock described above:
-//
-//    (Thread A)     holds
-//  data_callback &amp;lt;---------- mutext_AudioUnit(mutex_AU)
-//      |                            ^
-//      |                            |
-//      | request                    | request
-//      |                            |
-//      v           holds            |
-//   mutex_M -------------------&amp;gt; Thread B
-
-#include &amp;lt;assert.h&amp;gt;               // for assert
-#include &amp;lt;pthread.h&amp;gt;              // for pthread
-#include &amp;lt;signal.h&amp;gt;               // for signal
-#include &amp;lt;unistd.h&amp;gt;               // for sleep, usleep
-
-#include &amp;quot;AudioStream.h&amp;quot;          // for AudioStream
-#include &amp;quot;utils.h&amp;quot;                // for LOG
-#include &amp;quot;OwnedCriticalSection.h&amp;quot; // for OwnedCriticalSection
-
-// The signal alias for calling our thread killer.
-#define CALL_THREAD_KILLER SIGUSR1
-
-const unsigned int kFequency = 44100;
-const unsigned int kChannels = 2;
-
-// If we apply ERRORCHECK mode, then we can&amp;#39;t unlock a mutex locked by a
-// different thread.
-// OwnedCriticalSection gMutex(OwnedCriticalSection::Mode::ERRORCHECK);
-OwnedCriticalSection gMutex;
-using locker = std::lock_guard&amp;lt;OwnedCriticalSection&amp;gt;;
-
-// Indicating whether the test is passed.
-bool gPass = false;
-
-// Indicating whether the data callback is fired.
-bool gCalled = false;
-
-// Indicating whether the data callback is running.
-bool gCalling = false;
-
-// Indicating whether the assigned task is done.
-bool gTaskDone = false;
-
-// Indicating whether our pending task thread is killed by ourselves.
-bool gKilled = false;
-
-void killer(int aSignal)
-{
-  assert(aSignal == CALL_THREAD_KILLER);
-  LOG(&amp;quot;pending task thread is killed!\n&amp;quot;);
-  gKilled = true;
-}
-
-uint64_t getThreadId(pthread_t aThread = NULL)
-{
-  uint64_t tid;
-  // tid will be current thread id if aThread is null.
-  pthread_threadid_np(aThread, &amp;amp;tid);
-  return tid;
-}
-
-// The output callback fired from audio rendering mechanism, which is on
-// out-of-main thread.
-void callback(void* aBuffer, unsigned long aFrames)
-{
-  // The callback thread holds a mutex shared with AudioUnit.
-
-  gCalling = true;
-
-  uint64_t id = getThreadId();
-  !gCalled &amp;amp;&amp;amp; LOG(&amp;quot;Output callback is on thread %llu, holding mutex_AU\n&amp;quot;, id);
-  gCalled = true;
-
-  if (!gTaskDone) {
-    // Force to switch threads by sleeping 10 ms. Notice that anything over
-    // 10ms would produce a glitch. It&amp;#39;s intended for testing deadlock,
-    // so we ignore the fault here.
-    LOG(&amp;quot;[%llu] Force to switch threads\n&amp;quot;, id);
-    usleep(10000);
-  }
-
-  LOG(&amp;quot;[%llu] Try getting another mutex: gMutex...\n&amp;quot;, id);
-  locker guard(gMutex);
-
-  LOG(&amp;quot;[%llu] Got mutex finally!\n&amp;quot;, id);
-
-  gCalling = false;
-}
-
-void* task(void*)
-{
-  // Hold the mutex.
-  locker guard(gMutex);
-
-  uint64_t id = getThreadId();
-  LOG(&amp;quot;Task thread: %llu, holding gMutex, is created\n&amp;quot;, id);
-
-  while(!gCalling) {
-    LOG(&amp;quot;[%llu] waiting for output callback before running task\n&amp;quot;, id);
-    usleep(1000); // Force to switch threads by sleeping 1 ms.
-  }
-
-  // Creating another AudioUnit when we already one will cause a deadlock!
-  LOG(&amp;quot;[%llu] Try creating another AudioUnit (getting mutex_AU)...\n&amp;quot;, id);
-  AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
-
-  LOG(&amp;quot;[%llu] Another AudioUnit is created!\n&amp;quot;, id);
-  gTaskDone = true;
-
-  return NULL;
-}
-
-// We provide one possible solution here:
-// void* task(void*)
-// {
-//   uint64_t id = getThreadId();
-//   LOG(&amp;quot;Task thread: %llu is created\n&amp;quot;, id);
-//
-//   while(!gCalling) {
-//     LOG(&amp;quot;[%llu] waiting for output callback before running task\n&amp;quot;, id);
-//     usleep(1000); // Force to switch threads by sleeping 1 ms.
-//   }
-//
-//   // Creating another AudioUnit when we already one will cause a deadlock!
-//   LOG(&amp;quot;[%llu] Try creating another AudioUnit (getting mutex_AU)...\n&amp;quot;, id);
-//   AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
-//
-//   LOG(&amp;quot;[%llu] Another AudioUnit is created!\n&amp;quot;, id);
-//
-//   // Hold the mutex.
-//   LOG(&amp;quot;[%llu] Try getting another mutex: gMutex...\n&amp;quot;, id);
-//   locker guard(gMutex);
-//
-//   LOG(&amp;quot;[%llu] Got mutex finally!\n&amp;quot;, id);
-//
-//   gTaskDone = true;
-//
-//   return NULL;
-// }
-
-void* watchdog(void* aSubject)
-{
-  uint64_t id = getThreadId();
-
-  pthread_t subject = *((pthread_t *) aSubject);
-  uint64_t sid = getThreadId(subject);
-
-  LOG(&amp;quot;Monitor thread %llu on thread %llu\n&amp;quot;, sid, id);
-
-  unsigned int sec = 1;
-  LOG(&amp;quot;[%llu] sleep %d seconds before checking task for thread %llu\n&amp;quot;, id, sec, sid);
-  sleep(sec); // Force to switch threads.
-
-  if (!gTaskDone) {
-    LOG(&amp;quot;[%llu] Kill the task thread %llu!\n&amp;quot;, id, sid);
-    assert(!pthread_kill(subject, CALL_THREAD_KILLER));
-    assert(!pthread_detach(subject));
-    // The mutex held by the killed thread(subject) won&amp;#39;t be released,
-    // so we need unlock it manually. Notice that we can&amp;#39;t unlock a mutex held
-    // by other thread in OwnedCriticalSection::Mode::ERRORCHECK mode of gMutex.
-    gMutex.unlock();
-  }
-
-  LOG(&amp;quot;\n[%llu] Task is %sdone\n\n&amp;quot;, id, gTaskDone ? &amp;quot;&amp;quot;: &amp;quot;NOT &amp;quot;);
-  gPass = gTaskDone;
-
-  return NULL;
-}
-
-int main()
-{
-  AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
-
-  // Install signal handler.
-  signal(CALL_THREAD_KILLER, killer);
-
-  pthread_t subject, detector;
-  pthread_create(&amp;amp;subject, NULL, task, NULL);
-  pthread_create(&amp;amp;detector, NULL, watchdog, (void *) &amp;amp;subject);
-
-  as.Start();
-
-  pthread_join(subject, NULL);
-  pthread_join(detector, NULL);
-
-  as.Stop();
-
-  // If the callback is never fired, then the task must not be done.
-  // There is no to keep checking in this case.
-  assert(gCalled &amp;amp;&amp;amp; &amp;quot;Callback should be fired!&amp;quot;);
-
-  // The task thread might keep running after the deadlock is freed, so we use
-  // gPass instead of gTaskDone.
-  assert(gPass &amp;amp;&amp;amp; &amp;quot;Deadlock detected!&amp;quot;);
-
-  // False gPass implies there is a deadlock detected, so we need to kill the
-  // pending task thread to free the deadlock and set gKilled to true.
-  // True gPass means there is no deadlock and no need to kill any thread.
-  assert(gPass != gKilled &amp;amp;&amp;amp; &amp;quot;Killer is out of control!&amp;quot;);
-
-  return 0;
-}
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9.js?file=test_deadlock.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;The APIs called to play and stop the audio stream is:&lt;/p&gt;
-&lt;noscript&gt;&lt;pre&gt;#ifndef AUDIOSTREAM_H
-#define AUDIOSTREAM_H
-
-#include &amp;lt;AudioUnit/AudioUnit.h&amp;gt;
-
-typedef void (* AudioCallback)(void* buffer, unsigned long frames);
-
-class AudioStream
-{
-public:
-  // We only support output for now.
-  // enum Side
-  // {
-  //   OUTPUT,
-  //   INPUT
-  // }
-
-  enum Format
-  {
-    S16LE, // PCM signed 16-bit little-endian
-    S16BE, // PCM signed 16-bit big-endian
-    F32LE, // PCM 32-bit floating-point little-endian
-    F32BE  // PCM 32-bit floating-point big-endian
-  };
-
-  AudioStream(Format aFormat,
-              unsigned int aRate,
-              unsigned int aChannels,
-              AudioCallback aCallback);
-
-  ~AudioStream();
-
-  void Start();
-  void Stop();
-
-private:
-  void CreateAudioUnit();
-  void SetDescription(Format aFormat);
-  void SetCallback();
-  static OSStatus DataCallback(void* aRefCon,
-                        AudioUnitRenderActionFlags* aActionFlags,
-                        const AudioTimeStamp* aTimeStamp,
-                        UInt32 aBusNumber,
-                        UInt32 aNumFrames,
-                        AudioBufferList* aData);
-
-  unsigned int mRate;
-  unsigned int mChannels;
-  AudioStreamBasicDescription mDescription; // Format descriptions
-  // AudioUnit is a pointer to ComponentInstanceRecord
-  AudioUnit mUnit;
-  AudioCallback mCallback;
-};
-
-#endif // #ifndef AUDIOSTREAM_H
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9.js?file=AudioStream.h&quot;&gt; &lt;/script&gt;
-
-&lt;noscript&gt;&lt;pre&gt;#include &amp;lt;assert.h&amp;gt;
-#include &amp;lt;CoreAudio/CoreAudio.h&amp;gt;
-
-#include &amp;quot;AudioStream.h&amp;quot;
-
-#define AU_OUT_BUS  0
-// #define AU_IN_BUS   1
-
-AudioStream::AudioStream(Format aFormat,
-                         unsigned int aRate,
-                         unsigned int aChannels,
-                         AudioCallback aCallback)
-  : mRate(aRate)
-  , mChannels(aChannels)
-  , mUnit(nullptr)
-  , mCallback(aCallback)
-{
-  assert(mRate &amp;amp;&amp;amp; mChannels);
-  CreateAudioUnit(); // Initialize mUnit
-  SetDescription(aFormat); // Initialize mDescription
-  SetCallback(); // Render output to DataCallback
-  assert(AudioUnitInitialize(mUnit) == noErr);
-}
-
-AudioStream::~AudioStream()
-{
-  assert(mUnit);
-  assert(AudioOutputUnitStop(mUnit) == noErr);
-  assert(AudioUnitUninitialize(mUnit) == noErr);
-  assert(AudioComponentInstanceDispose(mUnit) == noErr);
-}
-
-void
-AudioStream::Start()
-{
-  assert(mUnit);
-  assert(AudioOutputUnitStart(mUnit) == noErr);
-}
-
-void
-AudioStream::Stop()
-{
-  assert(mUnit);
-  assert(AudioOutputUnitStop(mUnit) == noErr);
-}
-
-void
-AudioStream::CreateAudioUnit()
-{
-  assert(!mUnit); // mUnit should be nullptr before initializing.
-
-  AudioComponentDescription desc;
-  desc.componentType = kAudioUnitType_Output;
-  desc.componentSubType = kAudioUnitSubType_DefaultOutput;
-  desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-  desc.componentFlags = 0;
-  desc.componentFlagsMask = 0;
-
-  AudioComponent comp = AudioComponentFindNext(NULL, &amp;amp;desc);
-  assert(comp); // comp will be nullptr if there is no matching audio hardware.
-
-  assert(AudioComponentInstanceNew(comp, &amp;amp;mUnit) == noErr);
-  assert(mUnit); // mUnit should NOT be nullptr after initializing.
-}
-
-void
-AudioStream::SetDescription(Format aFormat)
-{
-  memset(&amp;amp;mDescription, 0, sizeof(mDescription));
-  switch (aFormat) {
-    case S16LE:
-      mDescription.mBitsPerChannel = 16;
-      mDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger;
-      break;
-    case S16BE:
-      mDescription.mBitsPerChannel = 16;
-      mDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger |
-                                  kAudioFormatFlagIsBigEndian;
-      break;
-    case F32LE:
-      mDescription.mBitsPerChannel = 32;
-      mDescription.mFormatFlags = kAudioFormatFlagIsFloat;
-      break;
-    case F32BE:
-      mDescription.mBitsPerChannel = 32;
-      mDescription.mFormatFlags = kAudioFormatFlagIsFloat |
-                                  kAudioFormatFlagIsBigEndian;
-      break;
-    default:
-      assert(false);
-  }
-
-  // The mFormatFlags below should be set by &amp;quot;|&amp;quot; or operator,
-  // or the assigned flags above will be cleared.
-  mDescription.mFormatID = kAudioFormatLinearPCM;
-  mDescription.mFormatFlags |= kLinearPCMFormatFlagIsPacked;
-  mDescription.mSampleRate = mRate;
-  mDescription.mChannelsPerFrame = mChannels;
-
-  mDescription.mBytesPerFrame = (mDescription.mBitsPerChannel / 8) *
-                                mDescription.mChannelsPerFrame;
-
-  mDescription.mFramesPerPacket = 1;
-  mDescription.mBytesPerPacket = mDescription.mBytesPerFrame *
-                                 mDescription.mFramesPerPacket;
-  mDescription.mReserved = 0;
-
-  assert(AudioUnitSetProperty(mUnit,
-                              kAudioUnitProperty_StreamFormat,
-                              kAudioUnitScope_Input,
-                              AU_OUT_BUS,
-                              &amp;amp;mDescription,
-                              sizeof(mDescription)) == noErr);
-}
-
-void
-AudioStream::SetCallback()
-{
-  AURenderCallbackStruct aurcbs;
-  memset(&amp;amp;aurcbs, 0, sizeof(aurcbs));
-  aurcbs.inputProc = DataCallback;
-  aurcbs.inputProcRefCon = this; // Pass this as callback&amp;#39;s arguments
-
-  assert(AudioUnitSetProperty(mUnit,
-                              kAudioUnitProperty_SetRenderCallback,
-                              kAudioUnitScope_Global,
-                              AU_OUT_BUS,
-                              &amp;amp;aurcbs,
-                              sizeof(aurcbs)) == noErr);
-}
-
-/* static */ OSStatus
-AudioStream::DataCallback(void* aRefCon,
-                          AudioUnitRenderActionFlags* aActionFlags,
-                          const AudioTimeStamp* aTimeStamp,
-                          UInt32 aBusNumber,
-                          UInt32 aNumFrames,
-                          AudioBufferList* aData)
-{
-  assert(aBusNumber == AU_OUT_BUS);
-  assert(aData-&amp;gt;mNumberBuffers == 1);
-
-  AudioStream* as = static_cast&amp;lt;AudioStream*&amp;gt;(aRefCon); // Get arguments
-  void* buffer = aData-&amp;gt;mBuffers[0].mData;
-  as-&amp;gt;mCallback(buffer, aNumFrames);
-  return noErr;
-}
-&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9.js?file=AudioStream.cpp&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;The key why deadlock happend is that
-the audio callback thread holds a mutex(hereafter referred to as &lt;em&gt;Mutex-AU&lt;/em&gt;)
-shared with &lt;em&gt;AudioUnit&lt;/em&gt;.
-The &lt;em&gt;Mutex-AU&lt;/em&gt; is held inside it’s framework, so you don’t notice it.&lt;/p&gt;
-
-&lt;p&gt;Thus, if the callback thread requests another &lt;em&gt;mutex M&lt;/em&gt; held by the another
-thread, without releasing &lt;em&gt;mutex-AU&lt;/em&gt;, then it will cause a deadlock when the
-another thread, which holds the &lt;em&gt;mutex M&lt;/em&gt;, request to use AudioUnit.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;That is,
-if we have a &lt;em&gt;thread T&lt;/em&gt;, holding the &lt;em&gt;mutex M&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;and one &lt;em&gt;callback thread&lt;/em&gt; which holds the &lt;em&gt;mutex-AU&lt;/em&gt;,&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The deadlock will occur when the &lt;em&gt;callback thread&lt;/em&gt; requests the &lt;em&gt;mutex M&lt;/em&gt;
-(the callback thread is blocked for waiting the &lt;em&gt;mutex M&lt;/em&gt;)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;and the &lt;em&gt;thread T&lt;/em&gt; requests the &lt;em&gt;mutex-AU&lt;/em&gt; to use AudioUnit&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://gist.githubusercontent.com/ChunMinChang/47b8712ed57b96721eec18dede39d2f9/raw/e27ea5d4fcee8cfd58acbdea09e90a40a4cfe5e1/deadlock-4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Media" /><category term="CoreAudio" /><category term="Multithread" /><summary type="html">There was a deadlock occured when we tried to integrate my implementation
-for audio 5.1 into Firefox.
-You can see the bug here.
-It only happens on OSX.
-After analysis,
-I wrote a test to prevent others from getting into the same problem.
-The test is added to cubeb,
-which is our cross-platform audio library for Firefox.
-We reproduced a simpler version of the deadlock)
-in the test.
-
-However, the code is not easy enough for those who are not familir with cubeb,
-so I wrote a general version to highlight the issue to
-everyone who uses AudioUnit in their audio backend.
-You can find the code on gist here
-
-// Deadlock
-//
-// In CoreAudio, the ouput callback will holds a mutex shared with AudioUnit
-// (hereinafter mutex_AU). Thus, if the callback requests another mutex M held
-// by another thread, without releasing mutex_AU, then it will cause a
-// deadlock when another thread holding the mutex M requests to use AudioUnit.
-//
-// The following figure illustrates the deadlock described above:
-//
-//    (Thread A)     holds
-//  data_callback &amp;lt;---------- mutext_AudioUnit(mutex_AU)
-//      |                            ^
-//      |                            |
-//      | request                    | request
-//      |                            |
-//      v           holds            |
-//   mutex_M -------------------&amp;gt; Thread B
-
-#include &amp;lt;assert.h&amp;gt;               // for assert
-#include &amp;lt;pthread.h&amp;gt;              // for pthread
-#include &amp;lt;signal.h&amp;gt;               // for signal
-#include &amp;lt;unistd.h&amp;gt;               // for sleep, usleep
-
-#include &amp;quot;AudioStream.h&amp;quot;          // for AudioStream
-#include &amp;quot;utils.h&amp;quot;                // for LOG
-#include &amp;quot;OwnedCriticalSection.h&amp;quot; // for OwnedCriticalSection
-
-// The signal alias for calling our thread killer.
-#define CALL_THREAD_KILLER SIGUSR1
-
-const unsigned int kFequency = 44100;
-const unsigned int kChannels = 2;
-
-// If we apply ERRORCHECK mode, then we can&amp;#39;t unlock a mutex locked by a
-// different thread.
-// OwnedCriticalSection gMutex(OwnedCriticalSection::Mode::ERRORCHECK);
-OwnedCriticalSection gMutex;
-using locker = std::lock_guard&amp;lt;OwnedCriticalSection&amp;gt;;
-
-// Indicating whether the test is passed.
-bool gPass = false;
-
-// Indicating whether the data callback is fired.
-bool gCalled = false;
-
-// Indicating whether the data callback is running.
-bool gCalling = false;
-
-// Indicating whether the assigned task is done.
-bool gTaskDone = false;
-
-// Indicating whether our pending task thread is killed by ourselves.
-bool gKilled = false;
-
-void killer(int aSignal)
-{
-  assert(aSignal == CALL_THREAD_KILLER);
-  LOG(&amp;quot;pending task thread is killed! &amp;quot;);
-  gKilled = true;
-}
-
-uint64_t getThreadId(pthread_t aThread = NULL)
-{
-  uint64_t tid;
-  // tid will be current thread id if aThread is null.
-  pthread_threadid_np(aThread, &amp;amp;tid);
-  return tid;
-}
-
-// The output callback fired from audio rendering mechanism, which is on
-// out-of-main thread.
-void callback(void* aBuffer, unsigned long aFrames)
-{
-  // The callback thread holds a mutex shared with AudioUnit.
-
-  gCalling = true;
-
-  uint64_t id = getThreadId();
-  !gCalled &amp;amp;&amp;amp; LOG(&amp;quot;Output callback is on thread %llu, holding mutex_AU &amp;quot;, id);
-  gCalled = true;
-
-  if (!gTaskDone) {
-    // Force to switch threads by sleeping 10 ms. Notice that anything over
-    // 10ms would produce a glitch. It&amp;#39;s intended for testing deadlock,
-    // so we ignore the fault here.
-    LOG(&amp;quot;[%llu] Force to switch threads &amp;quot;, id);
-    usleep(10000);
-  }
-
-  LOG(&amp;quot;[%llu] Try getting another mutex: gMutex... &amp;quot;, id);
-  locker guard(gMutex);
-
-  LOG(&amp;quot;[%llu] Got mutex finally! &amp;quot;, id);
-
-  gCalling = false;
-}
-
-void* task(void*)
-{
-  // Hold the mutex.
-  locker guard(gMutex);
-
-  uint64_t id = getThreadId();
-  LOG(&amp;quot;Task thread: %llu, holding gMutex, is created &amp;quot;, id);
-
-  while(!gCalling) {
-    LOG(&amp;quot;[%llu] waiting for output callback before running task &amp;quot;, id);
-    usleep(1000); // Force to switch threads by sleeping 1 ms.
-  }
-
-  // Creating another AudioUnit when we already one will cause a deadlock!
-  LOG(&amp;quot;[%llu] Try creating another AudioUnit (getting mutex_AU)... &amp;quot;, id);
-  AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
-
-  LOG(&amp;quot;[%llu] Another AudioUnit is created! &amp;quot;, id);
-  gTaskDone = true;
-
-  return NULL;
-}
-
-// We provide one possible solution here:
-// void* task(void*)
-// {
-//   uint64_t id = getThreadId();
-//   LOG(&amp;quot;Task thread: %llu is created &amp;quot;, id);
-//
-//   while(!gCalling) {
-//     LOG(&amp;quot;[%llu] waiting for output callback before running task &amp;quot;, id);
-//     usleep(1000); // Force to switch threads by sleeping 1 ms.
-//   }
-//
-//   // Creating another AudioUnit when we already one will cause a deadlock!
-//   LOG(&amp;quot;[%llu] Try creating another AudioUnit (getting mutex_AU)... &amp;quot;, id);
-//   AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
-//
-//   LOG(&amp;quot;[%llu] Another AudioUnit is created! &amp;quot;, id);
-//
-//   // Hold the mutex.
-//   LOG(&amp;quot;[%llu] Try getting another mutex: gMutex... &amp;quot;, id);
-//   locker guard(gMutex);
-//
-//   LOG(&amp;quot;[%llu] Got mutex finally! &amp;quot;, id);
-//
-//   gTaskDone = true;
-//
-//   return NULL;
-// }
-
-void* watchdog(void* aSubject)
-{
-  uint64_t id = getThreadId();
-
-  pthread_t subject = *((pthread_t *) aSubject);
-  uint64_t sid = getThreadId(subject);
-
-  LOG(&amp;quot;Monitor thread %llu on thread %llu &amp;quot;, sid, id);
-
-  unsigned int sec = 1;
-  LOG(&amp;quot;[%llu] sleep %d seconds before checking task for thread %llu &amp;quot;, id, sec, sid);
-  sleep(sec); // Force to switch threads.
-
-  if (!gTaskDone) {
-    LOG(&amp;quot;[%llu] Kill the task thread %llu! &amp;quot;, id, sid);
-    assert(!pthread_kill(subject, CALL_THREAD_KILLER));
-    assert(!pthread_detach(subject));
-    // The mutex held by the killed thread(subject) won&amp;#39;t be released,
-    // so we need unlock it manually. Notice that we can&amp;#39;t unlock a mutex held
-    // by other thread in OwnedCriticalSection::Mode::ERRORCHECK mode of gMutex.
-    gMutex.unlock();
-  }
-
-  LOG(&amp;quot; [%llu] Task is %sdone  &amp;quot;, id, gTaskDone ? &amp;quot;&amp;quot;: &amp;quot;NOT &amp;quot;);
-  gPass = gTaskDone;
-
-  return NULL;
-}
-
-int main()
-{
-  AudioStream as(AudioStream::Format::F32LE, kFequency, kChannels, callback);
-
-  // Install signal handler.
-  signal(CALL_THREAD_KILLER, killer);
-
-  pthread_t subject, detector;
-  pthread_create(&amp;amp;subject, NULL, task, NULL);
-  pthread_create(&amp;amp;detector, NULL, watchdog, (void *) &amp;amp;subject);
-
-  as.Start();
-
-  pthread_join(subject, NULL);
-  pthread_join(detector, NULL);
-
-  as.Stop();
-
-  // If the callback is never fired, then the task must not be done.
-  // There is no to keep checking in this case.
-  assert(gCalled &amp;amp;&amp;amp; &amp;quot;Callback should be fired!&amp;quot;);
-
-  // The task thread might keep running after the deadlock is freed, so we use
-  // gPass instead of gTaskDone.
-  assert(gPass &amp;amp;&amp;amp; &amp;quot;Deadlock detected!&amp;quot;);
-
-  // False gPass implies there is a deadlock detected, so we need to kill the
-  // pending task thread to free the deadlock and set gKilled to true.
-  // True gPass means there is no deadlock and no need to kill any thread.
-  assert(gPass != gKilled &amp;amp;&amp;amp; &amp;quot;Killer is out of control!&amp;quot;);
-
-  return 0;
-}
-
-
-
-The APIs called to play and stop the audio stream is:
-#ifndef AUDIOSTREAM_H
-#define AUDIOSTREAM_H
-
-#include &amp;lt;AudioUnit/AudioUnit.h&amp;gt;
-
-typedef void (* AudioCallback)(void* buffer, unsigned long frames);
-
-class AudioStream
-{
-public:
-  // We only support output for now.
-  // enum Side
-  // {
-  //   OUTPUT,
-  //   INPUT
-  // }
-
-  enum Format
-  {
-    S16LE, // PCM signed 16-bit little-endian
-    S16BE, // PCM signed 16-bit big-endian
-    F32LE, // PCM 32-bit floating-point little-endian
-    F32BE  // PCM 32-bit floating-point big-endian
-  };
-
-  AudioStream(Format aFormat,
-              unsigned int aRate,
-              unsigned int aChannels,
-              AudioCallback aCallback);
-
-  ~AudioStream();
-
-  void Start();
-  void Stop();
-
-private:
-  void CreateAudioUnit();
-  void SetDescription(Format aFormat);
-  void SetCallback();
-  static OSStatus DataCallback(void* aRefCon,
-                        AudioUnitRenderActionFlags* aActionFlags,
-                        const AudioTimeStamp* aTimeStamp,
-                        UInt32 aBusNumber,
-                        UInt32 aNumFrames,
-                        AudioBufferList* aData);
-
-  unsigned int mRate;
-  unsigned int mChannels;
-  AudioStreamBasicDescription mDescription; // Format descriptions
-  // AudioUnit is a pointer to ComponentInstanceRecord
-  AudioUnit mUnit;
-  AudioCallback mCallback;
-};
-
-#endif // #ifndef AUDIOSTREAM_H
-
-
-
-#include &amp;lt;assert.h&amp;gt;
-#include &amp;lt;CoreAudio/CoreAudio.h&amp;gt;
-
-#include &amp;quot;AudioStream.h&amp;quot;
-
-#define AU_OUT_BUS  0
-// #define AU_IN_BUS   1
-
-AudioStream::AudioStream(Format aFormat,
-                         unsigned int aRate,
-                         unsigned int aChannels,
-                         AudioCallback aCallback)
-  : mRate(aRate)
-  , mChannels(aChannels)
-  , mUnit(nullptr)
-  , mCallback(aCallback)
-{
-  assert(mRate &amp;amp;&amp;amp; mChannels);
-  CreateAudioUnit(); // Initialize mUnit
-  SetDescription(aFormat); // Initialize mDescription
-  SetCallback(); // Render output to DataCallback
-  assert(AudioUnitInitialize(mUnit) == noErr);
-}
-
-AudioStream::~AudioStream()
-{
-  assert(mUnit);
-  assert(AudioOutputUnitStop(mUnit) == noErr);
-  assert(AudioUnitUninitialize(mUnit) == noErr);
-  assert(AudioComponentInstanceDispose(mUnit) == noErr);
-}
-
-void
-AudioStream::Start()
-{
-  assert(mUnit);
-  assert(AudioOutputUnitStart(mUnit) == noErr);
-}
-
-void
-AudioStream::Stop()
-{
-  assert(mUnit);
-  assert(AudioOutputUnitStop(mUnit) == noErr);
-}
-
-void
-AudioStream::CreateAudioUnit()
-{
-  assert(!mUnit); // mUnit should be nullptr before initializing.
-
-  AudioComponentDescription desc;
-  desc.componentType = kAudioUnitType_Output;
-  desc.componentSubType = kAudioUnitSubType_DefaultOutput;
-  desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-  desc.componentFlags = 0;
-  desc.componentFlagsMask = 0;
-
-  AudioComponent comp = AudioComponentFindNext(NULL, &amp;amp;desc);
-  assert(comp); // comp will be nullptr if there is no matching audio hardware.
-
-  assert(AudioComponentInstanceNew(comp, &amp;amp;mUnit) == noErr);
-  assert(mUnit); // mUnit should NOT be nullptr after initializing.
-}
-
-void
-AudioStream::SetDescription(Format aFormat)
-{
-  memset(&amp;amp;mDescription, 0, sizeof(mDescription));
-  switch (aFormat) {
-    case S16LE:
-      mDescription.mBitsPerChannel = 16;
-      mDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger;
-      break;
-    case S16BE:
-      mDescription.mBitsPerChannel = 16;
-      mDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger |
-                                  kAudioFormatFlagIsBigEndian;
-      break;
-    case F32LE:
-      mDescription.mBitsPerChannel = 32;
-      mDescription.mFormatFlags = kAudioFormatFlagIsFloat;
-      break;
-    case F32BE:
-      mDescription.mBitsPerChannel = 32;
-      mDescription.mFormatFlags = kAudioFormatFlagIsFloat |
-                                  kAudioFormatFlagIsBigEndian;
-      break;
-    default:
-      assert(false);
-  }
-
-  // The mFormatFlags below should be set by &amp;quot;|&amp;quot; or operator,
-  // or the assigned flags above will be cleared.
-  mDescription.mFormatID = kAudioFormatLinearPCM;
-  mDescription.mFormatFlags |= kLinearPCMFormatFlagIsPacked;
-  mDescription.mSampleRate = mRate;
-  mDescription.mChannelsPerFrame = mChannels;
-
-  mDescription.mBytesPerFrame = (mDescription.mBitsPerChannel / 8) *
-                                mDescription.mChannelsPerFrame;
-
-  mDescription.mFramesPerPacket = 1;
-  mDescription.mBytesPerPacket = mDescription.mBytesPerFrame *
-                                 mDescription.mFramesPerPacket;
-  mDescription.mReserved = 0;
-
-  assert(AudioUnitSetProperty(mUnit,
-                              kAudioUnitProperty_StreamFormat,
-                              kAudioUnitScope_Input,
-                              AU_OUT_BUS,
-                              &amp;amp;mDescription,
-                              sizeof(mDescription)) == noErr);
-}
-
-void
-AudioStream::SetCallback()
-{
-  AURenderCallbackStruct aurcbs;
-  memset(&amp;amp;aurcbs, 0, sizeof(aurcbs));
-  aurcbs.inputProc = DataCallback;
-  aurcbs.inputProcRefCon = this; // Pass this as callback&amp;#39;s arguments
-
-  assert(AudioUnitSetProperty(mUnit,
-                              kAudioUnitProperty_SetRenderCallback,
-                              kAudioUnitScope_Global,
-                              AU_OUT_BUS,
-                              &amp;amp;aurcbs,
-                              sizeof(aurcbs)) == noErr);
-}
-
-/* static */ OSStatus
-AudioStream::DataCallback(void* aRefCon,
-                          AudioUnitRenderActionFlags* aActionFlags,
-                          const AudioTimeStamp* aTimeStamp,
-                          UInt32 aBusNumber,
-                          UInt32 aNumFrames,
-                          AudioBufferList* aData)
-{
-  assert(aBusNumber == AU_OUT_BUS);
-  assert(aData-&amp;gt;mNumberBuffers == 1);
-
-  AudioStream* as = static_cast&amp;lt;AudioStream*&amp;gt;(aRefCon); // Get arguments
-  void* buffer = aData-&amp;gt;mBuffers[0].mData;
-  as-&amp;gt;mCallback(buffer, aNumFrames);
-  return noErr;
-}
-
-
-
-The key why deadlock happend is that
-the audio callback thread holds a mutex(hereafter referred to as Mutex-AU)
-shared with AudioUnit.
-The Mutex-AU is held inside it’s framework, so you don’t notice it.
-
-Thus, if the callback thread requests another mutex M held by the another
-thread, without releasing mutex-AU, then it will cause a deadlock when the
-another thread, which holds the mutex M, request to use AudioUnit.
-
-
-
-That is,
-if we have a thread T, holding the mutex M
-
-
-
-and one callback thread which holds the mutex-AU,
-
-
-
-The deadlock will occur when the callback thread requests the mutex M
-(the callback thread is blocked for waiting the mutex M)
-
-
-
-and the thread T requests the mutex-AU to use AudioUnit</summary></entry></feed>
+The test code can be found on gist here</summary></entry></feed>

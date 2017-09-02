@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-01T14:37:40+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-02T18:19:21+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
 we learned how to calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers by &lt;em&gt;Fast Doubling&lt;/em&gt; in math.
 Today, we will apply it in programming and optimize it step by step.&lt;/p&gt;
 
@@ -326,7 +326,13 @@ that contains our answer.&lt;/p&gt;
 &lt;p&gt;The first row &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;, is the index of the first element
 of the state vector &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;.
 The second row indicates that whether &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is odd or not.
-If &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is odd(recall what we discuss above),&lt;/p&gt;
+If &lt;script type=&quot;math/tex&quot;&gt;n(= k_i)&lt;/script&gt; is odd(recall what we discuss above),
+then we need to update state from from &lt;script type=&quot;math/tex&quot;&gt;[F_{k_{i+1}}, F_{k_{i+1}+1}]&lt;/script&gt;
+to &lt;script type=&quot;math/tex&quot;&gt;[F_{2k_i + 1}, F_{2k_i + 2}]&lt;/script&gt; since &lt;script type=&quot;math/tex&quot;&gt;k_{i+1} = \frac{k_i - 1}{2}&lt;/script&gt;.
+The third row is used to record if we need get &lt;script type=&quot;math/tex&quot;&gt;[F_{2k_i + 1}, F_{2k_i + 2}]&lt;/script&gt;
+from &lt;script type=&quot;math/tex&quot;&gt;[F_{2k_i}, F_{2k_i + 1}]&lt;/script&gt;.
+Otherwise, if &lt;script type=&quot;math/tex&quot;&gt;n(= k_i)&lt;/script&gt; is even, updating state
+from &lt;script type=&quot;math/tex&quot;&gt;[F_{k_{i+1}}, F_{k_{i+1}+1}]&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;[F_{2k_i}, F_{2k_i + 1}]&lt;/script&gt; directly.&lt;/p&gt;
 
 &lt;p&gt;From the top-down perspective, to get &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_5, F_6&lt;/script&gt;.
 To get &lt;script type=&quot;math/tex&quot;&gt;F_5, F_6&lt;/script&gt;, we need &lt;script type=&quot;math/tex&quot;&gt;F_2, F_3&lt;/script&gt;.
@@ -466,7 +472,7 @@ In the recursive approach, no matter what &lt;script type=&quot;math/tex&quot;&g
 Recall how we calculate &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/script&gt;:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;We recursively calculate &lt;script type=&quot;math/tex&quot;&gt;n = \lfloor \frac{n}{2} \rfloor&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;,
+  &lt;li&gt;We recursively calculate &lt;script type=&quot;math/tex&quot;&gt;n \leftarrow \lfloor \frac{n}{2} \rfloor&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;,
     &lt;ul&gt;
       &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;n = \lfloor \frac{10}{2} \rfloor = 5&lt;/script&gt;,&lt;/li&gt;
       &lt;li&gt;then &lt;script type=&quot;math/tex&quot;&gt;n = \lfloor \frac{5}{2} \rfloor = 2&lt;/script&gt;,&lt;/li&gt;
@@ -476,7 +482,8 @@ Recall how we calculate &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/scrip
   &lt;/li&gt;
   &lt;li&gt;Next, we get the state vector &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n+1}]&lt;/script&gt; for &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;,
     &lt;ul&gt;
-      &lt;li&gt;then return in the same route to calculate the state vector for &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt;,&lt;/li&gt;
+      &lt;li&gt;then return on the same track with opposite direction
+to calculate the state vector for &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt;,&lt;/li&gt;
       &lt;li&gt;then for &lt;script type=&quot;math/tex&quot;&gt;n = 2&lt;/script&gt;&lt;/li&gt;
       &lt;li&gt;then for &lt;script type=&quot;math/tex&quot;&gt;n = 5&lt;/script&gt;,&lt;/li&gt;
       &lt;li&gt;and finally get the answer for &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;.&lt;/li&gt;
@@ -522,14 +529,14 @@ Recall how we calculate &lt;script type=&quot;math/tex&quot;&gt;F_{10}&lt;/scrip
 \right)
 \end{CD}&lt;/script&gt;
 
-&lt;p&gt;The recursive steps are used to get the route
+&lt;p&gt;The recursive steps are used to get the track
 from &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;1, 2, 5, 10&lt;/script&gt;,
 then calculate &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n+1}]&lt;/script&gt; for each &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;.&lt;/p&gt;
 
-&lt;p&gt;To remove the recursive steps, we need to have a way to compute the route.
+&lt;p&gt;To remove the recursive steps, we need to have a way to compute the track.
 We can use a &lt;em&gt;stack&lt;/em&gt; to track the change for &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;, starting push &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;
 from &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;, then &lt;script type=&quot;math/tex&quot;&gt;n = 5&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;n = 2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;,
-then the route can be get from popping them from &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt;.&lt;/p&gt;
+then the track can be get from popping them from &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt;.&lt;/p&gt;
 
 &lt;p&gt;Thus, the &lt;em&gt;initialized state&lt;/em&gt; is &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;
 and the &lt;em&gt;stop condition&lt;/em&gt; is to check whether the stack is empty.&lt;/p&gt;
@@ -539,7 +546,7 @@ convert recursive code into the iterative one.)&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// To compute the route from n, n/2, ... 0.
+  &lt;span class=&quot;c1&quot;&gt;// To compute the track from n, n/2, ..., 1, 0.
 &lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -673,7 +680,7 @@ convert recursive code into the iterative one.)&lt;/p&gt;
 }_{loop}&lt;/script&gt;
 
 &lt;p&gt;Since &lt;em&gt;initialized state&lt;/em&gt; is set before the loop,
-we should start the route from &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;2, 5, 10&lt;/script&gt;:&lt;/p&gt;
+we should start the track from &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;2, 5, 10&lt;/script&gt;:&lt;/p&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -689,7 +696,7 @@ we should start the route from &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;
   &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;cm&quot;&gt;/*n /= 2*/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
   &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0
@@ -702,12 +709,12 @@ we should start the route from &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;
 &lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
 &lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k)^2 + F(k+1)^2
 &lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// m = 2k+1:
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m) = F(2k+1)
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
-&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;// m = 2k:
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m) = F(2k)
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;//  F(m+1) = F(2k+1)
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/*m % 2*/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// m = 2k+1:
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;c1&quot;&gt;//  F(m) = F(2k+1)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;//  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;              &lt;span class=&quot;c1&quot;&gt;// m = 2k:
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;c1&quot;&gt;//  F(m) = F(2k)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;              &lt;span class=&quot;c1&quot;&gt;//  F(m+1) = F(2k+1)
 &lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
@@ -715,8 +722,105 @@ we should start the route from &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;Another trick is that you can replace &lt;code class=&quot;highlighter-rouge&quot;&gt;n /= 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;n &amp;gt;&amp;gt;= 1&lt;/code&gt;
-and &lt;code class=&quot;highlighter-rouge&quot;&gt;m % 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;m &amp;amp; 1&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Another trick above is to replace &lt;code class=&quot;highlighter-rouge&quot;&gt;n /= 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;n &amp;gt;&amp;gt;= 1&lt;/code&gt;
+and &lt;code class=&quot;highlighter-rouge&quot;&gt;m % 2&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;m &amp;amp; 1&lt;/code&gt;.
+It will be faster a little bit.&lt;/p&gt;
+
+&lt;h4 id=&quot;non-stack-approach&quot;&gt;Non-stack approach&lt;/h4&gt;
+&lt;p&gt;Since applying &lt;code class=&quot;highlighter-rouge&quot;&gt;std::stack&lt;/code&gt; will pay for memory allocation,
+so we should try not using it for better performance.&lt;/p&gt;
+
+&lt;p&gt;The reason we need the &lt;em&gt;stack&lt;/em&gt; is to get the &lt;strong&gt;track for each &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;&lt;/strong&gt;,
+where &lt;script type=&quot;math/tex&quot;&gt;n \leftarrow \lfloor \frac{n}{2} \rfloor&lt;/script&gt; until &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt;.
+And the track is used to determine what state we should update
+from &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n+1}]&lt;/script&gt;, to &lt;script type=&quot;math/tex&quot;&gt;[F_{2n}, F_{2n+1}]&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;[F_{2n+1}, F_{2n+2}]&lt;/script&gt;,
+by the given &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is &lt;strong&gt;even or odd&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the above implementation,
+we put the &lt;script type=&quot;math/tex&quot;&gt;n_0 = n, n_1, n_2, ..., n_j, ..., n_{t-1}, n_t = 1&lt;/script&gt;,
+where &lt;script type=&quot;math/tex&quot;&gt;n_j = \lfloor \frac{n}{2^j} \rfloor&lt;/script&gt; denotes
+&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is right shifted by &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; bits(&lt;code class=&quot;highlighter-rouge&quot;&gt;n_j = n &amp;gt;&amp;gt; j&lt;/code&gt;)
+and &lt;script type=&quot;math/tex&quot;&gt;j \geq 1&lt;/script&gt; is an integer,
+to the &lt;em&gt;stack&lt;/em&gt;, and then iteratively check &lt;script type=&quot;math/tex&quot;&gt;n_t = 1, n_{t-1}, ..., n_2, n_1, n_0 = n&lt;/script&gt;
+is odd or even.
+We could do it without &lt;em&gt;stack&lt;/em&gt;!
+Assume the &lt;strong&gt;highest&lt;/strong&gt; 1-bit in &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt;th bit from right side,
+then the loop will execute &lt;script type=&quot;math/tex&quot;&gt;h = t + 1 = \log_2 n + 1&lt;/script&gt; times.
+(so the time complexity is &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt;)
+Therefore, we could loop &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; times to calculate &lt;script type=&quot;math/tex&quot;&gt;F_{n_j}&lt;/script&gt;
+from &lt;script type=&quot;math/tex&quot;&gt;j = t = h-1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;j = 0&lt;/script&gt;.
+As the result, the code will be:&lt;/p&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// The position of the highest bit of n.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// So we need to loop `h` times to get the answer.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//                               ^ 6th bit from right side
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = 1
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j, k = floor(n_j / 2), (n_j = n when j = 0)
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// then a = F(k), b = F(k+1) now.
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k)^2 + F(k+1)^2
+&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n_j is odd: k = (n_j-1)/2 =&amp;gt; n_j = 2k + 1
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;//   F(n_j) = F(2k+1)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k+1)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// n_j is even: k = n_j/2 =&amp;gt; n_j = 2k
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;//   F(n_j) = F(2k)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;//   F(n_j + 1) = F(2k + 1)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h5 id=&quot;by-bit-mask&quot;&gt;By Bit-mask&lt;/h5&gt;
+&lt;p&gt;Doing &lt;em&gt;AND&lt;/em&gt; operation(&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;) to the last bit of &lt;script type=&quot;math/tex&quot;&gt;n_j&lt;/script&gt; above is same as
+doing &lt;em&gt;AND&lt;/em&gt; operation(&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt;) &lt;strong&gt;from the highest bit to the lowest bit&lt;/strong&gt;
+of the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;. Thus, we could also rewrite the code into:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// The position of the highest bit of n.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// So we need to loop `h` times to get the answer.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//                               ^ 6th bit from right side
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = 1
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// There is only one `1` in the bits of `mask`. The `1`'s position is same as
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// iteratively to do `AND` operation with `n` to check `n / 2^j` is odd
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// or even.
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Run h times!
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// Let j = h-i (looping from i = 1 to i = h),
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j (n_j = n when j = 0), k = floor(n_j / 2),
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// then a = F(k), b = F(k+1) now.
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k)^2 + F(k+1)^2
+&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n_j is odd: k = (n_j-1)/2 =&amp;gt; n_j = 2k + 1
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//   F(n_j) = F(2k + 1)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;//   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k + 1)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;// n_j is even: k = n_j/2 =&amp;gt; n_j = 2k
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//   F(n_j) = F(2k)
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//   F(n_j + 1) = F(2k + 1)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/f80ef4decca23b88df16f2f7846049b6&quot; title=&quot;Calculating Fibonacci Numbers by Fast Doubling&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">In previous post,
 we learned how to calculate Fibonacci numbers by Fast Doubling in math.
@@ -994,6 +1098,12 @@ The first row , is the index of the first element
 of the state vector .
 The second row indicates that whether  is odd or not.
 If  is odd(recall what we discuss above),
+then we need to update state from from 
+to  since .
+The third row is used to record if we need get 
+from .
+Otherwise, if  is even, updating state
+from  to  directly.
 
 From the top-down perspective, to get , we need .
 To get , we need .
@@ -1143,7 +1253,8 @@ Recall how we calculate :
   
   Next, we get the state vector  for ,
     
-      then return in the same route to calculate the state vector for ,
+      then return on the same track with opposite direction
+to calculate the state vector for ,
       then for 
       then for ,
       and finally get the answer for .
@@ -1153,14 +1264,14 @@ Recall how we calculate :
 
 
 
-The recursive steps are used to get the route
+The recursive steps are used to get the track
 from  to ,
 then calculate  for each .
 
-To remove the recursive steps, we need to have a way to compute the route.
+To remove the recursive steps, we need to have a way to compute the track.
 We can use a stack to track the change for , starting push 
 from , then , , , ,
-then the route can be get from popping them from  to .
+then the track can be get from popping them from  to .
 
 Thus, the initialized state is 
 and the stop condition is to check whether the stack is empty.
@@ -1170,7 +1281,7 @@ convert recursive code into the iterative one.)
 
 uint64_t fib(unsigned int n)
 {
-  // To compute the route from n, n/2, ... 0.
+  // To compute the track from n, n/2, ..., 1, 0.
   std::stack&amp;lt;unsigned int&amp;gt; s;
   while(n) {
     s.push(n);
@@ -1226,7 +1337,7 @@ while (!s.empty()) {
 
 
 Since initialized state is set before the loop,
-we should start the route from  to :
+we should start the track from  to :
 std::stack&amp;lt;unsigned int&amp;gt; s;
 while (n) {
   s.push(n);
@@ -1242,7 +1353,7 @@ uint64_t fib(unsigned int n)
   std::stack&amp;lt;unsigned int&amp;gt; s;
   while (n) {
     s.push(n);
-    n /= 2;
+    /*n /= 2*/n &amp;gt;&amp;gt;= 1;
   }
 
   uint64_t a = 0; // F(0) = 0
@@ -1255,12 +1366,12 @@ uint64_t fib(unsigned int n)
     uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
     uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
 
-    if (m % 2) {  // m = 2k+1:
-      a = d;      //  F(m) = F(2k+1)
-      b = c + d;  //  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
-    } else {      // m = 2k:
-      a = c;      //  F(m) = F(2k)
-      b = d;      //  F(m+1) = F(2k+1)
+    if (/*m % 2*/m &amp;amp; 1) { // m = 2k+1:
+      a = d;              //  F(m) = F(2k+1)
+      b = c + d;          //  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
+    } else {              // m = 2k:
+      a = c;              //  F(m) = F(2k)
+      b = d;              //  F(m+1) = F(2k+1)
     }
   }
 
@@ -1268,8 +1379,105 @@ uint64_t fib(unsigned int n)
 }
 
 
-Another trick is that you can replace n /= 2 by n &amp;gt;&amp;gt;= 1
-and m % 2 by m &amp;amp; 1
+Another trick above is to replace n /= 2 by n &amp;gt;&amp;gt;= 1
+and m % 2 by m &amp;amp; 1.
+It will be faster a little bit.
+
+Non-stack approach
+Since applying std::stack will pay for memory allocation,
+so we should try not using it for better performance.
+
+The reason we need the stack is to get the track for each ,
+where  until .
+And the track is used to determine what state we should update
+from , to  or ,
+by the given  is even or odd.
+
+In the above implementation,
+we put the ,
+where  denotes
+ is right shifted by  bits(n_j = n &amp;gt;&amp;gt; j)
+and  is an integer,
+to the stack, and then iteratively check 
+is odd or even.
+We could do it without stack!
+Assume the highest 1-bit in  is the th bit from right side,
+then the loop will execute  times.
+(so the time complexity is )
+Therefore, we could loop  times to calculate 
+from  to .
+As the result, the code will be:
+uint64_t fib(unsigned int n)
+{
+  // The position of the highest bit of n.
+  // So we need to loop `h` times to get the answer.
+  // Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+  //                               ^ 6th bit from right side
+  unsigned int h = 0;
+  for (unsigned int i = n ; i ; ++h, i &amp;gt;&amp;gt;= 1);
+
+  uint64_t a = 0; // F(0) = 0
+  uint64_t b = 1; // F(1) = 1
+  for (int j = h - 1 ; j &amp;gt;= 0 ; --j) {
+    // n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j, k = floor(n_j / 2), (n_j = n when j = 0)
+    // then a = F(k), b = F(k+1) now.
+    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
+
+    if ((n &amp;gt;&amp;gt; j) &amp;amp; 1) { // n_j is odd: k = (n_j-1)/2 =&amp;gt; n_j = 2k + 1
+      a = d;            //   F(n_j) = F(2k+1)
+      b = c + d;        //   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k+1)
+    } else {            // n_j is even: k = n_j/2 =&amp;gt; n_j = 2k
+      a = c;            //   F(n_j) = F(2k)
+      b = d;            //   F(n_j + 1) = F(2k + 1)
+    }
+  }
+
+  return a;
+}
+
+
+
+By Bit-mask
+Doing AND operation(&amp;amp;) to the last bit of  above is same as
+doing AND operation(&amp;amp;) from the highest bit to the lowest bit
+of the . Thus, we could also rewrite the code into:
+
+uint64_t fib(unsigned int n)
+{
+  // The position of the highest bit of n.
+  // So we need to loop `h` times to get the answer.
+  // Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+  //                               ^ 6th bit from right side
+  unsigned int h = 0;
+  for (unsigned int i = n ; i ; ++h, i &amp;gt;&amp;gt;= 1);
+
+  uint64_t a = 0; // F(0) = 0
+  uint64_t b = 1; // F(1) = 1
+  // There is only one `1` in the bits of `mask`. The `1`'s position is same as
+  // the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
+  // iteratively to do `AND` operation with `n` to check `n / 2^j` is odd
+  // or even.
+  for (unsigned int mask = 1 &amp;lt;&amp;lt; (h - 1) ; mask ; mask &amp;gt;&amp;gt;= 1) { // Run h times!
+    // Let j = h-i (looping from i = 1 to i = h),
+    // n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j (n_j = n when j = 0), k = floor(n_j / 2),
+    // then a = F(k), b = F(k+1) now.
+    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
+
+    if (mask &amp;amp; n) { // n_j is odd: k = (n_j-1)/2 =&amp;gt; n_j = 2k + 1
+      a = d;        //   F(n_j) = F(2k + 1)
+      b = c + d;    //   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k + 1)
+    } else {        // n_j is even: k = n_j/2 =&amp;gt; n_j = 2k
+      a = c;        //   F(n_j) = F(2k)
+      b = d;        //   F(n_j + 1) = F(2k + 1)
+    }
+  }
+
+  return a;
+}
+
+
 
 All the above code are on gist here.</summary></entry><entry><title type="html">Matrix Difference Equation for Fibonacci Sequence</title><link href="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence" rel="alternate" type="text/html" title="Matrix Difference Equation for Fibonacci Sequence" /><published>2017-08-22T00:00:00+08:00</published><updated>2017-08-22T00:00:00+08:00</updated><id>http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/matrix-difference-equation-for-fibonacci-sequence">&lt;h2 id=&quot;recurrence-relation&quot;&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Recurrence_relation&quot; title=&quot;Recurrence relation&quot;&gt;Recurrence relation&lt;/a&gt;&lt;/h2&gt;
 

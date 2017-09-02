@@ -291,7 +291,13 @@ that contains our answer.
 The first row $$n$$, is the index of the first element
 of the state vector $$F_n$$.
 The second row indicates that whether $$n$$ is odd or not.
-If $$n$$ is odd(recall what we discuss above),
+If $$n(= k_i)$$ is odd(recall what we discuss above),
+then we need to update state from from $$[F_{k_{i+1}}, F_{k_{i+1}+1}]$$
+to $$[F_{2k_i + 1}, F_{2k_i + 2}]$$ since $$k_{i+1} = \frac{k_i - 1}{2}$$.
+The third row is used to record if we need get $$[F_{2k_i + 1}, F_{2k_i + 2}]$$
+from $$[F_{2k_i}, F_{2k_i + 1}]$$.
+Otherwise, if $$n(= k_i)$$ is even, updating state
+from $$[F_{k_{i+1}}, F_{k_{i+1}+1}]$$ to $$[F_{2k_i}, F_{2k_i + 1}]$$ directly.
 
 From the top-down perspective, to get $$F_{10}$$, we need $$F_5, F_6$$.
 To get $$F_5, F_6$$, we need $$F_2, F_3$$.
@@ -430,13 +436,14 @@ In the recursive approach, no matter what $$n$$ is, the final state vector
 , and it must be called from calculating the state $$$$[F_1, F_2]$$$$.
 Recall how we calculate $$F_{10}$$:
 
-- We recursively calculate $$n = \lfloor \frac{n}{2} \rfloor$$ from $$n = 10$$,
+- We recursively calculate $$n \leftarrow \lfloor \frac{n}{2} \rfloor$$ from $$n = 10$$,
   - then $$n = \lfloor \frac{10}{2} \rfloor = 5$$,
   - then $$n = \lfloor \frac{5}{2} \rfloor = 2$$,
   - then $$n = \lfloor \frac{2}{2} \rfloor = 1$$,
   - then stop recursive steps when $$n = \lfloor \frac{1}{2} \rfloor = 0$$.
 - Next, we get the state vector $$[F_n, F_{n+1}]$$ for $$n = 0$$,
-  - then return in the same route to calculate the state vector for $$n = 1$$,
+  - then return on the same track with opposite direction
+    to calculate the state vector for $$n = 1$$,
   - then for $$n = 2$$
   - then for $$n = 5$$,
   - and finally get the answer for $$n = 10$$.
@@ -481,14 +488,14 @@ $$
 \end{CD}
 $$
 
-The recursive steps are used to get the route
+The recursive steps are used to get the track
 from $$n = 0$$ to $$1, 2, 5, 10$$,
 then calculate $$[F_n, F_{n+1}]$$ for each $$n$$.
 
-To remove the recursive steps, we need to have a way to compute the route.
+To remove the recursive steps, we need to have a way to compute the track.
 We can use a _stack_ to track the change for $$n$$, starting push $$n$$
 from $$n = 10$$, then $$n = 5$$, $$n = 2$$, $$n = 1$$, $$n = 0$$,
-then the route can be get from popping them from $$0$$ to $$10$$.
+then the track can be get from popping them from $$0$$ to $$10$$.
 
 Thus, the _initialized state_ is $$n = 0$$
 and the _stop condition_ is to check whether the stack is empty.
@@ -499,7 +506,7 @@ convert recursive code into the iterative one.)
 ```cpp
 uint64_t fib(unsigned int n)
 {
-  // To compute the route from n, n/2, ... 0.
+  // To compute the track from n, n/2, ..., 1, 0.
   std::stack<unsigned int> s;
   while(n) {
     s.push(n);
@@ -636,7 +643,7 @@ $$
 $$
 
 Since _initialized state_ is set before the loop,
-we should start the route from $$n = 1$$ to $$2, 5, 10$$:
+we should start the track from $$n = 1$$ to $$2, 5, 10$$:
 ```cpp
 std::stack<unsigned int> s;
 while (n) {
@@ -653,7 +660,7 @@ uint64_t fib(unsigned int n)
   std::stack<unsigned int> s;
   while (n) {
     s.push(n);
-    n /= 2;
+    /*n /= 2*/n >>= 1;
   }
 
   uint64_t a = 0; // F(0) = 0
@@ -666,20 +673,117 @@ uint64_t fib(unsigned int n)
     uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
     uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
 
-    if (m % 2) {  // m = 2k+1:
-      a = d;      //  F(m) = F(2k+1)
-      b = c + d;  //  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
-    } else {      // m = 2k:
-      a = c;      //  F(m) = F(2k)
-      b = d;      //  F(m+1) = F(2k+1)
+    if (/*m % 2*/m & 1) { // m = 2k+1:
+      a = d;              //  F(m) = F(2k+1)
+      b = c + d;          //  F(m+1) = F(m) + F(m-1) = F(2k+1) + F(2k)
+    } else {              // m = 2k:
+      a = c;              //  F(m) = F(2k)
+      b = d;              //  F(m+1) = F(2k+1)
     }
   }
 
   return a;
 }
 ```
-Another trick is that you can replace ```n /= 2``` by ```n >>= 1```
-and ```m % 2``` by ```m & 1```
+Another trick above is to replace ```n /= 2``` by ```n >>= 1```
+and ```m % 2``` by ```m & 1```.
+It will be faster a little bit.
+
+#### Non-stack approach
+Since applying ```std::stack``` will pay for memory allocation,
+so we should try not using it for better performance.
+
+The reason we need the _stack_ is to get the __track for each $$n$$__,
+where $$n \leftarrow \lfloor \frac{n}{2} \rfloor$$ until $$n = 1$$.
+And the track is used to determine what state we should update
+from $$[F_n, F_{n+1}]$$, to $$[F_{2n}, F_{2n+1}]$$ or $$[F_{2n+1}, F_{2n+2}]$$,
+by the given $$n$$ is __even or odd__.
+
+In the above implementation,
+we put the $$n_0 = n, n_1, n_2, ..., n_j, ..., n_{t-1}, n_t = 1$$,
+where $$n_j = \lfloor \frac{n}{2^j} \rfloor$$ denotes
+$$n$$ is right shifted by $$j$$ bits(```n_j = n >> j```)
+and $$j \geq 1$$ is an integer,
+to the _stack_, and then iteratively check $$n_t = 1, n_{t-1}, ..., n_2, n_1, n_0 = n$$
+is odd or even.
+We could do it without _stack_!
+Assume the __highest__ 1-bit in $$n$$ is the $$h$$th bit from right side,
+then the loop will execute $$h = t + 1 = \log_2 n + 1$$ times.
+(so the time complexity is $$O(\log n)$$)
+Therefore, we could loop $$h$$ times to calculate $$F_{n_j}$$
+from $$j = t = h-1$$ to $$j = 0$$.
+As the result, the code will be:
+```cpp
+uint64_t fib(unsigned int n)
+{
+  // The position of the highest bit of n.
+  // So we need to loop `h` times to get the answer.
+  // Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+  //                               ^ 6th bit from right side
+  unsigned int h = 0;
+  for (unsigned int i = n ; i ; ++h, i >>= 1);
+
+  uint64_t a = 0; // F(0) = 0
+  uint64_t b = 1; // F(1) = 1
+  for (int j = h - 1 ; j >= 0 ; --j) {
+    // n_j = floor(n / 2^j) = n >> j, k = floor(n_j / 2), (n_j = n when j = 0)
+    // then a = F(k), b = F(k+1) now.
+    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
+
+    if ((n >> j) & 1) { // n_j is odd: k = (n_j-1)/2 => n_j = 2k + 1
+      a = d;            //   F(n_j) = F(2k+1)
+      b = c + d;        //   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k+1)
+    } else {            // n_j is even: k = n_j/2 => n_j = 2k
+      a = c;            //   F(n_j) = F(2k)
+      b = d;            //   F(n_j + 1) = F(2k + 1)
+    }
+  }
+
+  return a;
+}
+```
+
+##### By Bit-mask
+Doing _AND_ operation(```&```) to the last bit of $$n_j$$ above is same as
+doing _AND_ operation(```&```) __from the highest bit to the lowest bit__
+of the $$n$$. Thus, we could also rewrite the code into:
+
+```cpp
+uint64_t fib(unsigned int n)
+{
+  // The position of the highest bit of n.
+  // So we need to loop `h` times to get the answer.
+  // Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+  //                               ^ 6th bit from right side
+  unsigned int h = 0;
+  for (unsigned int i = n ; i ; ++h, i >>= 1);
+
+  uint64_t a = 0; // F(0) = 0
+  uint64_t b = 1; // F(1) = 1
+  // There is only one `1` in the bits of `mask`. The `1`'s position is same as
+  // the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
+  // iteratively to do `AND` operation with `n` to check `n / 2^j` is odd
+  // or even.
+  for (unsigned int mask = 1 << (h - 1) ; mask ; mask >>= 1) { // Run h times!
+    // Let j = h-i (looping from i = 1 to i = h),
+    // n_j = floor(n / 2^j) = n >> j (n_j = n when j = 0), k = floor(n_j / 2),
+    // then a = F(k), b = F(k+1) now.
+    uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+    uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
+
+    if (mask & n) { // n_j is odd: k = (n_j-1)/2 => n_j = 2k + 1
+      a = d;        //   F(n_j) = F(2k + 1)
+      b = c + d;    //   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k + 1)
+    } else {        // n_j is even: k = n_j/2 => n_j = 2k
+      a = c;        //   F(n_j) = F(2k)
+      b = d;        //   F(n_j + 1) = F(2k + 1)
+    }
+  }
+
+  return a;
+}
+```
 
 All the above code are on [gist here][gist].
 

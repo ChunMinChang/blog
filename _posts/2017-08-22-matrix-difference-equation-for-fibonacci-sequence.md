@@ -277,11 +277,11 @@ Matrix pow(Matrix& x, unsigned int n)
 
   Matrix r = identity(x.size());
   while (n) {
-    if (/*n % 2*/ n & 1) {
+    if (/*n % 2*/n & 1) {
       r = mul(x, r);
     }
     x = mul(x, x);
-    n >>= 1 ;
+    /*n /= 2*/n >>= 1;
   }
 
   return r;

@@ -203,89 +203,97 @@ Please read it if you need.
 
 As a result, we can compute _Fibonacci_ number $$F_n$$ as fellow:
 
+##### By ```std::vector```
 ```cpp
-///////////////////////////////////////////////////////////////////////////////
-// Power by matrix exponentiation: O(log(n))
-// Matrix A:
-//  <---     n     --->
-// +-                 -+
-// | A11, A12, ... A1n | ^
-// | A21, A22, ... A2n | |
-// | ...               | m
-// | ...               | |
-// | Am1, Am2, ... Amn | v
-// +-                 -+
-// could be written into 2D vector like:
-// { { A11, A12, ... A1n },
-//   { A21, A22, ... A2n },
-//   ...
-///  { Am1, Am2, ... Amn } }
-typedef std::vector<std::vector<unsigned int>> Matrix;
-
-bool isMatrix(Matrix& x)
+class Matrix
 {
-  assert(x.size());
-  for (unsigned int i = 0 ; i < x.size(); ++i) {
-    if (x[i].size() != x[0].size()) {
-      return false;
+public:
+  Matrix(unsigned int r, unsigned int c,
+         std::vector<std::vector<unsigned int>> d)
+    : rows(r)
+    , cols(c)
+    , data(d)
+  {
+  }
+
+  Matrix(unsigned int r, unsigned int c)
+    : rows(r)
+    , cols(c)
+  {
+    assert(rows && cols);
+    data.resize(rows);
+    for (unsigned int i = 0 ; i < rows ; ++i) {
+      data[i].resize(cols);
     }
   }
-  return true;
-}
 
-Matrix mul(Matrix& x, Matrix& y)
-{
-  // Comment the assertion so it will run faster.
-  // assert(isMatrix(x) && isMatrix(y)); // Check if the 2D vectors are martix.
-  // assert(x[0].size() == y.size()); // Check if they can be multiplied.
+  ~Matrix()
+  {
+  }
 
-  Matrix z;
-  z.resize(x.size());
+  unsigned int Read(unsigned int r, unsigned int c)
+  {
+    return data[r][c];
+  }
 
-  for (unsigned int i = 0 ; i < x.size() ; ++i) {
-    z[i].resize(y[0].size());
-    for (unsigned int j = 0 ; j < y[0].size(); ++j) {
-      for (unsigned int k = 0 ; k < y.size(); ++k) {
-        z[i][j] += x[i][k] * y[k][j];
+  // friend std::ostream& operator<<(std::ostream& os, const Matrix& m)
+  // {
+  //   for (unsigned int i = 0; i < m.rows; ++i) {
+  //     for (unsigned int j = 0; j < m.cols; ++j) {
+  //       os << m.data[i][j] << " ";
+  //     }
+  //     os << std::endl;
+  //   }
+  //   return os;
+  // }
+
+  Matrix operator*(const Matrix& other)
+  {
+    assert(cols == other.rows); // Check if they can be multiplied.
+
+    Matrix z(rows, other.cols);
+    for (unsigned int i = 0 ; i < rows ; ++i) {
+      for (unsigned int j = 0 ; j < other.cols; ++j) {
+        for (unsigned int k = 0 ; k < cols; ++k) {
+          z.data[i][j] += data[i][k] * other.data[k][j];
+        }
       }
     }
+
+    return z;
   }
 
-  return z;
-}
-
-// Returns identity matrix with size * size
-Matrix identity(unsigned int size)
-{
-  Matrix z;
-  z.resize(size);
-  for (unsigned int i = 0 ; i < size ; ++i) {
-    for (unsigned int j = 0 ; j < size ; ++j) {
-      z[i].push_back(i == j);
+  // Calculate the power by fast doubling:
+  //   k ^ n = (k^2) ^ (n/2)          , if n is even
+  //        or k x (k^2) ^ ((k-1)/2)  , if n is odd
+  Matrix pow(unsigned int n)
+  {
+    Matrix x(*this); // Copy constructor = Matrix x(rows, cols, data);
+    Matrix r = Identity(rows);
+    while (n) {
+      if (/*n % 2*/n & 1) {
+        r = r * x;
+      }
+      x = x * x;
+      /*n /= 2*/n >>= 1;
     }
+    return r;
   }
-  return z;
-}
 
-// Calculate the power by fast doubling:
-//   P ^ n = (P ^ 2) ^ (n / 2)            if n is even
-//        or P x (P ^ 2) ^ ((n - 1) / 2)  if n is odd
-Matrix pow(Matrix& x, unsigned int n)
-{
-  // Comment the assertion so it will run faster.
-  // assert(isMatrix(x) && x.size() == x[0].size()); // Check it's square matrix.
-
-  Matrix r = identity(x.size());
-  while (n) {
-    if (/*n % 2*/n & 1) {
-      r = mul(x, r);
+private:
+  Matrix Identity(unsigned int size)
+  {
+    Matrix z(size, size);
+    for (unsigned int i = 0 ; i < size ; ++i) {
+      z.data[i][i] = 1;
     }
-    x = mul(x, x);
-    /*n /= 2*/n >>= 1;
+    return z;
   }
 
-  return r;
-}
+  unsigned int rows;
+  unsigned int cols;
+  std::vector<std::vector<unsigned int>> data;
+};
 
 // The Fibonacci matrix can be written into the following equation:
 // +-             -+   +-    -+^n
@@ -295,12 +303,167 @@ Matrix pow(Matrix& x, unsigned int n)
 // +-             -+   +-    -+
 uint64_t fibonacci_matrix(unsigned int n)
 {
-  Matrix r { {1, 1},
-             {1, 0} };
-  // Using r[0][1] instead of r[0][0] since n might be 0.
-  // (we need to power by n - 1 if we return r[0][0].)
-  r = pow(r, n); // When n = 0, the identity matrix of r[0][1] is 0.
-  return r[0][1];
+  Matrix F { 2, 2, {
+    { 1, 1 },
+    { 1, 0 }
+  } };
+
+  // Using F.data[0][1] since n might be 0.
+  // (we need to power by n - 1 if we return F.data[0][0].)
+  F = F.pow(n);
+  return F.Read(0, 1);
+}
+```
+
+##### By Native Array
+```cpp
+class Matrix
+{
+public:
+  Matrix(unsigned int r, unsigned int c, unsigned int** d = nullptr)
+    : rows(r)
+    , cols(c)
+    , data(d)
+  {
+    if (!data) {
+      AllocateData();
+    }
+  }
+
+  Matrix(const Matrix& other) // copy ctor
+    : rows(other.rows)
+    , cols(other.cols)
+  {
+    assert(!data);
+    AllocateData();
+    for (unsigned int i = 0 ; i < rows ; ++i) {
+      for (unsigned int j = 0 ; j < cols ; ++j) {
+        data[i][j] = other.data[i][j];
+      }
+    }
+  }
+
+  ~Matrix()
+  {
+    FreeData();
+  }
+
+  unsigned int Read(unsigned int r, unsigned int c)
+  {
+    return data[r][c];
+  }
+
+  // friend std::ostream& operator<<(std::ostream& os, const Matrix& m)
+  // {
+  //   for (unsigned int i = 0; i < m.rows; ++i) {
+  //     for (unsigned int j = 0; j < m.cols; ++j) {
+  //       os << m.data[i][j] << " ";
+  //     }
+  //     os << std::endl;
+  //   }
+  //   return os;
+  // }
+
+  Matrix& operator=(Matrix&& other) noexcept // move assignment
+  {
+    if(this != &other) {
+      FreeData(); // Free this data if it exists.
+      // Move original other.data to data and set other.data to nullptr.
+      // data = std::exchange(other.data, nullptr); // C++14
+      data = other.data;
+      other.data = nullptr;
+    }
+    return *this;
+  }
+
+  Matrix operator*(const Matrix& other)
+  {
+    assert(cols == other.rows); // Check if they can be multiplied.
+    Matrix z(rows, other.cols);
+
+    for (unsigned int i = 0 ; i < rows ; ++i) {
+      for (unsigned int j = 0 ; j < other.cols; ++j) {
+        for (unsigned int k = 0 ; k < cols; ++k) {
+          z.data[i][j] += data[i][k] * other.data[k][j];
+        }
+      }
+    }
+
+    return z;
+  }
+
+  // Calculate the power by fast doubling:
+  //   k ^ n = (k^2) ^ (n/2)          , if n is even
+  //        or k x (k^2) ^ ((k-1)/2)  , if n is odd
+  Matrix pow(unsigned int n)
+  {
+    Matrix x(*this); // Copy constructor = Matrix x(rows, cols, data);
+    Matrix r = Identity(rows);
+    while (n) {
+      if (/*n % 2*/n & 1) {
+        r = r * x;
+      }
+      x = x * x;
+      /*n /= 2*/n >>= 1;
+    }
+    return r;
+  }
+
+private:
+  Matrix Identity(unsigned int size)
+  {
+    Matrix z(size, size);
+    for (unsigned int i = 0 ; i < size ; ++i) {
+      z.data[i][i] = 1;
+    }
+    return z;
+  }
+
+  void AllocateData()
+  {
+    assert(!data);
+    data = (unsigned int**) calloc(rows, sizeof(unsigned int*));
+    for (unsigned int i = 0 ; i < rows ; ++i) {
+      data[i] = (unsigned int*) calloc(cols, sizeof(unsigned int));
+    }
+  }
+
+  void FreeData()
+  {
+    if (!data) {
+      return;
+    }
+
+    assert(rows);
+    for (unsigned int i = 0 ; i < rows ; ++i) {
+      free(data[i]);
+    }
+    free(data);
+    data = nullptr;
+  }
+
+  unsigned int rows;
+  unsigned int cols;
+  unsigned int** data = nullptr;
+};
+
+// The Fibonacci matrix can be written into the following equation:
+// +-             -+   +-    -+^n
+// | F(n+1)   F(n) |   | 1  1 |
+// |               | = |      |
+// | F(n)   F(n-1) |   | 1  0 |
+// +-             -+   +-    -+
+uint64_t fibonacci_matrix(unsigned int n)
+{
+  Matrix F { 2, 2, new unsigned int*[2] {
+    new unsigned int[2] { 1, 1 },
+    new unsigned int[3] { 1, 0 }
+  } };
+
+  // Using F.data[0][1] since n might be 0.
+  // (we need to power by n - 1 if we return F.data[0][0].)
+  F = F.pow(n);
+  return F.Read(0, 1);
 }
 ```
 

@@ -25,5 +25,7 @@ to log my working notes.
     - http://cyruschiu.github.io/2016/07/02/github-pages-with-hexo/
     - http://liuhongjiang.github.io/hexotech/2015/08/12/mathjax-in-hexo/
 
-### Post
-- Add algorithm and implementation for _Matrix Difference Equation for Fibonacci Sequence_
+### Posts
+- Applying _stack_ in iterative approach of _Exponentiation by squaring_
+- Derive _rounding_ approach for _Fibonacci_ numbers
+- Calculate the time-complexity for different algorithms in _Fibonacci_ series

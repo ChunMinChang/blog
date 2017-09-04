@@ -26,7 +26,7 @@ It's natural to write a recursive implementation by the above definition.
 In the following steps, we will implement recursive versions first,
 then try converting it into iterative versions.
 
-### Recursive
+### Recursive (Top-down) Approach
 
 Given a $$n$$, we could calculate _Fibonacci_ numbers $$F_n$$ by:
 
@@ -163,7 +163,7 @@ However, retrieving data from _array_ is faster than _hash map_,
 so we apply _array_ in our sample code:
 
 ```cpp
-const unsigned int SIZE = 100;
+const unsigned int SIZE = 1000;
 // 4 is not a fibonacci number, so using it as initialized value.
 const uint64_t INIT = 4;
 // In this case, F is not calculated successively. For example,
@@ -424,7 +424,7 @@ std::vector<uint64_t> fib_helper(unsigned int n)
 }
 ```
 
-### Iterative
+### Iterative (Bottom-up) Approach
 
 The recursive approach is implemented from the top-down perspective.
 We could also do it in bottom-up way.
@@ -763,12 +763,11 @@ uint64_t fib(unsigned int n)
   uint64_t b = 1; // F(1) = 1
   // There is only one `1` in the bits of `mask`. The `1`'s position is same as
   // the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
-  // iteratively to do `AND` operation with `n` to check `n / 2^j` is odd
-  // or even.
+  // iteratively to do `AND` operation with `n` to check `n_j` is odd or even,
+  // where n_j is defined below.
   for (unsigned int mask = 1 << (h - 1) ; mask ; mask >>= 1) { // Run h times!
-    // Let j = h-i (looping from i = 1 to i = h),
-    // n_j = floor(n / 2^j) = n >> j (n_j = n when j = 0), k = floor(n_j / 2),
-    // then a = F(k), b = F(k+1) now.
+    // Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n >> j
+    // (n_j = n when j = 0), k = floor(n_j / 2), then a = F(k), b = F(k+1) now.
     uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
     uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
 

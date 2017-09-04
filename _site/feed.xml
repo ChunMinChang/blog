@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-03T17:57:10+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-04T11:38:47+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
 we learned how to calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers by &lt;em&gt;Fast Doubling&lt;/em&gt; in math.
 Today, we will apply it in programming and optimize it step by step.&lt;/p&gt;
 
@@ -17,7 +17,7 @@ F_{2n} &amp;= F_n \cdot (F_{n+1} + F_{n-1}) \\
 In the following steps, we will implement recursive versions first,
 then try converting it into iterative versions.&lt;/p&gt;
 
-&lt;h3 id=&quot;recursive&quot;&gt;Recursive&lt;/h3&gt;
+&lt;h3 id=&quot;recursive-top-down-approach&quot;&gt;Recursive (Top-down) Approach&lt;/h3&gt;
 
 &lt;p&gt;Given a &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;, we could calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; by:&lt;/p&gt;
 
@@ -152,7 +152,7 @@ You can use &lt;em&gt;hash map&lt;/em&gt; instead of &lt;em&gt;array&lt;/em&gt; 
 However, retrieving data from &lt;em&gt;array&lt;/em&gt; is faster than &lt;em&gt;hash map&lt;/em&gt;,
 so we apply &lt;em&gt;array&lt;/em&gt; in our sample code:&lt;/p&gt;
 
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SIZE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SIZE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;// 4 is not a fibonacci number, so using it as initialized value.
 &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;// In this case, F is not calculated successively. For example,
@@ -459,7 +459,7 @@ However, it will be slower than using &lt;em&gt;array&lt;/em&gt; directly.&lt;/p
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;iterative&quot;&gt;Iterative&lt;/h3&gt;
+&lt;h3 id=&quot;iterative-bottom-up-approach&quot;&gt;Iterative (Bottom-up) Approach&lt;/h3&gt;
 
 &lt;p&gt;The recursive approach is implemented from the top-down perspective.
 We could also do it in bottom-up way.&lt;/p&gt;
@@ -799,12 +799,11 @@ of the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;. Thus, we could 
 &lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = 1
 &lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// There is only one `1` in the bits of `mask`. The `1`'s position is same as
 &lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// iteratively to do `AND` operation with `n` to check `n / 2^j` is odd
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// or even.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// iteratively to do `AND` operation with `n` to check `n_j` is odd or even,
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// where n_j is defined below.
 &lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Run h times!
-&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// Let j = h-i (looping from i = 1 to i = h),
-&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j (n_j = n when j = 0), k = floor(n_j / 2),
-&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// then a = F(k), b = F(k+1) now.
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// (n_j = n when j = 0), k = floor(n_j / 2), then a = F(k), b = F(k+1) now.
 &lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
 &lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k)^2 + F(k+1)^2
 &lt;/span&gt;
@@ -834,7 +833,7 @@ It’s natural to write a recursive implementation by the above definition.
 In the following steps, we will implement recursive versions first,
 then try converting it into iterative versions.
 
-Recursive
+Recursive (Top-down) Approach
 
 Given a , we could calculate Fibonacci numbers  by:
 
@@ -959,7 +958,7 @@ You can use hash map instead of array to avoid the waste of memory.
 However, retrieving data from array is faster than hash map,
 so we apply array in our sample code:
 
-const unsigned int SIZE = 100;
+const unsigned int SIZE = 1000;
 // 4 is not a fibonacci number, so using it as initialized value.
 const uint64_t INIT = 4;
 // In this case, F is not calculated successively. For example,
@@ -1230,7 +1229,7 @@ std::vector&amp;lt;uint64_t&amp;gt; fib_helper(unsigned int n)
 
 
 
-Iterative
+Iterative (Bottom-up) Approach
 
 The recursive approach is implemented from the top-down perspective.
 We could also do it in bottom-up way.
@@ -1456,12 +1455,11 @@ uint64_t fib(unsigned int n)
   uint64_t b = 1; // F(1) = 1
   // There is only one `1` in the bits of `mask`. The `1`'s position is same as
   // the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
-  // iteratively to do `AND` operation with `n` to check `n / 2^j` is odd
-  // or even.
+  // iteratively to do `AND` operation with `n` to check `n_j` is odd or even,
+  // where n_j is defined below.
   for (unsigned int mask = 1 &amp;lt;&amp;lt; (h - 1) ; mask ; mask &amp;gt;&amp;gt;= 1) { // Run h times!
-    // Let j = h-i (looping from i = 1 to i = h),
-    // n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j (n_j = n when j = 0), k = floor(n_j / 2),
-    // then a = F(k), b = F(k+1) now.
+    // Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j
+    // (n_j = n when j = 0), k = floor(n_j / 2), then a = F(k), b = F(k+1) now.
     uint64_t c = a * (2 * b - a); // F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
     uint64_t d = a * a + b * b;   // F(2k+1) = F(k)^2 + F(k+1)^2
 

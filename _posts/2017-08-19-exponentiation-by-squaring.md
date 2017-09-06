@@ -86,7 +86,7 @@ if $$y$$ is an integer.
 That is, if ```n``` is an **odd** integer,
 then the result of ```n = (n - 1) / 2``` is same as ```n = n / 2```.
 
-Thus, the code could be simplified as fellow:
+Thus, the code could be simplified as follows:
 
 ```cpp
 uint64_t pow3(unsigned int k, unsigned int n)
@@ -415,7 +415,7 @@ while (!s.empty()) {
 Obviously, we have $$h = \lceil log_2 n \rfloor$$ items in the _stack_,
 so the loop will run $$h$$ rounds (the above $$j$$ is from $$0$$ to $$h$$).
 
-In the case for $$n = 10$$, the bottom-up approach will run as follow:
+In the case for $$n = 10$$, the bottom-up approach will run as follows:
 
 $$
 \require{AMScd}

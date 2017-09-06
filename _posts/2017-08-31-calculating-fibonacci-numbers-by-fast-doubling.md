@@ -59,7 +59,7 @@ so we need to stop when $$n = 0$$.
 The ```fib(0)``` may be asked from calculating ```fib(1) = fib(0)*fib(0) + fib(1)*fib(1)```
 (by setting $$n = 0$$ to $$F_{2n+1} = {F_{n+1}}^2 + {F_n}^2$$,
 so we also need to define ```fib(1) = 1``` directly,
-or it will cause an endless recursive loop.
+or it will cause an endless recursion.
 
 Similarly, the ```fib(1)``` may be asked from calculating ```fib(2) = fib(1) * [2 * fib(2) - fib(1)]```
 (by setting $$n = 1$$ to $$F_{2n} = F_n \cdot (2 \cdot F_{n+1} - F_n)$$,
@@ -275,7 +275,7 @@ Then we can use $$[F_k, F_{k+1}] = [F_{(n-1)/2}, F_{(n-1)/2 + 1}]$$
 to calculate $$[F_{2k}, F_{2k+1}] = [F_{n-1}, F_n]$$
 and then get $$[F_n, F_{n + 1}]$$ by $$[F_n, F_{n-1} + F_n]$$.
 
-In summary, the procedure can be organized as fellows:
+In summary, the procedure can be organized as follows:
 
 |                 $$k_i$$ |    $$k_1$$ | $$k_2$$ | $$k_3$$ | $$k_4$$ | $$k_5$$ |
 | ----------------------- | ---------- | ------- | ------- | ------- | ------- |

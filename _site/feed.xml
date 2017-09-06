@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-06T14:16:03+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-06T14:25:08+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
 we learned how to calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers by &lt;em&gt;Fast Doubling&lt;/em&gt; in math.
 Today, we will apply it in programming and optimize it step by step.&lt;/p&gt;
 
@@ -50,7 +50,7 @@ so we need to stop when &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script
 The &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(0)&lt;/code&gt; may be asked from calculating &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(1) = fib(0)*fib(0) + fib(1)*fib(1)&lt;/code&gt;
 (by setting &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_{2n+1} = {F_{n+1}}^2 + {F_n}^2&lt;/script&gt;,
 so we also need to define &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(1) = 1&lt;/code&gt; directly,
-or it will cause an endless recursive loop.&lt;/p&gt;
+or it will cause an endless recursion.&lt;/p&gt;
 
 &lt;p&gt;Similarly, the &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(1)&lt;/code&gt; may be asked from calculating &lt;code class=&quot;highlighter-rouge&quot;&gt;fib(2) = fib(1) * [2 * fib(2) - fib(1)]&lt;/code&gt;
 (by setting &lt;script type=&quot;math/tex&quot;&gt;n = 1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_{2n} = F_n \cdot (2 \cdot F_{n+1} - F_n)&lt;/script&gt;,
@@ -263,7 +263,7 @@ Then we can use &lt;script type=&quot;math/tex&quot;&gt;[F_k, F_{k+1}] = [F_{(n-
 to calculate &lt;script type=&quot;math/tex&quot;&gt;[F_{2k}, F_{2k+1}] = [F_{n-1}, F_n]&lt;/script&gt;
 and then get &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n + 1}]&lt;/script&gt; by &lt;script type=&quot;math/tex&quot;&gt;[F_n, F_{n-1} + F_n]&lt;/script&gt;.&lt;/p&gt;
 
-&lt;p&gt;In summary, the procedure can be organized as fellows:&lt;/p&gt;
+&lt;p&gt;In summary, the procedure can be organized as follows:&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -866,7 +866,7 @@ so we need to stop when .
 The fib(0) may be asked from calculating fib(1) = fib(0)*fib(0) + fib(1)*fib(1)
 (by setting  to ,
 so we also need to define fib(1) = 1 directly,
-or it will cause an endless recursive loop.
+or it will cause an endless recursion.
 
 Similarly, the fib(1) may be asked from calculating fib(2) = fib(1) * [2 * fib(2) - fib(1)]
 (by setting  to ,
@@ -1033,7 +1033,7 @@ Then we can use
 to calculate 
 and then get  by .
 
-In summary, the procedure can be organized as fellows:
+In summary, the procedure can be organized as follows:
 
 
   
@@ -1653,7 +1653,7 @@ k \cdot (k^2)^\frac{n-1}{2}, &amp; \text{if $n$ is odd}
 &lt;p&gt;I explained how to do it in my &lt;a href=&quot;/post/exponentiation-by-squaring&quot;&gt;previous post&lt;/a&gt;.
 Please read it if you need.&lt;/p&gt;
 
-&lt;p&gt;As a result, we can compute &lt;em&gt;Fibonacci&lt;/em&gt; number &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; as fellow:&lt;/p&gt;
+&lt;p&gt;As a result, we can compute &lt;em&gt;Fibonacci&lt;/em&gt; number &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; as follows:&lt;/p&gt;
 
 &lt;h5 id=&quot;by-stdvector&quot;&gt;By &lt;code class=&quot;highlighter-rouge&quot;&gt;std::vector&lt;/code&gt;&lt;/h5&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Matrix&lt;/span&gt;
@@ -1921,7 +1921,7 @@ Please read it if you need.&lt;/p&gt;
 
 &lt;h3 id=&quot;fast-doubling&quot;&gt;Fast Doubling&lt;/h3&gt;
 
-&lt;p&gt;If we calculate &lt;script type=&quot;math/tex&quot;&gt;F_{2n}&lt;/script&gt; directly, we can get the equation as fellow:&lt;/p&gt;
+&lt;p&gt;If we calculate &lt;script type=&quot;math/tex&quot;&gt;F_{2n}&lt;/script&gt; directly, we can get the equation follows:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
@@ -2057,7 +2057,7 @@ The key is to compute the exponentiation by squaring.
 I explained how to do it in my previous post.
 Please read it if you need.
 
-As a result, we can compute Fibonacci number  as fellow:
+As a result, we can compute Fibonacci number  as follows:
 
 By std::vector
 class Matrix
@@ -2325,7 +2325,7 @@ uint64_t fibonacci_matrix(unsigned int n)
 
 Fast Doubling
 
-If we calculate  directly, we can get the equation as fellow:
+If we calculate  directly, we can get the equation follows:
 
 
 
@@ -2445,7 +2445,7 @@ if &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is an integer.&lt;/p
 &lt;p&gt;That is, if &lt;code class=&quot;highlighter-rouge&quot;&gt;n&lt;/code&gt; is an &lt;strong&gt;odd&lt;/strong&gt; integer,
 then the result of &lt;code class=&quot;highlighter-rouge&quot;&gt;n = (n - 1) / 2&lt;/code&gt; is same as &lt;code class=&quot;highlighter-rouge&quot;&gt;n = n / 2&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Thus, the code could be simplified as fellow:&lt;/p&gt;
+&lt;p&gt;Thus, the code could be simplified as follows:&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -2839,7 +2839,7 @@ That is,&lt;/p&gt;
 &lt;p&gt;Obviously, we have &lt;script type=&quot;math/tex&quot;&gt;h = \lceil log_2 n \rfloor&lt;/script&gt; items in the &lt;em&gt;stack&lt;/em&gt;,
 so the loop will run &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; rounds (the above &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; is from &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt;).&lt;/p&gt;
 
-&lt;p&gt;In the case for &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;, the bottom-up approach will run as follow:&lt;/p&gt;
+&lt;p&gt;In the case for &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;, the bottom-up approach will run as follows:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{AMScd}
 \begin{CD}
@@ -2993,7 +2993,7 @@ if  is an integer.
 That is, if n is an odd integer,
 then the result of n = (n - 1) / 2 is same as n = n / 2.
 
-Thus, the code could be simplified as fellow:
+Thus, the code could be simplified as follows:
 
 uint64_t pow3(unsigned int k, unsigned int n)
 {
@@ -3345,7 +3345,7 @@ while (!s.empty()) {
 Obviously, we have  items in the stack,
 so the loop will run  rounds (the above  is from  to ).
 
-In the case for , the bottom-up approach will run as follow:
+In the case for , the bottom-up approach will run as follows:
 
 
 

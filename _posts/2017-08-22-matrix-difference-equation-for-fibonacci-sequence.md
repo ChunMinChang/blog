@@ -201,7 +201,7 @@ $$
 I explained how to do it in my [previous post]({% post_url 2017-08-19-exponentiation-by-squaring %}).
 Please read it if you need.
 
-As a result, we can compute _Fibonacci_ number $$F_n$$ as fellow:
+As a result, we can compute _Fibonacci_ number $$F_n$$ as follows:
 
 ##### By ```std::vector```
 ```cpp
@@ -469,7 +469,7 @@ uint64_t fibonacci_matrix(unsigned int n)
 
 ### Fast Doubling
 
-If we calculate $$F_{2n}$$ directly, we can get the equation as fellow:
+If we calculate $$F_{2n}$$ directly, we can get the equation follows:
 
 $$
 \begin{align}

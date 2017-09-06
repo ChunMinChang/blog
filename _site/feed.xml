@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-04T11:38:47+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-06T14:16:03+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
 we learned how to calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers by &lt;em&gt;Fast Doubling&lt;/em&gt; in math.
 Today, we will apply it in programming and optimize it step by step.&lt;/p&gt;
 
@@ -2395,8 +2395,9 @@ k \cdot (k^2)^\frac{n-1}{2}, &amp; \text{if $n$ is odd}
 then stop when &lt;script type=&quot;math/tex&quot;&gt;n = 0&lt;/script&gt;,
 we could solve &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt;.&lt;/p&gt;
 
-&lt;h2 id=&quot;recursive-approach&quot;&gt;Recursive approach&lt;/h2&gt;
+&lt;h2 id=&quot;top-down-approach&quot;&gt;Top-down Approach&lt;/h2&gt;
 
+&lt;h3 id=&quot;recursive&quot;&gt;Recursive&lt;/h3&gt;
 &lt;p&gt;If we apply the first conversion, we could get the following code:&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -2480,7 +2481,7 @@ and &lt;code class=&quot;highlighter-rouge&quot;&gt;a = b % 2&lt;/code&gt; by &l
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;iterative-approach&quot;&gt;Iterative approach&lt;/h2&gt;
+&lt;h3 id=&quot;iterative&quot;&gt;Iterative&lt;/h3&gt;
 &lt;p&gt;If we could rewrite a recursive algorithm into an iterative version,
 it usually run faster.&lt;/p&gt;
 
@@ -2490,15 +2491,14 @@ by &lt;script type=&quot;math/tex&quot;&gt;3^8 = (3^2)^4 = ((3^2)^2)^2 = (((3^2)
 
 &lt;p&gt;Thus, we can find &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt; by:&lt;/p&gt;
 &lt;ol&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = 3, n_1 = 8&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 4&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2}{2} = 2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_4^{n_4}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_4 = 1&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = k_4^{n_4} = k_4 = 3^8&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_0 = 3, n_0 = 8&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_0^{n_0}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = k_0^2 = 3^2, n_1 = \frac{n_0}{2} = 4&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = (k_1)^2 = 3^4, n_2 = \frac{n_1}{2} = 2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^8, n_3 = \frac{n_2}{2} = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_3 = 1&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = k_3^{n_3} = k_3 = 3^8&lt;/script&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;br /&gt;
-On the other hand, if &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is not always even,
+&lt;p&gt;On the other hand, if &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is not always even,
 then we need to deal with the single leading &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;
 in the &lt;script type=&quot;math/tex&quot;&gt;k \cdot (k^2)^\frac{n-1}{2}&lt;/script&gt;,
 which will not used to square.
@@ -2509,12 +2509,12 @@ by &lt;script type=&quot;math/tex&quot;&gt;3 \cdot (3^2)^3 = 3 \cdot (3^2 \cdot 
 to track the single leading &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;.
 That is, we can find &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt; by:&lt;/p&gt;
 &lt;ol&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = 3, n_1 = 7, r_1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^2, n_2 = \frac{n_1 - 1}{2} = 3, r_2 = r_1 \cdot k_1 = 3&lt;/script&gt;,
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_0 = 3, n_0 = 7, r_0 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_0 \cdot k_0^{n_0}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = k_0^2 = 3^2, n_1 = \frac{n_0 - 1}{2} = 3, r_1 = r_0 \cdot k_0 = 3&lt;/script&gt;,
+now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^4, n_2 = \frac{n_1 - 1}{2} = 1, r_2 = r_1 \cdot k_1 = 3^3&lt;/script&gt;,
 now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = k_2^2 = 3^4, n_3 = \frac{n_2 - 1}{2} = 1, r_3 = r_2 \cdot k_2 = 3^3&lt;/script&gt;,
-now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_3 = 1&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3} = 3^3 \cdot 3^4&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_2 = 1&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2} = r_2 \cdot k_2 = 3^3 \cdot 3^4&lt;/script&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;Wrapping up the above ideas, we could summarize the following code:&lt;/p&gt;
@@ -2588,25 +2588,71 @@ r \cdot (k^2)^\frac{n-1}{2}, r = k &amp; \text{if $n$ is odd}
 &lt;p&gt;Thus, we could also use &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; to find &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt;.
 By the example above when &lt;script type=&quot;math/tex&quot;&gt;k = 3, n = 8&lt;/script&gt;:&lt;/p&gt;
 &lt;ol&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = 3, n_1 = 8, r_1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 4, r_2 = r_1 \cdot 1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2}{2} = 2, r_3 = r_2 \cdot 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1, r_4 = r_3 \cdot 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_4 \cdot k_4^{n_4}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_5 = (k_4)^2 = 3^16, n_5 = \frac{n_4 - 1}{2} = 0, r_5 = r_4 \cdot k_4 = 3^8&lt;/script&gt;,
-now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_5 \cdot k_5^{n_5}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_5 = 0&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_5 = 3^8&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_0 = 3, n_0 = 8, r_0 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_0 \cdot k_0^{n_0}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = k_0^2 = 3^2, n_1 = \frac{n_0}{2} = 4, r_1 = r_0 \cdot 1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = (k_1)^2 = 3^4, n_2 = \frac{n_1}{2} = 2, r_2 = r_1 \cdot 1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^8, n_3 = \frac{n_2}{2} = 1, r_3 = r_2 \cdot 1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4 = (k_3)^2 = 3^16, n_4 = \frac{n_3 - 1}{2} = 0, r_4 = r_3 \cdot k_3 = 3^8&lt;/script&gt;,
+now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_4 \cdot k_4^{n_4}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_4 = 0&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_4 = 3^8&lt;/script&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;We could see a more general case when &lt;script type=&quot;math/tex&quot;&gt;k = 3, n = 10&lt;/script&gt;:&lt;/p&gt;
 &lt;ol&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = 3, n_1 = 10, r_1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 5, r_2 = r_1 \cdot 1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2 - 1}{2} = 2, r_3 = r_2 \cdot k_2 = 3^2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_3 \cdot k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1, r_4 = r_3 \cdot 1 = 3^2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n =  r_4 \cdot k_4^{n_4}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_5 = (k_4)^2 = 3^{16}, n_5 = \frac{n_4 - 1}{2} = 0, r_5 = r_4 \cdot k_4 = 3^{10}&lt;/script&gt;,
-now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_5 \cdot k_5^{n_5}&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_5 = 0&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_5 = 3^{10}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_0 = 3, n_0 = 10, r_0 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_0 \cdot k_0^{n_0}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_1 = k_0^2 = 3^2, n_1 = \frac{n_0}{2} = 5, r_1 = r_0 \cdot 1 = 1&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_1 \cdot k_1^{n_1}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_2 = (k_1)^2 = 3^4, n_2 = \frac{n_1 - 1}{2} = 2, r_2 = r_1 \cdot k_1 = 3^2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_2 \cdot k_2^{n_2}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_3 = (k_2)^2 = 3^8, n_3 = \frac{n_2}{2} = 1, r_3 = r_2 \cdot 1 = 3^2&lt;/script&gt;, now &lt;script type=&quot;math/tex&quot;&gt;k^n =  r_3 \cdot k_3^{n_3}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;k_4 = (k_3)^2 = 3^{16}, n_4 = \frac{n_3 - 1}{2} = 0, r_4 = r_3 \cdot k_3 = 3^{10}&lt;/script&gt;,
+now &lt;script type=&quot;math/tex&quot;&gt;k^n = r_4 \cdot k_4^{n_4}&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;n_4 = 0&lt;/script&gt;, so &lt;script type=&quot;math/tex&quot;&gt;k^n = r_4 = 3^{10}&lt;/script&gt;&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;In summary, the whole process can be organized into following table:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;round &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;th&gt;4&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;3^2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;3^4&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;3^8&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;3^{16}&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;3^2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;3^2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;3^{10}&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;By calculating &lt;script type=&quot;math/tex&quot;&gt;n_{i+1} = \lfloor \frac{n_i}{2} \rfloor&lt;/script&gt;,
+&lt;script type=&quot;math/tex&quot;&gt;k_{i+1} = {k_i}^2&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;r_{i+1} = r_i \cdot c_i&lt;/script&gt;,
+where &lt;script type=&quot;math/tex&quot;&gt;c_i = k_i&lt;/script&gt; when &lt;script type=&quot;math/tex&quot;&gt;n_i&lt;/script&gt; is odd or &lt;script type=&quot;math/tex&quot;&gt;c_i = 1&lt;/script&gt; when &lt;script type=&quot;math/tex&quot;&gt;n_i&lt;/script&gt; is even,
+we can get the answer by &lt;script type=&quot;math/tex&quot;&gt;k^n = r_j&lt;/script&gt; when &lt;script type=&quot;math/tex&quot;&gt;n_j = 0&lt;/script&gt; for some &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt;.&lt;/p&gt;
 
 &lt;p&gt;As a result, the algorithm is:&lt;/p&gt;
 
@@ -2654,6 +2700,232 @@ Finally, the algorithm can be shorten as:&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;h2 id=&quot;bottom-up-approach&quot;&gt;Bottom-up Approach&lt;/h2&gt;
+
+&lt;p&gt;The top-down approach is to calculate the value
+from &lt;script type=&quot;math/tex&quot;&gt;x = n&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;x = 0&lt;/script&gt; repeatedly,
+where &lt;script type=&quot;math/tex&quot;&gt;x \leftarrow \lfloor \frac{x}{2} \rfloor&lt;/script&gt;,
+and the &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;’s value is updated when &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is odd.&lt;/p&gt;
+
+&lt;p&gt;The &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; is changed like:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{AMScd}
+\begin{CD}
+10
+@&gt;{n = \frac{n}{2}}&gt;&gt;
+5
+@&gt;{n = \frac{n-1}{2}}&gt;&gt;
+2
+@&gt;{n = \frac{n}{2}}&gt;&gt;
+1
+@&gt;{n = \frac{n-1}{2}}&gt;&gt;
+0
+\end{CD}&lt;/script&gt;
+
+&lt;p&gt;To convert it into bottom-up approach,
+we need to run in the &lt;strong&gt;opposite&lt;/strong&gt; direction:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{AMScd}
+\begin{CD}
+0
+@&gt;{n = 2n + 1}&gt;&gt;
+1
+@&gt;{n = 2n}&gt;&gt;
+2
+@&gt;{n = 2n + 1}&gt;&gt;
+5
+@&gt;{n = 2n}&gt;&gt;
+10
+\end{CD}&lt;/script&gt;
+
+&lt;p&gt;Suppose we have &lt;script type=&quot;math/tex&quot;&gt;k^{n_j}&lt;/script&gt;,
+where &lt;script type=&quot;math/tex&quot;&gt;n_j = \lfloor \frac{n_{j+1}}{2} \rfloor&lt;/script&gt;,
+then we can calculate &lt;script type=&quot;math/tex&quot;&gt;k^{n_{j+1}}&lt;/script&gt; by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+k^{n_{j+1}} =
+\begin{cases}
+k^{2 n_j} = (k^{n_j})^2,  &amp; \text{if $n_{j+1}$ is even} \\
+k^{2 n_j + 1} = k \cdot (k^{n_j})^2, &amp; \text{if $n_{j+1}$ is odd}
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;since&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+n_{j+1} =
+\begin{cases}
+2 n_j,  &amp; \text{if $n_{j+1}$ is even} \\
+2 n_j + 1, &amp; \text{if $n_{j+1}$ is odd}
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Thus, if we have the track the changing of &lt;script type=&quot;math/tex&quot;&gt;n_j&lt;/script&gt;,
+then we can use a single variable &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; to calculate &lt;script type=&quot;math/tex&quot;&gt;k^{n_j} = a_j&lt;/script&gt; by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+k^{n_{j+1}} = a_{j+1} =
+\begin{cases}
+(k^{n_j})^2 = {a_j}^2,  &amp; \text{if $n_{j+1}$ is even} \\
+k \cdot (k^{n_j})^2 = k \cdot {a_j}^2, &amp; \text{if $n_{j+1}$ is odd}
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;, where &lt;script type=&quot;math/tex&quot;&gt;n_j = 0, a_0 = 1&lt;/script&gt;.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;round &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt;&lt;/th&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;th&gt;4&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;odd&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;v&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;v&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;k\cdot{a_0}^2=k&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;{a_1}^2=k^2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;k\cdot{a_2}^2 = k^5&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;{a_3}^2=k^{10}&lt;/script&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The only question now is how we could get &lt;script type=&quot;math/tex&quot;&gt;n_j&lt;/script&gt;.
+The changing of &lt;script type=&quot;math/tex&quot;&gt;n_j&lt;/script&gt; here is &lt;strong&gt;opposite&lt;/strong&gt; to the changing
+of the recursive approach.
+Thus, if we could push all the changing in recursive approach
+into a &lt;em&gt;stack&lt;/em&gt;, then we can pop them to get the opposite changing.
+That is,&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// To track the variation of n.
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Get the n's changing in the recursive approach.
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// We lost 0 here, so we need to set the initial state for n_j = 0
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Initializing variable for n_j = 0 ...
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Get the opposite track in the recursive approach.
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Get the current n_j.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// Calculate our answer here ...
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Obviously, we have &lt;script type=&quot;math/tex&quot;&gt;h = \lceil log_2 n \rfloor&lt;/script&gt; items in the &lt;em&gt;stack&lt;/em&gt;,
+so the loop will run &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt; rounds (the above &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; is from &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;h&lt;/script&gt;).&lt;/p&gt;
+
+&lt;p&gt;In the case for &lt;script type=&quot;math/tex&quot;&gt;n = 10&lt;/script&gt;, the bottom-up approach will run as follow:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\require{AMScd}
+\begin{CD}
+0
+\end{CD}
+\underbrace{
+\begin{CD}
+@&gt;{n = 2n + 1}&gt;&gt;
+1
+@&gt;{n = 2n}&gt;&gt;
+2
+@&gt;{n = 2n + 1}&gt;&gt;
+5
+@&gt;{n = 2n}&gt;&gt;
+10
+\end{CD}
+}_{loop}&lt;/script&gt;
+
+&lt;p&gt;To calculate our answer,
+we need to add a variable &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;
+to keep tracking the &lt;script type=&quot;math/tex&quot;&gt;k^{n_j} = a_j&lt;/script&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stack&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/*n /= 2*/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = k^0 = 1
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Let y = floor(x/2), y = x/2 if x is even, y = (x-1)/2 if x is odd.
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// then a = k^y now.
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = (k^y)^2 = k^(2y)
+&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// x is even:
+&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;//   a = k^x = k^(2y)
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/*x % 2*/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// x is odd:
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;//   a = k^x = k^(2y+1) = k * k^(2y)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To get even or odd the &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt; is, the &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt; is checked iteratively,
+where &lt;code class=&quot;highlighter-rouge&quot;&gt;x = n &amp;gt;&amp;gt; j&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;j&lt;/code&gt; is the times we have looped,
+by &lt;code class=&quot;highlighter-rouge&quot;&gt;x &amp;amp; 1&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;while (!s.empty())&lt;/code&gt;.
+In other word, we are actually checking
+from the &lt;strong&gt;lowest bit to highest bit&lt;/strong&gt; of &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thus, the code could be rewritten into:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pow9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// The position of the highest bit of n.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// So we need to loop `h` times to get the answer.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//                               ^ 6th bit from right side
+&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = k^0 = 1
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// There is only one `1` in the bits of `mask`. The `1`'s position is same as
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// iteratively to do `AND` operation with `n` to check `n_j` is odd or even,
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// where n_j is defined below.
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Run h times!
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// (n_j = n when j = 0), x = floor(n_j / 2), then a = k^x now.
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = (k^x)^2 = k^(2x)
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// n_j is even: x = n_j / 2 =&amp;gt; n_j = 2x
+&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;//   a = k^(n_j) = k^(2x)
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n_j is odd: x = (n_j - 1) / 2 =&amp;gt; n_j = 2x + 1
+&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;//   a = k^(n_j) = k^(2x+1) = k * k^(2x)
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/9753c72e2441343e14757f5a9ac95a98&quot; title=&quot;Exponentiation by squaring&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="power" /><summary type="html">What is the time complexity of the computation for ?
 We might intuitively think it’s .
 In fact, it can be done in 
@@ -2671,8 +2943,9 @@ By dividing  to  again and again,
 then stop when ,
 we could solve  in .
 
-Recursive approach
+Top-down Approach
 
+Recursive
 If we apply the first conversion, we could get the following code:
 
 uint64_t pow1(unsigned int k, unsigned int n)
@@ -2756,7 +3029,7 @@ uint64_t pow4(unsigned int k, unsigned int n)
 
 
 
-Iterative approach
+Iterative
 If we could rewrite a recursive algorithm into an iterative version,
 it usually run faster.
 
@@ -2771,7 +3044,6 @@ Thus, we can find  by:
   , now 
   , now 
   , so 
-
 
 
 On the other hand, if  is not always even,
@@ -2879,6 +3151,52 @@ now
   , so 
 
 
+In summary, the whole process can be organized into following table:
+
+
+  
+    
+      round 
+      0
+      1
+      2
+      3
+      4
+    
+  
+  
+    
+      
+      
+      
+      
+      
+      
+    
+    
+      
+      
+      
+      
+      
+      
+    
+    
+      
+      
+      
+      
+      
+      
+    
+  
+
+
+By calculating ,
+ and ,
+where  when  is odd or  when  is even,
+we can get the answer by  when  for some .
+
 As a result, the algorithm is:
 
 uint64_t pow6(unsigned int k, unsigned int n)
@@ -2921,6 +3239,180 @@ uint64_t pow7(unsigned int k, unsigned int n)
   }
 
   return r;
+}
+
+
+
+Bottom-up Approach
+
+The top-down approach is to calculate the value
+from  to  repeatedly,
+where ,
+and the ’s value is updated when  is odd.
+
+The  is changed like:
+
+
+
+To convert it into bottom-up approach,
+we need to run in the opposite direction:
+
+
+
+Suppose we have ,
+where ,
+then we can calculate  by:
+
+
+
+since
+
+
+
+Thus, if we have the track the changing of ,
+then we can use a single variable  to calculate  by
+
+
+
+, where .
+
+
+  
+    
+      round 
+      0
+      1
+      2
+      3
+      4
+    
+  
+  
+    
+      
+      
+      
+      
+      
+      
+    
+    
+      odd
+       
+      v
+       
+      v
+       
+    
+    
+      
+      
+      
+      
+      
+      
+    
+  
+
+
+The only question now is how we could get .
+The changing of  here is opposite to the changing
+of the recursive approach.
+Thus, if we could push all the changing in recursive approach
+into a stack, then we can pop them to get the opposite changing.
+That is,
+
+// To track the variation of n.
+std::stack&amp;lt;unsigned int&amp;gt; s;
+
+// Get the n's changing in the recursive approach.
+while(n) {
+  s.push(n);
+  n = n / 2;
+}
+// We lost 0 here, so we need to set the initial state for n_j = 0
+
+// Initializing variable for n_j = 0 ...
+
+// Get the opposite track in the recursive approach.
+while (!s.empty()) {
+  unsigned int x = s.top(); s.pop(); // Get the current n_j.
+  // Calculate our answer here ...
+}
+
+
+
+Obviously, we have  items in the stack,
+so the loop will run  rounds (the above  is from  to ).
+
+In the case for , the bottom-up approach will run as follow:
+
+
+
+To calculate our answer,
+we need to add a variable 
+to keep tracking the :
+
+uint64_t pow8(unsigned int k, unsigned int n)
+{
+  std::stack&amp;lt;unsigned int&amp;gt; s;
+  while(n) {
+    s.push(n);
+    n &amp;gt;&amp;gt;= 1/*n /= 2*/;
+  }
+
+  uint64_t a = 1; // a = k^0 = 1
+  while (!s.empty()) {
+    unsigned int x = s.top(); s.pop();
+    // Let y = floor(x/2), y = x/2 if x is even, y = (x-1)/2 if x is odd.
+    // then a = k^y now.
+    a *= a; // a = (k^y)^2 = k^(2y)
+                  // x is even:
+                  //   a = k^x = k^(2y)
+    if (x &amp;amp; 1 /*x % 2*/) {  // x is odd:
+      a *= k;     //   a = k^x = k^(2y+1) = k * k^(2y)
+    }
+  }
+
+  return a;
+}
+
+
+
+To get even or odd the x is, the x is checked iteratively,
+where x = n &amp;gt;&amp;gt; j and j is the times we have looped,
+by x &amp;amp; 1 in the while (!s.empty()).
+In other word, we are actually checking
+from the lowest bit to highest bit of x.
+
+Thus, the code could be rewritten into:
+
+uint64_t pow9(unsigned int k, unsigned int n)
+{
+  // The position of the highest bit of n.
+  // So we need to loop `h` times to get the answer.
+  // Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+  //                               ^ 6th bit from right side
+  unsigned int h = 0;
+  for (unsigned int i = n ; i ; ++h, i &amp;gt;&amp;gt;= 1);
+
+  uint64_t a = 1; // a = k^0 = 1
+  // There is only one `1` in the bits of `mask`. The `1`'s position is same as
+  // the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
+  // iteratively to do `AND` operation with `n` to check `n_j` is odd or even,
+  // where n_j is defined below.
+  for (unsigned int mask = 1 &amp;lt;&amp;lt; (h - 1) ; mask ; mask &amp;gt;&amp;gt;= 1) { // Run h times!
+    // Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j
+    // (n_j = n when j = 0), x = floor(n_j / 2), then a = k^x now.
+    a *= a; // a = (k^x)^2 = k^(2x)
+    // n_j is even: x = n_j / 2 =&amp;gt; n_j = 2x
+    //   a = k^(n_j) = k^(2x)
+    if (n &amp;amp; mask) { // n_j is odd: x = (n_j - 1) / 2 =&amp;gt; n_j = 2x + 1
+      a *= k;       //   a = k^(n_j) = k^(2x+1) = k * k^(2x)
+    }
+  }
+
+  return a;
 }
 
 

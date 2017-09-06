@@ -11,8 +11,8 @@
 <!-- Begin Jekyll SEO tag v1.3.3 -->
 <title>Exponentiation by squaring - Peak Up</title>
 <meta property="og:title" content="Exponentiation by squaring" />
-<meta name="description" content="What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Recursive approachIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}Iterative approachIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}All the above code are on gist here." />
-<meta property="og:description" content="What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Recursive approachIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}Iterative approachIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}All the above code are on gist here." />
+<meta name="description" content="What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Top-down ApproachRecursiveIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}IterativeIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so In summary, the whole process can be organized into following table:            round       0      1      2      3      4                                                                                                                                              By calculating , and ,where  when  is odd or  when  is even,we can get the answer by  when  for some .As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}Bottom-up ApproachThe top-down approach is to calculate the valuefrom  to  repeatedly,where ,and the ’s value is updated when  is odd.The  is changed like:To convert it into bottom-up approach,we need to run in the opposite direction:Suppose we have ,where ,then we can calculate  by:sinceThus, if we have the track the changing of ,then we can use a single variable  to calculate  by, where .            round       0      1      2      3      4                                                              odd             v             v                                                         The only question now is how we could get .The changing of  here is opposite to the changingof the recursive approach.Thus, if we could push all the changing in recursive approachinto a stack, then we can pop them to get the opposite changing.That is,// To track the variation of n.std::stack&lt;unsigned int&gt; s;// Get the n&#39;s changing in the recursive approach.while(n) {  s.push(n);  n = n / 2;}// We lost 0 here, so we need to set the initial state for n_j = 0// Initializing variable for n_j = 0 ...// Get the opposite track in the recursive approach.while (!s.empty()) {  unsigned int x = s.top(); s.pop(); // Get the current n_j.  // Calculate our answer here ...}Obviously, we have  items in the stack,so the loop will run  rounds (the above  is from  to ).In the case for , the bottom-up approach will run as follow:To calculate our answer,we need to add a variable to keep tracking the :uint64_t pow8(unsigned int k, unsigned int n){  std::stack&lt;unsigned int&gt; s;  while(n) {    s.push(n);    n &gt;&gt;= 1/*n /= 2*/;  }  uint64_t a = 1; // a = k^0 = 1  while (!s.empty()) {    unsigned int x = s.top(); s.pop();    // Let y = floor(x/2), y = x/2 if x is even, y = (x-1)/2 if x is odd.    // then a = k^y now.    a *= a; // a = (k^y)^2 = k^(2y)                  // x is even:                  //   a = k^x = k^(2y)    if (x &amp; 1 /*x % 2*/) {  // x is odd:      a *= k;     //   a = k^x = k^(2y+1) = k * k^(2y)    }  }  return a;}To get even or odd the x is, the x is checked iteratively,where x = n &gt;&gt; j and j is the times we have looped,by x &amp; 1 in the while (!s.empty()).In other word, we are actually checkingfrom the lowest bit to highest bit of x.Thus, the code could be rewritten into:uint64_t pow9(unsigned int k, unsigned int n){  // The position of the highest bit of n.  // So we need to loop `h` times to get the answer.  // Example: n = (Dec)50 = (Bin)00110010, then h = 6.  //                               ^ 6th bit from right side  unsigned int h = 0;  for (unsigned int i = n ; i ; ++h, i &gt;&gt;= 1);  uint64_t a = 1; // a = k^0 = 1  // There is only one `1` in the bits of `mask`. The `1`&#39;s position is same as  // the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right  // iteratively to do `AND` operation with `n` to check `n_j` is odd or even,  // where n_j is defined below.  for (unsigned int mask = 1 &lt;&lt; (h - 1) ; mask ; mask &gt;&gt;= 1) { // Run h times!    // Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n &gt;&gt; j    // (n_j = n when j = 0), x = floor(n_j / 2), then a = k^x now.    a *= a; // a = (k^x)^2 = k^(2x)    // n_j is even: x = n_j / 2 =&gt; n_j = 2x    //   a = k^(n_j) = k^(2x)    if (n &amp; mask) { // n_j is odd: x = (n_j - 1) / 2 =&gt; n_j = 2x + 1      a *= k;       //   a = k^(n_j) = k^(2x+1) = k * k^(2x)    }  }  return a;}All the above code are on gist here." />
+<meta property="og:description" content="What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Top-down ApproachRecursiveIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}IterativeIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so In summary, the whole process can be organized into following table:            round       0      1      2      3      4                                                                                                                                              By calculating , and ,where  when  is odd or  when  is even,we can get the answer by  when  for some .As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}Bottom-up ApproachThe top-down approach is to calculate the valuefrom  to  repeatedly,where ,and the ’s value is updated when  is odd.The  is changed like:To convert it into bottom-up approach,we need to run in the opposite direction:Suppose we have ,where ,then we can calculate  by:sinceThus, if we have the track the changing of ,then we can use a single variable  to calculate  by, where .            round       0      1      2      3      4                                                              odd             v             v                                                         The only question now is how we could get .The changing of  here is opposite to the changingof the recursive approach.Thus, if we could push all the changing in recursive approachinto a stack, then we can pop them to get the opposite changing.That is,// To track the variation of n.std::stack&lt;unsigned int&gt; s;// Get the n&#39;s changing in the recursive approach.while(n) {  s.push(n);  n = n / 2;}// We lost 0 here, so we need to set the initial state for n_j = 0// Initializing variable for n_j = 0 ...// Get the opposite track in the recursive approach.while (!s.empty()) {  unsigned int x = s.top(); s.pop(); // Get the current n_j.  // Calculate our answer here ...}Obviously, we have  items in the stack,so the loop will run  rounds (the above  is from  to ).In the case for , the bottom-up approach will run as follow:To calculate our answer,we need to add a variable to keep tracking the :uint64_t pow8(unsigned int k, unsigned int n){  std::stack&lt;unsigned int&gt; s;  while(n) {    s.push(n);    n &gt;&gt;= 1/*n /= 2*/;  }  uint64_t a = 1; // a = k^0 = 1  while (!s.empty()) {    unsigned int x = s.top(); s.pop();    // Let y = floor(x/2), y = x/2 if x is even, y = (x-1)/2 if x is odd.    // then a = k^y now.    a *= a; // a = (k^y)^2 = k^(2y)                  // x is even:                  //   a = k^x = k^(2y)    if (x &amp; 1 /*x % 2*/) {  // x is odd:      a *= k;     //   a = k^x = k^(2y+1) = k * k^(2y)    }  }  return a;}To get even or odd the x is, the x is checked iteratively,where x = n &gt;&gt; j and j is the times we have looped,by x &amp; 1 in the while (!s.empty()).In other word, we are actually checkingfrom the lowest bit to highest bit of x.Thus, the code could be rewritten into:uint64_t pow9(unsigned int k, unsigned int n){  // The position of the highest bit of n.  // So we need to loop `h` times to get the answer.  // Example: n = (Dec)50 = (Bin)00110010, then h = 6.  //                               ^ 6th bit from right side  unsigned int h = 0;  for (unsigned int i = n ; i ; ++h, i &gt;&gt;= 1);  uint64_t a = 1; // a = k^0 = 1  // There is only one `1` in the bits of `mask`. The `1`&#39;s position is same as  // the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right  // iteratively to do `AND` operation with `n` to check `n_j` is odd or even,  // where n_j is defined below.  for (unsigned int mask = 1 &lt;&lt; (h - 1) ; mask ; mask &gt;&gt;= 1) { // Run h times!    // Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n &gt;&gt; j    // (n_j = n when j = 0), x = floor(n_j / 2), then a = k^x now.    a *= a; // a = (k^x)^2 = k^(2x)    // n_j is even: x = n_j / 2 =&gt; n_j = 2x    //   a = k^(n_j) = k^(2x)    if (n &amp; mask) { // n_j is odd: x = (n_j - 1) / 2 =&gt; n_j = 2x + 1      a *= k;       //   a = k^(n_j) = k^(2x+1) = k * k^(2x)    }  }  return a;}All the above code are on gist here." />
 <link rel="canonical" href="http://localhost:4000/post/exponentiation-by-squaring" />
 <meta property="og:url" content="http://localhost:4000/post/exponentiation-by-squaring" />
 <meta property="og:site_name" content="Peak Up" />
@@ -26,7 +26,7 @@
     "@type": "BlogPosting",
     "headline": "Exponentiation by squaring",
     "datePublished": "2017-08-19T00:00:00+08:00",
-    "description": "What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Recursive approachIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}Iterative approachIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}All the above code are on gist here.",
+    "description": "What is the time complexity of the computation for ?We might intuitively think it’s .In fact, it can be done in by exponentiation by squaring.The key idea is:orBy dividing  to  again and again,then stop when ,we could solve  in .Top-down ApproachRecursiveIf we apply the first conversion, we could get the following code:uint64_t pow1(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow1(k, (n - 1) / 2) * pow1(k, (n - 1) / 2);  } else {    return pow1(k, n / 2) * pow1(k, n / 2);  }}The above program uses two same recursions, ... * pow1(...) * pow1(...),as the returned value, so it will duplicate two same stacks.On the other hand, if we apply the second conversion,then there is no duplicated stack needed.It could save almost half computation time of the pow1since it only uses half recursions than pow1.uint64_t pow2(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  if (n % 2) {    return k * pow2(k * k, (n - 1) / 2);  } else {    return pow2(k * k, n / 2);  }}The above code still could be simplified.The result of the division  isactually  in the world of C and C++,if  is an integer.That is, if n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.Thus, the code could be simplified as fellow:uint64_t pow3(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow3(k * k, n / 2);  // so x = (k^2)^(n/2),      if n is even  //     or (k^2)^((n-1)/2),  if n is odd  if (n % 2) {    x = x * k; // so x = k * (k^2)^((n-1)/2)  }  return x;}Another trick is that We could replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.(But I guess your compiler might already do that for you.)uint64_t pow4(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t x = pow4(k * k, n &gt;&gt; 1);  return (n &amp; 1) ? x * k : x;}IterativeIf we could rewrite a recursive algorithm into an iterative version,it usually run faster.If  is always even, then it’s easy to calculate in a loop.For example, when , we can calculate by .Thus, we can find  by:  , now   , now   , now   , now   , so On the other hand, if  is not always even,then we need to deal with the single leading in the ,which will not used to square.For example, when , we can calculate by .In this case, we need one more variable to track the single leading .That is, we can find  by:  , now   ,now   ,now   , so Wrapping up the above ideas, we could summarize the following code:uint64_t pow5(unsigned int k, unsigned int n){  if (!n) {    return 1;  }  uint64_t r = 1; // The remaining part for the squaring.  while (n &gt; 1) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r * k;}The  is the product of all the single leading .The loop finishes when  in above code and return .We could see there is a duplicated r * k in above.If we keep looping when , then the r = r * k is our final answer.Moreover, when , the initial r = 1 is also correct,so the beginning if could be saved.However, we will waste a little time to compute the useless k = k * k.uint64_t pow6(unsigned int k, unsigned int n){  // The `r` should be the remaining part for the squaring(in pow5).  // However, we notice that the `r * k` is duplicated in pow5. We will get  // the answer by `r * k` when n = 1. If we keep looping when n = 1,  // `r` is our answer. Nevertheless, we will waste time to do `k *= k`  // when n = 1.  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      k *= k;      n = n / 2;    }  }  return r;}There is different angle to see the above algorithm.Actually, we can define  by:Thus, we could also use  to find .By the example above when :  , now   , now   , now   , now   ,now   , so We could see a more general case when :  , now   , now   , now   , now   ,now   , so In summary, the whole process can be organized into following table:            round       0      1      2      3      4                                                                                                                                              By calculating , and ,where  when  is odd or  when  is even,we can get the answer by  when  for some .As a result, the algorithm is:uint64_t pow6(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n % 2) {      r *= k;      k *= k;      n = (n - 1) / 2;    } else {      r *= 1; // This could be saved!      k *= k;      n = n / 2;    }  }  return r;}Like what we mentioned in recursive part,If n is an odd integer,then the result of n = (n - 1) / 2 is same as n = n / 2.nd we can also replace a = b / 2 by a = b &gt;&gt; 1and a = b % 2 by a = b &amp; 0x01.Finally, the algorithm can be shorten as:uint64_t pow7(unsigned int k, unsigned int n){  uint64_t r = 1;  while (n) {    if (n &amp; 1) { // n % 2      r *= k;    }    k *= k;    n &gt;&gt;= 1; // n = n / 2;  }  return r;}Bottom-up ApproachThe top-down approach is to calculate the valuefrom  to  repeatedly,where ,and the ’s value is updated when  is odd.The  is changed like:To convert it into bottom-up approach,we need to run in the opposite direction:Suppose we have ,where ,then we can calculate  by:sinceThus, if we have the track the changing of ,then we can use a single variable  to calculate  by, where .            round       0      1      2      3      4                                                              odd             v             v                                                         The only question now is how we could get .The changing of  here is opposite to the changingof the recursive approach.Thus, if we could push all the changing in recursive approachinto a stack, then we can pop them to get the opposite changing.That is,// To track the variation of n.std::stack&lt;unsigned int&gt; s;// Get the n&#39;s changing in the recursive approach.while(n) {  s.push(n);  n = n / 2;}// We lost 0 here, so we need to set the initial state for n_j = 0// Initializing variable for n_j = 0 ...// Get the opposite track in the recursive approach.while (!s.empty()) {  unsigned int x = s.top(); s.pop(); // Get the current n_j.  // Calculate our answer here ...}Obviously, we have  items in the stack,so the loop will run  rounds (the above  is from  to ).In the case for , the bottom-up approach will run as follow:To calculate our answer,we need to add a variable to keep tracking the :uint64_t pow8(unsigned int k, unsigned int n){  std::stack&lt;unsigned int&gt; s;  while(n) {    s.push(n);    n &gt;&gt;= 1/*n /= 2*/;  }  uint64_t a = 1; // a = k^0 = 1  while (!s.empty()) {    unsigned int x = s.top(); s.pop();    // Let y = floor(x/2), y = x/2 if x is even, y = (x-1)/2 if x is odd.    // then a = k^y now.    a *= a; // a = (k^y)^2 = k^(2y)                  // x is even:                  //   a = k^x = k^(2y)    if (x &amp; 1 /*x % 2*/) {  // x is odd:      a *= k;     //   a = k^x = k^(2y+1) = k * k^(2y)    }  }  return a;}To get even or odd the x is, the x is checked iteratively,where x = n &gt;&gt; j and j is the times we have looped,by x &amp; 1 in the while (!s.empty()).In other word, we are actually checkingfrom the lowest bit to highest bit of x.Thus, the code could be rewritten into:uint64_t pow9(unsigned int k, unsigned int n){  // The position of the highest bit of n.  // So we need to loop `h` times to get the answer.  // Example: n = (Dec)50 = (Bin)00110010, then h = 6.  //                               ^ 6th bit from right side  unsigned int h = 0;  for (unsigned int i = n ; i ; ++h, i &gt;&gt;= 1);  uint64_t a = 1; // a = k^0 = 1  // There is only one `1` in the bits of `mask`. The `1`&#39;s position is same as  // the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right  // iteratively to do `AND` operation with `n` to check `n_j` is odd or even,  // where n_j is defined below.  for (unsigned int mask = 1 &lt;&lt; (h - 1) ; mask ; mask &gt;&gt;= 1) { // Run h times!    // Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n &gt;&gt; j    // (n_j = n when j = 0), x = floor(n_j / 2), then a = k^x now.    a *= a; // a = (k^x)^2 = k^(2x)    // n_j is even: x = n_j / 2 =&gt; n_j = 2x    //   a = k^(n_j) = k^(2x)    if (n &amp; mask) { // n_j is odd: x = (n_j - 1) / 2 =&gt; n_j = 2x + 1      a *= k;       //   a = k^(n_j) = k^(2x+1) = k * k^(2x)    }  }  return a;}All the above code are on gist here.",
     "logo": "http://localhost:4000mountain.png",
     "url": "http://localhost:4000/post/exponentiation-by-squaring"
   }
@@ -231,7 +231,7 @@
                             
 
                             
-                                    <span class="time">5.788888888888889</span> minutes read
+                                    <span class="time">9.883333333333333</span> minutes read
                             
                                 
                             
@@ -272,8 +272,9 @@ k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
 then stop when <script type="math/tex">n = 0</script>,
 we could solve <script type="math/tex">k^n</script> in <script type="math/tex">O(\log n)</script>.</p>
 
-<h2 id="recursive-approach">Recursive approach</h2>
+<h2 id="top-down-approach">Top-down Approach</h2>
 
+<h3 id="recursive">Recursive</h3>
 <p>If we apply the first conversion, we could get the following code:</p>
 
 <div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow1</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
@@ -357,7 +358,7 @@ and <code class="highlighter-rouge">a = b % 2</code> by <code class="highlighter
 </code></pre>
 </div>
 
-<h2 id="iterative-approach">Iterative approach</h2>
+<h3 id="iterative">Iterative</h3>
 <p>If we could rewrite a recursive algorithm into an iterative version,
 it usually run faster.</p>
 
@@ -367,15 +368,14 @@ by <script type="math/tex">3^8 = (3^2)^4 = ((3^2)^2)^2 = (((3^2)^2)^2)^1</script
 
 <p>Thus, we can find <script type="math/tex">k^n</script> by:</p>
 <ol>
-  <li><script type="math/tex">k_1 = 3, n_1 = 8</script>, now <script type="math/tex">k^n = k_1^{n_1}</script></li>
-  <li><script type="math/tex">k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 4</script>, now <script type="math/tex">k^n = k_2^{n_2}</script></li>
-  <li><script type="math/tex">k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2}{2} = 2</script>, now <script type="math/tex">k^n = k_3^{n_3}</script></li>
-  <li><script type="math/tex">k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1</script>, now <script type="math/tex">k^n = k_4^{n_4}</script></li>
-  <li><script type="math/tex">n_4 = 1</script>, so <script type="math/tex">k^n = k_4^{n_4} = k_4 = 3^8</script></li>
+  <li><script type="math/tex">k_0 = 3, n_0 = 8</script>, now <script type="math/tex">k^n = k_0^{n_0}</script></li>
+  <li><script type="math/tex">k_1 = k_0^2 = 3^2, n_1 = \frac{n_0}{2} = 4</script>, now <script type="math/tex">k^n = k_1^{n_1}</script></li>
+  <li><script type="math/tex">k_2 = (k_1)^2 = 3^4, n_2 = \frac{n_1}{2} = 2</script>, now <script type="math/tex">k^n = k_2^{n_2}</script></li>
+  <li><script type="math/tex">k_3 = (k_2)^2 = 3^8, n_3 = \frac{n_2}{2} = 1</script>, now <script type="math/tex">k^n = k_3^{n_3}</script></li>
+  <li><script type="math/tex">n_3 = 1</script>, so <script type="math/tex">k^n = k_3^{n_3} = k_3 = 3^8</script></li>
 </ol>
 
-<p><br />
-On the other hand, if <script type="math/tex">n</script> is not always even,
+<p>On the other hand, if <script type="math/tex">n</script> is not always even,
 then we need to deal with the single leading <script type="math/tex">k</script>
 in the <script type="math/tex">k \cdot (k^2)^\frac{n-1}{2}</script>,
 which will not used to square.
@@ -386,12 +386,12 @@ by <script type="math/tex">3 \cdot (3^2)^3 = 3 \cdot (3^2 \cdot ((3^2)^2)^1)</sc
 to track the single leading <script type="math/tex">k</script>.
 That is, we can find <script type="math/tex">k^n</script> by:</p>
 <ol>
-  <li><script type="math/tex">k_1 = 3, n_1 = 7, r_1 = 1</script>, now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
-  <li><script type="math/tex">k_2 = k_1^2 = 3^2, n_2 = \frac{n_1 - 1}{2} = 3, r_2 = r_1 \cdot k_1 = 3</script>,
+  <li><script type="math/tex">k_0 = 3, n_0 = 7, r_0 = 1</script>, now <script type="math/tex">k^n = r_0 \cdot k_0^{n_0}</script></li>
+  <li><script type="math/tex">k_1 = k_0^2 = 3^2, n_1 = \frac{n_0 - 1}{2} = 3, r_1 = r_0 \cdot k_0 = 3</script>,
+now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
+  <li><script type="math/tex">k_2 = k_1^2 = 3^4, n_2 = \frac{n_1 - 1}{2} = 1, r_2 = r_1 \cdot k_1 = 3^3</script>,
 now <script type="math/tex">k^n = r_2 \cdot k_2^{n_2}</script></li>
-  <li><script type="math/tex">k_3 = k_2^2 = 3^4, n_3 = \frac{n_2 - 1}{2} = 1, r_3 = r_2 \cdot k_2 = 3^3</script>,
-now <script type="math/tex">k^n = r_3 \cdot k_3^{n_3}</script></li>
-  <li><script type="math/tex">n_3 = 1</script>, so <script type="math/tex">k^n = r_3 \cdot k_3^{n_3} = 3^3 \cdot 3^4</script></li>
+  <li><script type="math/tex">n_2 = 1</script>, so <script type="math/tex">k^n = r_2 \cdot k_2^{n_2} = r_2 \cdot k_2 = 3^3 \cdot 3^4</script></li>
 </ol>
 
 <p>Wrapping up the above ideas, we could summarize the following code:</p>
@@ -465,25 +465,71 @@ r \cdot (k^2)^\frac{n-1}{2}, r = k & \text{if $n$ is odd}
 <p>Thus, we could also use <script type="math/tex">r</script> to find <script type="math/tex">k^n</script>.
 By the example above when <script type="math/tex">k = 3, n = 8</script>:</p>
 <ol>
-  <li><script type="math/tex">k_1 = 3, n_1 = 8, r_1 = 1</script>, now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
-  <li><script type="math/tex">k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 4, r_2 = r_1 \cdot 1 = 1</script>, now <script type="math/tex">k^n = r_2 \cdot k_2^{n_2}</script></li>
-  <li><script type="math/tex">k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2}{2} = 2, r_3 = r_2 \cdot 1</script>, now <script type="math/tex">k^n = r_3 \cdot k_3^{n_3}</script></li>
-  <li><script type="math/tex">k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1, r_4 = r_3 \cdot 1</script>, now <script type="math/tex">k^n = r_4 \cdot k_4^{n_4}</script></li>
-  <li><script type="math/tex">k_5 = (k_4)^2 = 3^16, n_5 = \frac{n_4 - 1}{2} = 0, r_5 = r_4 \cdot k_4 = 3^8</script>,
-now <script type="math/tex">k^n = r_5 \cdot k_5^{n_5}</script></li>
-  <li><script type="math/tex">n_5 = 0</script>, so <script type="math/tex">k^n = r_5 = 3^8</script></li>
+  <li><script type="math/tex">k_0 = 3, n_0 = 8, r_0 = 1</script>, now <script type="math/tex">k^n = r_0 \cdot k_0^{n_0}</script></li>
+  <li><script type="math/tex">k_1 = k_0^2 = 3^2, n_1 = \frac{n_0}{2} = 4, r_1 = r_0 \cdot 1 = 1</script>, now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
+  <li><script type="math/tex">k_2 = (k_1)^2 = 3^4, n_2 = \frac{n_1}{2} = 2, r_2 = r_1 \cdot 1 = 1</script>, now <script type="math/tex">k^n = r_2 \cdot k_2^{n_2}</script></li>
+  <li><script type="math/tex">k_3 = (k_2)^2 = 3^8, n_3 = \frac{n_2}{2} = 1, r_3 = r_2 \cdot 1 = 1</script>, now <script type="math/tex">k^n = r_3 \cdot k_3^{n_3}</script></li>
+  <li><script type="math/tex">k_4 = (k_3)^2 = 3^16, n_4 = \frac{n_3 - 1}{2} = 0, r_4 = r_3 \cdot k_3 = 3^8</script>,
+now <script type="math/tex">k^n = r_4 \cdot k_4^{n_4}</script></li>
+  <li><script type="math/tex">n_4 = 0</script>, so <script type="math/tex">k^n = r_4 = 3^8</script></li>
 </ol>
 
 <p>We could see a more general case when <script type="math/tex">k = 3, n = 10</script>:</p>
 <ol>
-  <li><script type="math/tex">k_1 = 3, n_1 = 10, r_1 = 1</script>, now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
-  <li><script type="math/tex">k_2 = k_1^2 = 3^2, n_2 = \frac{n_1}{2} = 5, r_2 = r_1 \cdot 1 = 1</script>, now <script type="math/tex">k^n = r_2 \cdot k_2^{n_2}</script></li>
-  <li><script type="math/tex">k_3 = (k_2)^2 = 3^4, n_3 = \frac{n_2 - 1}{2} = 2, r_3 = r_2 \cdot k_2 = 3^2</script>, now <script type="math/tex">k^n = r_3 \cdot k_3^{n_3}</script></li>
-  <li><script type="math/tex">k_4 = (k_3)^2 = 3^8, n_4 = \frac{n_3}{2} = 1, r_4 = r_3 \cdot 1 = 3^2</script>, now <script type="math/tex">k^n =  r_4 \cdot k_4^{n_4}</script></li>
-  <li><script type="math/tex">k_5 = (k_4)^2 = 3^{16}, n_5 = \frac{n_4 - 1}{2} = 0, r_5 = r_4 \cdot k_4 = 3^{10}</script>,
-now <script type="math/tex">k^n = r_5 \cdot k_5^{n_5}</script></li>
-  <li><script type="math/tex">n_5 = 0</script>, so <script type="math/tex">k^n = r_5 = 3^{10}</script></li>
+  <li><script type="math/tex">k_0 = 3, n_0 = 10, r_0 = 1</script>, now <script type="math/tex">k^n = r_0 \cdot k_0^{n_0}</script></li>
+  <li><script type="math/tex">k_1 = k_0^2 = 3^2, n_1 = \frac{n_0}{2} = 5, r_1 = r_0 \cdot 1 = 1</script>, now <script type="math/tex">k^n = r_1 \cdot k_1^{n_1}</script></li>
+  <li><script type="math/tex">k_2 = (k_1)^2 = 3^4, n_2 = \frac{n_1 - 1}{2} = 2, r_2 = r_1 \cdot k_1 = 3^2</script>, now <script type="math/tex">k^n = r_2 \cdot k_2^{n_2}</script></li>
+  <li><script type="math/tex">k_3 = (k_2)^2 = 3^8, n_3 = \frac{n_2}{2} = 1, r_3 = r_2 \cdot 1 = 3^2</script>, now <script type="math/tex">k^n =  r_3 \cdot k_3^{n_3}</script></li>
+  <li><script type="math/tex">k_4 = (k_3)^2 = 3^{16}, n_4 = \frac{n_3 - 1}{2} = 0, r_4 = r_3 \cdot k_3 = 3^{10}</script>,
+now <script type="math/tex">k^n = r_4 \cdot k_4^{n_4}</script></li>
+  <li><script type="math/tex">n_4 = 0</script>, so <script type="math/tex">k^n = r_4 = 3^{10}</script></li>
 </ol>
+
+<p>In summary, the whole process can be organized into following table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>round <script type="math/tex">i</script></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">n</script></td>
+      <td><script type="math/tex">10</script></td>
+      <td><script type="math/tex">5</script></td>
+      <td><script type="math/tex">2</script></td>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">0</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">k</script></td>
+      <td><script type="math/tex">3</script></td>
+      <td><script type="math/tex">3^2</script></td>
+      <td><script type="math/tex">3^4</script></td>
+      <td><script type="math/tex">3^8</script></td>
+      <td><script type="math/tex">3^{16}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">r</script></td>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">3^2</script></td>
+      <td><script type="math/tex">3^2</script></td>
+      <td><script type="math/tex">3^{10}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>By calculating <script type="math/tex">n_{i+1} = \lfloor \frac{n_i}{2} \rfloor</script>,
+<script type="math/tex">k_{i+1} = {k_i}^2</script> and <script type="math/tex">r_{i+1} = r_i \cdot c_i</script>,
+where <script type="math/tex">c_i = k_i</script> when <script type="math/tex">n_i</script> is odd or <script type="math/tex">c_i = 1</script> when <script type="math/tex">n_i</script> is even,
+we can get the answer by <script type="math/tex">k^n = r_j</script> when <script type="math/tex">n_j = 0</script> for some <script type="math/tex">j</script>.</p>
 
 <p>As a result, the algorithm is:</p>
 
@@ -527,6 +573,232 @@ Finally, the algorithm can be shorten as:</p>
 </span>  <span class="p">}</span>
 
   <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h2 id="bottom-up-approach">Bottom-up Approach</h2>
+
+<p>The top-down approach is to calculate the value
+from <script type="math/tex">x = n</script> to <script type="math/tex">x = 0</script> repeatedly,
+where <script type="math/tex">x \leftarrow \lfloor \frac{x}{2} \rfloor</script>,
+and the <script type="math/tex">r</script>’s value is updated when <script type="math/tex">x</script> is odd.</p>
+
+<p>The <script type="math/tex">j</script> is changed like:</p>
+
+<script type="math/tex; mode=display">\require{AMScd}
+\begin{CD}
+10
+@>{n = \frac{n}{2}}>>
+5
+@>{n = \frac{n-1}{2}}>>
+2
+@>{n = \frac{n}{2}}>>
+1
+@>{n = \frac{n-1}{2}}>>
+0
+\end{CD}</script>
+
+<p>To convert it into bottom-up approach,
+we need to run in the <strong>opposite</strong> direction:</p>
+
+<script type="math/tex; mode=display">\require{AMScd}
+\begin{CD}
+0
+@>{n = 2n + 1}>>
+1
+@>{n = 2n}>>
+2
+@>{n = 2n + 1}>>
+5
+@>{n = 2n}>>
+10
+\end{CD}</script>
+
+<p>Suppose we have <script type="math/tex">k^{n_j}</script>,
+where <script type="math/tex">n_j = \lfloor \frac{n_{j+1}}{2} \rfloor</script>,
+then we can calculate <script type="math/tex">k^{n_{j+1}}</script> by:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+k^{n_{j+1}} =
+\begin{cases}
+k^{2 n_j} = (k^{n_j})^2,  & \text{if $n_{j+1}$ is even} \\
+k^{2 n_j + 1} = k \cdot (k^{n_j})^2, & \text{if $n_{j+1}$ is odd}
+\end{cases} %]]></script>
+
+<p>since</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+n_{j+1} =
+\begin{cases}
+2 n_j,  & \text{if $n_{j+1}$ is even} \\
+2 n_j + 1, & \text{if $n_{j+1}$ is odd}
+\end{cases} %]]></script>
+
+<p>Thus, if we have the track the changing of <script type="math/tex">n_j</script>,
+then we can use a single variable <script type="math/tex">a</script> to calculate <script type="math/tex">k^{n_j} = a_j</script> by</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+k^{n_{j+1}} = a_{j+1} =
+\begin{cases}
+(k^{n_j})^2 = {a_j}^2,  & \text{if $n_{j+1}$ is even} \\
+k \cdot (k^{n_j})^2 = k \cdot {a_j}^2, & \text{if $n_{j+1}$ is odd}
+\end{cases} %]]></script>
+
+<p>, where <script type="math/tex">n_j = 0, a_0 = 1</script>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>round <script type="math/tex">j</script></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">n</script></td>
+      <td><script type="math/tex">0</script></td>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">2</script></td>
+      <td><script type="math/tex">5</script></td>
+      <td><script type="math/tex">10</script></td>
+    </tr>
+    <tr>
+      <td>odd</td>
+      <td> </td>
+      <td>v</td>
+      <td> </td>
+      <td>v</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">a</script></td>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">k\cdot{a_0}^2=k</script></td>
+      <td><script type="math/tex">{a_1}^2=k^2</script></td>
+      <td><script type="math/tex">k\cdot{a_2}^2 = k^5</script></td>
+      <td><script type="math/tex">{a_3}^2=k^{10}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The only question now is how we could get <script type="math/tex">n_j</script>.
+The changing of <script type="math/tex">n_j</script> here is <strong>opposite</strong> to the changing
+of the recursive approach.
+Thus, if we could push all the changing in recursive approach
+into a <em>stack</em>, then we can pop them to get the opposite changing.
+That is,</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">// To track the variation of n.
+</span><span class="n">std</span><span class="o">::</span><span class="n">stack</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">;</span>
+
+<span class="c1">// Get the n's changing in the recursive approach.
+</span><span class="k">while</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// We lost 0 here, so we need to set the initial state for n_j = 0
+</span>
+<span class="c1">// Initializing variable for n_j = 0 ...
+</span>
+<span class="c1">// Get the opposite track in the recursive approach.
+</span><span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">();</span> <span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span> <span class="c1">// Get the current n_j.
+</span>  <span class="c1">// Calculate our answer here ...
+</span><span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Obviously, we have <script type="math/tex">h = \lceil log_2 n \rfloor</script> items in the <em>stack</em>,
+so the loop will run <script type="math/tex">h</script> rounds (the above <script type="math/tex">j</script> is from <script type="math/tex">0</script> to <script type="math/tex">h</script>).</p>
+
+<p>In the case for <script type="math/tex">n = 10</script>, the bottom-up approach will run as follow:</p>
+
+<script type="math/tex; mode=display">\require{AMScd}
+\begin{CD}
+0
+\end{CD}
+\underbrace{
+\begin{CD}
+@>{n = 2n + 1}>>
+1
+@>{n = 2n}>>
+2
+@>{n = 2n + 1}>>
+5
+@>{n = 2n}>>
+10
+\end{CD}
+}_{loop}</script>
+
+<p>To calculate our answer,
+we need to add a variable <script type="math/tex">a</script>
+to keep tracking the <script type="math/tex">k^{n_j} = a_j</script>:</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow8</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">stack</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">;</span>
+  <span class="k">while</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="n">n</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="cm">/*n /= 2*/</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// a = k^0 = 1
+</span>  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">top</span><span class="p">();</span> <span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+    <span class="c1">// Let y = floor(x/2), y = x/2 if x is even, y = (x-1)/2 if x is odd.
+</span>    <span class="c1">// then a = k^y now.
+</span>    <span class="n">a</span> <span class="o">*=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// a = (k^y)^2 = k^(2y)
+</span>                  <span class="c1">// x is even:
+</span>                  <span class="c1">//   a = k^x = k^(2y)
+</span>    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="cm">/*x % 2*/</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// x is odd:
+</span>      <span class="n">a</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>     <span class="c1">//   a = k^x = k^(2y+1) = k * k^(2y)
+</span>    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>To get even or odd the <code class="highlighter-rouge">x</code> is, the <code class="highlighter-rouge">x</code> is checked iteratively,
+where <code class="highlighter-rouge">x = n &gt;&gt; j</code> and <code class="highlighter-rouge">j</code> is the times we have looped,
+by <code class="highlighter-rouge">x &amp; 1</code> in the <code class="highlighter-rouge">while (!s.empty())</code>.
+In other word, we are actually checking
+from the <strong>lowest bit to highest bit</strong> of <code class="highlighter-rouge">x</code>.</p>
+
+<p>Thus, the code could be rewritten into:</p>
+
+<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">pow9</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// The position of the highest bit of n.
+</span>  <span class="c1">// So we need to loop `h` times to get the answer.
+</span>  <span class="c1">// Example: n = (Dec)50 = (Bin)00110010, then h = 6.
+</span>  <span class="c1">//                               ^ 6th bit from right side
+</span>  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="p">;</span> <span class="o">++</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">);</span>
+
+  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// a = k^0 = 1
+</span>  <span class="c1">// There is only one `1` in the bits of `mask`. The `1`'s position is same as
+</span>  <span class="c1">// the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
+</span>  <span class="c1">// iteratively to do `AND` operation with `n` to check `n_j` is odd or even,
+</span>  <span class="c1">// where n_j is defined below.
+</span>  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">mask</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">;</span> <span class="n">mask</span> <span class="p">;</span> <span class="n">mask</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Run h times!
+</span>    <span class="c1">// Let j = h-i (looping from i = 1 to i = h), n_j = floor(n / 2^j) = n &gt;&gt; j
+</span>    <span class="c1">// (n_j = n when j = 0), x = floor(n_j / 2), then a = k^x now.
+</span>    <span class="n">a</span> <span class="o">*=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// a = (k^x)^2 = k^(2x)
+</span>    <span class="c1">// n_j is even: x = n_j / 2 =&gt; n_j = 2x
+</span>    <span class="c1">//   a = k^(n_j) = k^(2x)
+</span>    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&amp;</span> <span class="n">mask</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// n_j is odd: x = (n_j - 1) / 2 =&gt; n_j = 2x + 1
+</span>      <span class="n">a</span> <span class="o">*=</span> <span class="n">k</span><span class="p">;</span>       <span class="c1">//   a = k^(n_j) = k^(2x+1) = k * k^(2x)
+</span>    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">a</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre>
 </div>

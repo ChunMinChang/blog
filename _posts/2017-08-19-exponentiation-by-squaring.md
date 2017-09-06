@@ -412,7 +412,7 @@ while (!s.empty()) {
 }
 ```
 
-Obviously, we have $$h = \lceil log_2 n \rfloor$$ items in the _stack_,
+Obviously, we have $$h = \lceil log_2 n \rceil$$ items in the _stack_,
 so the loop will run $$h$$ rounds (the above $$j$$ is from $$0$$ to $$h$$).
 
 In the case for $$n = 10$$, the bottom-up approach will run as follows:

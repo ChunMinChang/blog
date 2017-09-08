@@ -209,7 +209,7 @@ class Matrix
 {
 public:
   Matrix(unsigned int r, unsigned int c,
-         std::vector<std::vector<unsigned int>> d)
+         std::vector<std::vector<uint64_t>> d)
     : rows(r)
     , cols(c)
     , data(d)
@@ -231,7 +231,7 @@ public:
   {
   }
 
-  unsigned int Read(unsigned int r, unsigned int c)
+  uint64_t Read(unsigned int r, unsigned int c)
   {
     return data[r][c];
   }
@@ -292,7 +292,7 @@ private:
 
   unsigned int rows;
   unsigned int cols;
-  std::vector<std::vector<unsigned int>> data;
+  std::vector<std::vector<uint64_t>> data;
 };
 
 // The Fibonacci matrix can be written into the following equation:
@@ -320,7 +320,7 @@ uint64_t fibonacci_matrix(unsigned int n)
 class Matrix
 {
 public:
-  Matrix(unsigned int r, unsigned int c, unsigned int** d = nullptr)
+  Matrix(unsigned int r, unsigned int c, uint64_t** d = nullptr)
     : rows(r)
     , cols(c)
     , data(d)
@@ -348,7 +348,7 @@ public:
     FreeData();
   }
 
-  unsigned int Read(unsigned int r, unsigned int c)
+  uint64_t Read(unsigned int r, unsigned int c)
   {
     return data[r][c];
   }
@@ -422,9 +422,9 @@ private:
   void AllocateData()
   {
     assert(!data);
-    data = (unsigned int**) calloc(rows, sizeof(unsigned int*));
+    data = (uint64_t**) calloc(rows, sizeof(uint64_t*));
     for (unsigned int i = 0 ; i < rows ; ++i) {
-      data[i] = (unsigned int*) calloc(cols, sizeof(unsigned int));
+      data[i] = (uint64_t*) calloc(cols, sizeof(uint64_t));
     }
   }
 
@@ -444,7 +444,7 @@ private:
 
   unsigned int rows;
   unsigned int cols;
-  unsigned int** data = nullptr;
+  uint64_t** data = nullptr;
 };
 
 // The Fibonacci matrix can be written into the following equation:
@@ -455,9 +455,9 @@ private:
 // +-             -+   +-    -+
 uint64_t fibonacci_matrix(unsigned int n)
 {
-  Matrix F { 2, 2, new unsigned int*[2] {
-    new unsigned int[2] { 1, 1 },
-    new unsigned int[3] { 1, 0 }
+  Matrix F { 2, 2, new uint64_t*[2] {
+    new uint64_t[2] { 1, 1 },
+    new uint64_t[3] { 1, 0 }
   } };
 
   // Using F.data[0][1] since n might be 0.

@@ -101,7 +101,9 @@ $$
 F_n = \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^n -  (\frac{1 - \sqrt{5}}{2})^n ]
 $$
 
-(Please read [this post]({% post_url 2017-08-13-closed-form-for-the-fibonacci-sequence %})
+(Please read
+<!-- [this post]({% post_url 2017-08-13-closed-form-for-the-fibonacci-sequence %}) -->
+[this post](https://chunminchang.github.io/blog/post/closed-form-for-the-fibonacci-sequence)
 to know how it's derived.)
 
 ```cpp
@@ -165,11 +167,16 @@ $$
 \end{align}
 $$
 
-(Please read [this post]({% post_url 2017-08-22-matrix-difference-equation-for-fibonacci-sequence %})
+(Please read
+<!-- [this post]({% post_url 2017-08-22-matrix-difference-equation-for-fibonacci-sequence %}) -->
+[this post](https://chunminchang.github.io/blog/post/matrix-difference-equation-for-fibonacci-sequence)
 for more discussion.)
 
 That is, the _Fibonacci_ matrix turns into a perfect power.
-Applying [exponentiation by squaring]({% post_url 2017-08-19-exponentiation-by-squaring %}):
+Applying
+<!-- [exponentiation by squaring]({% post_url 2017-08-19-exponentiation-by-squaring %}) -->
+[exponentiation by squaring](https://chunminchang.github.io/blog/post/exponentiation-by-squaring)
+:
 
 $$
 k^n =
@@ -309,7 +316,9 @@ so the $$n$$ could be larger than using the _closed-form_ approach.
 
 To make it faster, you can use native array instead of ```std::vector```,
 but you need to manage the memory usage by yourself.
-Please read [this post]({% post_url 2017-08-22-matrix-difference-equation-for-fibonacci-sequence %})
+Please read
+<!-- [this post]({% post_url 2017-08-22-matrix-difference-equation-for-fibonacci-sequence %}) -->
+[this post](https://chunminchang.github.io/blog/post/matrix-difference-equation-for-fibonacci-sequence)
 to know how to do it.
 
 ### Fast doubling
@@ -359,7 +368,9 @@ F_{2n'+1}, & \text{if $n$ is odd}
 $$
 
 As a consequence, the $$F_n$$ can be computed by the following program:
-(Please read [this post]({% post_url 2017-08-31-calculating-fibonacci-numbers-by-fast-doubling %})
+(Please read
+<!-- [this post]({% post_url 2017-08-31-calculating-fibonacci-numbers-by-fast-doubling %}) -->
+[this post](https://chunminchang.github.io/blog/post/calculating-fibonacci-numbers-by-fast-doubling)
 to know how the code is derived.)
 
 ```cpp

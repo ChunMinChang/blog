@@ -6,7 +6,8 @@ tags: [Fibonacci]
 mathjax: true
 comments: true
 ---
-In [previous post]({% post_url 2017-08-22-matrix-difference-equation-for-fibonacci-sequence %}),
+In <!-- [previous post]({% post_url 2017-08-22-matrix-difference-equation-for-fibonacci-sequence %}) -->
+[previous post](https://chunminchang.github.io/blog/post/matrix-difference-equation-for-fibonacci-sequence),
 we learned how to calculate _Fibonacci_ numbers by _Fast Doubling_ in math.
 Today, we will apply it in programming and optimize it step by step.
 

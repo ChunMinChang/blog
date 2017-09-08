@@ -5,7 +5,8 @@ category: Common
 tags: [C/C++, Firefox]
 comments: true
 ---
-In [last post]({% post_url 2017-07-31-refptr-v-s-shared-ptr %}),
+In <!--[last post]({% post_url 2017-07-31-refptr-v-s-shared-ptr %})-->
+[previous post](https://chunminchang.github.io/blog/post/refptr-v-s-shared-ptr),
 I introduced the ```RefPtr<T>``` that can keep tracking the references to the
 object ```T``` and the references are counted by object ```T``` itself.
 

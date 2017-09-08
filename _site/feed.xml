@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-08T14:22:53+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">How to Calculate the Fibonacci Numbers</title><link href="http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers" rel="alternate" type="text/html" title="How to Calculate the Fibonacci Numbers" /><published>2017-09-04T00:00:00+08:00</published><updated>2017-09-04T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers</id><content type="html" xml:base="http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-08T14:35:24+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">How to Calculate the Fibonacci Numbers</title><link href="http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers" rel="alternate" type="text/html" title="How to Calculate the Fibonacci Numbers" /><published>2017-09-04T00:00:00+08:00</published><updated>2017-09-04T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers</id><content type="html" xml:base="http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -88,7 +88,9 @@ than &lt;em&gt;memoization&lt;/em&gt; approach.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^n -  (\frac{1 - \sqrt{5}}{2})^n ]&lt;/script&gt;
 
-&lt;p&gt;(Please read &lt;a href=&quot;/post/closed-form-for-the-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
+&lt;p&gt;(Please read
+&lt;!-- [this post](/post/closed-form-for-the-fibonacci-sequence) --&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/closed-form-for-the-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
 to know how it’s derived.)&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
@@ -149,11 +151,16 @@ and it might block the performance.&lt;/p&gt;
 &amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^n
 \end{align} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;(Please read &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
+&lt;p&gt;(Please read
+&lt;!-- [this post](/post/matrix-difference-equation-for-fibonacci-sequence) --&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
 for more discussion.)&lt;/p&gt;
 
 &lt;p&gt;That is, the &lt;em&gt;Fibonacci&lt;/em&gt; matrix turns into a perfect power.
-Applying &lt;a href=&quot;/post/exponentiation-by-squaring&quot;&gt;exponentiation by squaring&lt;/a&gt;:&lt;/p&gt;
+Applying
+&lt;!-- [exponentiation by squaring](/post/exponentiation-by-squaring) --&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/exponentiation-by-squaring&quot;&gt;exponentiation by squaring&lt;/a&gt;
+:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 k^n =
@@ -292,7 +299,9 @@ so the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; could be larger 
 
 &lt;p&gt;To make it faster, you can use native array instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;std::vector&lt;/code&gt;,
 but you need to manage the memory usage by yourself.
-Please read &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
+Please read
+&lt;!-- [this post](/post/matrix-difference-equation-for-fibonacci-sequence) --&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
 to know how to do it.&lt;/p&gt;
 
 &lt;h3 id=&quot;fast-doubling&quot;&gt;Fast doubling&lt;/h3&gt;
@@ -339,7 +348,9 @@ F_{2n'+1}, &amp; \text{if $n$ is odd}
 \end{cases} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;As a consequence, the &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; can be computed by the following program:
-(Please read &lt;a href=&quot;/post/calculating-fibonacci-numbers-by-fast-doubling&quot;&gt;this post&lt;/a&gt;
+(Please read
+&lt;!-- [this post](/post/calculating-fibonacci-numbers-by-fast-doubling) --&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/calculating-fibonacci-numbers-by-fast-doubling&quot;&gt;this post&lt;/a&gt;
 to know how the code is derived.)&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -548,7 +559,9 @@ In fact, the Fibonacci number can be calculated by the following formula:
 
 
 
-(Please read this post
+(Please read
+
+this post
 to know how it’s derived.)
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -579,11 +592,16 @@ The Fibonacci numbers can be written into the following matrix:
 
 
 
-(Please read this post
+(Please read
+
+this post
 for more discussion.)
 
 That is, the Fibonacci matrix turns into a perfect power.
-Applying exponentiation by squaring:
+Applying
+
+exponentiation by squaring
+:
 
 
 
@@ -717,7 +735,9 @@ so the  could be larger than using the closed-form approach.
 
 To make it faster, you can use native array instead of std::vector,
 but you need to manage the memory usage by yourself.
-Please read this post
+Please read
+
+this post
 to know how to do it.
 
 Fast doubling
@@ -735,7 +755,9 @@ Hence, we could calculate  by:
 
 
 As a consequence, the  can be computed by the following program:
-(Please read this post
+(Please read
+
+this post
 to know how the code is derived.)
 
 uint64_t fibonacci(unsigned int n)
@@ -864,7 +886,8 @@ All the above code are uploaded to gist here.
 Please clone them to play with it.
 
 I will start another journey for other interesting topics soon.
-Stay tuned!</summary></entry><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;a href=&quot;/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
+Stay tuned!</summary></entry><entry><title type="html">Calculating Fibonacci Numbers by Fast Doubling</title><link href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" rel="alternate" type="text/html" title="Calculating Fibonacci Numbers by Fast Doubling" /><published>2017-08-31T00:00:00+08:00</published><updated>2017-08-31T00:00:00+08:00</updated><id>http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling</id><content type="html" xml:base="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling">&lt;p&gt;In &lt;!-- [previous post](/post/matrix-difference-equation-for-fibonacci-sequence) --&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;previous post&lt;/a&gt;,
 we learned how to calculate &lt;em&gt;Fibonacci&lt;/em&gt; numbers by &lt;em&gt;Fast Doubling&lt;/em&gt; in math.
 Today, we will apply it in programming and optimize it step by step.&lt;/p&gt;
 
@@ -1687,7 +1710,8 @@ of the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;. Thus, we could 
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/f80ef4decca23b88df16f2f7846049b6&quot; title=&quot;Calculating Fibonacci Numbers by Fast Doubling&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">In previous post,
+&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/f80ef4decca23b88df16f2f7846049b6&quot; title=&quot;Calculating Fibonacci Numbers by Fast Doubling&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">In 
+previous post,
 we learned how to calculate Fibonacci numbers by Fast Doubling in math.
 Today, we will apply it in programming and optimize it step by step.
 
@@ -2516,7 +2540,9 @@ k^n =
 k \cdot (k^2)^\frac{n-1}{2}, &amp; \text{if $n$ is odd}
 \end{cases} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;I explained how to do it in my &lt;a href=&quot;/post/exponentiation-by-squaring&quot;&gt;previous post&lt;/a&gt;.
+&lt;p&gt;I explained how to do it in my
+&lt;!-- [previous post](/post/exponentiation-by-squaring) --&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/exponentiation-by-squaring&quot;&gt;previous post&lt;/a&gt;.
 Please read it if you need.&lt;/p&gt;
 
 &lt;p&gt;As a result, we can compute &lt;em&gt;Fibonacci&lt;/em&gt; number &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; as follows:&lt;/p&gt;
@@ -2853,7 +2879,9 @@ since &lt;script type=&quot;math/tex&quot;&gt;F_{N}&lt;/script&gt; can be derive
 &lt;/div&gt;
 &lt;p&gt;The implementation are easy to understand
 but it still has a lot of room to improve.
-We will discuss it in &lt;a href=&quot;/post/calculating-fibonacci-numbers-by-fast-doubling&quot;&gt;next post&lt;/a&gt;.
+We will discuss it in
+&lt;!-- [next post](/post/calculating-fibonacci-numbers-by-fast-doubling) --&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/calculating-fibonacci-numbers-by-fast-doubling&quot;&gt;next post&lt;/a&gt;.
 Stay tuned!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">Recurrence relation
 
 Suppose we have a difference equation defined by:
@@ -2920,7 +2948,9 @@ The key is to compute the exponentiation by squaring.
 
 
 
-I explained how to do it in my previous post.
+I explained how to do it in my
+
+previous post.
 Please read it if you need.
 
 As a result, we can compute Fibonacci number  as follows:
@@ -3233,7 +3263,9 @@ uint64_t fib(unsigned int n)
 
 The implementation are easy to understand
 but it still has a lot of room to improve.
-We will discuss it in next post.
+We will discuss it in
+
+next post.
 Stay tuned!</summary></entry><entry><title type="html">Exponentiation by squaring</title><link href="http://localhost:4000/post/exponentiation-by-squaring" rel="alternate" type="text/html" title="Exponentiation by squaring" /><published>2017-08-19T00:00:00+08:00</published><updated>2017-08-19T00:00:00+08:00</updated><id>http://localhost:4000/post/exponentiation-by-squaring</id><content type="html" xml:base="http://localhost:4000/post/exponentiation-by-squaring">&lt;p&gt;What is the time complexity of the computation for &lt;script type=&quot;math/tex&quot;&gt;k^n&lt;/script&gt;?
 We might intuitively think it’s &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;.
 In fact, it can be done in &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt;
@@ -4437,7 +4469,8 @@ References
   http://math.ucr.edu/~res/math153/history07a.pdf
   http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm
   https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence
-  http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html</summary></entry><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;a href=&quot;/post/refptr-v-s-shared-ptr&quot;&gt;last post&lt;/a&gt;,
+  http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html</summary></entry><entry><title type="html">The Misuse of RefPtr</title><link href="http://localhost:4000/post/the-misuse-of-refptr" rel="alternate" type="text/html" title="The Misuse of RefPtr" /><published>2017-08-08T00:00:00+08:00</published><updated>2017-08-08T00:00:00+08:00</updated><id>http://localhost:4000/post/the-misuse-of-refptr</id><content type="html" xml:base="http://localhost:4000/post/the-misuse-of-refptr">&lt;p&gt;In &lt;!--[last post](/post/refptr-v-s-shared-ptr)--&gt;
+&lt;a href=&quot;https://chunminchang.github.io/blog/post/refptr-v-s-shared-ptr&quot;&gt;previous post&lt;/a&gt;,
 I introduced the &lt;code class=&quot;highlighter-rouge&quot;&gt;RefPtr&amp;lt;T&amp;gt;&lt;/code&gt; that can keep tracking the references to the
 object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; and the references are counted by object &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; itself.&lt;/p&gt;
 
@@ -4629,7 +4662,8 @@ int main()
 
   return 0;
 }&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1.js?file=misuse.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><category term="Firefox" /><summary type="html">In last post,
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1.js?file=misuse.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><category term="Firefox" /><summary type="html">In 
+previous post,
 I introduced the RefPtr&amp;lt;T&amp;gt; that can keep tracking the references to the
 object T and the references are counted by object T itself.
 

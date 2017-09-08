@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "How to Calculate the Fibonacci Numbers",
+      "category" : "AlgorithmMath",
+      "tags"     : "Fibonacci",
+      "url"      : "/post/how-to-calculate-the-fibonacci-numbers",
+      "date"     : "2017-09-04 00:00:00 +0800",
+			"shortdate": "September 04, 2017"
+    } ,
+  
+    {
       "title"    : "Calculating Fibonacci Numbers by Fast Doubling",
       "category" : "AlgorithmMath",
       "tags"     : "Fibonacci",

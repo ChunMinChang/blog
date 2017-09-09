@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to Calculate the Fibonacci Numbers
+title: Master Fibonacci
 category: [Algorithm, Math]
 tags: [Fibonacci]
 mathjax: true

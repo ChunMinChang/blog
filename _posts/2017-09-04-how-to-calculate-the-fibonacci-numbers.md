@@ -260,16 +260,16 @@ public:
 
   // Calculate the power by fast doubling:
   //   k ^ n = (k^2) ^ (n/2)          , if n is even
-  //        or k x (k^2) ^ ((k-1)/2)  , if n is odd
+  //        or k * (k^2) ^ ((k-1)/2)  , if n is odd
   Matrix pow(unsigned int n)
   {
-    Matrix x(*this); // Copy constructor = Matrix x(rows, cols, data);
+    Matrix k(*this); // Copy constructor = Matrix x(rows, cols, data);
     Matrix r = Identity(rows);
     while (n) {
       if (/*n % 2*/n & 1) {
-        r = r * x;
+        r = r * k;
       }
-      x = x * x;
+      k = k * k;
       /*n /= 2*/n >>= 1;
     }
     return r;
@@ -412,7 +412,7 @@ uint64_t fibonacci(unsigned int n)
 Its time-complexity is also $$O(\log n)$$ by halving and halving.
 In contrast to _matrix algebra_ approach,
 there is no need for using any array or vector
-to contains the duplicated $$F_z$$ in the matrix,
+to contains the duplicated $$F_k$$ in the matrix,
 so it will be faster.
 
 
@@ -427,25 +427,30 @@ so it will be faster.
 | Matrix Algebra      | 0.02013    | 0.052985      | 0.052427      | 0.050423      |
 | Fast doubling       | 0.000446   | 0.000737      | 0.000785      | 0.000724      |
 
-The above results are the time for calculating $$F_n$$.
-The unit is _millisecond_.
-It needs a long long time to get the results for the _recursive_ approach,
+The above results are the time in _millisecond_ for calculating $$F_n$$.
+It will take too long time to get the results from the _recursive_ approach,
 so we skip it.
 The _closed-form_ approach is also ignored
-since the floating point operations only work when $$n \leq 97$$.
+since the floating point operations only work
+when $$n \leq 97$$ in above implementation.
 
 ### Conclusion
 
 Although the performance is platform-dependent,
 it still indicates that:
 
-- The _fast doubling_ approach is the fastest way
+- The _fast doubling_ approach is always the fastest way
   and its performance is far far better than others.
 - The _dynamic programming_ approach is faster than _matrix algebra_ one
-  when $$n$$ is smaller than around $$13000$$,
-  but slower when $$n$$ is larger than $$13500$$.
+  when $$n$$ is small ($$n \leq 13000$$),
+  but slower when $$n$$ is large.
+- Therefore, if you are pretty sure you have a small $$n$$,
+  and the bottleneck of your algorithm doesn't depend on
+  the calculation of _Fibonacci_,
+  then _dynamic programming_ is acceptable and it's easier to implement.
 
-That was the end of my journey for the _Fibonacci_ calculation.
+
+This post is the end of my journey for the _Fibonacci_ calculation.
 Hope you enjoyed.
 All the above code are uploaded to [gist here][gist].
 Please clone them to play with it.

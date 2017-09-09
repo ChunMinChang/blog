@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-08T14:35:24+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">How to Calculate the Fibonacci Numbers</title><link href="http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers" rel="alternate" type="text/html" title="How to Calculate the Fibonacci Numbers" /><published>2017-09-04T00:00:00+08:00</published><updated>2017-09-04T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers</id><content type="html" xml:base="http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-09T10:25:24+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">How to Calculate the Fibonacci Numbers</title><link href="http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers" rel="alternate" type="text/html" title="How to Calculate the Fibonacci Numbers" /><published>2017-09-04T00:00:00+08:00</published><updated>2017-09-04T00:00:00+08:00</updated><id>http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers</id><content type="html" xml:base="http://localhost:4000/post/how-to-calculate-the-fibonacci-numbers">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -242,16 +242,16 @@ k \cdot (k^2)^\frac{n-1}{2}, &amp; \text{if $n$ is odd}
 
   &lt;span class=&quot;c1&quot;&gt;// Calculate the power by fast doubling:
 &lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//   k ^ n = (k^2) ^ (n/2)          , if n is even
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//        or k x (k^2) ^ ((k-1)/2)  , if n is odd
+&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//        or k * (k^2) ^ ((k-1)/2)  , if n is odd
 &lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Copy constructor = Matrix x(rows, cols, data);
+    &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Copy constructor = Matrix x(rows, cols, data);
 &lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
       &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/*n % 2*/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
       &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
       &lt;span class=&quot;cm&quot;&gt;/*n /= 2*/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -392,7 +392,7 @@ to know how the code is derived.)&lt;/p&gt;
 &lt;p&gt;Its time-complexity is also &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt; by halving and halving.
 In contrast to &lt;em&gt;matrix algebra&lt;/em&gt; approach,
 there is no need for using any array or vector
-to contains the duplicated &lt;script type=&quot;math/tex&quot;&gt;F_z&lt;/script&gt; in the matrix,
+to contains the duplicated &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt; in the matrix,
 so it will be faster.&lt;/p&gt;
 
 &lt;h3 id=&quot;performance&quot;&gt;Performance&lt;/h3&gt;
@@ -453,12 +453,12 @@ so it will be faster.&lt;/p&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;The above results are the time for calculating &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;.
-The unit is &lt;em&gt;millisecond&lt;/em&gt;.
-It needs a long long time to get the results for the &lt;em&gt;recursive&lt;/em&gt; approach,
+&lt;p&gt;The above results are the time in &lt;em&gt;millisecond&lt;/em&gt; for calculating &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;.
+It will take too long time to get the results from the &lt;em&gt;recursive&lt;/em&gt; approach,
 so we skip it.
 The &lt;em&gt;closed-form&lt;/em&gt; approach is also ignored
-since the floating point operations only work when &lt;script type=&quot;math/tex&quot;&gt;n \leq 97&lt;/script&gt;.&lt;/p&gt;
+since the floating point operations only work
+when &lt;script type=&quot;math/tex&quot;&gt;n \leq 97&lt;/script&gt; in above implementation.&lt;/p&gt;
 
 &lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
 
@@ -466,14 +466,18 @@ since the floating point operations only work when &lt;script type=&quot;math/te
 it still indicates that:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;The &lt;em&gt;fast doubling&lt;/em&gt; approach is the fastest way
+  &lt;li&gt;The &lt;em&gt;fast doubling&lt;/em&gt; approach is always the fastest way
 and its performance is far far better than others.&lt;/li&gt;
   &lt;li&gt;The &lt;em&gt;dynamic programming&lt;/em&gt; approach is faster than &lt;em&gt;matrix algebra&lt;/em&gt; one
-when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is smaller than around &lt;script type=&quot;math/tex&quot;&gt;13000&lt;/script&gt;,
-but slower when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is larger than &lt;script type=&quot;math/tex&quot;&gt;13500&lt;/script&gt;.&lt;/li&gt;
+when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is small (&lt;script type=&quot;math/tex&quot;&gt;n \leq 13000&lt;/script&gt;),
+but slower when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is large.&lt;/li&gt;
+  &lt;li&gt;Therefore, if you are pretty sure you have a small &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;,
+and the bottleneck of your algorithm doesn’t depend on
+the calculation of &lt;em&gt;Fibonacci&lt;/em&gt;,
+then &lt;em&gt;dynamic programming&lt;/em&gt; is acceptable and it’s easier to implement.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;That was the end of my journey for the &lt;em&gt;Fibonacci&lt;/em&gt; calculation.
+&lt;p&gt;This post is the end of my journey for the &lt;em&gt;Fibonacci&lt;/em&gt; calculation.
 Hope you enjoyed.
 All the above code are uploaded to &lt;a href=&quot;https://gist.github.com/ChunMinChang/b6325c148e8aff15b6e72dcac0aa904e&quot; title=&quot;Ways to calculate Fibonacci&quot;&gt;gist here&lt;/a&gt;.
 Please clone them to play with it.&lt;/p&gt;
@@ -678,16 +682,16 @@ public:
 
   // Calculate the power by fast doubling:
   //   k ^ n = (k^2) ^ (n/2)          , if n is even
-  //        or k x (k^2) ^ ((k-1)/2)  , if n is odd
+  //        or k * (k^2) ^ ((k-1)/2)  , if n is odd
   Matrix pow(unsigned int n)
   {
-    Matrix x(*this); // Copy constructor = Matrix x(rows, cols, data);
+    Matrix k(*this); // Copy constructor = Matrix x(rows, cols, data);
     Matrix r = Identity(rows);
     while (n) {
       if (/*n % 2*/n &amp;amp; 1) {
-        r = r * x;
+        r = r * k;
       }
-      x = x * x;
+      k = k * k;
       /*n /= 2*/n &amp;gt;&amp;gt;= 1;
     }
     return r;
@@ -860,12 +864,12 @@ Performance
   
 
 
-The above results are the time for calculating .
-The unit is millisecond.
-It needs a long long time to get the results for the recursive approach,
+The above results are the time in millisecond for calculating .
+It will take too long time to get the results from the recursive approach,
 so we skip it.
 The closed-form approach is also ignored
-since the floating point operations only work when .
+since the floating point operations only work
+when  in above implementation.
 
 Conclusion
 
@@ -873,14 +877,18 @@ Although the performance is platform-dependent,
 it still indicates that:
 
 
-  The fast doubling approach is the fastest way
+  The fast doubling approach is always the fastest way
 and its performance is far far better than others.
   The dynamic programming approach is faster than matrix algebra one
-when  is smaller than around ,
-but slower when  is larger than .
+when  is small (),
+but slower when  is large.
+  Therefore, if you are pretty sure you have a small ,
+and the bottleneck of your algorithm doesn’t depend on
+the calculation of Fibonacci,
+then dynamic programming is acceptable and it’s easier to implement.
 
 
-That was the end of my journey for the Fibonacci calculation.
+This post is the end of my journey for the Fibonacci calculation.
 Hope you enjoyed.
 All the above code are uploaded to gist here.
 Please clone them to play with it.

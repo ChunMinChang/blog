@@ -24,10 +24,10 @@ uint64_t fibonacci(unsigned int n)
 }
 ```
 However, if you try calculating $$F_{100}$$,
-then you will wait forever to get the results
-since it has so many duplicated process.
+then you will wait a long long time to get the result
+since it has so many overlapping processes.
 For example, if we calculate $$F_4$$,
-then there are duplicated calculation for $$F_2$$:
+then there are duplicated calculations(overlapping substructures) for $$F_2$$:
 
 $$
 \begin{matrix}
@@ -42,7 +42,7 @@ $$
 \end{matrix}
 $$
 
-The larger $$n$$ is, the more duplicated process we have.
+The larger $$n$$ is, the more overlapping processes we have.
 As a result, the time-complexity is $$O(2^n)$$.
 
 ### Memoization

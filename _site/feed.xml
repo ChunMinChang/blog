@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-09T21:20:32+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-10T10:03:20+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -14,10 +14,10 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;p&gt;However, if you try calculating &lt;script type=&quot;math/tex&quot;&gt;F_{100}&lt;/script&gt;,
-then you will wait forever to get the results
-since it has so many duplicated process.
+then you will wait a long long time to get the result
+since it has so many overlapping processes.
 For example, if we calculate &lt;script type=&quot;math/tex&quot;&gt;F_4&lt;/script&gt;,
-then there are duplicated calculation for &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;:&lt;/p&gt;
+then there are duplicated calculations(overlapping substructures) for &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{matrix}
@@ -31,7 +31,7 @@ then there are duplicated calculation for &lt;script type=&quot;math/tex&quot;&g
  1 &amp; &amp; &amp; &amp; 0 &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp;
 \end{matrix} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;The larger &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is, the more duplicated process we have.
+&lt;p&gt;The larger &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is, the more overlapping processes we have.
 As a result, the time-complexity is &lt;script type=&quot;math/tex&quot;&gt;O(2^n)&lt;/script&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;memoization&quot;&gt;Memoization&lt;/h3&gt;
@@ -499,14 +499,14 @@ uint64_t fibonacci(unsigned int n)
 
 
 However, if you try calculating ,
-then you will wait forever to get the results
-since it has so many duplicated process.
+then you will wait a long long time to get the result
+since it has so many overlapping processes.
 For example, if we calculate ,
-then there are duplicated calculation for :
+then there are duplicated calculations(overlapping substructures) for :
 
 
 
-The larger  is, the more duplicated process we have.
+The larger  is, the more overlapping processes we have.
 As a result, the time-complexity is .
 
 Memoization

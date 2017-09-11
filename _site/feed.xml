@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-10T10:03:20+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-11T14:14:23+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -80,7 +80,13 @@ without extra memory:&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;It also runs in &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt; but it consumes less memory
-than &lt;em&gt;memoization&lt;/em&gt; approach.&lt;/p&gt;
+than &lt;em&gt;memoization&lt;/em&gt; approach.
+Furthermore, it avoids the memory overhead for the &lt;em&gt;activation records&lt;/em&gt;
+on the &lt;em&gt;stack segment/space&lt;/em&gt; for the recursions.
+(The recursion will call itself multiple times,
+so it will push multiple &lt;em&gt;activation records&lt;/em&gt; for the same function itself,
+with different arguments, into the &lt;em&gt;stack segment/space&lt;/em&gt;
+of the process loading the program.)&lt;/p&gt;
 
 &lt;h3 id=&quot;closed-form&quot;&gt;Closed-form&lt;/h3&gt;
 
@@ -556,6 +562,12 @@ uint64_t fibonacci(unsigned int n)
 
 It also runs in  but it consumes less memory
 than memoization approach.
+Furthermore, it avoids the memory overhead for the activation records
+on the stack segment/space for the recursions.
+(The recursion will call itself multiple times,
+so it will push multiple activation records for the same function itself,
+with different arguments, into the stack segment/space
+of the process loading the program.)
 
 Closed-form
 

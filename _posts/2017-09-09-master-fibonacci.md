@@ -92,6 +92,12 @@ uint64_t fibonacci(unsigned int n)
 
 It also runs in $$O(n)$$ but it consumes less memory
 than _memoization_ approach.
+Furthermore, it avoids the memory overhead for the _activation records_
+on the _stack segment/space_ for the recursions.
+(The recursion will call itself multiple times,
+so it will push multiple _activation records_ for the same function itself,
+with different arguments, into the _stack segment/space_
+of the process loading the program.)
 
 ### Closed-form
 

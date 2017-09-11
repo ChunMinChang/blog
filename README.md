@@ -26,6 +26,8 @@ to log my working notes.
     - http://liuhongjiang.github.io/hexotech/2015/08/12/mathjax-in-hexo/
 
 ### Posts
-- Applying _stack_ in iterative approach of _Exponentiation by squaring_
 - Derive _rounding_ approach for _Fibonacci_ numbers
-- Calculate the time-complexity for different algorithms in _Fibonacci_ series
+- Derive the time-complexity for different algorithms in _Fibonacci_ series
+- Explain how _weak ptr_ works and its use case
+  - Implement ```WeakPtr``` and make it work with my ```RefPtr```
+  - Write sample code for why we need to use ```WeakPtr```

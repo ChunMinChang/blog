@@ -14,7 +14,8 @@ $$
 
 where $$F_0 = 0, F_1 = 1$$.
 
-It is the most common sample when learned how to write _recursive_ code:
+It can be directly written into the following most common code
+when we learned what the recursion is:
 ```cpp
 ///////////////////////////////////////////////////////////////////////////////
 // Recursive: O(2^n)
@@ -47,7 +48,7 @@ As a result, the time-complexity is $$O(2^n)$$.
 
 ### Memoization
 
-To avoid that, we can use an array to save all the results
+To avoid that, we can use a __cache__ to save all the results
 and check it first before any calculation,
 so all the $$F_k$$ we need, for $$k \in [0, n]$$,
 will be computed just once.
@@ -74,6 +75,29 @@ If we iteratively calculate $$F_n$$
 from $$F_0, F_1$$ to $$F_2$$, $$F_3$$, ... then we can get $$F_n$$
 without extra memory:
 
+The above implementation needs extra space to save the results,
+and pay time for memory allocation.
+If we iteratively calculate $$F_n$$
+from $$F_0, F_1$$ to $$F_2$$, $$F_3$$, ...,
+to $$F_{n-1}$$, $$F_n$$ or $$F_n$$, $$F_{n+1}$$
+then we can use only two or three variables to get $$F_n$$:
+
+```cpp
+///////////////////////////////////////////////////////////////////////////////
+// Dynamic programming: O(n)
+uint64_t fibonacci(unsigned int n)
+{
+  uint64_t a = 0, b = 1; // a = F(k), b = F(k+1), k = 0 now.
+  for (unsigned int k = 1 ; k <= n ; ++k) { // loop k from 1 to n.
+    std::swap(a, b); // a = F(k+1), b = F(k)
+    b += a; // b = F(k) + F(k+1) = F(k+2)
+  }
+  return a;
+}
+```
+
+or
+
 ```cpp
 ///////////////////////////////////////////////////////////////////////////////
 // Dynamic programming: O(n)
@@ -81,18 +105,18 @@ uint64_t fibonacci(unsigned int n)
 {
   uint64_t a = 0, b = 1, sum = 0; // a = F(0), b = F(1)
   for (unsigned int i = 1 ; i < n ; ++i) { // run if n >= 2
-    sum = a + b; // sum = F(i + 1)
+    sum = a + b; // sum = F(i+1)
     a = b;       // a = F(i)
-    b = sum;     // b = F(i + 1)
+    b = sum;     // b = F(i+1)
   }
-  // Now, i = n, sum = F(n), a = F(n - 1), b = F(n)
+  // Now, i = n, sum = F(n), a = F(n-1), b = F(n)
   return (n < 2) ? n : sum;
 }
 ```
 
-It also runs in $$O(n)$$ but it consumes less memory
+They also run in $$O(n)$$ with less memory consumption
 than _memoization_ approach.
-Furthermore, it avoids the memory overhead for the _activation records_
+Furthermore, they avoid the memory overhead for the _activation records_
 on the _stack segment/space_ for the recursions.
 (The recursion will call itself multiple times,
 so it will push multiple _activation records_ for the same function itself,
@@ -127,7 +151,7 @@ uint64_t fibonacci(unsigned int n)
 
 Its time-complexity depends on how the power of $$n$$ is calculated.
 It could be done in $$O(\log n)$$ time(we will explain it below).
-However, the floating point operations limits the calculable number of $$n$$,
+However, the floating point operations limit the calculable number of $$n$$,
 and it might block the performance.
 
 

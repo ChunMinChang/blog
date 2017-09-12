@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-11T14:14:23+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-12T14:34:11+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
 &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;F_0 = 0, F_1 = 1&lt;/script&gt;.&lt;/p&gt;
 
-&lt;p&gt;It is the most common sample when learned how to write &lt;em&gt;recursive&lt;/em&gt; code:&lt;/p&gt;
+&lt;p&gt;It can be directly written into the following most common code
+when we learned what the recursion is:&lt;/p&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
 // Recursive: O(2^n)
 &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -36,7 +37,7 @@ As a result, the time-complexity is &lt;script type=&quot;math/tex&quot;&gt;O(2^
 
 &lt;h3 id=&quot;memoization&quot;&gt;Memoization&lt;/h3&gt;
 
-&lt;p&gt;To avoid that, we can use an array to save all the results
+&lt;p&gt;To avoid that, we can use a &lt;strong&gt;cache&lt;/strong&gt; to save all the results
 and check it first before any calculation,
 so all the &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt; we need, for &lt;script type=&quot;math/tex&quot;&gt;k \in [0, n]&lt;/script&gt;,
 will be computed just once.
@@ -63,25 +64,48 @@ If we iteratively calculate &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/scri
 from &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt;, … then we can get &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;
 without extra memory:&lt;/p&gt;
 
+&lt;p&gt;The above implementation needs extra space to save the results,
+and pay time for memory allocation.
+If we iteratively calculate &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;
+from &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt;, …,
+to &lt;script type=&quot;math/tex&quot;&gt;F_{n-1}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_{n+1}&lt;/script&gt;
+then we can use only two or three variables to get &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
+// Dynamic programming: O(n)
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = F(k), b = F(k+1), k = 0 now.
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// loop k from 1 to n.
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;swap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = F(k+1), b = F(k)
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// b = F(k) + F(k+1) = F(k+2)
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
 // Dynamic programming: O(n)
 &lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = F(0), b = F(1)
 &lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// run if n &amp;gt;= 2
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sum = F(i + 1)
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sum = F(i+1)
 &lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;// a = F(i)
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;// b = F(i + 1)
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;// b = F(i+1)
 &lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// Now, i = n, sum = F(n), a = F(n - 1), b = F(n)
+  &lt;span class=&quot;c1&quot;&gt;// Now, i = n, sum = F(n), a = F(n-1), b = F(n)
 &lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;It also runs in &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt; but it consumes less memory
+&lt;p&gt;They also run in &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt; with less memory consumption
 than &lt;em&gt;memoization&lt;/em&gt; approach.
-Furthermore, it avoids the memory overhead for the &lt;em&gt;activation records&lt;/em&gt;
+Furthermore, they avoid the memory overhead for the &lt;em&gt;activation records&lt;/em&gt;
 on the &lt;em&gt;stack segment/space&lt;/em&gt; for the recursions.
 (The recursion will call itself multiple times,
 so it will push multiple &lt;em&gt;activation records&lt;/em&gt; for the same function itself,
@@ -114,7 +138,7 @@ to know how it’s derived.)&lt;/p&gt;
 
 &lt;p&gt;Its time-complexity depends on how the power of &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is calculated.
 It could be done in &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt; time(we will explain it below).
-However, the floating point operations limits the calculable number of &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;,
+However, the floating point operations limit the calculable number of &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;,
 and it might block the performance.&lt;/p&gt;
 
 &lt;h3 id=&quot;matrix-algebra&quot;&gt;Matrix Algebra&lt;/h3&gt;
@@ -495,7 +519,8 @@ Stay tuned!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.
 
 where .
 
-It is the most common sample when learned how to write recursive code:
+It can be directly written into the following most common code
+when we learned what the recursion is:
 ///////////////////////////////////////////////////////////////////////////////
 // Recursive: O(2^n)
 uint64_t fibonacci(unsigned int n)
@@ -517,7 +542,7 @@ As a result, the time-complexity is .
 
 Memoization
 
-To avoid that, we can use an array to save all the results
+To avoid that, we can use a cache to save all the results
 and check it first before any calculation,
 so all the  we need, for ,
 will be computed just once.
@@ -544,25 +569,48 @@ If we iteratively calculate
 from  to , , … then we can get 
 without extra memory:
 
+The above implementation needs extra space to save the results,
+and pay time for memory allocation.
+If we iteratively calculate 
+from  to , , …,
+to ,  or , 
+then we can use only two or three variables to get :
+
+///////////////////////////////////////////////////////////////////////////////
+// Dynamic programming: O(n)
+uint64_t fibonacci(unsigned int n)
+{
+  uint64_t a = 0, b = 1; // a = F(k), b = F(k+1), k = 0 now.
+  for (unsigned int k = 1 ; k &amp;lt;= n ; ++k) { // loop k from 1 to n.
+    std::swap(a, b); // a = F(k+1), b = F(k)
+    b += a; // b = F(k) + F(k+1) = F(k+2)
+  }
+  return a;
+}
+
+
+
+or
+
 ///////////////////////////////////////////////////////////////////////////////
 // Dynamic programming: O(n)
 uint64_t fibonacci(unsigned int n)
 {
   uint64_t a = 0, b = 1, sum = 0; // a = F(0), b = F(1)
   for (unsigned int i = 1 ; i &amp;lt; n ; ++i) { // run if n &amp;gt;= 2
-    sum = a + b; // sum = F(i + 1)
+    sum = a + b; // sum = F(i+1)
     a = b;       // a = F(i)
-    b = sum;     // b = F(i + 1)
+    b = sum;     // b = F(i+1)
   }
-  // Now, i = n, sum = F(n), a = F(n - 1), b = F(n)
+  // Now, i = n, sum = F(n), a = F(n-1), b = F(n)
   return (n &amp;lt; 2) ? n : sum;
 }
 
 
 
-It also runs in  but it consumes less memory
+They also run in  with less memory consumption
 than memoization approach.
-Furthermore, it avoids the memory overhead for the activation records
+Furthermore, they avoid the memory overhead for the activation records
 on the stack segment/space for the recursions.
 (The recursion will call itself multiple times,
 so it will push multiple activation records for the same function itself,
@@ -595,7 +643,7 @@ uint64_t fibonacci(unsigned int n)
 
 Its time-complexity depends on how the power of  is calculated.
 It could be done in  time(we will explain it below).
-However, the floating point operations limits the calculable number of ,
+However, the floating point operations limit the calculable number of ,
 and it might block the performance.
 
 Matrix Algebra

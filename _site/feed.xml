@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-12T14:34:11+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-13T11:46:36+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -69,7 +69,7 @@ and pay time for memory allocation.
 If we iteratively calculate &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;
 from &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt;, …,
 to &lt;script type=&quot;math/tex&quot;&gt;F_{n-1}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_{n+1}&lt;/script&gt;
-then we can use only two or three variables to get &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;:&lt;/p&gt;
+then we can use only three or four variables to get &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;:&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
 // Dynamic programming: O(n)
@@ -324,8 +324,8 @@ k \cdot (k^2)^\frac{n-1}{2}, &amp; \text{if $n$ is odd}
 &lt;/div&gt;
 
 &lt;p&gt;Its time-complexity is &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt; by halving and halving.
-Moreover, there is no floating point operations in the implementation,
-so the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; could be larger than using the &lt;em&gt;closed-form&lt;/em&gt; approach.&lt;/p&gt;
+Without the floating point operations,
+the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; could be larger than using the &lt;em&gt;closed-form&lt;/em&gt; approach.&lt;/p&gt;
 
 &lt;p&gt;To make it faster, you can use native array instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;std::vector&lt;/code&gt;,
 but you need to manage the memory usage by yourself.
@@ -377,7 +377,8 @@ F_{2n'},  &amp; \text{if $n$ is even} \\
 F_{2n'+1}, &amp; \text{if $n$ is odd}
 \end{cases} %]]&gt;&lt;/script&gt;
 
-&lt;p&gt;As a consequence, the &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; can be computed by the following program:
+&lt;p&gt;As a consequence, we could use &lt;script type=&quot;math/tex&quot;&gt;F_{n'}, F_{n' + 1}&lt;/script&gt;
+to compute &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; by the following program:
 (Please read
 &lt;!-- [this post](/post/calculating-fibonacci-numbers-by-fast-doubling) --&gt;
 &lt;a href=&quot;https://chunminchang.github.io/blog/post/calculating-fibonacci-numbers-by-fast-doubling&quot;&gt;this post&lt;/a&gt;
@@ -421,8 +422,8 @@ to know how the code is derived.)&lt;/p&gt;
 
 &lt;p&gt;Its time-complexity is also &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt; by halving and halving.
 In contrast to &lt;em&gt;matrix algebra&lt;/em&gt; approach,
-there is no need for using any array or vector
-to contains the duplicated &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt; in the matrix,
+there is no need for using matrix
+that contains the duplicated &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt;,
 so it will be faster.&lt;/p&gt;
 
 &lt;h3 id=&quot;performance&quot;&gt;Performance&lt;/h3&gt;
@@ -499,12 +500,12 @@ it still indicates that:&lt;/p&gt;
   &lt;li&gt;The &lt;em&gt;fast doubling&lt;/em&gt; approach is always the fastest way
 and its performance is far far better than others.&lt;/li&gt;
   &lt;li&gt;The &lt;em&gt;dynamic programming&lt;/em&gt; approach is faster than &lt;em&gt;matrix algebra&lt;/em&gt; one
-when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is small (&lt;script type=&quot;math/tex&quot;&gt;n \leq 13000&lt;/script&gt;),
+when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is small (&lt;script type=&quot;math/tex&quot;&gt;n \leq 13000&lt;/script&gt; here),
 but slower when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is large.&lt;/li&gt;
   &lt;li&gt;Therefore, if you are pretty sure you have a small &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;,
 and the bottleneck of your algorithm doesn’t depend on
-the calculation of &lt;em&gt;Fibonacci&lt;/em&gt;,
-then &lt;em&gt;dynamic programming&lt;/em&gt; is acceptable and it’s easier to implement.&lt;/li&gt;
+the &lt;em&gt;Fibonacci&lt;/em&gt; calculation, then &lt;em&gt;dynamic programming&lt;/em&gt; is acceptable
+and it’s easier to implement.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;This post is the end of my journey for the &lt;em&gt;Fibonacci&lt;/em&gt; calculation.
@@ -574,7 +575,7 @@ and pay time for memory allocation.
 If we iteratively calculate 
 from  to , , …,
 to ,  or , 
-then we can use only two or three variables to get :
+then we can use only three or four variables to get :
 
 ///////////////////////////////////////////////////////////////////////////////
 // Dynamic programming: O(n)
@@ -794,8 +795,8 @@ uint64_t fibonacci(unsigned int n)
 
 
 Its time-complexity is  by halving and halving.
-Moreover, there is no floating point operations in the implementation,
-so the  could be larger than using the closed-form approach.
+Without the floating point operations,
+the  could be larger than using the closed-form approach.
 
 To make it faster, you can use native array instead of std::vector,
 but you need to manage the memory usage by yourself.
@@ -818,7 +819,8 @@ Hence, we could calculate  by:
 
 
 
-As a consequence, the  can be computed by the following program:
+As a consequence, we could use 
+to compute  by the following program:
 (Please read
 
 this post
@@ -862,8 +864,8 @@ uint64_t fibonacci(unsigned int n)
 
 Its time-complexity is also  by halving and halving.
 In contrast to matrix algebra approach,
-there is no need for using any array or vector
-to contains the duplicated  in the matrix,
+there is no need for using matrix
+that contains the duplicated ,
 so it will be faster.
 
 Performance
@@ -940,12 +942,12 @@ it still indicates that:
   The fast doubling approach is always the fastest way
 and its performance is far far better than others.
   The dynamic programming approach is faster than matrix algebra one
-when  is small (),
+when  is small ( here),
 but slower when  is large.
   Therefore, if you are pretty sure you have a small ,
 and the bottleneck of your algorithm doesn’t depend on
-the calculation of Fibonacci,
-then dynamic programming is acceptable and it’s easier to implement.
+the Fibonacci calculation, then dynamic programming is acceptable
+and it’s easier to implement.
 
 
 This post is the end of my journey for the Fibonacci calculation.

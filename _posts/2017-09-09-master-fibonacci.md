@@ -80,7 +80,7 @@ and pay time for memory allocation.
 If we iteratively calculate $$F_n$$
 from $$F_0, F_1$$ to $$F_2$$, $$F_3$$, ...,
 to $$F_{n-1}$$, $$F_n$$ or $$F_n$$, $$F_{n+1}$$
-then we can use only two or three variables to get $$F_n$$:
+then we can use only three or four variables to get $$F_n$$:
 
 ```cpp
 ///////////////////////////////////////////////////////////////////////////////
@@ -341,8 +341,8 @@ uint64_t fibonacci(unsigned int n)
 ```
 
 Its time-complexity is $$O(\log n)$$ by halving and halving.
-Moreover, there is no floating point operations in the implementation,
-so the $$n$$ could be larger than using the _closed-form_ approach.
+Without the floating point operations,
+the $$n$$ could be larger than using the _closed-form_ approach.
 
 To make it faster, you can use native array instead of ```std::vector```,
 but you need to manage the memory usage by yourself.
@@ -397,7 +397,8 @@ F_{2n'+1}, & \text{if $n$ is odd}
 \end{cases}
 $$
 
-As a consequence, the $$F_n$$ can be computed by the following program:
+As a consequence, we could use $$F_{n'}, F_{n' + 1}$$
+to compute $$F_n$$ by the following program:
 (Please read
 <!-- [this post]({% post_url 2017-08-31-calculating-fibonacci-numbers-by-fast-doubling %}) -->
 [this post](https://chunminchang.github.io/blog/post/calculating-fibonacci-numbers-by-fast-doubling)
@@ -441,8 +442,8 @@ uint64_t fibonacci(unsigned int n)
 
 Its time-complexity is also $$O(\log n)$$ by halving and halving.
 In contrast to _matrix algebra_ approach,
-there is no need for using any array or vector
-to contains the duplicated $$F_k$$ in the matrix,
+there is no need for using matrix
+that contains the duplicated $$F_k$$,
 so it will be faster.
 
 
@@ -472,12 +473,12 @@ it still indicates that:
 - The _fast doubling_ approach is always the fastest way
   and its performance is far far better than others.
 - The _dynamic programming_ approach is faster than _matrix algebra_ one
-  when $$n$$ is small ($$n \leq 13000$$),
+  when $$n$$ is small ($$n \leq 13000$$ here),
   but slower when $$n$$ is large.
 - Therefore, if you are pretty sure you have a small $$n$$,
   and the bottleneck of your algorithm doesn't depend on
-  the calculation of _Fibonacci_,
-  then _dynamic programming_ is acceptable and it's easier to implement.
+  the _Fibonacci_ calculation, then _dynamic programming_ is acceptable
+  and it's easier to implement.
 
 
 This post is the end of my journey for the _Fibonacci_ calculation.

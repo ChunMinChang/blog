@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-13T11:46:36+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-14T13:38:00+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -3894,7 +3894,7 @@ from the &lt;strong&gt;lowest bit to highest bit&lt;/strong&gt; of &lt;code clas
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/9753c72e2441343e14757f5a9ac95a98&quot; title=&quot;Exponentiation by squaring&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="power" /><summary type="html">What is the time complexity of the computation for ?
+&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/9753c72e2441343e14757f5a9ac95a98&quot; title=&quot;Exponentiation by squaring&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><summary type="html">What is the time complexity of the computation for ?
 We might intuitively think it’s .
 In fact, it can be done in 
 by exponentiation by squaring.
@@ -4732,7 +4732,7 @@ int main()
 
   return 0;
 }&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1.js?file=misuse.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><category term="Firefox" /><summary type="html">In 
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1.js?file=misuse.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><category term="Smart Pointer" /><category term="Firefox" /><summary type="html">In 
 previous post,
 I introduced the RefPtr&amp;lt;T&amp;gt; that can keep tracking the references to the
 object T and the references are counted by object T itself.
@@ -5312,7 +5312,7 @@ SharedPtr&amp;lt;T&amp;gt;::operator*() const
 
 &lt;p&gt;You can look &lt;a href=&quot;https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1&quot; title=&quot;RefPtr and SharedPtr&quot;&gt;here&lt;/a&gt; to see how to use it.&lt;/p&gt;
 
-&lt;p&gt;The above code is referenced from &lt;a href=&quot;http://www.aristeia.com/BookErrata/M29Source.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><category term="Firefox" /><summary type="html">When I tried to replace Mozilla’s RefPtr with standard C++
+&lt;p&gt;The above code is referenced from &lt;a href=&quot;http://www.aristeia.com/BookErrata/M29Source.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><category term="Smart Pointer" /><category term="Firefox" /><summary type="html">When I tried to replace Mozilla’s RefPtr with standard C++
 smart-pointer to note one of my misusage of it,
 I used std::shard_ptr to do it.
 However, it didn’t work since there is a huge difference between

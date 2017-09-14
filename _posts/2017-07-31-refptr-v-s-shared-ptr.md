@@ -2,7 +2,7 @@
 layout: post
 title: RefPtr v.s. shared_ptr
 category: Common
-tags: [C/C++, Firefox]
+tags: [C/C++, Smart Pointer, Firefox]
 comments: true
 ---
 When I tried to replace Mozilla's [RefPtr][moz_refptr] with standard C++

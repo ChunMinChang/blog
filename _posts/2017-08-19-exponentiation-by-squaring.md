@@ -2,7 +2,7 @@
 layout: post
 title: Exponentiation by squaring
 category: [Algorithm, Math]
-tags: [power]
+tags: []
 mathjax: true
 comments: true
 ---

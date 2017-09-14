@@ -2,7 +2,7 @@
 layout: post
 title: The Misuse of RefPtr
 category: Common
-tags: [C/C++, Firefox]
+tags: [C/C++, Smart Pointer, Firefox]
 comments: true
 ---
 In <!--[last post]({% post_url 2017-07-31-refptr-v-s-shared-ptr %})-->

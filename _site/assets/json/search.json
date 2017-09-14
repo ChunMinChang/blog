@@ -30,7 +30,7 @@
     {
       "title"    : "Exponentiation by squaring",
       "category" : "AlgorithmMath",
-      "tags"     : "power",
+      "tags"     : "",
       "url"      : "/post/exponentiation-by-squaring",
       "date"     : "2017-08-19 00:00:00 +0800",
 			"shortdate": "August 19, 2017"
@@ -48,7 +48,7 @@
     {
       "title"    : "The Misuse of RefPtr",
       "category" : "Common",
-      "tags"     : "C/C++, Firefox",
+      "tags"     : "C/C++, Smart Pointer, Firefox",
       "url"      : "/post/the-misuse-of-refptr",
       "date"     : "2017-08-08 00:00:00 +0800",
 			"shortdate": "August 08, 2017"
@@ -57,7 +57,7 @@
     {
       "title"    : "RefPtr v.s. shared_ptr",
       "category" : "Common",
-      "tags"     : "C/C++, Firefox",
+      "tags"     : "C/C++, Smart Pointer, Firefox",
       "url"      : "/post/refptr-v-s-shared-ptr",
       "date"     : "2017-07-31 00:00:00 +0800",
 			"shortdate": "July 31, 2017"

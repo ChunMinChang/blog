@@ -118,6 +118,12 @@
 <loc>http://localhost:4000/archive/tag/fibonacci/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/archive/tag/recursion/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/archive/tag/dynamic-programming/</loc>
+</url>
+<url>
 <loc>http://localhost:4000/archive/category/algorithm/</loc>
 </url>
 <url>

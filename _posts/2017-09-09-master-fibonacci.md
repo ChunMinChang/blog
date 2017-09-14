@@ -2,7 +2,7 @@
 layout: post
 title: Master Fibonacci
 category: [Algorithm, Math]
-tags: [Fibonacci]
+tags: [Fibonacci, Recursion, Dynamic Programming]
 mathjax: true
 comments: true
 ---

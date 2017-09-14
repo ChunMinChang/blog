@@ -2,7 +2,7 @@
 layout: post
 title: Exponentiation by squaring
 category: [Algorithm, Math]
-tags: []
+tags: [Recursion, Dynamic Programming]
 mathjax: true
 comments: true
 ---

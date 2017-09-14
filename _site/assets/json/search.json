@@ -3,7 +3,7 @@
     {
       "title"    : "Master Fibonacci",
       "category" : "AlgorithmMath",
-      "tags"     : "Fibonacci",
+      "tags"     : "Fibonacci, Recursion, Dynamic Programming",
       "url"      : "/post/master-fibonacci",
       "date"     : "2017-09-09 00:00:00 +0800",
 			"shortdate": "September 09, 2017"
@@ -12,7 +12,7 @@
     {
       "title"    : "Calculating Fibonacci Numbers by Fast Doubling",
       "category" : "AlgorithmMath",
-      "tags"     : "Fibonacci",
+      "tags"     : "Fibonacci, Recursion, Dynamic Programming",
       "url"      : "/post/calculating-fibonacci-numbers-by-fast-doubling",
       "date"     : "2017-08-31 00:00:00 +0800",
 			"shortdate": "August 31, 2017"
@@ -21,7 +21,7 @@
     {
       "title"    : "Matrix Difference Equation for Fibonacci Sequence",
       "category" : "AlgorithmMath",
-      "tags"     : "Fibonacci",
+      "tags"     : "Fibonacci, Recursion, Dynamic Programming",
       "url"      : "/post/matrix-difference-equation-for-fibonacci-sequence",
       "date"     : "2017-08-22 00:00:00 +0800",
 			"shortdate": "August 22, 2017"
@@ -30,7 +30,7 @@
     {
       "title"    : "Exponentiation by squaring",
       "category" : "AlgorithmMath",
-      "tags"     : "",
+      "tags"     : "Recursion, Dynamic Programming",
       "url"      : "/post/exponentiation-by-squaring",
       "date"     : "2017-08-19 00:00:00 +0800",
 			"shortdate": "August 19, 2017"

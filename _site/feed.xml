@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-14T13:38:00+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-09-14T13:45:25+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
 
@@ -514,7 +514,7 @@ All the above code are uploaded to &lt;a href=&quot;https://gist.github.com/Chun
 Please clone them to play with it.&lt;/p&gt;
 
 &lt;p&gt;I will start another journey for other interesting topics soon.
-Stay tuned!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">The Fibonacci number is defined as:
+Stay tuned!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><category term="Recursion" /><category term="Dynamic Programming" /><summary type="html">The Fibonacci number is defined as:
 
 
 
@@ -1780,7 +1780,7 @@ of the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;. Thus, we could 
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/f80ef4decca23b88df16f2f7846049b6&quot; title=&quot;Calculating Fibonacci Numbers by Fast Doubling&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">In 
+&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/f80ef4decca23b88df16f2f7846049b6&quot; title=&quot;Calculating Fibonacci Numbers by Fast Doubling&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><category term="Recursion" /><category term="Dynamic Programming" /><summary type="html">In 
 previous post,
 we learned how to calculate Fibonacci numbers by Fast Doubling in math.
 Today, we will apply it in programming and optimize it step by step.
@@ -2952,7 +2952,7 @@ but it still has a lot of room to improve.
 We will discuss it in
 &lt;!-- [next post](/post/calculating-fibonacci-numbers-by-fast-doubling) --&gt;
 &lt;a href=&quot;https://chunminchang.github.io/blog/post/calculating-fibonacci-numbers-by-fast-doubling&quot;&gt;next post&lt;/a&gt;.
-Stay tuned!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><summary type="html">Recurrence relation
+Stay tuned!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Fibonacci" /><category term="Recursion" /><category term="Dynamic Programming" /><summary type="html">Recurrence relation
 
 Suppose we have a difference equation defined by:
 
@@ -3894,7 +3894,7 @@ from the &lt;strong&gt;lowest bit to highest bit&lt;/strong&gt; of &lt;code clas
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/9753c72e2441343e14757f5a9ac95a98&quot; title=&quot;Exponentiation by squaring&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><summary type="html">What is the time complexity of the computation for ?
+&lt;p&gt;All the above code are on &lt;a href=&quot;https://gist.github.com/ChunMinChang/9753c72e2441343e14757f5a9ac95a98&quot; title=&quot;Exponentiation by squaring&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Recursion" /><category term="Dynamic Programming" /><summary type="html">What is the time complexity of the computation for ?
 We might intuitively think it’s .
 In fact, it can be done in 
 by exponentiation by squaring.

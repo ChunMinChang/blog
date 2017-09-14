@@ -2,7 +2,7 @@
 layout: post
 title: Matrix Difference Equation for Fibonacci Sequence
 category: [Algorithm, Math]
-tags: [Fibonacci]
+tags: [Fibonacci, Recursion, Dynamic Programming]
 mathjax: true
 comments: true
 ---

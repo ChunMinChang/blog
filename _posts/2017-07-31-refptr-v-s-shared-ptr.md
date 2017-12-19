@@ -1,7 +1,7 @@
 ---
 layout: post
 title: RefPtr v.s. shared_ptr
-category: Common
+category: [Common, Mozilla]
 tags: [C/C++, Smart Pointer, Firefox]
 comments: true
 ---

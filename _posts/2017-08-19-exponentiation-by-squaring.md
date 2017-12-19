@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Exponentiation by squaring
-category: [Algorithm, Math]
+category: [Algorithm]
 tags: [Recursion, Dynamic Programming]
 mathjax: true
 comments: true

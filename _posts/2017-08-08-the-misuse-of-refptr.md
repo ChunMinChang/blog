@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The Misuse of RefPtr
-category: [Common, Mozilla]
+category: [Common]
 tags: [C/C++, Smart Pointer, Firefox]
 comments: true
 ---

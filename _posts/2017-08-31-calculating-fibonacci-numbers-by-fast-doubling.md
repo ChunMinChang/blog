@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Calculating Fibonacci Numbers by Fast Doubling
-category: [Algorithm, Math]
+category: [Algorithm]
 tags: [Fibonacci, Recursion, Dynamic Programming]
 mathjax: true
 comments: true

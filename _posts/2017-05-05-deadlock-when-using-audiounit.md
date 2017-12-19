@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Deadlock when using AudioUnit
-category: [Media, Mozilla]
+category: [Media]
 tags: [CoreAudio, Multithread, Firefox]
 comments: true
 ---

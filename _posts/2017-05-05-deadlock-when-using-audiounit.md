@@ -2,7 +2,7 @@
 layout: post
 title: Deadlock when using AudioUnit
 category: Media
-tags: [CoreAudio, Multithread]
+tags: [CoreAudio, Multithread, Firefox]
 comments: true
 ---
 There was a deadlock occured when we tried to integrate my implementation

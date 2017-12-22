@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Running Average",
+      "category" : "AlgorithmMath",
+      "tags"     : "Firefox",
+      "url"      : "/post/running-average",
+      "date"     : "2017-12-21 00:00:00 +0800",
+			"shortdate": "December 21, 2017"
+    } ,
+  
+    {
       "title"    : "Estimation of MP3 Duration",
       "category" : "Media",
       "tags"     : "Demuxer, Firefox",

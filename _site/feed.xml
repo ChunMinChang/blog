@@ -1,4 +1,334 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-22T08:33:46+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Estimation of MP3 Duration</title><link href="http://localhost:4000/post/estimation-of-mp3-duration" rel="alternate" type="text/html" title="Estimation of MP3 Duration" /><published>2017-12-19T00:00:00+08:00</published><updated>2017-12-19T00:00:00+08:00</updated><id>http://localhost:4000/post/estimation-of-mp3-duration</id><content type="html" xml:base="http://localhost:4000/post/estimation-of-mp3-duration">&lt;p&gt;To calculate the duration of one &lt;em&gt;MP3&lt;/em&gt; file,
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-22T11:58:35+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
+while calculating the average of a long series of data.
+One simplest method to avoid the problem is &lt;em&gt;running average&lt;/em&gt;
+(or &lt;em&gt;moving average&lt;/em&gt;, &lt;em&gt;rolling average&lt;/em&gt;, &lt;em&gt;incremental mean&lt;/em&gt;).&lt;/p&gt;
+
+&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;/h2&gt;
+&lt;p&gt;Suppose we have data &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_n&lt;/script&gt;
+and the new data &lt;script type=&quot;math/tex&quot;&gt;x_{n+1}&lt;/script&gt; will lead to overflow to &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt;,
+where &lt;script type=&quot;math/tex&quot;&gt;sum_i = x_1 + x_2 + \cdots + x_i&lt;/script&gt;.
+When &lt;script type=&quot;math/tex&quot;&gt;x_{n+1}&lt;/script&gt; comes, &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt; will overflow
+so &lt;script type=&quot;math/tex&quot;&gt;\mu_{n+1} = \frac{sum_{n+1}}{n+1}&lt;/script&gt; will be wrong,
+where &lt;script type=&quot;math/tex&quot;&gt;\mu_i&lt;/script&gt; is the average of &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_i&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;How could we solve the problem?&lt;/p&gt;
+
+&lt;h2 id=&quot;naive-approach&quot;&gt;Naive Approach&lt;/h2&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Overflow!
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GetAverage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;static_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above approach to prevent overflow
+is extracted from &lt;a href=&quot;https://searchfox.org/mozilla-central/rev/f5f1c3f294f89cfd242c3af9eb2c40d19d5e04e7/dom/media/mp3/MP3Demuxer.cpp#709-715,720,728,756-760&quot; title=&quot;Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;Gecko MP3Demuxer&lt;/a&gt;,
+but it’s &lt;strong&gt;wrong&lt;/strong&gt; in most cases
+(it’s only correct when every incoming data is same).
+For example, if we have &lt;script type=&quot;math/tex&quot;&gt;x_1 = 10, x_2 = 20&lt;/script&gt;
+and &lt;script type=&quot;math/tex&quot;&gt;x_3 = 90&lt;/script&gt; will lead to overflow to the sum of &lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt;
+so the average computed by above approach will be &lt;script type=&quot;math/tex&quot;&gt;\frac{(10+20)/2 + 90}{2/2 + 1} = 52.5&lt;/script&gt;,
+which is different from &lt;script type=&quot;math/tex&quot;&gt;\frac{10 + 20 + 90}{3} = 40&lt;/script&gt;.
+I cannot believe this incorrect code
+lives in Firefox &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1093815&quot;&gt;more than 3 years&lt;/a&gt;.
+Fortunately, the overflow happens once in a blue moon
+so it’s not too much trouble.&lt;/p&gt;
+
+&lt;h3 id=&quot;proof&quot;&gt;Proof&lt;/h3&gt;
+&lt;p&gt;We can formally prove the above approach is incorrect.
+Let &lt;script type=&quot;math/tex&quot;&gt;sum_{k}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mu_k&lt;/script&gt; be the &lt;strong&gt;sum&lt;/strong&gt; and &lt;strong&gt;arithmetic mean&lt;/strong&gt;
+of &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_k&lt;/script&gt; respectively, and &lt;script type=&quot;math/tex&quot;&gt;E_k&lt;/script&gt; be the estimated average
+from above approach.&lt;/p&gt;
+
+&lt;p&gt;Since the new incoming data &lt;script type=&quot;math/tex&quot;&gt;x_{n+1}&lt;/script&gt; will cause overflow to &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt;, so&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;E_{n+1} = \frac{p + x_{n+1}}{q + 1}&lt;/script&gt;
+, where
+&lt;script type=&quot;math/tex&quot;&gt;p = \frac{sum_{n}}{2} = \frac{x_1 + x_2 + \cdots + x_n}{2}&lt;/script&gt;
+and
+&lt;script type=&quot;math/tex&quot;&gt;q = \frac{n}{2}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;As a result,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+E_{n+1}
+&amp;= \frac{p + x_{n+1}}{q + 1} \\
+&amp;= \frac{\frac{x_1 + x_2 + \cdots + x_n}{2} + x_{n+1}}{\frac{n}{2} + 1} \\
+&amp;= \frac{\frac{x_1 + x_2 + \cdots + x_n + 2 \cdot x_{n+1}}{2}}{\frac{n + 2}{2}} \\
+&amp;= \frac{x_1 + x_2 + \cdots + x_n + 2 \cdot x_{n+1}}{n+2}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;We could compare &lt;script type=&quot;math/tex&quot;&gt;E_{n+1}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mu_{n+1}&lt;/script&gt; to see if they are equal:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\mu_{n+1}
+&amp;= \frac{x_1 + x_2 + \cdots + x_n + x_{n+1}}{n+1} \\
+&amp;= \frac{(n+2) \cdot (x_1 + x_2 + \cdots + x_n + x_{n+1})}{(n+1) \cdot (n+2)} \\
+&amp;= \frac{(n+1) \cdot (x_1 + x_2 + \cdots + x_n + x_{n+1}) + (x_1 + x_2 + \cdots + x_n + x_{n+1})}{(n+1) \cdot (n+2)}
+\\
+E_{n+1}
+&amp;= \frac{x_1 + x_2 + \cdots + x_n + 2 \cdot x_{n+1}}{n+2} \\
+&amp;= \frac{(x_1 + x_2 + \cdots + x_n + x_{n+1}) + x_{n+1}}{n+2} \\
+&amp;= \frac{(n+1) \cdot ((x_1 + x_2 + \cdots + x_n + x_{n+1}) + x_{n+1})}{(n+1) \cdot (n+2)} \\
+&amp;= \frac{(n+1) \cdot (x_1 + x_2 + \cdots + x_n + x_{n+1}) + (n+1) \cdot x_{n+1}}{(n+1) \cdot (n+2)} \\
+&amp;= \frac{(n+1) \cdot (x_1 + x_2 + \cdots + x_n + x_{n+1}) + (\overbrace{x_{n+1} + \cdots + x_{n+1}}^{n+1}))}{(n+1) \cdot (n+2)}
+\\
+\mu_{n+1} - E_{n+1}
+&amp;= \frac{ (x_1 + x_2 + \cdots + x_n + x_{n+1}) - (\overbrace{x_{n+1} + \cdots + x_{n+1}}^{n+1}))}{(n+1) \cdot (n+2)} \\
+&amp;= \frac{ (x_1 - x_{n+1}) + (x_2 - x_{n+1}) + \cdots +  (x_n - x_{n+1}) + (x_{n+1} - x_{n+1})}{(n+1) \cdot (n+2)} \\
+&amp;= \frac{ (x_1 - x_{n+1}) + (x_2 - x_{n+1}) + \cdots +  (x_n - x_{n+1}) }{(n+1) \cdot (n+2)}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Thus, we can clearly see that
+&lt;script type=&quot;math/tex&quot;&gt;\mu_{n+1}&lt;/script&gt; will be equal to &lt;script type=&quot;math/tex&quot;&gt;E_{n+1}&lt;/script&gt;
+&lt;strong&gt;only&lt;/strong&gt; when &lt;script type=&quot;math/tex&quot;&gt;x_1 = x_2 = \cdots = x_n = x_{n+1}&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;running-average&quot;&gt;Running Average&lt;/h2&gt;
+
+&lt;p&gt;In fact, the average can be calculated
+without using the overflowed &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt;.
+Let &lt;script type=&quot;math/tex&quot;&gt;\mu_n&lt;/script&gt; be the mean of &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_n&lt;/script&gt;,
+we can get &lt;script type=&quot;math/tex&quot;&gt;\mu_n&lt;/script&gt; by &lt;script type=&quot;math/tex&quot;&gt;\mu_{n-1}&lt;/script&gt;:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\mu_n
+&amp;= \frac{ \mu_{n-1} \cdot (n-1) + x_n }{ n } \\
+&amp;= \frac{ n \cdot \mu_{n-1} + x_n - \mu_{n-1}}{ n } \\
+&amp;= \mu_{n-1} + \frac{ x_n - \mu_{n-1} }{ n }
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;sample-code&quot;&gt;Sample code&lt;/h3&gt;
+
+&lt;p&gt;On this ground, we could correct the &lt;a href=&quot;https://gist.github.com/ChunMinChang/a1d7533859dba59a1701d1d42c29bf82&quot; title=&quot;Calculating average without sum&quot;&gt;code&lt;/a&gt; into:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GetAverage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateAverage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Averager&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;Averager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+
+  &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Averager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GetAverage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1423834&quot; title=&quot;Bug 1423834 - Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;Bug 1423834&lt;/a&gt; is filed for this problem
+when I was tracing &lt;a href=&quot;https://searchfox.org/mozilla-central/rev/f5f1c3f294f89cfd242c3af9eb2c40d19d5e04e7/dom/media/mp3/MP3Demuxer.cpp#709-715,720,728,756-760&quot; title=&quot;Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;MP3Demuxer&lt;/a&gt;.
+You could find more detail there.&lt;/p&gt;
+
+&lt;p&gt;The following links are some related resources:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Moving_average&quot;&gt;Moving average on Wiki&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://math.stackexchange.com/questions/106700/incremental-averageing&quot;&gt;Incremental averageing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/3316261/prevent-long-running-averaging-from-overflow&quot;&gt;Prevent long running averaging from overflow?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;, &quot;Math&quot;]" /><category term="Firefox" /><summary type="html">Preventing overflow is essential
+while calculating the average of a long series of data.
+One simplest method to avoid the problem is running average
+(or moving average, rolling average, incremental mean).
+
+Problem
+Suppose we have data 
+and the new data  will lead to overflow to ,
+where .
+When  comes,  will overflow
+so  will be wrong,
+where  is the average of .
+
+How could we solve the problem?
+
+Naive Approach
+
+uint64_t count = 0;
+uint64_t sum = 0;
+
+void Add(uint64_t data)
+{
+  if (sum + data &amp;lt; sum) { // Overflow!
+    sum = sum / 2;
+    count = count / 2;
+  }
+
+  sum += data;
+  ++count;
+}
+
+double GetAverage()
+{
+  return static_cast&amp;lt;double&amp;gt;(sum) / count;
+}
+
+
+
+The above approach to prevent overflow
+is extracted from Gecko MP3Demuxer,
+but it’s wrong in most cases
+(it’s only correct when every incoming data is same).
+For example, if we have 
+and  will lead to overflow to the sum of 
+so the average computed by above approach will be ,
+which is different from .
+I cannot believe this incorrect code
+lives in Firefox more than 3 years.
+Fortunately, the overflow happens once in a blue moon
+so it’s not too much trouble.
+
+Proof
+We can formally prove the above approach is incorrect.
+Let  and  be the sum and arithmetic mean
+of  respectively, and  be the estimated average
+from above approach.
+
+Since the new incoming data  will cause overflow to , so
+
+
+, where
+
+and
+
+
+As a result,
+
+
+
+We could compare  and  to see if they are equal:
+
+
+
+Thus, we can clearly see that
+ will be equal to 
+only when .
+
+Running Average
+
+In fact, the average can be calculated
+without using the overflowed .
+Let  be the mean of ,
+we can get  by :
+
+
+
+Sample code
+
+On this ground, we could correct the code into:
+
+double average = 0;
+uint64_t count = 0;
+void Add(uint64_t data)
+{
+  average += (data - average) / ++count;
+}
+
+double GetAverage()
+{
+  return average;
+}
+
+
+
+or
+
+double UpdateAverage(uint64_t data)
+{
+  static double average = 0;
+  static uint64_t count = 0;
+  average += (data - average) / ++count;
+  return average;
+}
+
+
+
+or
+
+class Averager
+{
+public:
+  Averager()
+    : average(0)
+    , count(0)
+  {}
+
+  ~Averager() {};
+
+  void Add(uint64_t data) { average += (data - average) / ++count; }
+
+  double GetAverage() { return average; }
+
+private:
+  double average;
+  uint64_t count;
+}
+
+
+
+References
+
+Bug 1423834 is filed for this problem
+when I was tracing MP3Demuxer.
+You could find more detail there.
+
+The following links are some related resources:
+
+  Moving average on Wiki
+  Incremental averageing
+  Prevent long running averaging from overflow?</summary></entry><entry><title type="html">Estimation of MP3 Duration</title><link href="http://localhost:4000/post/estimation-of-mp3-duration" rel="alternate" type="text/html" title="Estimation of MP3 Duration" /><published>2017-12-19T00:00:00+08:00</published><updated>2017-12-19T00:00:00+08:00</updated><id>http://localhost:4000/post/estimation-of-mp3-duration</id><content type="html" xml:base="http://localhost:4000/post/estimation-of-mp3-duration">&lt;p&gt;To calculate the duration of one &lt;em&gt;MP3&lt;/em&gt; file,
 we need to know how it is encoded first.
 The estimation for the durtation is different
 based on how they are encoded.&lt;/p&gt;
@@ -5962,70 +6292,4 @@ The above code is referenced from here</summary></entry><entry><title type="html
   (System) Add-on
   Message Manager
   Keyboard Event Dispatch
-  JPAKE over TLS</summary></entry><entry><title type="html">Hash Table v.s. Mutable Array</title><link href="http://localhost:4000/post/hash-table-v-s-mutable-array" rel="alternate" type="text/html" title="Hash Table v.s. Mutable Array" /><published>2017-07-15T00:00:00+08:00</published><updated>2017-07-15T00:00:00+08:00</updated><id>http://localhost:4000/post/hash-table-v-s-mutable-array</id><content type="html" xml:base="http://localhost:4000/post/hash-table-v-s-mutable-array">&lt;p&gt;It’s common sense that the time complexity of insertion and removal of a
-hash table are all both &lt;em&gt;O(1)&lt;/em&gt;, while array takes &lt;em&gt;O(n)&lt;/em&gt; for removal.
-However, when the data size(&lt;em&gt;n&lt;/em&gt;) is small, the array will beat the hash table.&lt;/p&gt;
-
-&lt;p&gt;Here is the result from my test&lt;a href=&quot;https://gist.github.com/ChunMinChang/b6b7b534e1ef3683f76d830d72c489a6&quot; title=&quot;Performance: Mutable array v.s. Hashtable&quot;&gt;(gist here)&lt;/a&gt;&lt;/p&gt;
-&lt;noscript&gt;&lt;pre&gt;# Performance: Mutable array v.s. Hashtable
-
-Subjects:
-- mutable array: ```std::vector```
-- hash table: ```std::unordered_map```
-
-## Results
-
-### Insertion time(ms)
-| Data Size          | 10    | 50    | 100   | 1000  | 5000  | 10000 |
-| ------------------ | ----- | ----- | ----- | ----- | ----- | ----- |
-| std::vector        | 0.015 | 0.021 | 0.097 | 0.093 | 0.366 | 0.616 |
-| std::unordered_map | 0.034 | 0.081 | 0.202 | 0.503 | 2.425 | 3.482 |
-
-
-### Removal time(ms)
-| Data Size          | 10    | 50    | 100   | 1000  | 5000   | 10000   |
-| ------------------ | ----- | ----- | ----- | ----- | ------ | ------- |
-| std::vector        | 0.008 | 0.046 | 0.129 | 3.82  | 88.562 | 344.566 |
-| std::unordered_map | 0.013 | 0.051 | 0.078 | 0.456 | 2.14   | 3.6     |&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/b6b7b534e1ef3683f76d830d72c489a6.js?file=README.md&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;By the results, if you are pretty sure the data size is less than &lt;code class=&quot;highlighter-rouge&quot;&gt;50&lt;/code&gt;
-then you should use &lt;code class=&quot;highlighter-rouge&quot;&gt;std::vector&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;std::unordered_map&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;On the other hand, if you need to insert and remove itmes frequently,
-and the data size is greater than &lt;code class=&quot;highlighter-rouge&quot;&gt;50&lt;/code&gt;,
-then you should use &lt;code class=&quot;highlighter-rouge&quot;&gt;std::unordered_map&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;std::vector&lt;/code&gt;.
-If items are inserted frequently but removed rarely, &lt;code class=&quot;highlighter-rouge&quot;&gt;std::vector&lt;/code&gt; is fine.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Common" /><category term="C/C++" /><summary type="html">It’s common sense that the time complexity of insertion and removal of a
-hash table are all both O(1), while array takes O(n) for removal.
-However, when the data size(n) is small, the array will beat the hash table.
-
-Here is the result from my test(gist here)
-# Performance: Mutable array v.s. Hashtable
-
-Subjects:
-- mutable array: ```std::vector```
-- hash table: ```std::unordered_map```
-
-## Results
-
-### Insertion time(ms)
-| Data Size          | 10    | 50    | 100   | 1000  | 5000  | 10000 |
-| ------------------ | ----- | ----- | ----- | ----- | ----- | ----- |
-| std::vector        | 0.015 | 0.021 | 0.097 | 0.093 | 0.366 | 0.616 |
-| std::unordered_map | 0.034 | 0.081 | 0.202 | 0.503 | 2.425 | 3.482 |
-
-
-### Removal time(ms)
-| Data Size          | 10    | 50    | 100   | 1000  | 5000   | 10000   |
-| ------------------ | ----- | ----- | ----- | ----- | ------ | ------- |
-| std::vector        | 0.008 | 0.046 | 0.129 | 3.82  | 88.562 | 344.566 |
-| std::unordered_map | 0.013 | 0.051 | 0.078 | 0.456 | 2.14   | 3.6     |
-
-
-By the results, if you are pretty sure the data size is less than 50
-then you should use std::vector instead of std::unordered_map.
-
-On the other hand, if you need to insert and remove itmes frequently,
-and the data size is greater than 50,
-then you should use std::unordered_map instead of std::vector.
-If items are inserted frequently but removed rarely, std::vector is fine.</summary></entry></feed>
+  JPAKE over TLS</summary></entry></feed>

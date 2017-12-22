@@ -1,8 +1,17 @@
 [
   
     {
+      "title"    : "Estimation of MP3 Duration",
+      "category" : "Media",
+      "tags"     : "Demuxer, Firefox",
+      "url"      : "/post/estimation-of-mp3-duration",
+      "date"     : "2017-12-19 00:00:00 +0800",
+			"shortdate": "December 19, 2017"
+    } ,
+  
+    {
       "title"    : "Master Fibonacci",
-      "category" : "AlgorithmMath",
+      "category" : "Algorithm",
       "tags"     : "Fibonacci, Recursion, Dynamic Programming",
       "url"      : "/post/master-fibonacci",
       "date"     : "2017-09-09 00:00:00 +0800",
@@ -11,7 +20,7 @@
   
     {
       "title"    : "Calculating Fibonacci Numbers by Fast Doubling",
-      "category" : "AlgorithmMath",
+      "category" : "Algorithm",
       "tags"     : "Fibonacci, Recursion, Dynamic Programming",
       "url"      : "/post/calculating-fibonacci-numbers-by-fast-doubling",
       "date"     : "2017-08-31 00:00:00 +0800",
@@ -29,7 +38,7 @@
   
     {
       "title"    : "Exponentiation by squaring",
-      "category" : "AlgorithmMath",
+      "category" : "Algorithm",
       "tags"     : "Recursion, Dynamic Programming",
       "url"      : "/post/exponentiation-by-squaring",
       "date"     : "2017-08-19 00:00:00 +0800",
@@ -102,7 +111,7 @@
     {
       "title"    : "Deadlock when using AudioUnit",
       "category" : "Media",
-      "tags"     : "CoreAudio, Multithread",
+      "tags"     : "CoreAudio, Multithread, Firefox",
       "url"      : "/post/deadlock-when-using-audiounit",
       "date"     : "2017-05-05 00:00:00 +0800",
 			"shortdate": "May 05, 2017"

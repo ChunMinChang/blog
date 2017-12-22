@@ -3,7 +3,7 @@ description:      everyday surpass myself
 logo:             mountain.png
 disqus_shortname: chunminchang-blog
 # Assign a default image for your site's header and footer
-default_bg:       background/taiwan_1.jpg
+default_bg:       background/yosemite/yosemite1.png #background/taiwan_1.jpg
 search:           true
 share:            true
 # Read Time is a calculator tp provide post read-time based on word count. Usage is recommended.
@@ -44,7 +44,7 @@ jekyll-archives:
 # Owner/author information
 author:
   name:           Chun-Min Chang
-  picture:        chunmin.jpg
+  picture:        yosemite.png #kinmen.jpg #chunmin.jpg
   email:          chun.m.chang@gmail.com
   # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
   description:     I am a self-directed learner and a maker who enjoys building products from original ideas.

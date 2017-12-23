@@ -1,4 +1,151 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-23T10:01:50+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-23T18:35:54+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I develop some tools to speed up the process for debugging malfunctions on audio.
+A simple table shows the audio hardware information and configuration.
+A device selector let me easily switch the audio sources
+from different platforms/computers.&lt;/p&gt;
+
+&lt;h2 id=&quot;software&quot;&gt;Software&lt;/h2&gt;
+
+&lt;h3 id=&quot;firefox&quot;&gt;Firefox&lt;/h3&gt;
+&lt;p&gt;Knowledge about the audio setting and its hardware information is necessary
+when we try to investigate the disorder audio functions.
+Unfortunately, it’s hard to know the audio configuration
+on the dysfunctional machine.
+It usually takes a few days to get this information from the reporters.&lt;/p&gt;
+
+&lt;h4 id=&quot;aboutsupport&quot;&gt;about:support&lt;/h4&gt;
+&lt;p&gt;To reduce the workload on communication,
+I create a table shows the audio hardware information
+on &lt;strong&gt;about:support&lt;/strong&gt; in Firefox&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/posts/media-on-Firefox-aboutsupport.png&quot; alt=&quot;&quot; title=&quot;Troubleshooting Information&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When reporters file bugs, they can attach these information as well
+so we don’t need to ask them for their settings.&lt;/p&gt;
+
+&lt;h5 id=&quot;further-works&quot;&gt;Further works&lt;/h5&gt;
+&lt;p&gt;There are some further works left.
+I will try to arrange some time to do these things.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1378633&quot; title=&quot;Bug 1378633 - Add a new Cubeb API to get the hardware name, driver name and version of the sound card&quot;&gt;Show driver version of the sound card&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Show unique hardware id&lt;/li&gt;
+  &lt;li&gt;Integrate this info to crash report&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;hardware&quot;&gt;Hardware&lt;/h2&gt;
+
+&lt;h3 id=&quot;audio-device-selector&quot;&gt;Audio Device Selector&lt;/h3&gt;
+&lt;p&gt;I need to frequently switch between computers with different OS
+to check the audio works on different platforms.
+It’s annoying to unconnect the speaker from one computer
+and then connet it to another computer again and again.
+Therefore, I made a device selector that can switch the audio sources
+of the speaker by simply flipping the controller.&lt;/p&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/heBQHew3Guc&quot; frameborder=&quot;0&quot; gesture=&quot;media&quot; allow=&quot;encrypted-media&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;The circuit is super easy. It’s nothing more than a switch.
+&lt;img src=&quot;../images/posts/device-selector.png&quot; alt=&quot;&quot; title=&quot;Device selector&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The above circuit diagram is for stereo speaker.
+If the speaker is 5.1 or 7.1,
+we need to replace the 6-pin switch to 18 pin or 24-pin switch.&lt;/p&gt;
+
+&lt;p&gt;In fact, the circuit is a simple track selector,
+so it’s not only an audio source selector for a speaker,
+but also a speaker switcher for a computer.
+That is, you can connect two speakers to a computer
+and select what speaker you want to play.&lt;/p&gt;
+
+&lt;h2 id=&quot;future-plan&quot;&gt;Future Plan&lt;/h2&gt;
+
+&lt;p&gt;There are several tasks I believe it could ease my life as a developer:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Virtual Audio Device
+    &lt;ul&gt;
+      &lt;li&gt;Something like &lt;a href=&quot;https://github.com/akhudek/Soundflower&quot; title=&quot;Soundflower&quot;&gt;Soundflower&lt;/a&gt; but it’s cross-platform
+and provides APIs to install/uninstall devices dynamically.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Powerful Command Sets(cross-platform)
+    &lt;ul&gt;
+      &lt;li&gt;To disable/enable audio devices.&lt;/li&gt;
+      &lt;li&gt;Audio sample generator(by FFmpeg?)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><category term="Hardware" /><summary type="html">I develop some tools to speed up the process for debugging malfunctions on audio.
+A simple table shows the audio hardware information and configuration.
+A device selector let me easily switch the audio sources
+from different platforms/computers.
+
+Software
+
+Firefox
+Knowledge about the audio setting and its hardware information is necessary
+when we try to investigate the disorder audio functions.
+Unfortunately, it’s hard to know the audio configuration
+on the dysfunctional machine.
+It usually takes a few days to get this information from the reporters.
+
+about:support
+To reduce the workload on communication,
+I create a table shows the audio hardware information
+on about:support in Firefox
+
+
+
+When reporters file bugs, they can attach these information as well
+so we don’t need to ask them for their settings.
+
+Further works
+There are some further works left.
+I will try to arrange some time to do these things.
+
+
+  Show driver version of the sound card
+  Show unique hardware id
+  Integrate this info to crash report
+
+
+Hardware
+
+Audio Device Selector
+I need to frequently switch between computers with different OS
+to check the audio works on different platforms.
+It’s annoying to unconnect the speaker from one computer
+and then connet it to another computer again and again.
+Therefore, I made a device selector that can switch the audio sources
+of the speaker by simply flipping the controller.
+
+
+
+The circuit is super easy. It’s nothing more than a switch.
+
+
+The above circuit diagram is for stereo speaker.
+If the speaker is 5.1 or 7.1,
+we need to replace the 6-pin switch to 18 pin or 24-pin switch.
+
+In fact, the circuit is a simple track selector,
+so it’s not only an audio source selector for a speaker,
+but also a speaker switcher for a computer.
+That is, you can connect two speakers to a computer
+and select what speaker you want to play.
+
+Future Plan
+
+There are several tasks I believe it could ease my life as a developer:
+
+  Virtual Audio Device
+    
+      Something like Soundflower but it’s cross-platform
+and provides APIs to install/uninstall devices dynamically.
+    
+  
+  Powerful Command Sets(cross-platform)
+    
+      To disable/enable audio devices.
+      Audio sample generator(by FFmpeg?)</summary></entry><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
 while calculating the average of a long series of data.
 One simplest method to avoid the problem is &lt;em&gt;running average&lt;/em&gt;
 (or &lt;em&gt;moving average&lt;/em&gt;, &lt;em&gt;rolling average&lt;/em&gt;, &lt;em&gt;incremental mean&lt;/em&gt;).&lt;/p&gt;
@@ -6259,37 +6406,4 @@ SharedPtr&amp;lt;T&amp;gt;::operator*() const
 
 You can look here to see how to use it.
 
-The above code is referenced from here</summary></entry><entry><title type="html">Development Notes for Mozilla</title><link href="http://localhost:4000/post/development-notes-for-mozilla" rel="alternate" type="text/html" title="Development Notes for Mozilla" /><published>2017-07-19T00:00:00+08:00</published><updated>2017-07-19T00:00:00+08:00</updated><id>http://localhost:4000/post/development-notes-for-mozilla</id><content type="html" xml:base="http://localhost:4000/post/development-notes-for-mozilla">&lt;p&gt;The following are some of my notes to develop the mozilla products.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.penflip.com/Chun-Min/mozilla-newbie-notes&quot; title=&quot;Mozilla Newbie Notes&quot;&gt;Basic knowledge&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;XPCOM&lt;/li&gt;
-      &lt;li&gt;WebIDL&lt;/li&gt;
-      &lt;li&gt;Mochitest&lt;/li&gt;
-      &lt;li&gt;others&lt;/li&gt;
-      &lt;li&gt;&lt;del&gt;Firefox OS&lt;/del&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.google.com/presentation/d/1S4njAbl4tSFCrJ3cnE30L4PcYeWdvY-1wcghX2mWNOE/edit?usp=sharing&quot; title=&quot;IPDL&quot;&gt;IPDL&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.google.com/presentation/d/1o9qeSucSDAJO94TmZmebxRnGepY7MVy-MeVGqyaIO0s/edit?usp=sharing&quot; title=&quot;Firefox (System) Add-on&quot;&gt;(System) Add-on&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.google.com/presentation/d/1eDjlmBdBrECQ_vXve0HgzmBilgL8HwHrcFQz9puGGr0/edit?usp=sharing&quot; title=&quot;Message Manager&quot;&gt;Message Manager&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.google.com/presentation/d/1zxanY8xDioeIrfPyuzx9QDgggO1pC8erqhcL30gL7Wc/edit?usp=sharing&quot; title=&quot;Keyboard Event Dispatch&quot;&gt;Keyboard Event Dispatch&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.google.com/presentation/d/15iXd4ZXy9Y1uKdXkuFsdoqXAzw7Y4pUFKlDaNiAFkb0/edit?usp=sharing&quot; title=&quot;JPAKE over TLS&quot;&gt;JPAKE over TLS&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Mozilla" /><category term="Firefox" /><category term="Fennec" /><summary type="html">The following are some of my notes to develop the mozilla products.
-
-
-  Basic knowledge
-    
-      XPCOM
-      WebIDL
-      Mochitest
-      others
-      Firefox OS
-    
-  
-  IPDL
-  (System) Add-on
-  Message Manager
-  Keyboard Event Dispatch
-  JPAKE over TLS</summary></entry></feed>
+The above code is referenced from here</summary></entry></feed>

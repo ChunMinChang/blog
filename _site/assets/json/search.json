@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Audio Debugging Kit",
+      "category" : "Media",
+      "tags"     : "Firefox, Hardware",
+      "url"      : "/post/audio-debugging-kit",
+      "date"     : "2017-12-23 00:00:00 +0800",
+			"shortdate": "December 23, 2017"
+    } ,
+  
+    {
       "title"    : "Running Average",
       "category" : "AlgorithmMath",
       "tags"     : "Firefox",

@@ -15,7 +15,7 @@ from different platforms/computers.
 
 ### Firefox
 Knowledge about the audio setting and its hardware information is necessary
-when we try to investigate the disorder audio functions.
+when we try to investigate the problems on audio.
 Unfortunately, it's hard to know the audio configuration
 on the dysfunctional machine.
 It usually takes a few days to get this information from the reporters.
@@ -31,8 +31,8 @@ When reporters file bugs, they can attach these information as well
 so we don't need to ask them for their settings.
 
 ##### Further works
-There are some further works left.
-I will try to arrange some time to do these things.
+There are some left works.
+I will try to arrange my time to finish them.
 
 - [Show driver version of the sound card][b1378633]
 - Show unique hardware id

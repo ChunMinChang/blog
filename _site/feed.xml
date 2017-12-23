@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-23T18:35:54+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I develop some tools to speed up the process for debugging malfunctions on audio.
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-23T18:41:03+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I develop some tools to speed up the process for debugging malfunctions on audio.
 A simple table shows the audio hardware information and configuration.
 A device selector let me easily switch the audio sources
 from different platforms/computers.&lt;/p&gt;
@@ -7,7 +7,7 @@ from different platforms/computers.&lt;/p&gt;
 
 &lt;h3 id=&quot;firefox&quot;&gt;Firefox&lt;/h3&gt;
 &lt;p&gt;Knowledge about the audio setting and its hardware information is necessary
-when we try to investigate the disorder audio functions.
+when we try to investigate the problems on audio.
 Unfortunately, it’s hard to know the audio configuration
 on the dysfunctional machine.
 It usually takes a few days to get this information from the reporters.&lt;/p&gt;
@@ -23,8 +23,8 @@ on &lt;strong&gt;about:support&lt;/strong&gt; in Firefox&lt;/p&gt;
 so we don’t need to ask them for their settings.&lt;/p&gt;
 
 &lt;h5 id=&quot;further-works&quot;&gt;Further works&lt;/h5&gt;
-&lt;p&gt;There are some further works left.
-I will try to arrange some time to do these things.&lt;/p&gt;
+&lt;p&gt;There are some left works.
+I will try to arrange my time to finish them.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1378633&quot; title=&quot;Bug 1378633 - Add a new Cubeb API to get the hardware name, driver name and version of the sound card&quot;&gt;Show driver version of the sound card&lt;/a&gt;&lt;/li&gt;
@@ -82,7 +82,7 @@ Software
 
 Firefox
 Knowledge about the audio setting and its hardware information is necessary
-when we try to investigate the disorder audio functions.
+when we try to investigate the problems on audio.
 Unfortunately, it’s hard to know the audio configuration
 on the dysfunctional machine.
 It usually takes a few days to get this information from the reporters.
@@ -98,8 +98,8 @@ When reporters file bugs, they can attach these information as well
 so we don’t need to ask them for their settings.
 
 Further works
-There are some further works left.
-I will try to arrange some time to do these things.
+There are some left works.
+I will try to arrange my time to finish them.
 
 
   Show driver version of the sound card

@@ -13,12 +13,12 @@ One simplest method to avoid the problem is *running average*
 (or *moving average*, *rolling average*, *incremental mean*).
 
 ## Problem
-Suppose we have data $$x_1, x_2, \cdots, x_n$$
-and the new data $$x_{n+1}$$ will lead to overflow to $$sum_{n+1}$$,
+Suppose we have data $$x_1, x_2, \cdots, x_n$$.
+The $$sum_{n+1}$$ will overflow when the new data $$x_{n+1}$$ is counted,
 where $$sum_i = x_1 + x_2 + \cdots + x_i$$.
-When $$x_{n+1}$$ comes, $$sum_{n+1}$$ will overflow
-so $$\mu_{n+1} = \frac{sum_{n+1}}{n+1}$$ will be wrong,
-where $$\mu_i$$ is the average of $$x_1, x_2, \cdots, x_i$$.
+At that time, $$\mu_{n+1} = \frac{sum_{n+1}}{n+1}$$ will be wrong,
+where $$\mu_i$$ is the average of $$x_1, x_2, \cdots, x_i$$,
+since $$sum_{n+1}$$ is an overflowed value.
 
 How could we solve the problem?
 
@@ -188,8 +188,8 @@ private:
 
 ## References
 
-[Bug 1423834][b1423834] is filed for this problem
-when I was tracing [MP3Demuxer][MP3Demuxer].
+[Bug 1423834][b1423834] has been filed for this problem
+when I found this code in [MP3Demuxer][MP3Demuxer].
 You could find more detail there.
 
 The following links are some related resources:

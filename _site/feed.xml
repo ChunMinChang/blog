@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-24T08:44:44+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I develop some tools to speed up the process for debugging malfunctions on audio.
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-24T08:55:34+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I develop some tools to speed up the process for debugging malfunctions on audio.
 A simple table shows the audio hardware information and configuration.
 A device selector let me easily switch the audio sources
 from different platforms/computers.&lt;/p&gt;
@@ -151,12 +151,12 @@ One simplest method to avoid the problem is &lt;em&gt;running average&lt;/em&gt;
 (or &lt;em&gt;moving average&lt;/em&gt;, &lt;em&gt;rolling average&lt;/em&gt;, &lt;em&gt;incremental mean&lt;/em&gt;).&lt;/p&gt;
 
 &lt;h2 id=&quot;problem&quot;&gt;Problem&lt;/h2&gt;
-&lt;p&gt;Suppose we have data &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_n&lt;/script&gt;
-and the new data &lt;script type=&quot;math/tex&quot;&gt;x_{n+1}&lt;/script&gt; will lead to overflow to &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt;,
+&lt;p&gt;Suppose we have data &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_n&lt;/script&gt;.
+The &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt; will overflow when the new data &lt;script type=&quot;math/tex&quot;&gt;x_{n+1}&lt;/script&gt; is counted,
 where &lt;script type=&quot;math/tex&quot;&gt;sum_i = x_1 + x_2 + \cdots + x_i&lt;/script&gt;.
-When &lt;script type=&quot;math/tex&quot;&gt;x_{n+1}&lt;/script&gt; comes, &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt; will overflow
-so &lt;script type=&quot;math/tex&quot;&gt;\mu_{n+1} = \frac{sum_{n+1}}{n+1}&lt;/script&gt; will be wrong,
-where &lt;script type=&quot;math/tex&quot;&gt;\mu_i&lt;/script&gt; is the average of &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_i&lt;/script&gt;.&lt;/p&gt;
+At that time, &lt;script type=&quot;math/tex&quot;&gt;\mu_{n+1} = \frac{sum_{n+1}}{n+1}&lt;/script&gt; will be wrong,
+where &lt;script type=&quot;math/tex&quot;&gt;\mu_i&lt;/script&gt; is the average of &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_i&lt;/script&gt;,
+since &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt; is an overflowed value.&lt;/p&gt;
 
 &lt;p&gt;How could we solve the problem?&lt;/p&gt;
 
@@ -317,8 +317,8 @@ we can get &lt;script type=&quot;math/tex&quot;&gt;\mu_n&lt;/script&gt; by &lt;s
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1423834&quot; title=&quot;Bug 1423834 - Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;Bug 1423834&lt;/a&gt; is filed for this problem
-when I was tracing &lt;a href=&quot;https://searchfox.org/mozilla-central/rev/f5f1c3f294f89cfd242c3af9eb2c40d19d5e04e7/dom/media/mp3/MP3Demuxer.cpp#709-715,720,728,756-760&quot; title=&quot;Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;MP3Demuxer&lt;/a&gt;.
+&lt;p&gt;&lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1423834&quot; title=&quot;Bug 1423834 - Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;Bug 1423834&lt;/a&gt; has been filed for this problem
+when I found this code in &lt;a href=&quot;https://searchfox.org/mozilla-central/rev/f5f1c3f294f89cfd242c3af9eb2c40d19d5e04e7/dom/media/mp3/MP3Demuxer.cpp#709-715,720,728,756-760&quot; title=&quot;Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;MP3Demuxer&lt;/a&gt;.
 You could find more detail there.&lt;/p&gt;
 
 &lt;p&gt;The following links are some related resources:&lt;/p&gt;
@@ -332,12 +332,12 @@ One simplest method to avoid the problem is running average
 (or moving average, rolling average, incremental mean).
 
 Problem
-Suppose we have data 
-and the new data  will lead to overflow to ,
+Suppose we have data .
+The  will overflow when the new data  is counted,
 where .
-When  comes,  will overflow
-so  will be wrong,
-where  is the average of .
+At that time,  will be wrong,
+where  is the average of ,
+since  is an overflowed value.
 
 How could we solve the problem?
 
@@ -467,8 +467,8 @@ private:
 
 References
 
-Bug 1423834 is filed for this problem
-when I was tracing MP3Demuxer.
+Bug 1423834 has been filed for this problem
+when I found this code in MP3Demuxer.
 You could find more detail there.
 
 The following links are some related resources:

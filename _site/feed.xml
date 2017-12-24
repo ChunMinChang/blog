@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-23T18:41:03+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I develop some tools to speed up the process for debugging malfunctions on audio.
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-24T08:44:44+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I develop some tools to speed up the process for debugging malfunctions on audio.
 A simple table shows the audio hardware information and configuration.
 A device selector let me easily switch the audio sources
 from different platforms/computers.&lt;/p&gt;
@@ -477,7 +477,7 @@ The following links are some related resources:
   Incremental averageing
   Prevent long running averaging from overflow?</summary></entry><entry><title type="html">Estimation of MP3 Duration</title><link href="http://localhost:4000/post/estimation-of-mp3-duration" rel="alternate" type="text/html" title="Estimation of MP3 Duration" /><published>2017-12-19T00:00:00+08:00</published><updated>2017-12-19T00:00:00+08:00</updated><id>http://localhost:4000/post/estimation-of-mp3-duration</id><content type="html" xml:base="http://localhost:4000/post/estimation-of-mp3-duration">&lt;p&gt;To calculate the duration of one &lt;em&gt;MP3&lt;/em&gt; file,
 we need to know how it is encoded first.
-The estimation for the durtation is different
+The estimation of durtation is different
 based on how they are encoded.&lt;/p&gt;
 
 &lt;h2 id=&quot;cbrconstant-bitrate-vs-vbrvariable-bitrate-encoding&quot;&gt;CBR(Constant Bitrate) vs VBR(Variable Bitrate) Encoding&lt;/h2&gt;
@@ -490,15 +490,14 @@ while the &lt;em&gt;CBR&lt;/em&gt; file uses same bitrate regardless of what sou
 
 &lt;h2 id=&quot;how-to-know-whether-the-file-is-cbr-or-vbr&quot;&gt;How to know whether the file is CBR or VBR&lt;/h2&gt;
 
-&lt;p&gt;There are two types for the &lt;em&gt;MP3&lt;/em&gt; header, &lt;strong&gt;Xing&lt;/strong&gt; and &lt;strong&gt;VBRI&lt;/strong&gt;.
+&lt;p&gt;&lt;em&gt;MP3&lt;/em&gt; header has two types: &lt;strong&gt;Xing&lt;/strong&gt; and &lt;strong&gt;VBRI&lt;/strong&gt;.
 The &lt;em&gt;ID&lt;/em&gt; of the &lt;em&gt;Xing&lt;/em&gt; header is either &lt;strong&gt;Xing&lt;/strong&gt; or &lt;strong&gt;Info&lt;/strong&gt;;
-The &lt;em&gt;ID&lt;/em&gt; of &lt;em&gt;VBRI&lt;/em&gt; header is &lt;strong&gt;VBRI&lt;/strong&gt;.&lt;/p&gt;
+The &lt;em&gt;ID&lt;/em&gt; labelled to &lt;strong&gt;VBRI&lt;/strong&gt; is &lt;em&gt;VBRI&lt;/em&gt; header.&lt;/p&gt;
 
-&lt;p&gt;If the &lt;em&gt;ID&lt;/em&gt; of &lt;em&gt;Xing&lt;/em&gt; header is &lt;strong&gt;Info&lt;/strong&gt;,
-then it is definitely encoded with &lt;em&gt;CBR&lt;/em&gt;.
-Nevertheless, &lt;em&gt;CBR&lt;/em&gt; is a special case of &lt;em&gt;VBR&lt;/em&gt;
-and therefore labelling &lt;em&gt;Xing&lt;/em&gt; as the header ID of a &lt;em&gt;CBR&lt;/em&gt; file
-is logically acceptable.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;ID&lt;/em&gt; of &lt;em&gt;Xing&lt;/em&gt; header marked with &lt;strong&gt;Info&lt;/strong&gt;
+is definitely encoded with &lt;em&gt;CBR&lt;/em&gt;.
+Nonetheless, assigning &lt;em&gt;Xing&lt;/em&gt; as the header ID of a &lt;em&gt;CBR&lt;/em&gt; file
+is logically acceptable because &lt;em&gt;CBR&lt;/em&gt; is a special case of &lt;em&gt;VBR&lt;/em&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;how-to-estimate-the-duration&quot;&gt;How to estimate the duration&lt;/h2&gt;
 
@@ -519,7 +518,7 @@ so the &lt;em&gt;bit size&lt;/em&gt; of the file is &lt;code class=&quot;highlig
 
 &lt;p&gt;The duration is &lt;strong&gt;not accurate&lt;/strong&gt; when the &lt;em&gt;total frames&lt;/em&gt; above
 is an &lt;strong&gt;estimated&lt;/strong&gt; value.
-If the total frames isn’t predefined, then we need to estimate it by:&lt;/p&gt;
+If the total frames isn’t predefined, then it could be estimated by:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\text{Estimated Total Frames} = \frac{ \text{File Size} }{ \text{Average Frame Size} }&lt;/script&gt;
 
@@ -532,20 +531,20 @@ Before addressing the question, we should ask
 what type of media will have an unknown file size.
 The answer is &lt;strong&gt;live stream&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;No one knows when the live stream will be closed. It could be anytime.
-Hence we don’t need to calculate the duration beforehand in this case.
+&lt;p&gt;The live stream can be closed anytime,
+hence we don’t need to calculate the duration beforehand.
 We just need to make sure the position of the playback
 stays at the end of the media track and the end-time keeps increasing.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;../images/posts/live-stream-playback.png&quot; alt=&quot;&quot; title=&quot;live stream playback&quot; /&gt;
 (The position stays at the end of the media track during streaming.)&lt;/p&gt;
 
-&lt;p&gt;However, for those live stream with &lt;strong&gt;opening remark&lt;/strong&gt;,
-we still need to estimate how long the opening talk will be
-and show the playback UI as it’s a non-live stream
-before it finish introducing and start streaming.
-After finishing the opening talk,
-the UI should behave as the same as it’s a live stream.&lt;/p&gt;
+&lt;p&gt;However, for those live streams with &lt;strong&gt;opening remark&lt;/strong&gt;,
+we still need to estimate how long the opening talks will be
+and show the playback UI as they are non-live streams
+before they finish introducing and start streaming.
+After finishing the opening talks,
+the UI should behave as the same as they are live streams.&lt;/p&gt;
 
 &lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/f53NjLQTafQ&quot; frameborder=&quot;0&quot; gesture=&quot;media&quot; allow=&quot;encrypted-media&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
 
@@ -556,7 +555,7 @@ or go to &lt;a href=&quot;https://www.shoutcast.com/&quot;&gt;shoutcast&lt;/a&gt
 (&lt;a href=&quot;https://searchfox.org/mozilla-central/rev/f6f1731b1b7fec332f86b55fa40e2c9ae67ac39b/dom/media/mp3/MP3FrameParser.cpp#452,475-479&quot;&gt;example&lt;/a&gt;)
 to calculate the duration of the opening introduction(&lt;a href=&quot;https://searchfox.org/mozilla-central/rev/22c55eb7b7e6494a8615a7af3b613ff899d2cdba/dom/media/mp3/MP3Demuxer.cpp#389-395&quot;&gt;example&lt;/a&gt;).
 (The &lt;em&gt;number of frames&lt;/em&gt; here is same as the &lt;em&gt;total frames&lt;/em&gt; mentioned
-in the duration estimation of &lt;em&gt;VBR MP3&lt;/em&gt;)&lt;/p&gt;
+in the estimation of &lt;em&gt;VBR MP3&lt;/em&gt;’s duration.)&lt;/p&gt;
 
 &lt;p&gt;To sum up this case, the ending time shown on playback at first
 should be the duration of the opening talk.
@@ -578,8 +577,7 @@ and the duration should keep increasing during streaming music.&lt;/p&gt;
 &lt;p&gt;These points are the summary of what I’ve learned from &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1419736&quot; title=&quot;Bug 1419736 - mp3 time length bug&quot;&gt;bug 1419736&lt;/a&gt;.
 You can see more detail there.
 It’s my first bug in demuxer field.
-I quickly write a note here in case I need to recall it someday
-and I believe it could benefit others.&lt;/p&gt;
+I quickly write a note here in case I need to recall it someday.&lt;/p&gt;
 
 &lt;p&gt;The following links are some useful resources I found when
 I tried to get into this field:&lt;/p&gt;
@@ -592,7 +590,7 @@ I tried to get into this field:&lt;/p&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.crifan.com/files/doc/docbook/mpeg_vbr/release/webhelp/ch04_xing_vbri.html&quot;&gt;MPEG簡介與如何計算CBR及VBR的播放時間&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Demuxer" /><category term="Firefox" /><summary type="html">To calculate the duration of one MP3 file,
 we need to know how it is encoded first.
-The estimation for the durtation is different
+The estimation of durtation is different
 based on how they are encoded.
 
 CBR(Constant Bitrate) vs VBR(Variable Bitrate) Encoding
@@ -605,15 +603,14 @@ while the CBR file uses same bitrate regardless of what sound wave is.
 
 How to know whether the file is CBR or VBR
 
-There are two types for the MP3 header, Xing and VBRI.
+MP3 header has two types: Xing and VBRI.
 The ID of the Xing header is either Xing or Info;
-The ID of VBRI header is VBRI.
+The ID labelled to VBRI is VBRI header.
 
-If the ID of Xing header is Info,
-then it is definitely encoded with CBR.
-Nevertheless, CBR is a special case of VBR
-and therefore labelling Xing as the header ID of a CBR file
-is logically acceptable.
+The ID of Xing header marked with Info
+is definitely encoded with CBR.
+Nonetheless, assigning Xing as the header ID of a CBR file
+is logically acceptable because CBR is a special case of VBR.
 
 How to estimate the duration
 
@@ -634,7 +631,7 @@ The calculation for VBR MP3 is a little complicated:
 
 The duration is not accurate when the total frames above
 is an estimated value.
-If the total frames isn’t predefined, then we need to estimate it by:
+If the total frames isn’t predefined, then it could be estimated by:
 
 
 
@@ -647,20 +644,20 @@ Before addressing the question, we should ask
 what type of media will have an unknown file size.
 The answer is live stream.
 
-No one knows when the live stream will be closed. It could be anytime.
-Hence we don’t need to calculate the duration beforehand in this case.
+The live stream can be closed anytime,
+hence we don’t need to calculate the duration beforehand.
 We just need to make sure the position of the playback
 stays at the end of the media track and the end-time keeps increasing.
 
 
 (The position stays at the end of the media track during streaming.)
 
-However, for those live stream with opening remark,
-we still need to estimate how long the opening talk will be
-and show the playback UI as it’s a non-live stream
-before it finish introducing and start streaming.
-After finishing the opening talk,
-the UI should behave as the same as it’s a live stream.
+However, for those live streams with opening remark,
+we still need to estimate how long the opening talks will be
+and show the playback UI as they are non-live streams
+before they finish introducing and start streaming.
+After finishing the opening talks,
+the UI should behave as the same as they are live streams.
 
 
 
@@ -671,7 +668,7 @@ As file size is unknown, we should use number of frames
 (example)
 to calculate the duration of the opening introduction(example).
 (The number of frames here is same as the total frames mentioned
-in the duration estimation of VBR MP3)
+in the estimation of VBR MP3’s duration.)
 
 To sum up this case, the ending time shown on playback at first
 should be the duration of the opening talk.
@@ -693,8 +690,7 @@ Useful References
 These points are the summary of what I’ve learned from bug 1419736.
 You can see more detail there.
 It’s my first bug in demuxer field.
-I quickly write a note here in case I need to recall it someday
-and I believe it could benefit others.
+I quickly write a note here in case I need to recall it someday.
 
 The following links are some useful resources I found when
 I tried to get into this field:

@@ -9,7 +9,7 @@ comments: true
 
 To calculate the duration of one *MP3* file,
 we need to know how it is encoded first.
-The estimation for the durtation is different
+The estimation of durtation is different
 based on how they are encoded.
 
 ## CBR(Constant Bitrate) vs VBR(Variable Bitrate) Encoding
@@ -22,15 +22,14 @@ while the *CBR* file uses same bitrate regardless of what sound wave is.
 
 ## How to know whether the file is CBR or VBR
 
-There are two types for the *MP3* header, **Xing** and **VBRI**.
+*MP3* header has two types: **Xing** and **VBRI**.
 The *ID* of the *Xing* header is either **Xing** or **Info**;
-The *ID* of *VBRI* header is **VBRI**.
+The *ID* labelled to **VBRI** is *VBRI* header.
 
-If the *ID* of *Xing* header is **Info**,
-then it is definitely encoded with *CBR*.
-Nevertheless, *CBR* is a special case of *VBR*
-and therefore labelling *Xing* as the header ID of a *CBR* file
-is logically acceptable.
+The *ID* of *Xing* header marked with **Info**
+is definitely encoded with *CBR*.
+Nonetheless, assigning *Xing* as the header ID of a *CBR* file
+is logically acceptable because *CBR* is a special case of *VBR*.
 
 ## How to estimate the duration
 
@@ -55,7 +54,7 @@ $$
 
 The duration is **not accurate** when the *total frames* above
 is an **estimated** value.
-If the total frames isn't predefined, then we need to estimate it by:
+If the total frames isn't predefined, then it could be estimated by:
 
 $$
 \text{Estimated Total Frames} = \frac{ \text{File Size} }{ \text{Average Frame Size} }
@@ -70,20 +69,20 @@ Before addressing the question, we should ask
 what type of media will have an unknown file size.
 The answer is **live stream**.
 
-No one knows when the live stream will be closed. It could be anytime.
-Hence we don't need to calculate the duration beforehand in this case.
+The live stream can be closed anytime,
+hence we don't need to calculate the duration beforehand.
 We just need to make sure the position of the playback
 stays at the end of the media track and the end-time keeps increasing.
 
 ![][live-stream-playback]
 (The position stays at the end of the media track during streaming.)
 
-However, for those live stream with **opening remark**,
-we still need to estimate how long the opening talk will be
-and show the playback UI as it's a non-live stream
-before it finish introducing and start streaming.
-After finishing the opening talk,
-the UI should behave as the same as it's a live stream.
+However, for those live streams with **opening remark**,
+we still need to estimate how long the opening talks will be
+and show the playback UI as they are non-live streams
+before they finish introducing and start streaming.
+After finishing the opening talks,
+the UI should behave as the same as they are live streams.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/f53NjLQTafQ" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
 
@@ -95,7 +94,7 @@ As *file size* is unknown, we should use [*number of frames*](https://www.codepr
 ([example](https://searchfox.org/mozilla-central/rev/f6f1731b1b7fec332f86b55fa40e2c9ae67ac39b/dom/media/mp3/MP3FrameParser.cpp#452,475-479))
 to calculate the duration of the opening introduction([example](https://searchfox.org/mozilla-central/rev/22c55eb7b7e6494a8615a7af3b613ff899d2cdba/dom/media/mp3/MP3Demuxer.cpp#389-395)).
 (The *number of frames* here is same as the *total frames* mentioned
-in the duration estimation of *VBR MP3*)
+in the estimation of *VBR MP3*'s duration.)
 
 To sum up this case, the ending time shown on playback at first
 should be the duration of the opening talk.
@@ -115,8 +114,7 @@ Usually, the *file size* of a live stream will be set to ```-1```.
 These points are the summary of what I've learned from [bug 1419736][b1419736].
 You can see more detail there.
 It's my first bug in demuxer field.
-I quickly write a note here in case I need to recall it someday
-and I believe it could benefit others.
+I quickly write a note here in case I need to recall it someday.
 
 The following links are some useful resources I found when
 I tried to get into this field:

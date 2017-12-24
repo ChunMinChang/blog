@@ -6,7 +6,7 @@ tags: [Firefox, Hardware]
 mathjax: true
 comments: true
 ---
-I develop some tools to speed up the process for debugging malfunctions on audio.
+I developed some tools to speed up the process for debugging malfunctions on audio.
 A simple table shows the audio hardware information and configuration.
 A device selector let me easily switch the audio sources
 from different platforms/computers.
@@ -44,7 +44,7 @@ I will try to arrange my time to finish them.
 I need to frequently switch between computers with different OS
 to check the audio works on different platforms.
 It's annoying to unconnect the speaker from one computer
-and then connet it to another computer again and again.
+and then connect it to another computer again and again.
 Therefore, I made a device selector that can switch the audio sources
 of the speaker by simply flipping the controller.
 
@@ -65,13 +65,14 @@ and select what speaker you want to play.
 
 ## Future Plan
 
-There are several tasks I believe it could ease my life as a developer:
+There are several ideas I believe it could ease my life as a developer:
 - Virtual Audio Device
   - Something like [Soundflower][soundflower] but it's cross-platform
-  and provides APIs to install/uninstall devices dynamically.
-- Powerful Command Sets(cross-platform)
-  - To disable/enable audio devices.
-  - Audio sample generator(by FFmpeg?)
+  and provides APIs to install/uninstall devices
+  or access the buffer data for analysis.
+- Cross-platform Commands Warpper providing functions like
+  - Disable/Enable audio devices.
+  - Generate audio samples(by FFmpeg?)
 
 [aboutsupport]: ../images/posts/media-on-Firefox-aboutsupport.png "Troubleshooting Information"
 [deviceselector]: ../images/posts/device-selector.png "Device selector"

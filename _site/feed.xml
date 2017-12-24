@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-24T08:55:34+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I develop some tools to speed up the process for debugging malfunctions on audio.
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-24T09:03:04+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I developed some tools to speed up the process for debugging malfunctions on audio.
 A simple table shows the audio hardware information and configuration.
 A device selector let me easily switch the audio sources
 from different platforms/computers.&lt;/p&gt;
@@ -38,7 +38,7 @@ I will try to arrange my time to finish them.&lt;/p&gt;
 &lt;p&gt;I need to frequently switch between computers with different OS
 to check the audio works on different platforms.
 It’s annoying to unconnect the speaker from one computer
-and then connet it to another computer again and again.
+and then connect it to another computer again and again.
 Therefore, I made a device selector that can switch the audio sources
 of the speaker by simply flipping the controller.&lt;/p&gt;
 
@@ -59,21 +59,22 @@ and select what speaker you want to play.&lt;/p&gt;
 
 &lt;h2 id=&quot;future-plan&quot;&gt;Future Plan&lt;/h2&gt;
 
-&lt;p&gt;There are several tasks I believe it could ease my life as a developer:&lt;/p&gt;
+&lt;p&gt;There are several ideas I believe it could ease my life as a developer:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Virtual Audio Device
     &lt;ul&gt;
       &lt;li&gt;Something like &lt;a href=&quot;https://github.com/akhudek/Soundflower&quot; title=&quot;Soundflower&quot;&gt;Soundflower&lt;/a&gt; but it’s cross-platform
-and provides APIs to install/uninstall devices dynamically.&lt;/li&gt;
+and provides APIs to install/uninstall devices
+or access the buffer data for analysis.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Powerful Command Sets(cross-platform)
+  &lt;li&gt;Cross-platform Commands Warpper providing functions like
     &lt;ul&gt;
-      &lt;li&gt;To disable/enable audio devices.&lt;/li&gt;
-      &lt;li&gt;Audio sample generator(by FFmpeg?)&lt;/li&gt;
+      &lt;li&gt;Disable/Enable audio devices.&lt;/li&gt;
+      &lt;li&gt;Generate audio samples(by FFmpeg?)&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><category term="Hardware" /><summary type="html">I develop some tools to speed up the process for debugging malfunctions on audio.
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><category term="Hardware" /><summary type="html">I developed some tools to speed up the process for debugging malfunctions on audio.
 A simple table shows the audio hardware information and configuration.
 A device selector let me easily switch the audio sources
 from different platforms/computers.
@@ -113,7 +114,7 @@ Audio Device Selector
 I need to frequently switch between computers with different OS
 to check the audio works on different platforms.
 It’s annoying to unconnect the speaker from one computer
-and then connet it to another computer again and again.
+and then connect it to another computer again and again.
 Therefore, I made a device selector that can switch the audio sources
 of the speaker by simply flipping the controller.
 
@@ -134,18 +135,19 @@ and select what speaker you want to play.
 
 Future Plan
 
-There are several tasks I believe it could ease my life as a developer:
+There are several ideas I believe it could ease my life as a developer:
 
   Virtual Audio Device
     
       Something like Soundflower but it’s cross-platform
-and provides APIs to install/uninstall devices dynamically.
+and provides APIs to install/uninstall devices
+or access the buffer data for analysis.
     
   
-  Powerful Command Sets(cross-platform)
+  Cross-platform Commands Warpper providing functions like
     
-      To disable/enable audio devices.
-      Audio sample generator(by FFmpeg?)</summary></entry><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
+      Disable/Enable audio devices.
+      Generate audio samples(by FFmpeg?)</summary></entry><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
 while calculating the average of a long series of data.
 One simplest method to avoid the problem is &lt;em&gt;running average&lt;/em&gt;
 (or &lt;em&gt;moving average&lt;/em&gt;, &lt;em&gt;rolling average&lt;/em&gt;, &lt;em&gt;incremental mean&lt;/em&gt;).&lt;/p&gt;

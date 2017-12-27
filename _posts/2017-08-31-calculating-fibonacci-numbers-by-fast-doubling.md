@@ -32,7 +32,7 @@ then try converting it into iterative versions.
 Given a $$n$$, we could calculate _Fibonacci_ numbers $$F_n$$ by:
 
 ```cpp
-if (n % 2) { // n is odd: F(n) = F(((n-1)/2) + 1)^2 + F((n-1) / 2)^2
+if (n % 2) { // n is odd: F(n) = F(((n-1) / 2) + 1)^2 + F((n-1) / 2)^2
   unsigned int k = (n - 1) / 2;
   return fib(k) * fib(k) + fib(k + 1) * fib(k + 1);
 } else { // n is even: F(n) = F(n/2) * [ 2 * F(n/2 + 1) - F(n/2) ]
@@ -50,7 +50,7 @@ if (n == 0) {
 } else if (n <= 2) {
   return 1; // F(1) = F(2) = 0.
 } else {
-  // Keep call itself recursively to get the answer.
+  // Keep calling itself recursively to get the answer.
   // Put the main body here.
 }
 ```
@@ -107,21 +107,21 @@ Thus, we can rewrite the code into:
 ```cpp
 uint64_t fib(unsigned int n)
 {
-  if (n == 0) {
-    return 0; // F(0) = 0.
-  } else if (n <= 2) {
-    return 1; // F(1) = F(2) = 1.
+  // When n = 2: k = 1 and we want to use F(k+1) to calculate F(2k),
+  // However, F(2k) = F(k+1) = F(2) is unknown then.
+  if (n <= 2) {
+    return n ? 1 : 0; // F(0) = 0, F(1) = F(2) = 1.
   }
 
   unsigned int k = n / 2; // k = n/2 if n is even. k = (n-1)/2 if n is odd.
-  uint64_t a = fib(k);
-  uint64_t b = fib(k + 1);
+  uint64_t a = fib1(k);
+  uint64_t b = fib1(k + 1);
 
   if (n % 2) { // By F(n) = F(2k+1) = F(k+1)^2 + F(k)^2
     return a * a + b * b;
-  } else { // By F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
-    return a * (2 * b - a);
   }
+  // By F(n) = F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
+  return a * (2 * b - a);
 }
 ```
 

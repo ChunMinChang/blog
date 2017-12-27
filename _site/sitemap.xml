@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://localhost:4000/post/poor-students-are-missing-at-top-universities</loc>
+<lastmod>2017-12-27T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/post/audio-debugging-kit</loc>
 <lastmod>2017-12-23T00:00:00+08:00</lastmod>
 </url>
@@ -142,6 +146,9 @@
 <loc>http://localhost:4000/archive/tag/hardware/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/archive/tag/%25E6%2595%2599%25E8%2582%25B2/</loc>
+</url>
+<url>
 <loc>http://localhost:4000/archive/category/algorithm/</loc>
 </url>
 <url>
@@ -160,6 +167,9 @@
 <loc>http://localhost:4000/archive/category/math/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/archive/category/%25E7%25A4%25BE%25E6%259C%2583%25E8%25AD%25B0%25E9%25A1%258C/</loc>
+</url>
+<url>
 <loc>http://localhost:4000/blog/2/</loc>
 </url>
 <url>
@@ -167,6 +177,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/blog/4/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/blog/5/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/404</loc>

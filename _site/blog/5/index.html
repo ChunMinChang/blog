@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-    
+
 <head>
     <meta charset="utf-8">
 
 
-<meta name="keywords" content="">
+<meta name="keywords" content="tags">
 
 
 <!-- Begin Jekyll SEO tag v1.3.3 -->
-<title>Featured Posts - Peak Up</title>
-<meta property="og:title" content="Featured Posts" />
-<meta name="description" content="An archive of posts sorted by date." />
-<meta property="og:description" content="An archive of posts sorted by date." />
-<link rel="canonical" href="http://localhost:4000/featured/" />
-<meta property="og:url" content="http://localhost:4000/featured/" />
+<title>Latest Posts - Peak Up</title>
+<meta property="og:title" content="Latest Posts" />
+<meta name="description" content="Your personal blog." />
+<meta property="og:description" content="Your personal blog." />
+<link rel="canonical" href="http://localhost:4000/blog/5/" />
+<meta property="og:url" content="http://localhost:4000/blog/5/" />
 <meta property="og:site_name" content="Peak Up" />
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "WebPage",
-    "headline": "Featured Posts",
-    "description": "An archive of posts sorted by date.",
+    "headline": "Latest Posts",
+    "description": "Your personal blog.",
     "logo": "http://localhost:4000mountain.png",
-    "url": "http://localhost:4000/featured/"
+    "url": "http://localhost:4000/blog/5/"
   }
 </script>
 <!-- End Jekyll SEO tag -->
@@ -63,7 +63,7 @@
 </head>
 
 <body class="home-template" itemscope itemtype="http://schema.org/WebPage">
-    
+
 <div class="search-wrapper">
     <div class="search-form">
         <input type="text" id="search-input" class="search-field" placeholder="Search...">
@@ -77,130 +77,180 @@
 </div>
 <!-- ./search-wrapper -->
 
+    <div id="fade"></div>
+    <a id="slide" class="animated fade">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </a>
+    <aside id="sidebar">
+        <nav id="navigation">
+            <h2>MENU</h2> <hr>
+            <ul>
 
-<div id="fade"></div>
-<a id="slide" class="animated fade">
-    <i class="fa fa-bars" aria-hidden="true"></i>
-</a>
-<aside id="sidebar">
-    <nav id="navigation">
-        <h2>MENU</h2>
-        <hr>
-        <ul> 
-            <li>
-                <a href="http://localhost:4000/"><!-- <i class="fa fa-home"></i>&nbsp;-->Home</a>  </li>
-            
-            <li>
-                <a href="http://localhost:4000/categories"><!-- <i class="fa fa-sitemap"></i>&nbsp;-->Categories</a>  </li>
-            
-            <li>
-                <a href="http://localhost:4000/tags"><!-- <i class="fa fa-tags"></i>&nbsp;-->Tags</a>  </li>
-            
-            <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
-        </ul>
-    </nav>
-</aside>
+                <li>
+                
+                    <a href="http://localhost:4000/"><!--<i class="fa fa-home"></i>&nbsp;-->Home</a>
+                
+                </li>
 
+                <li>
+                
+                    <a href="http://localhost:4000/categories"><!--<i class="fa fa-sitemap"></i>&nbsp;-->Categories</a>
+                
+                </li>
 
-<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom" style="background-image: url(http://localhost:4000/images/background/yosemite/yosemite-tiny.jpg)"
-    itemscope itemtype="http://schema.org/Organization">
+                <li>
+                
+                    <a href="http://localhost:4000/tags"><!--<i class="fa fa-tags"></i>&nbsp;-->Tags</a>
+                
+                </li>
 
-
-
-    <button class="menu-button animated fade dosearch">
-        <i class="fa fa-search"></i>
-    </button>
+                <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+            </ul>
+        </nav>
+    </aside>
 
 
+    <header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom"  style="background-image: url(http://localhost:4000/images/background/yosemite/yosemite-tiny.jpg)" itemscope itemtype="http://schema.org/Organization">
 
-    <div class="inner">
-        <div class="container">
-            <a class="brand" href="http://localhost:4000/" itemprop="url">
-                <img itemprop="logo" src="http://localhost:4000/images/mountain.png" alt="Peak Up Logo" />
-                <h1 class="blog-title light" itemprop="name">
-                    Peak Up
-                </h1>
-            </a>
+
+
+        <button class="menu-button animated fade dosearch">
+            <i class="fa fa-search"></i>
+        </button>
+
+
+
+        <div class="inner">
+            <div class="container">
+                <a class="brand light" href="http://localhost:4000" itemprop="url">
+                     <img itemprop="logo" src="http://localhost:4000/images/mountain.png" alt="Peak Up Logo" /> 
+                    <h1 class="blog-title light" itemprop="name">
+                        Peak Up
+                    </h1>
+                </a>
+                <h2 class="blog-description light bordered bordered-top" itemprop="description">
+                    everyday surpass myself
+                </h2>
+            </div>
         </div>
-    </div>
 
 
 
-    <div class="decor-wrapper">
-        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <!-- <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
-            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
-            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
-            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
-            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
-            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path> -->
-            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
-            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
-        </svg>
-    </div>
+        <div class="decor-wrapper">
+            <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <!-- <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+                <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+                <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+                <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+                <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path> -->
+                <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+                <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+            </svg>
+        </div>
 
-</header>
+    </header>
 
     <div id="main" class="content" role="main" itemprop="mainContentOfPage">
         <div class="container">
             <div class="row">
-                <div class="page-body col-md-10 col-md-offset-1" itemprop="description">
-                    <ul class="post-list">
+                <div class="page-body" itemprop="description">
+                
+	
+		
+
+		
+		
+
+		
+
+		
+
+	    
+
+		
 
 
-  
+		
+<div class="row">
+	<article class="post post col-md-8 col-md-offset-2">
+		<header class="post-header">
+		
 
-  
+		
+				<h2 class="post-title text-center super lighter bordered-bottom">
+					<a href="http://localhost:4000/post/selection-sort">Selection Sort</a>
+		
+			</h2>
 
-  
+			<div class="post-info text-center small">
+				<time datetime="2016-12-29T00:00:00+08:00" class="post-time">29 Dec 2016</time>
 
-  
+			
 
-  
+			in <span class="post-tags">
 
-  
+			
+				<a href="http://localhost:4000/categories/index.html#Algorithm" data-toggle="tooltip" title="Other posts from the Algorithm category" rel="tag">
+					Algorithm
+				</a>
+			
+			
+			</span>
 
-  
+			
+			&nbsp;<span class="post-tags"><i class="fa fa-clock-o"></i>&nbsp;
+				
 
-  
+				
+					<span class="time">4.894444444444445</span> minutes read
+				
 
-  
+				
+				</span>
+			
+			</div>
+		</header>
 
-  
+		<div class="post-body bordered-bottom">
+			
 
-  
+		
+			
+				<p>Selection sort This post series is synchronized with my book CodePlay and this post could be read here. Idea The concept is quite straight. If we could get the minimal...&hellip;</p>
+    	
+		
+			<div class="text-center">
+			
+				<a href="http://localhost:4000/post/selection-sort" data-toggle="tooltip" title="Read more about Selection Sort" class="more-link btn btn-danger btn-large">
+					<i class="fa fa-link"></i> read more...
+				</a>
+			
+			</div>
+		</div>
+	</article>
+</div>
+		
+	
 
-  
+	
+<div class="row text-center text-caps">
+	<div class="col-md-8 col-md-offset-2">
+		<nav class="pagination" role="navigation">
+		
+			
+			<a class="newer-posts" href="http://localhost:4000/blog/4">&larr; Newer Posts</a>
+			
+		
+    	<span class="page-number">Page 5 of 5</span>
+		
+		</nav>
+    </div>
+</div>
+	
+	
 
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-</ul>
-
-                </div>    
+                </div>
             </div>
         </div>
     </div>
@@ -356,6 +406,6 @@ $("a#click-pages").click(function(){
 
  
 
-  
+
 </body>
 </html>

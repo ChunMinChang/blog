@@ -6,6 +6,8 @@ tags: [教育]
 comments: true
 ---
 雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
+雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母又高學歷)的差距。
+
 <!--read more-->
 
 [《咬一口馬克思的水煎包》]((http://www.books.com.tw/products/0010765505))的作者出生清寒家庭，
@@ -24,7 +26,7 @@ comments: true
 這串討論中，比較有趣的點是居然有人在戰科系：「自己要讀人社沒錢怪誰？」
 ......這位先生這位太太，你難道是知道她當初有什麼選擇嗎？
 如果她只有上一間清大人社，你覺得她要不要讀？
-說這話前要不要先問作者有沒有台大法律或台大電機可以選？
+說這話前要不要先問作者有沒有台大法律或台大電機還是有台大醫科可以選？
 很多回應和討論都立基在不知道哪裡來的假設上，
 假設這位出身窮苦的作者讀書的目的是要賺錢，如果人家不是這樣想的呢？
 18歲的孩子為了興趣選擇不賺錢的科系也不是不常見吧？(年輕人血氣方剛啊)
@@ -48,6 +50,8 @@ comments: true
 對基本生理需求無法被滿足的情況下，
 根本難以追求更高風險的事業(挖到鑽石吃爽爽)
 或更高層次的自我實現(鑽石名人堂)。
+現實中，一般家庭也常為了多賺點薪水(奶粉錢)，
+選擇前景較差的但目前薪水較好的工作，而不是高風險但有可能身價跳級的工作。
 
 對真的窮苦人家來說，教育算是某種高風險投資，
 因為家中不僅會缺二到四年的勞動力，還要多付二到四年的學費和生活費，
@@ -55,16 +59,27 @@ comments: true
 我身邊真的有同學的父母希望她趕快去賺錢拿錢回家別念書了，
 也有朋友書讀到一半因為家中負債休學去工作賺錢了。
 
-## 解決貧窮比較重要
+## 受高等教育的清寒學生可以脫貧嗎？
 
-很多討論聚焦在討論窮是誰的責任，窮是誰的錯。
-這些在我看來都不重要，真正重要的是要找到方法解決貧窮造成的問題，釐清貧窮的原因，阻止更多人陷入貧窮。
+這議題背後我最好奇的問題是「**清寒學生受高等教育後能否脫貧**」，
+但我無法查到這項數據，所以只好退而求其次查詢「教育是否能解決貧窮」，答案是不行。
+收入太少導致貧窮的原因不只和教育程度相關，
+有很多是因為身體殘疾、年齡太老(或太年輕)而無法找到適當的工作。
+這些族群不是依靠受教育就能解決的，所以單靠教育無法消滅貧窮。
+雖然這問題仍需要更多調查才知道，不過直覺上我覺得答案應該是可以，
+因為有數據顯示：[教育程度越高失業率越低且薪水越高](https://www.bls.gov/emp/ep_chart_001.htm)。
+
+## 解決問題比較重要
+
+板上很多討論聚焦在追究窮是誰的責任，窮是誰的錯(還有推文喊窮要怪自己爸爸)。
+這些在我看來都不重要，因為這都不能改變什麼，
+真正重要的是要找到方法解決貧窮造成的問題，釐清貧窮的原因，阻止更多人陷入貧窮。
 站在國家財政的角度，這是絕對是個划算的考量。
 [消滅貧窮說到底是一項投資](https://www.youtube.com/watch?v=aIL_Y9g7Tg0)，
 因為貧窮造成的社會問題往往耗費更多社會資源。
 
-大家都在這片土地上努力著，某種程度也算同舟共濟了。
-出問題時與其歸咎是誰的錯，不如幫忙解決吧。
+大家都在這片土地上努力著，也算同舟共濟了。
+出問題時與其歸咎是誰的錯，不如尋找解決辦法吧。
 
 - [[新聞] 「台大真不是窮人可以來讀的學校！」](https://disp.cc/b/163-anFU)
   - [JIMJIM > Re: [新聞] 「台大真不是窮人可以來讀的學校！」](https://disp.cc/b/163-anLD)
@@ -78,3 +93,10 @@ comments: true
 - [頂尖國立大學「弱勢生」僅0.4％](https://www.ettoday.net/news/20131118/297374.htm)
 - [念不起台清交！高等教育成弱勢生得不到的「奢侈品」](https://www.thenewslens.com/article/16598)
 - [發錢給窮人，會讓他們墮落嗎？這位學者在 TED 上用一個實驗翻轉「貧窮」定義](https://buzzorange.com/2017/07/25/why-the-poor-is-poor/)
+- [Is Education really the way of the poor to escape poverty?](https://www.researchgate.net/post/Is_Education_really_the_way_of_the_poor_to_escape_poverty)
+- [11 Facts About Education and Poverty in America](https://www.dosomething.org/us/facts/11-facts-about-education-and-poverty-america)
+- [Education: Key to Breaking Cycle of Poverty](https://www.huffingtonpost.com/gloria-bonilla-santiago/education-key-to-breaking_b_14369716.html)
+- [How Education Prevents Poverty](https://borgenproject.org/education-prevents-poverty/)
+- [Is Education the Cure for Poverty?](http://prospect.org/article/education-cure-poverty)
+- [Why Education Does Not Fix Poverty](http://www.demos.org/blog/12/2/15/why-education-does-not-fix-poverty)
+- [Why Education Reform is Probably Not The Best Way to Fight Poverty](http://paul-bruno.com/2014/04/why-education-reform-is-probably-not-the-best-way-to-fight-poverty/)

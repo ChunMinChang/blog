@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-31T15:14:55+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">A Room without Windows</title><link href="http://localhost:4000/post/a-room-without-windows" rel="alternate" type="text/html" title="A Room without Windows" /><published>2017-12-30T00:00:00+08:00</published><updated>2017-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/a-room-without-windows</id><content type="html" xml:base="http://localhost:4000/post/a-room-without-windows">&lt;h1 id=&quot;無窗的房間&quot;&gt;無窗的房間&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-31T15:52:50+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>everyday surpass myself</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">A Room without Windows</title><link href="http://localhost:4000/post/a-room-without-windows" rel="alternate" type="text/html" title="A Room without Windows" /><published>2017-12-30T00:00:00+08:00</published><updated>2017-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/a-room-without-windows</id><content type="html" xml:base="http://localhost:4000/post/a-room-without-windows">&lt;h1 id=&quot;無窗的房間&quot;&gt;無窗的房間&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.indievox.com/disc/14070&quot;&gt;〈無窗的房間〉&lt;/a&gt;在冬至那天的耳機裡迴盪，
 而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。
@@ -212,7 +212,8 @@
 
 〈無窗的房間〉在冬至那天的耳機裡迴盪，
 而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。
-剛出社會的那一年，大概是我目前人生體悟最多的一年。</summary></entry><entry><title type="html">Poor Students Are Missing at Top Universities</title><link href="http://localhost:4000/post/poor-students-are-missing-at-top-universities" rel="alternate" type="text/html" title="Poor Students Are Missing at Top Universities" /><published>2017-12-27T00:00:00+08:00</published><updated>2017-12-27T00:00:00+08:00</updated><id>http://localhost:4000/post/poor-students-are-missing-at-top-universities</id><content type="html" xml:base="http://localhost:4000/post/poor-students-are-missing-at-top-universities">&lt;p&gt;雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
+剛出社會的那一年，大概是我目前人生體悟最多的一年。</summary></entry><entry><title type="html">Poor Students Are Missing at Top Universities</title><link href="http://localhost:4000/post/poor-students-are-missing-at-top-universities" rel="alternate" type="text/html" title="Poor Students Are Missing at Top Universities" /><published>2017-12-27T00:00:00+08:00</published><updated>2017-12-27T00:00:00+08:00</updated><id>http://localhost:4000/post/poor-students-are-missing-at-top-universities</id><content type="html" xml:base="http://localhost:4000/post/poor-students-are-missing-at-top-universities">&lt;h1 id=&quot;台大真不是窮人可以來讀的學校&quot;&gt;台大真不是窮人可以來讀的學校?&lt;/h1&gt;
+&lt;p&gt;雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
 雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母又高學歷)的差距。&lt;/p&gt;
 
 &lt;!--read more--&gt;
@@ -266,19 +267,38 @@
 我身邊真的有同學的父母希望她趕快去賺錢拿錢回家別念書了，
 也有朋友書讀到一半因為家中負債休學去工作賺錢了。&lt;/p&gt;
 
+&lt;h2 id=&quot;以馬斯洛金字塔來解釋&quot;&gt;以馬斯洛金字塔來解釋&lt;/h2&gt;
+
+&lt;p&gt;若假設「提高考試成績」是一種追求「自我實現」的具體表現的話，
+就能以&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E9%9C%80%E6%B1%82%E5%B1%82%E6%AC%A1%E7%90%86%E8%AE%BA&quot;&gt;馬斯洛金字塔&lt;/a&gt;的角度來解釋「台大(或其他頂尖大學)學生中清寒家庭比例很低」這件事。&lt;/p&gt;
+
+&lt;p&gt;人類在追求「自我實現」之前，應該會需要先滿足「生理、安全、社交、尊重」的需求。
+但窮苦人家的時間連花在養活家庭都不夠用了，根本沒有其他時間來好好經營一個家庭。
+沒有穩定的收入，就代表不能提供基本的「生理、安全」需求。
+沒有時間照顧、關心孩童的身心發展，就不能滿足孩子需要的「社交」需求。
+沒有多餘心力去發掘和了解孩子的天份，也導致相對比較少有機會去肯定孩子的成就，
+使孩子沒有感受到「尊重」。
+在這些需求都沒有滿足的情況下，要孩子去追求「自我實現」是很困難的，
+除非是這孩子天生比較會考試，或這孩子天性樂觀。
+所以成長在家庭情況穩定良好(有錢人家或收入穩定的軍公教家庭)，
+有父母關心的孩子比較有機會可以向上發展，
+追求卓越。&lt;/p&gt;
+
 &lt;h2 id=&quot;受高等教育的清寒學生可以脫貧嗎&quot;&gt;受高等教育的清寒學生可以脫貧嗎？&lt;/h2&gt;
 
-&lt;p&gt;這議題背後我最好奇的問題是「&lt;strong&gt;清寒學生受高等教育後能否脫貧&lt;/strong&gt;」，
+&lt;p&gt;這議題背後我最好奇的問題是「&lt;strong&gt;清寒學生受頂大高等教育後能否脫貧&lt;/strong&gt;」，
 但我無法查到這項數據，所以只好退而求其次查詢「教育是否能解決貧窮」，答案是不行。
 收入太少導致貧窮的原因不只和教育程度相關，
 有很多是因為身體殘疾、年齡太老(或太年輕)而無法找到適當的工作。
-這些族群不是依靠受教育就能解決的，所以單靠教育無法消滅貧窮。
-雖然這問題仍需要更多調查才知道，不過直覺上我覺得答案應該是可以，
+這些族群不是依靠受教育就能解決的，所以單靠教育無法解決全部的貧窮問題。&lt;/p&gt;
+
+&lt;p&gt;雖然這問題仍需要更多調查和數據才能知道答案，
+不過直覺上我覺得那些受頂大高等教育的清寒學生應該是可以脫貧，
 因為有數據顯示：&lt;a href=&quot;https://www.bls.gov/emp/ep_chart_001.htm&quot;&gt;教育程度越高失業率越低且薪水越高&lt;/a&gt;。&lt;/p&gt;
 
-&lt;h2 id=&quot;解決問題比較重要&quot;&gt;解決問題比較重要&lt;/h2&gt;
+&lt;h2 id=&quot;解決貧窮問題比較重要&quot;&gt;解決貧窮問題比較重要&lt;/h2&gt;
 
-&lt;p&gt;板上很多討論聚焦在追究窮是誰的責任，窮是誰的錯(還有推文喊窮要怪自己爸爸)。
+&lt;p&gt;板上很多討論會追究窮是誰的責任，討論窮是誰的錯。
 這些在我看來都不重要，因為這都不能改變什麼，
 真正重要的是要找到方法解決貧窮造成的問題，釐清貧窮的原因，阻止更多人陷入貧窮。
 站在國家財政的角度，這是絕對是個划算的考量。
@@ -311,7 +331,8 @@
   &lt;li&gt;&lt;a href=&quot;http://prospect.org/article/education-cure-poverty&quot;&gt;Is Education the Cure for Poverty?&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.demos.org/blog/12/2/15/why-education-does-not-fix-poverty&quot;&gt;Why Education Does Not Fix Poverty&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://paul-bruno.com/2014/04/why-education-reform-is-probably-not-the-best-way-to-fight-poverty/&quot;&gt;Why Education Reform is Probably Not The Best Way to Fight Poverty&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="社會議題" /><category term="教育" /><summary type="html">雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="社會議題" /><category term="教育" /><summary type="html">台大真不是窮人可以來讀的學校?
+雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
 雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母又高學歷)的差距。</summary></entry><entry><title type="html">Audio Debugging Kit</title><link href="http://localhost:4000/post/audio-debugging-kit" rel="alternate" type="text/html" title="Audio Debugging Kit" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-kit</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-kit">&lt;p&gt;I developed some tools to speed up the process for debugging malfunctions on audio.
 A simple table shows the audio hardware information and configuration.
 A device selector let me easily switch the audio sources

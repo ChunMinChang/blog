@@ -29,7 +29,7 @@
   
     {
       "title"    : "Running Average",
-      "category" : "AlgorithmMath",
+      "category" : "CommonMath",
       "tags"     : "Firefox",
       "url"      : "/post/running-average",
       "date"     : "2017-12-21 00:00:00 +0800",

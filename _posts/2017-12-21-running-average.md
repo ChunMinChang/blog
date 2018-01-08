@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Running Average
-category: [Algorithm, Math]
+category: [Common, Math]
 tags: [Firefox]
 mathjax: true
 comments: true

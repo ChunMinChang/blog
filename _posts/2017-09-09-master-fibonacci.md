@@ -6,6 +6,10 @@ tags: [Fibonacci, Recursion, Dynamic Programming]
 mathjax: true
 comments: true
 ---
+You may know how to get n-th Fibonacci number,
+but do you know what the fastest way to calculate it is?
+<!--read more-->
+
 The _Fibonacci_ number is defined as:
 
 $$

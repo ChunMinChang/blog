@@ -30,4 +30,4 @@ to log my working notes.
 - Derive the time-complexity for different algorithms in _Fibonacci_ series
 - Explain how _weak ptr_ works and its use case
   - Implement ```WeakPtr``` and make it work with my ```RefPtr```
-  - Write sample code for why we need to use ```WeakPtr```
+  - Write sample code to explain why we need to use ```WeakPtr```

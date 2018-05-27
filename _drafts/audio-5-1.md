@@ -33,8 +33,8 @@ Do we have particular arrangement for these channels?
 
 ### Layouts
 
-| layout        | Channel Order |
-| ------------- | ------------- |
+| Layout        | C | h | a | n | n | e | l | s |
+| ------------- | ----------------------------- |
 | DUAL-MONO     | L | R |
 | DUAL-MONO-LFE | L | R | LFE |
 | MONO          | M |
@@ -54,32 +54,37 @@ Do we have particular arrangement for these channels?
 | 3F3R-LFE      | L | R | C | LFE | RC | LS | RS |
 | 3F4-LFE       | L | R | C | LFE | RLS | RRS | LS | RS |
 
+The sample code to set channel layout on OSX is [here][channel-layout].
+
 ## Mixing
 
 We already know that the audio layout can be configured into different type
-based on the number of channels.
-The question is, what should we do when the input layout from some audio source 
-doesn't match some user's output layout?
+based on the number of channels and their types.
+The question is, what should we do when the input layout from the audio source 
+doesn't match the user's output layout?
 
 If the two channel layouts are equal, 
-then they must have same numbers of channels and the same order of channels.
-(NOTICE: {L, R} and {M, LFE} have different channel numbers.)
-Conversely, if two audio settings have different numbers of channels, 
-or they have same numbers of channels but different orders(e.g., {L, R} and {R, L}),
+then they must have same numbers of channel type and same channel order.
+Conversely, if two audio settings have different numbers of channel type
+(e.g., {L, R} and {M, LFE}),
+or they have same numbers of channel type but different orders
+(e.g., {L, R} and {R, L}),
 then they must have different channel layouts.
 
 When the **input layout is different from the output layout**, 
 we need to convert the audio input data to fit the audio output's configuration.
 We call it **mixing**.
 
+The sample code to mix audio data on OSX is [here][mixing].
+
 ### Mixing matrix
 ![Mixing matrix][mixing-matrix]
 
-Although there are various definitions to convert the audio input data 
-into the different output data,
+Although there are various definitions to convert the audio data
+from input into output,
 they can be summarized into the following equations.
-We illustrate their relationships into the above figure.
-The value of $$m_{ij}$$ varies from definition to definition.
+The above figure illustrates their relationships,
+and the value of $$m_{ij}$$ varies from definition to definition.
 
 $$
 \begin{align}
@@ -127,7 +132,7 @@ RS_{out} &= m_{61} \cdot L_{in} +
 \end{align}
 $$
 
-To simplify it, we can rewite this into a matrix form:
+To simplify them, we can rewite these equations into a matrix form:
 
 $$
 \vec{Audio_{out}} =
@@ -160,7 +165,16 @@ $$
 =\vec{Matrix_{mixing}} \cdot \vec{Audio_{in}}
 $$
 
-### Downmix
+### Downmixing
+
+When **numbers of input channels > numbers of output channels**,
+we call it **downmixing**.
+(In this case, the input channel layout is definitiely
+different from the output one.)
+The most common case for downmixing is to
+downmix different audio layouts into *stereo*.
+The audio sources on the internet have various layouts
+while most users only have two speakers.
 
 ##### Downmix audio 5.1 to stereo(stereophonic sound)
 ![Downmix 5.1 to stereo][dowmix-5point1-to-stereo]
@@ -192,11 +206,71 @@ RS_{out} &= RS_{in}
 \end{align}
 $$
 
-### Upmix
+### Upmixing
+
+When **numbers of input channels < numbers of output channels**,
+we call it **upmixing**.
+(In this case, the input channel layout is definitiely
+different from the output one.)
+
+The most common case for this is to upmix *stereo* data(2 channels).
+into *3F2-LFE/audio 5.1*(6 channels).
+There are several papers discussing how to do that.
+
+### Other case
+
+The other case happens
+when **numbers of input channels = numbers of output channels**,
+but their channel layouts are different.
+
+The conversion is easy as converting 
+from *STEREO-LFE*: {L, R, LFE} to *3F*: {L, R, C} (simply passing data):
+
+$$
+\begin{align}
+L_{out} &= L_{in}
+\\
+R_{out} &= R_{in}
+\\
+C_{out} &= 0
+\end{align}
+$$
+
+;it's also as complicated as converting
+from *3F1*: {L, R, C, RC} to *2F2(or quad)*: {L, R, LS, RS}:
+
+$$
+\begin{align}
+L_{out} &= L_{in} + p \cdot C_{in}
+\\
+R_{out} &= R_{in} + p \cdot C_{in} 
+\\
+LS_{out} &= q \cdot RC_{in}
+\\
+RS_{out} &= q \cdot RC_{in}
+\end{align}
+$$
+, where $$p, q$$ are specific values.
 
 ## Implementation
-How to implement multi-channels on different platforms?
+Many open source cross-platform audio libraries are good refereces:
+- [cubeb][cubeb]
+- [portaudio][portaudio]
+- [libsoundio][libsoundio]
+
+My experience for developling multi-channel is limited on *cubeb*.
+From my experience, all the documents for audio development are vague
+and sometimes you even cannot find
+how to use the API on some platforms(especially on OSX).
+The best way to learn that is to read the source code on github.
 
 [mixing-matrix]: ../images/posts/multichannel/mixing-matrix.png "Mixing matrix"
 [dowmix-5point1-to-stereo]: ../images/posts/multichannel/dowmix-5point1-to-stereo.png "Downmix 5.1 to stereo"
 [dowmix-5point1-to-quad]: ../images/posts/multichannel/dowmix-5point1-to-quad.png "Downmix 5.1 to quad"
+
+[cubeb]: https://github.com/kinetiknz/cubeb "cubeb"
+[portaudio]: http://www.portaudio.com/ "portaudio"
+[libsoundio]: http://libsound.io/ "libsoundio"
+
+[mixing]: https://gist.github.com/ChunMinChang/0de31bd5b3213409544ef89db91b696b "sample code for audio mixing on OSX"
+[channel-layout]: https://gist.github.com/ChunMinChang/ea74c8228745449873716e1d98ba956e "sample code for setting channel layout on OSX"

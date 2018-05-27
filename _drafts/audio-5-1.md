@@ -11,12 +11,38 @@ imagefeature: ../images/posts/multichannel/audio5point1.png
 
 
 ## Introduction for Audio 5.1
-What is Audio 5.1?
+
+Audio *five-point one* is a common surround sound 
+layouted in home theater.
+It has totally six channel: five speakers and a subwoofer
+and this is where the term *five-point one* comes from.
 
 ## Channel Layout
-Do we have particular arrangement for these channels?
+
+Since we have more than one channel,
+we need to define an explicit channel ordering
+to know which channel the sent/received data is matched to.
+
+The channel layout is a particular arrangement for the channels.
+The famous layout is *stereo*, that provides two channels:
+one is *left*, the other is *right*, 
+and their order is *left* and *right*.
+
+The arrangement for the channels is different from format to format.
+The most common formats are *Wave Format Extensible*(or *WaveEx*)
+and *Society of Motion Picture & Television Engineers*(or *SMPTE*).
+They defines what channels are provided and
+the ordering of them in different layouts.
+
+In this post, we follow the *SMPTE* format.
+An advantage of taking this standard is that
+it specifies the *up/downmixing* behaviours
+between different layouts.
 
 ### Channels
+
+Before knowing how the channels is sorted,
+we should know what channel is provided.
 
 | Code | Channel Name                     |
 | ---- | -------------------------------- |
@@ -33,7 +59,12 @@ Do we have particular arrangement for these channels?
 
 ### Layouts
 
-| Layout        | C | h | a | n | n | e | l | s |
+The following is the layout provided in *SMPTE*'s format.
+
+(The sample code to set channel layout on OSX is [here][channel-layout].)
+
+<!--
+| Layout        | channel ||||||||
 | ------------- | ----------------------------- |
 | DUAL-MONO     | L | R |
 | DUAL-MONO-LFE | L | R | LFE |
@@ -53,8 +84,222 @@ Do we have particular arrangement for these channels?
 | 3F2-LFE       | L | R | C | LFE | LS | RS |
 | 3F3R-LFE      | L | R | C | LFE | RC | LS | RS |
 | 3F4-LFE       | L | R | C | LFE | RLS | RRS | LS | RS |
+-->
 
-The sample code to set channel layout on OSX is [here][channel-layout].
+<!--
+The following table is made by
+1. copying the generated table syntax by the above markdown
+2. adding `colspan` to the <th> tag
+-->
+
+<table>
+  <thead>
+    <tr>
+      <th>Layout</th>
+      <th colspan="8">channel order</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DUAL-MONO</td>
+      <td>L</td>
+      <td>R</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>DUAL-MONO-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LFE</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>MONO</td>
+      <td>M</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>MONO-LFE</td>
+      <td>M</td>
+      <td>LFE</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>STEREO</td>
+      <td>L</td>
+      <td>R</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>STEREO-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LFE</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2F1</td>
+      <td>L</td>
+      <td>R</td>
+      <td>RC</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2F1-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LFE</td>
+      <td>RC</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F1</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>RC</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F1-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td>RC</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2F2</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2F2-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LFE</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F2</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F2-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F3R-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td>RC</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F4-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td>RLS</td>
+      <td>RRS</td>
+      <td>LS</td>
+      <td>RS</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Mixing
 
@@ -75,7 +320,7 @@ When the **input layout is different from the output layout**,
 we need to convert the audio input data to fit the audio output's configuration.
 We call it **mixing**.
 
-The sample code to mix audio data on OSX is [here][mixing].
+(The sample code to mix audio data on OSX is [here][mixing].)
 
 ### Mixing matrix
 ![Mixing matrix][mixing-matrix]

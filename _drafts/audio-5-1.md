@@ -14,7 +14,7 @@ imagefeature: ../images/posts/multichannel/audio5point1.png
 
 Audio *five-point one* is a common surround sound 
 layouted in home theater.
-It has totally six channel: five speakers and a subwoofer
+It has totally six channels: five speakers and a subwoofer
 and this is where the term *five-point one* comes from.
 
 ## Channel Layout
@@ -59,7 +59,9 @@ we should know what channel is provided.
 
 ### Layouts
 
-The following is the layout provided in *SMPTE*'s format.
+The layout in *SMPTE*'s format is as follows.
+Each layout is defined by a particular permutation
+of the above channels.
 
 (The sample code to set channel layout on OSX is [here][channel-layout].)
 
@@ -303,16 +305,16 @@ The following table is made by
 
 ## Mixing
 
-We already know that the audio layout can be configured into different type
-based on the number of channels and their types.
-The question is, what should we do when the input layout from the audio source 
+We already know that the audio layout can be configured into different types
+based on the number of the channels.
+The question is: what should we do when the input layout from the audio source 
 doesn't match the user's output layout?
 
 If the two channel layouts are equal, 
-then they must have same numbers of channel type and same channel order.
-Conversely, if two audio settings have different numbers of channel type
+then they must have same numbers of channels and same channel order.
+Conversely, if two audio settings have different numbers of channels
 (e.g., {L, R} and {M, LFE}),
-or they have same numbers of channel type but different orders
+or they have same numbers of channels but different orders
 (e.g., {L, R} and {R, L}),
 then they must have different channel layouts.
 
@@ -325,8 +327,8 @@ We call it **mixing**.
 ### Mixing matrix
 ![Mixing matrix][mixing-matrix]
 
-Although there are various definitions to convert the audio data
-from input into output,
+Although it may have different definitions
+to convert the audio data from input into output,
 they can be summarized into the following equations.
 The above figure illustrates their relationships,
 and the value of $$m_{ij}$$ varies from definition to definition.
@@ -380,6 +382,7 @@ $$
 To simplify them, we can rewite these equations into a matrix form:
 
 $$
+\begin{align}
 \vec{Audio_{out}} =
 \begin{bmatrix}
   L_{out} \\ 
@@ -389,7 +392,7 @@ $$
   LS_{out} \\ 
   RS_{out}
 \end{bmatrix}
-=
+&=
 \begin{bmatrix}
   m_{11} & m_{12} & m_{13} & m_{14} & m_{15} & m_{16} \\
   m_{21} & m_{22} & m_{23} & m_{24} & m_{25} & m_{26} \\
@@ -407,7 +410,10 @@ $$
   LS_{in} \\
   RS_{in}
 \end{bmatrix}
-=\vec{Matrix_{mixing}} \cdot \vec{Audio_{in}}
+\\
+&=
+\vec{Matrix_{mixing}} \cdot \vec{Audio_{in}}
+\end{align}
 $$
 
 ### Downmixing

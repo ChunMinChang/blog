@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T09:12:03+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T09:18:37+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
 
 &lt;p&gt;Audio &lt;em&gt;five-point one&lt;/em&gt; is a common surround sound 
 layouted in home theater.
@@ -537,6 +537,7 @@ RS_{out} &amp;= q \cdot RC_{in}
 &lt;/ul&gt;
 
 &lt;p&gt;My experience for developling multi-channel is limited on &lt;em&gt;cubeb&lt;/em&gt;.
+The project page is hosted &lt;a href=&quot;https://wiki.mozilla.org/Media/multichannel&quot;&gt;here&lt;/a&gt;.
 From my experience, all the documents for audio development are vague
 and sometimes you even cannot find
 how to use the API on some platforms(especially on OSX).
@@ -945,6 +946,7 @@ Many open source cross-platform audio libraries are good refereces:
 
 
 My experience for developling multi-channel is limited on cubeb.
+The project page is hosted here.
 From my experience, all the documents for audio development are vague
 and sometimes you even cannot find
 how to use the API on some platforms(especially on OSX).

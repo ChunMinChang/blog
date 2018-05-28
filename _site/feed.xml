@@ -1,4 +1,944 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T08:51:37+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">A Room without Windows</title><link href="http://localhost:4000/post/a-room-without-windows" rel="alternate" type="text/html" title="A Room without Windows" /><published>2017-12-30T00:00:00+08:00</published><updated>2017-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/a-room-without-windows</id><content type="html" xml:base="http://localhost:4000/post/a-room-without-windows">&lt;h1 id=&quot;無窗的房間&quot;&gt;無窗的房間&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T08:55:03+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
+
+&lt;p&gt;Audio &lt;em&gt;five-point one&lt;/em&gt; is a common surround sound 
+layouted in home theater.
+It has totally six channels: five speakers and a subwoofer
+and this is where the term &lt;em&gt;five-point one&lt;/em&gt; comes from.&lt;/p&gt;
+
+&lt;h2 id=&quot;channel-layout&quot;&gt;Channel Layout&lt;/h2&gt;
+
+&lt;p&gt;Since we have more than one channel,
+we need to define an explicit channel ordering
+to know which channel the sent/received data is matched to.&lt;/p&gt;
+
+&lt;p&gt;The channel layout is a particular arrangement for the channels.
+The famous layout is &lt;em&gt;stereo&lt;/em&gt;, that provides two channels:
+one is &lt;em&gt;left&lt;/em&gt;, the other is &lt;em&gt;right&lt;/em&gt;, 
+and their order is &lt;em&gt;left&lt;/em&gt; and &lt;em&gt;right&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The arrangement for the channels is different from format to format.
+The most common formats are &lt;em&gt;Wave Format Extensible&lt;/em&gt;(or &lt;em&gt;WaveEx&lt;/em&gt;)
+and &lt;em&gt;Society of Motion Picture &amp;amp; Television Engineers&lt;/em&gt;(or &lt;em&gt;SMPTE&lt;/em&gt;).
+They defines what channels are provided and
+the ordering of them in different layouts.&lt;/p&gt;
+
+&lt;p&gt;In this post, we follow the &lt;em&gt;SMPTE&lt;/em&gt; format.
+An advantage of taking this standard is that
+it specifies the &lt;em&gt;up/downmixing&lt;/em&gt; behaviours
+between different layouts.&lt;/p&gt;
+
+&lt;h3 id=&quot;channels&quot;&gt;Channels&lt;/h3&gt;
+
+&lt;p&gt;Before knowing how the channels is sorted,
+we should know what channel is provided.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Code&lt;/th&gt;
+      &lt;th&gt;Channel Name&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;M&lt;/td&gt;
+      &lt;td&gt;Mono&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;Left (Front Left)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;Right (Front Right)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;Center (Front Center)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;LS&lt;/td&gt;
+      &lt;td&gt;Left Surround (Side Left)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RS&lt;/td&gt;
+      &lt;td&gt;Right Surround (Side Right)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RLS&lt;/td&gt;
+      &lt;td&gt;Rear Left Surround (Back Left)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RC&lt;/td&gt;
+      &lt;td&gt;Rear Center (Back Center)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RRS&lt;/td&gt;
+      &lt;td&gt;Rear Right Surround (Back Right)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt;Low Frequency Effects&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;layouts&quot;&gt;Layouts&lt;/h3&gt;
+
+&lt;p&gt;The layout in &lt;em&gt;SMPTE&lt;/em&gt;’s format is as follows.
+Each layout is defined by a particular permutation
+of the above channels.&lt;/p&gt;
+
+&lt;p&gt;(The sample code to set channel layout on OSX is &lt;a href=&quot;https://gist.github.com/ChunMinChang/ea74c8228745449873716e1d98ba956e&quot; title=&quot;sample code for setting channel layout on OSX&quot;&gt;here&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;!--
+| Layout        | channel ||||||||
+| ------------- | ----------------------------- |
+| DUAL-MONO     | L | R |
+| DUAL-MONO-LFE | L | R | LFE |
+| MONO          | M |
+| MONO-LFE      | M | LFE |
+| STEREO        | L | R |
+| STEREO-LFE    | L | R | LFE |
+| 3F            | L | R | C |
+| 3F-LFE        | L | R | C | LFE |
+| 2F1           | L | R | RC |
+| 2F1-LFE       | L | R | LFE | RC |
+| 3F1           | L | R | C | RC |
+| 3F1-LFE       | L | R | C | LFE | RC |
+| 2F2           | L | R | LS | RS |
+| 2F2-LFE       | L | R | LFE | LS | RS |
+| 3F2           | L | R | C | LS | RS |
+| 3F2-LFE       | L | R | C | LFE | LS | RS |
+| 3F3R-LFE      | L | R | C | LFE | RC | LS | RS |
+| 3F4-LFE       | L | R | C | LFE | RLS | RRS | LS | RS |
+--&gt;
+
+&lt;!--
+The following table is made by
+1. copying the generated table syntax by the above markdown
+2. adding `colspan` to the &lt;th&gt; tag
+--&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Layout&lt;/th&gt;
+      &lt;th colspan=&quot;8&quot;&gt;channel order&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DUAL-MONO&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DUAL-MONO-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MONO&lt;/td&gt;
+      &lt;td&gt;M&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MONO-LFE&lt;/td&gt;
+      &lt;td&gt;M&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;STEREO&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;STEREO-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3F&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3F-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2F1&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;RC&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2F1-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt;RC&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3F1&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;RC&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3F1-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt;RC&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2F2&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;LS&lt;/td&gt;
+      &lt;td&gt;RS&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2F2-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt;LS&lt;/td&gt;
+      &lt;td&gt;RS&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3F2&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;LS&lt;/td&gt;
+      &lt;td&gt;RS&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3F2-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt;LS&lt;/td&gt;
+      &lt;td&gt;RS&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3F3R-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt;RC&lt;/td&gt;
+      &lt;td&gt;LS&lt;/td&gt;
+      &lt;td&gt;RS&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3F4-LFE&lt;/td&gt;
+      &lt;td&gt;L&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;C&lt;/td&gt;
+      &lt;td&gt;LFE&lt;/td&gt;
+      &lt;td&gt;RLS&lt;/td&gt;
+      &lt;td&gt;RRS&lt;/td&gt;
+      &lt;td&gt;LS&lt;/td&gt;
+      &lt;td&gt;RS&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;mixing&quot;&gt;Mixing&lt;/h2&gt;
+
+&lt;p&gt;We already know that the audio layout can be configured into different types
+based on the number of the channels.
+The question is: what should we do when the input layout from the audio source 
+doesn’t match the user’s output layout?&lt;/p&gt;
+
+&lt;p&gt;If the two channel layouts are equal, 
+then they must have same numbers of channels and same channel order.
+Conversely, if two audio settings have different numbers of channels
+(e.g., {L, R} and {M, LFE}),
+or they have same numbers of channels but different orders
+(e.g., {L, R} and {R, L}),
+then they must have different channel layouts.&lt;/p&gt;
+
+&lt;p&gt;When the &lt;strong&gt;input layout is different from the output layout&lt;/strong&gt;, 
+we need to convert the audio input data to fit the audio output’s configuration.
+We call it &lt;strong&gt;mixing&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;(The sample code to mix audio data on OSX is &lt;a href=&quot;https://gist.github.com/ChunMinChang/0de31bd5b3213409544ef89db91b696b&quot; title=&quot;sample code for audio mixing on OSX&quot;&gt;here&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;h3 id=&quot;mixing-matrix&quot;&gt;Mixing matrix&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;../images/posts/multichannel/mixing-matrix.png&quot; alt=&quot;Mixing matrix&quot; title=&quot;Mixing matrix&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Although it may have different definitions
+to convert the audio data from input into output,
+they can be summarized into the following equations.
+The above figure illustrates their relationships,
+and the value of &lt;script type=&quot;math/tex&quot;&gt;m_{ij}&lt;/script&gt; varies from definition to definition.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+L_{out} &amp;= m_{11} \cdot L_{in} +
+           m_{12} \cdot R_{in} +
+           m_{13} \cdot C_{in} +
+           m_{14} \cdot LFE_{in} +
+           m_{15} \cdot LS_{in} +
+           m_{16} \cdot RS_{in}
+\\
+R_{out} &amp;= m_{21} \cdot L_{in} +
+           m_{22} \cdot R_{in} +
+           m_{23} \cdot C_{in} +
+           m_{24} \cdot LFE_{in} +
+           m_{25} \cdot LS_{in} +
+           m_{26} \cdot RS_{in}
+\\
+C_{out} &amp;= m_{31} \cdot L_{in} +
+           m_{32} \cdot R_{in} +
+           m_{33} \cdot C_{in} +
+           m_{34} \cdot LFE_{in} +
+           m_{35} \cdot LS_{in} +
+           m_{36} \cdot RS_{in}
+\\
+LFE_{out} &amp;= m_{41} \cdot L_{in} +
+             m_{42} \cdot R_{in} +
+             m_{43} \cdot C_{in} +
+             m_{44} \cdot LFE_{in} +
+             m_{45} \cdot LS_{in} +
+             m_{46} \cdot RS_{in}
+\\
+LS_{out} &amp;= m_{51} \cdot L_{in} +
+            m_{52} \cdot R_{in} +
+            m_{53} \cdot C_{in} +
+            m_{54} \cdot LFE_{in} +
+            m_{55} \cdot LS_{in} +
+            m_{56} \cdot RS_{in}
+\\
+RS_{out} &amp;= m_{61} \cdot L_{in} +
+            m_{62} \cdot R_{in} +
+            m_{63} \cdot C_{in} +
+            m_{64} \cdot LFE_{in} +
+            m_{65} \cdot LS_{in} +
+            m_{66} \cdot RS_{in}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;To simplify them, we can rewite these equations into a matrix form:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+\vec{Audio_{out}} =
+\begin{bmatrix}
+  L_{out} \\ 
+  R_{out} \\ 
+  C_{out} \\ 
+  LFE_{out} \\ 
+  LS_{out} \\ 
+  RS_{out}
+\end{bmatrix}
+&amp;=
+\begin{bmatrix}
+  m_{11} &amp; m_{12} &amp; m_{13} &amp; m_{14} &amp; m_{15} &amp; m_{16} \\
+  m_{21} &amp; m_{22} &amp; m_{23} &amp; m_{24} &amp; m_{25} &amp; m_{26} \\
+  m_{31} &amp; m_{32} &amp; m_{33} &amp; m_{34} &amp; m_{35} &amp; m_{36} \\
+  m_{41} &amp; m_{42} &amp; m_{43} &amp; m_{44} &amp; m_{45} &amp; m_{46} \\
+  m_{51} &amp; m_{52} &amp; m_{53} &amp; m_{54} &amp; m_{55} &amp; m_{56} \\
+  m_{61} &amp; m_{62} &amp; m_{63} &amp; m_{64} &amp; m_{65} &amp; m_{66} \\
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+  L_{in} \\ 
+  R_{in} \\
+  C_{in} \\
+  LFE_{in} \\
+  LS_{in} \\
+  RS_{in}
+\end{bmatrix}
+\\
+&amp;=
+\vec{Matrix_{mixing}} \cdot \vec{Audio_{in}}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;downmixing&quot;&gt;Downmixing&lt;/h3&gt;
+
+&lt;p&gt;When &lt;strong&gt;numbers of input channels &amp;gt; numbers of output channels&lt;/strong&gt;,
+we call it &lt;strong&gt;downmixing&lt;/strong&gt;.
+(In this case, the input channel layout is definitiely
+different from the output one.)
+The most common case for downmixing is to
+downmix different audio layouts into &lt;em&gt;stereo&lt;/em&gt;.
+The audio sources on the internet have various layouts
+while most users only have two speakers.&lt;/p&gt;
+
+&lt;h5 id=&quot;downmix-audio-51-to-stereostereophonic-sound&quot;&gt;Downmix audio 5.1 to stereo(stereophonic sound)&lt;/h5&gt;
+&lt;p&gt;&lt;img src=&quot;../images/posts/multichannel/dowmix-5point1-to-stereo.png&quot; alt=&quot;Downmix 5.1 to stereo&quot; title=&quot;Downmix 5.1 to stereo&quot; /&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+L_{out} &amp;= L_{in} +
+           \frac{1}{\sqrt{2}} \cdot C_{in} +
+           \frac{1}{\sqrt{2}} \cdot LS_{in}
+\\
+R_{out} &amp;= R_{in} +
+           \frac{1}{\sqrt{2}} \cdot C_{in} +
+           \frac{1}{\sqrt{2}} \cdot RS_{in} +
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h5 id=&quot;downmix-audio-51-to-quadquadraphonic-sound40-surround-sound&quot;&gt;Downmix audio 5.1 to quad(quadraphonic sound/4.0 surround sound)&lt;/h5&gt;
+&lt;p&gt;&lt;img src=&quot;../images/posts/multichannel/dowmix-5point1-to-quad.png&quot; alt=&quot;Downmix 5.1 to quad&quot; title=&quot;Downmix 5.1 to quad&quot; /&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+L_{out} &amp;= L_{in} + \frac{1}{\sqrt{2}} \cdot C_{in}
+\\
+R_{out} &amp;= R_{in} + \frac{1}{\sqrt{2}} \cdot C_{in} 
+\\
+LS_{out} &amp;= LS_{in}
+\\
+RS_{out} &amp;= RS_{in}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;upmixing&quot;&gt;Upmixing&lt;/h3&gt;
+
+&lt;p&gt;When &lt;strong&gt;numbers of input channels &amp;lt; numbers of output channels&lt;/strong&gt;,
+we call it &lt;strong&gt;upmixing&lt;/strong&gt;.
+(In this case, the input channel layout is definitiely
+different from the output one.)&lt;/p&gt;
+
+&lt;p&gt;The most common case for this is to upmix &lt;em&gt;stereo&lt;/em&gt; data(2 channels).
+into &lt;em&gt;3F2-LFE/audio 5.1&lt;/em&gt;(6 channels).
+There are several papers discussing how to do that.&lt;/p&gt;
+
+&lt;h3 id=&quot;other-case&quot;&gt;Other case&lt;/h3&gt;
+
+&lt;p&gt;The other case happens
+when &lt;strong&gt;numbers of input channels = numbers of output channels&lt;/strong&gt;,
+but their channel layouts are different.&lt;/p&gt;
+
+&lt;p&gt;The conversion is easy as converting 
+from &lt;em&gt;STEREO-LFE&lt;/em&gt;: {L, R, LFE} to &lt;em&gt;3F&lt;/em&gt;: {L, R, C} (simply passing data):&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align}
+L_{out} &amp;= L_{in}
+\\
+R_{out} &amp;= R_{in}
+\\
+C_{out} &amp;= 0
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;;it’s also as complicated as converting
+from &lt;em&gt;3F1&lt;/em&gt;: {L, R, C, RC} to &lt;em&gt;2F2(or quad)&lt;/em&gt;: {L, R, LS, RS}:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align}
+L_{out} &amp;= L_{in} + p \cdot C_{in}
+\\
+R_{out} &amp;= R_{in} + p \cdot C_{in} 
+\\
+LS_{out} &amp;= q \cdot RC_{in}
+\\
+RS_{out} &amp;= q \cdot RC_{in}
+\end{align} %]]&gt;&lt;/script&gt;
+, where &lt;script type=&quot;math/tex&quot;&gt;p, q&lt;/script&gt; are specific values.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+&lt;p&gt;Many open source cross-platform audio libraries are good refereces:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/kinetiknz/cubeb&quot; title=&quot;cubeb&quot;&gt;cubeb&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.portaudio.com/&quot; title=&quot;portaudio&quot;&gt;portaudio&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://libsound.io/&quot; title=&quot;libsoundio&quot;&gt;libsoundio&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My experience for developling multi-channel is limited on &lt;em&gt;cubeb&lt;/em&gt;.
+From my experience, all the documents for audio development are vague
+and sometimes you even cannot find
+how to use the API on some platforms(especially on OSX).
+The best way to learn that is to read the source code on github.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">Introduction for Audio 5.1
+
+Audio five-point one is a common surround sound 
+layouted in home theater.
+It has totally six channels: five speakers and a subwoofer
+and this is where the term five-point one comes from.
+
+Channel Layout
+
+Since we have more than one channel,
+we need to define an explicit channel ordering
+to know which channel the sent/received data is matched to.
+
+The channel layout is a particular arrangement for the channels.
+The famous layout is stereo, that provides two channels:
+one is left, the other is right, 
+and their order is left and right.
+
+The arrangement for the channels is different from format to format.
+The most common formats are Wave Format Extensible(or WaveEx)
+and Society of Motion Picture &amp;amp; Television Engineers(or SMPTE).
+They defines what channels are provided and
+the ordering of them in different layouts.
+
+In this post, we follow the SMPTE format.
+An advantage of taking this standard is that
+it specifies the up/downmixing behaviours
+between different layouts.
+
+Channels
+
+Before knowing how the channels is sorted,
+we should know what channel is provided.
+
+
+  
+    
+      Code
+      Channel Name
+    
+  
+  
+    
+      M
+      Mono
+    
+    
+      L
+      Left (Front Left)
+    
+    
+      R
+      Right (Front Right)
+    
+    
+      C
+      Center (Front Center)
+    
+    
+      LS
+      Left Surround (Side Left)
+    
+    
+      RS
+      Right Surround (Side Right)
+    
+    
+      RLS
+      Rear Left Surround (Back Left)
+    
+    
+      RC
+      Rear Center (Back Center)
+    
+    
+      RRS
+      Rear Right Surround (Back Right)
+    
+    
+      LFE
+      Low Frequency Effects
+    
+  
+
+
+Layouts
+
+The layout in SMPTE’s format is as follows.
+Each layout is defined by a particular permutation
+of the above channels.
+
+(The sample code to set channel layout on OSX is here.)
+
+
+
+
+
+
+  
+    
+      Layout
+      channel order
+    
+  
+  
+    
+      DUAL-MONO
+      L
+      R
+       
+       
+       
+       
+       
+       
+    
+    
+      DUAL-MONO-LFE
+      L
+      R
+      LFE
+       
+       
+       
+       
+       
+    
+    
+      MONO
+      M
+       
+       
+       
+       
+       
+       
+       
+    
+    
+      MONO-LFE
+      M
+      LFE
+       
+       
+       
+       
+       
+       
+    
+    
+      STEREO
+      L
+      R
+       
+       
+       
+       
+       
+       
+    
+    
+      STEREO-LFE
+      L
+      R
+      LFE
+       
+       
+       
+       
+       
+    
+    
+      3F
+      L
+      R
+      C
+       
+       
+       
+       
+       
+    
+    
+      3F-LFE
+      L
+      R
+      C
+      LFE
+       
+       
+       
+       
+    
+    
+      2F1
+      L
+      R
+      RC
+       
+       
+       
+       
+       
+    
+    
+      2F1-LFE
+      L
+      R
+      LFE
+      RC
+       
+       
+       
+       
+    
+    
+      3F1
+      L
+      R
+      C
+      RC
+       
+       
+       
+       
+    
+    
+      3F1-LFE
+      L
+      R
+      C
+      LFE
+      RC
+       
+       
+       
+    
+    
+      2F2
+      L
+      R
+      LS
+      RS
+       
+       
+       
+       
+    
+    
+      2F2-LFE
+      L
+      R
+      LFE
+      LS
+      RS
+       
+       
+       
+    
+    
+      3F2
+      L
+      R
+      C
+      LS
+      RS
+       
+       
+       
+    
+    
+      3F2-LFE
+      L
+      R
+      C
+      LFE
+      LS
+      RS
+       
+       
+    
+    
+      3F3R-LFE
+      L
+      R
+      C
+      LFE
+      RC
+      LS
+      RS
+       
+    
+    
+      3F4-LFE
+      L
+      R
+      C
+      LFE
+      RLS
+      RRS
+      LS
+      RS
+    
+  
+
+
+Mixing
+
+We already know that the audio layout can be configured into different types
+based on the number of the channels.
+The question is: what should we do when the input layout from the audio source 
+doesn’t match the user’s output layout?
+
+If the two channel layouts are equal, 
+then they must have same numbers of channels and same channel order.
+Conversely, if two audio settings have different numbers of channels
+(e.g., {L, R} and {M, LFE}),
+or they have same numbers of channels but different orders
+(e.g., {L, R} and {R, L}),
+then they must have different channel layouts.
+
+When the input layout is different from the output layout, 
+we need to convert the audio input data to fit the audio output’s configuration.
+We call it mixing.
+
+(The sample code to mix audio data on OSX is here.)
+
+Mixing matrix
+
+
+Although it may have different definitions
+to convert the audio data from input into output,
+they can be summarized into the following equations.
+The above figure illustrates their relationships,
+and the value of  varies from definition to definition.
+
+
+
+To simplify them, we can rewite these equations into a matrix form:
+
+
+
+Downmixing
+
+When numbers of input channels &amp;gt; numbers of output channels,
+we call it downmixing.
+(In this case, the input channel layout is definitiely
+different from the output one.)
+The most common case for downmixing is to
+downmix different audio layouts into stereo.
+The audio sources on the internet have various layouts
+while most users only have two speakers.
+
+Downmix audio 5.1 to stereo(stereophonic sound)
+
+
+
+
+Downmix audio 5.1 to quad(quadraphonic sound/4.0 surround sound)
+
+
+
+
+Upmixing
+
+When numbers of input channels &amp;lt; numbers of output channels,
+we call it upmixing.
+(In this case, the input channel layout is definitiely
+different from the output one.)
+
+The most common case for this is to upmix stereo data(2 channels).
+into 3F2-LFE/audio 5.1(6 channels).
+There are several papers discussing how to do that.
+
+Other case
+
+The other case happens
+when numbers of input channels = numbers of output channels,
+but their channel layouts are different.
+
+The conversion is easy as converting 
+from STEREO-LFE: {L, R, LFE} to 3F: {L, R, C} (simply passing data):
+
+
+
+;it’s also as complicated as converting
+from 3F1: {L, R, C, RC} to 2F2(or quad): {L, R, LS, RS}:
+
+
+, where  are specific values.
+
+Implementation
+Many open source cross-platform audio libraries are good refereces:
+
+  cubeb
+  portaudio
+  libsoundio
+
+
+My experience for developling multi-channel is limited on cubeb.
+From my experience, all the documents for audio development are vague
+and sometimes you even cannot find
+how to use the API on some platforms(especially on OSX).
+The best way to learn that is to read the source code on github.</summary></entry><entry><title type="html">A Room without Windows</title><link href="http://localhost:4000/post/a-room-without-windows" rel="alternate" type="text/html" title="A Room without Windows" /><published>2017-12-30T00:00:00+08:00</published><updated>2017-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/a-room-without-windows</id><content type="html" xml:base="http://localhost:4000/post/a-room-without-windows">&lt;h1 id=&quot;無窗的房間&quot;&gt;無窗的房間&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.indievox.com/disc/14070&quot;&gt;〈無窗的房間〉&lt;/a&gt;在冬至那天的耳機裡迴盪，
 而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。
@@ -5012,158 +5952,4 @@ uint64_t pow9(unsigned int k, unsigned int n)
 
 
 
-All the above code are on gist here.</summary></entry><entry><title type="html">Closed Form for the Fibonacci Sequence</title><link href="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence" rel="alternate" type="text/html" title="Closed Form for the Fibonacci Sequence" /><published>2017-08-13T00:00:00+08:00</published><updated>2017-08-13T00:00:00+08:00</updated><id>http://localhost:4000/post/closed-form-for-the-fibonacci-sequence</id><content type="html" xml:base="http://localhost:4000/post/closed-form-for-the-fibonacci-sequence">&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number can be defined as:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
-
-&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;F_0 = 0, F_1 = 1&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;Assume &lt;script type=&quot;math/tex&quot;&gt;F_n = s \cdot r^n&lt;/script&gt;,
-then &lt;script type=&quot;math/tex&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt; can be rewritten into:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;s \cdot r^n = s \cdot r^{n-1} + s \cdot r^{n-2}&lt;/script&gt;
-
-&lt;p&gt;Thus,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;s \cdot r^{n-2} \cdot (r^2 - r - 1) = 0&lt;/script&gt;
-
-&lt;p&gt;and &lt;script type=&quot;math/tex&quot;&gt;r = \frac{1\pm \sqrt{5}}{2}&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;p = \frac{1 + \sqrt{5}}{2}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;r = \frac{1 - \sqrt{5}}{2}&lt;/script&gt;,
-and &lt;script type=&quot;math/tex&quot;&gt;x_k = u \cdot p^k + v \cdot q^k&lt;/script&gt;,
-we now show that &lt;script type=&quot;math/tex&quot;&gt;x_k&lt;/script&gt; is also a solution for &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt;.
-That is, we need to show &lt;script type=&quot;math/tex&quot;&gt;x_k = x_{k-1} + x_{k-2}&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Proof&lt;/em&gt;:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-x_{k-1} + x_{k-2}
-&amp;= u \cdot p^{k-1} + v \cdot q^{k-1} + u \cdot p^{k-2} + v \cdot q^{k-2} \\
-&amp;= u \cdot p^{k-2} \cdot (1 + p) + v \cdot q^{k-2} \cdot (1 + q) \\
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;r + 1 = r^2(\text{by } r^2 - r - 1 = 0)&lt;/script&gt;,
-we know &lt;script type=&quot;math/tex&quot;&gt;p + 1 = p^2&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;q + 1 = q^2&lt;/script&gt;
-Thus,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-x_{k-1} + x_{k-2}
-&amp;= u \cdot p^{k-2} \cdot (1 + p) + v \cdot q^{k-2} \cdot (1 + q) \\
-&amp;= u \cdot p^{k-2} \cdot p^2 + v \cdot q^{k-2} \cdot q^2 \\
-&amp;= u \cdot p^k + v \cdot q^k \\
-&amp;= x_k
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;Next, if we take &lt;script type=&quot;math/tex&quot;&gt;x_k&lt;/script&gt; as our closed form for the &lt;em&gt;Fibonacci&lt;/em&gt; number,
-we also need to know what &lt;script type=&quot;math/tex&quot;&gt;u, v&lt;/script&gt; are.
-Fortunately, by the definition, we already know &lt;script type=&quot;math/tex&quot;&gt;F_0 = 0, F_1 = 1&lt;/script&gt;,
-so&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-x_0 &amp;= 0 = u \cdot p^0+ v \cdot q^0 = u + v \\
-x_1 &amp;= 1 = u \cdot p + v \cdot q
-= u \cdot \frac{1 + \sqrt{5}}{2} + v \cdot \frac{1 - \sqrt{5}}{2} \\
-\Rightarrow 2 &amp;= u + u \cdot \sqrt{5} + v - v \cdot \sqrt{5} \\
-&amp;= (u + v) + \sqrt{5} \cdot (u - v) \\
-&amp;= \sqrt{5} \cdot (u - v)
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;By &lt;script type=&quot;math/tex&quot;&gt;u + v = 0&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;u - v = \frac{2}{\sqrt{5}}&lt;/script&gt;, we know that&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-u &amp;= \frac{1}{\sqrt{5}} \\
-v &amp;= \frac{-1}{\sqrt{5}}
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;As a result,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-x_k &amp;= u \cdot p^k + v \cdot q^k \\
-&amp;= \frac{1}{\sqrt{5}} \cdot (\frac{1 + \sqrt{5}}{2})^k - \frac{1}{\sqrt{5}} \cdot (\frac{1 - \sqrt{5}}{2})^k \\
-&amp;= \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^k -  (\frac{1 - \sqrt{5}}{2})^k ]
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h2 id=&quot;graph&quot;&gt;Graph&lt;/h2&gt;
-&lt;p&gt;See the online &lt;a href=&quot;https://www.wolframalpha.com/input/?i=(((1%2Bsqrt(5))%2F2)%5Ex+-+((1-sqrt(5))%2F2)%5Ex)%2Fsqrt(5)&quot;&gt;graph here&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;questions&quot;&gt;Questions&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Why we assume &lt;script type=&quot;math/tex&quot;&gt;F_n = s \cdot r^n&lt;/script&gt;?&lt;/li&gt;
-  &lt;li&gt;Why we use &lt;script type=&quot;math/tex&quot;&gt;F_n = u \cdot p^n + v \cdot q^n&lt;/script&gt;
-instead of &lt;script type=&quot;math/tex&quot;&gt;F_n = s \cdot r^n&lt;/script&gt; as our closed form?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;http://math.ucr.edu/~res/math153/history07a.pdf&lt;/li&gt;
-  &lt;li&gt;http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm&lt;/li&gt;
-  &lt;li&gt;https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence&lt;/li&gt;
-  &lt;li&gt;http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Math" /><category term="Fibonacci" /><summary type="html">The Fibonacci number can be defined as:
-
-
-
-where .
-
-Assume ,
-then  can be rewritten into:
-
-
-
-Thus,
-
-
-
-and 
-
-Let , ,
-and ,
-we now show that  is also a solution for .
-That is, we need to show .
-
-Proof:
-
-
-
-Since ,
-we know  and 
-Thus,
-
-
-
-Next, if we take  as our closed form for the Fibonacci number,
-we also need to know what  are.
-Fortunately, by the definition, we already know ,
-so
-
-
-
-By  and , we know that
-
-
-
-As a result,
-
-
-
-Graph
-See the online graph here
-
-Questions
-
-  Why we assume ?
-  Why we use 
-instead of  as our closed form?
-
-
-References
-
-  http://math.ucr.edu/~res/math153/history07a.pdf
-  http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm
-  https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence
-  http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html</summary></entry></feed>
+All the above code are on gist here.</summary></entry></feed>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T09:18:37+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T14:55:41+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
 
 &lt;p&gt;Audio &lt;em&gt;five-point one&lt;/em&gt; is a common surround sound 
 layouted in home theater.
@@ -17,8 +17,8 @@ For example, if the layout is stereo, then we have two channel data.
 The first data is for left channel, the second one is right channel.&lt;/p&gt;
 
 &lt;p&gt;The arrangement for the channels is different from format to format.
-The most common formats are &lt;em&gt;Wave Format Extensible&lt;/em&gt;(or &lt;em&gt;WaveEx&lt;/em&gt;)
-and &lt;em&gt;Society of Motion Picture &amp;amp; Television Engineers&lt;/em&gt;(or &lt;em&gt;SMPTE&lt;/em&gt;).
+The most common formats are defined in &lt;em&gt;Wave Format Extensible&lt;/em&gt;(or &lt;em&gt;WaveEx&lt;/em&gt;)
+or by &lt;em&gt;Society of Motion Picture &amp;amp; Television Engineers&lt;/em&gt;(or &lt;em&gt;SMPTE&lt;/em&gt;).
 They defines what channels are provided and
 the ordering of them in different layouts.&lt;/p&gt;
 
@@ -31,7 +31,7 @@ between different layouts.
 
 &lt;h3 id=&quot;channels&quot;&gt;Channels&lt;/h3&gt;
 
-&lt;p&gt;Before knowing how the channels is sorted,
+&lt;p&gt;Before knowing how the channels are sorted,
 we should know what channel is provided.&lt;/p&gt;
 
 &lt;table&gt;
@@ -491,9 +491,9 @@ we call it &lt;strong&gt;upmixing&lt;/strong&gt;.
 (In this case, the input channel layout is definitiely
 different from the output one.)&lt;/p&gt;
 
-&lt;p&gt;The most common case for this is to upmix &lt;em&gt;stereo&lt;/em&gt; data(2 channels).
+&lt;p&gt;The most common case for this is to upmix &lt;em&gt;stereo&lt;/em&gt; data(2 channels)
 into &lt;em&gt;3F2-LFE/audio 5.1&lt;/em&gt;(6 channels).
-There are several papers discussing how to do that.&lt;/p&gt;
+There are several papers discussing how to achieve that.&lt;/p&gt;
 
 &lt;h3 id=&quot;other-case&quot;&gt;Other case&lt;/h3&gt;
 
@@ -529,7 +529,8 @@ RS_{out} &amp;= q \cdot RC_{in}
 , where &lt;script type=&quot;math/tex&quot;&gt;p, q&lt;/script&gt; are specific values.&lt;/p&gt;
 
 &lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
-&lt;p&gt;Many open source cross-platform audio libraries are good refereces:&lt;/p&gt;
+&lt;p&gt;Many open source cross-platform audio libraries are good refereces
+to learn how to implement multi-channel on different platforms, such as&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/kinetiknz/cubeb&quot; title=&quot;cubeb&quot;&gt;cubeb&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.portaudio.com/&quot; title=&quot;portaudio&quot;&gt;portaudio&lt;/a&gt;&lt;/li&gt;
@@ -537,11 +538,15 @@ RS_{out} &amp;= q \cdot RC_{in}
 &lt;/ul&gt;
 
 &lt;p&gt;My experience for developling multi-channel is limited on &lt;em&gt;cubeb&lt;/em&gt;.
-The project page is hosted &lt;a href=&quot;https://wiki.mozilla.org/Media/multichannel&quot;&gt;here&lt;/a&gt;.
-From my experience, all the documents for audio development are vague
-and sometimes you even cannot find
-how to use the API on some platforms(especially on OSX).
-The best way to learn that is to read the source code on github.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">Introduction for Audio 5.1
+The development project page is hosted &lt;a href=&quot;https://wiki.mozilla.org/Media/multichannel&quot;&gt;here&lt;/a&gt;.
+From my experience, most documents for audio development are vague
+and sometimes you even cannot find the official manuals
+about how to use the APIs(especially on OSX).
+The best way to learn that is to read the source code on github.
+Read the how other people use the APIs
+or the APIs’ implementation directly if it’s possible.&lt;/p&gt;
+
+&lt;p&gt;It’s time to rock on the code!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">Introduction for Audio 5.1
 
 Audio five-point one is a common surround sound 
 layouted in home theater.
@@ -560,8 +565,8 @@ For example, if the layout is stereo, then we have two channel data.
 The first data is for left channel, the second one is right channel.
 
 The arrangement for the channels is different from format to format.
-The most common formats are Wave Format Extensible(or WaveEx)
-and Society of Motion Picture &amp;amp; Television Engineers(or SMPTE).
+The most common formats are defined in Wave Format Extensible(or WaveEx)
+or by Society of Motion Picture &amp;amp; Television Engineers(or SMPTE).
 They defines what channels are provided and
 the ordering of them in different layouts.
 
@@ -574,7 +579,7 @@ ITU-R BS.775 and ITU-R BS.2159-7.)
 
 Channels
 
-Before knowing how the channels is sorted,
+Before knowing how the channels are sorted,
 we should know what channel is provided.
 
 
@@ -916,9 +921,9 @@ we call it upmixing.
 (In this case, the input channel layout is definitiely
 different from the output one.)
 
-The most common case for this is to upmix stereo data(2 channels).
+The most common case for this is to upmix stereo data(2 channels)
 into 3F2-LFE/audio 5.1(6 channels).
-There are several papers discussing how to do that.
+There are several papers discussing how to achieve that.
 
 Other case
 
@@ -938,7 +943,8 @@ from 3F1: {L, R, C, RC} to 2F2(or quad): {L, R, LS, RS}:
 , where  are specific values.
 
 Implementation
-Many open source cross-platform audio libraries are good refereces:
+Many open source cross-platform audio libraries are good refereces
+to learn how to implement multi-channel on different platforms, such as
 
   cubeb
   portaudio
@@ -946,11 +952,15 @@ Many open source cross-platform audio libraries are good refereces:
 
 
 My experience for developling multi-channel is limited on cubeb.
-The project page is hosted here.
-From my experience, all the documents for audio development are vague
-and sometimes you even cannot find
-how to use the API on some platforms(especially on OSX).
-The best way to learn that is to read the source code on github.</summary></entry><entry><title type="html">A Room without Windows</title><link href="http://localhost:4000/post/a-room-without-windows" rel="alternate" type="text/html" title="A Room without Windows" /><published>2017-12-30T00:00:00+08:00</published><updated>2017-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/a-room-without-windows</id><content type="html" xml:base="http://localhost:4000/post/a-room-without-windows">&lt;h1 id=&quot;無窗的房間&quot;&gt;無窗的房間&lt;/h1&gt;
+The development project page is hosted here.
+From my experience, most documents for audio development are vague
+and sometimes you even cannot find the official manuals
+about how to use the APIs(especially on OSX).
+The best way to learn that is to read the source code on github.
+Read the how other people use the APIs
+or the APIs’ implementation directly if it’s possible.
+
+It’s time to rock on the code!</summary></entry><entry><title type="html">A Room without Windows</title><link href="http://localhost:4000/post/a-room-without-windows" rel="alternate" type="text/html" title="A Room without Windows" /><published>2017-12-30T00:00:00+08:00</published><updated>2017-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/a-room-without-windows</id><content type="html" xml:base="http://localhost:4000/post/a-room-without-windows">&lt;h1 id=&quot;無窗的房間&quot;&gt;無窗的房間&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.indievox.com/disc/14070&quot;&gt;〈無窗的房間〉&lt;/a&gt;在冬至那天的耳機裡迴盪，
 而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T09:08:13+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T09:12:03+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
 
 &lt;p&gt;Audio &lt;em&gt;five-point one&lt;/em&gt; is a common surround sound 
 layouted in home theater.
@@ -11,10 +11,10 @@ and this is where the term &lt;em&gt;five-point one&lt;/em&gt; comes from.&lt;/p
 we need to define an explicit channel ordering
 to know which channel the sent/received data is matched to.&lt;/p&gt;
 
-&lt;p&gt;The channel layout is a particular arrangement for the channels.
-The famous layout is &lt;em&gt;stereo&lt;/em&gt;, that provides two channels:
-one is &lt;em&gt;left&lt;/em&gt;, the other is &lt;em&gt;right&lt;/em&gt;, 
-and their order is &lt;em&gt;left&lt;/em&gt; and &lt;em&gt;right&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Channel layout specifies the order 
+of input/output channel data in audio buffer. 
+For example, if the layout is stereo, then we have two channel data.
+The first data is for left channel, the second one is right channel.&lt;/p&gt;
 
 &lt;p&gt;The arrangement for the channels is different from format to format.
 The most common formats are &lt;em&gt;Wave Format Extensible&lt;/em&gt;(or &lt;em&gt;WaveEx&lt;/em&gt;)
@@ -553,10 +553,10 @@ Since we have more than one channel,
 we need to define an explicit channel ordering
 to know which channel the sent/received data is matched to.
 
-The channel layout is a particular arrangement for the channels.
-The famous layout is stereo, that provides two channels:
-one is left, the other is right, 
-and their order is left and right.
+Channel layout specifies the order 
+of input/output channel data in audio buffer. 
+For example, if the layout is stereo, then we have two channel data.
+The first data is for left channel, the second one is right channel.
 
 The arrangement for the channels is different from format to format.
 The most common formats are Wave Format Extensible(or WaveEx)

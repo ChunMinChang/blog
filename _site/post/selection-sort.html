@@ -225,7 +225,7 @@
                             
 
                             
-                                    <span class="time">4.894444444444445</span> minutes read
+                                    <span class="time">3.9055555555555554</span> minutes read
                             
                                 
                             
@@ -511,48 +511,7 @@ where the <script type="math/tex">N</script> is the length of the list <script t
 <h2 id="implementation">Implementation</h2>
 <p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="Sorting">gist here</a>.</p>
 
-<noscript><pre>#include &lt;algorithm&gt;  // for std::swap
-#include &lt;cassert&gt;
-#include &quot;sorting.h&quot;
-
-/*
- * Selection sort: O(n^2)
- */
-void selectionSort(int list[], unsigned int length)
-{
-  assert(length);
-
-  // &lt;--  sorted  --&gt;|&lt;--  unsorted  --&gt;
-  // +---+---+-------+---+---+---------+
-  // | 0 | 1 | ..... | h | i |  .....  |
-  // +---+---+-------+---+---+---------+
-  //                   ^
-  //                head is the begin index of unsorted list.
-  for (unsigned int head = 0 ; head &lt; length - 1 ; ++head) {
-    // Assume the current head value is the minimal item.
-    int minIndex = head;
-    for (unsigned int i = head + 1 ; i &lt; length ; ++i) {
-      if (list[i] &lt; list[minIndex]) {
-        minIndex = i;
-      }
-    }
-
-    if (head != minIndex) {
-      std::swap(list[head], list[minIndex]);
-    }
-    // After swap with the minimal value of unsorted list, the head now
-    // is the tail of the sorted list.
-    //
-    // &lt;--    sorted    --&gt;|&lt;-- unsorted --&gt;
-    // +---+---+-------+---+---------------+
-    // | 0 | 1 | ..... | h | ............  |
-    // +---+---+-------+---+---------------+
-    //                   ^
-    //  head now is the last index of the sorted list.
-  }
-}
-</pre></noscript>
-<script src="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=selection_sort.cpp"> </script>
+<p>true<script src="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=selection_sort.cpp"> </script></p>
 
 
 

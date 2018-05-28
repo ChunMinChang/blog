@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T08:55:03+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-28T09:08:13+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
 
 &lt;p&gt;Audio &lt;em&gt;five-point one&lt;/em&gt; is a common surround sound 
 layouted in home theater.
@@ -25,7 +25,9 @@ the ordering of them in different layouts.&lt;/p&gt;
 &lt;p&gt;In this post, we follow the &lt;em&gt;SMPTE&lt;/em&gt; format.
 An advantage of taking this standard is that
 it specifies the &lt;em&gt;up/downmixing&lt;/em&gt; behaviours
-between different layouts.&lt;/p&gt;
+between different layouts.
+(The SMPTE’s standard for multichannel can be founded in
+&lt;a href=&quot;https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.775-3-201208-I!!PDF-E.pdf&quot; title=&quot;ITU-R BS.775-3&quot;&gt;ITU-R BS.775&lt;/a&gt; and &lt;a href=&quot;https://www.itu.int/dms_pub/itu-r/opb/rep/R-REP-BS.2159-7-2015-PDF-E.pdf&quot; title=&quot;ITU-R BS.2159&quot;&gt;ITU-R BS.2159-7&lt;/a&gt;.)&lt;/p&gt;
 
 &lt;h3 id=&quot;channels&quot;&gt;Channels&lt;/h3&gt;
 
@@ -451,6 +453,9 @@ downmix different audio layouts into &lt;em&gt;stereo&lt;/em&gt;.
 The audio sources on the internet have various layouts
 while most users only have two speakers.&lt;/p&gt;
 
+&lt;p&gt;(The downward mixing mechanism of SMPTE for audio 5.1
+is defined in &lt;a href=&quot;https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.775-3-201208-I!!PDF-E.pdf&quot; title=&quot;ITU-R BS.775-3&quot;&gt;Table 2 of ITU-R BS.775-3&lt;/a&gt;.)&lt;/p&gt;
+
 &lt;h5 id=&quot;downmix-audio-51-to-stereostereophonic-sound&quot;&gt;Downmix audio 5.1 to stereo(stereophonic sound)&lt;/h5&gt;
 &lt;p&gt;&lt;img src=&quot;../images/posts/multichannel/dowmix-5point1-to-stereo.png&quot; alt=&quot;Downmix 5.1 to stereo&quot; title=&quot;Downmix 5.1 to stereo&quot; /&gt;&lt;/p&gt;
 
@@ -563,6 +568,8 @@ In this post, we follow the SMPTE format.
 An advantage of taking this standard is that
 it specifies the up/downmixing behaviours
 between different layouts.
+(The SMPTE’s standard for multichannel can be founded in
+ITU-R BS.775 and ITU-R BS.2159-7.)
 
 Channels
 
@@ -887,6 +894,9 @@ The most common case for downmixing is to
 downmix different audio layouts into stereo.
 The audio sources on the internet have various layouts
 while most users only have two speakers.
+
+(The downward mixing mechanism of SMPTE for audio 5.1
+is defined in Table 2 of ITU-R BS.775-3.)
 
 Downmix audio 5.1 to stereo(stereophonic sound)
 

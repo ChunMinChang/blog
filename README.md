@@ -31,6 +31,9 @@ to log my working notes.
 - Explain how _weak ptr_ works and its use case
   - Implement ```WeakPtr``` and make it work with my ```RefPtr```
   - Write sample code to explain why we need to use ```WeakPtr```
+- Audio Seamless Looping
+  - Need to rewrite the ffi analyser first
+- Music Blinking LED
 - Rust
   - A Rust Library based on native C APIs
   - Understand borrowing by read-write concepts

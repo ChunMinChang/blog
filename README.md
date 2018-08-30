@@ -31,3 +31,9 @@ to log my working notes.
 - Explain how _weak ptr_ works and its use case
   - Implement ```WeakPtr``` and make it work with my ```RefPtr```
   - Write sample code to explain why we need to use ```WeakPtr```
+- Rust
+  - A Rust Library based on native C APIs
+  - Understand borrowing by read-write concepts
+  - Error passing from inner modules to outer modules
+  - Using single-element (tuple) struct to wrap native types
+  - How to use phantom data

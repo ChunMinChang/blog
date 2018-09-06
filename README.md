@@ -34,9 +34,15 @@ to log my working notes.
 - Audio Seamless Looping
   - Need to rewrite the ffi analyser first
 - Music Blinking LED
-- Rust
-  - A Rust Library based on native C APIs
-  - Understand borrowing by read-write concepts
-  - Error passing from inner modules to outer modules
-  - Using single-element (tuple) struct to wrap native types
-  - How to use phantom data
+- Rust Notes
+  - Common
+    - Understand borrowing by read-write concepts
+    - How to use phantom data
+  - Common Error
+    - Initializating with returned object in new function
+  - FFI to C library
+    - A Rust Library based on native C APIs
+    - Using single-element (tuple) struct to wrap native types
+    - How to wrap a callback from external library
+  - Taste
+    - Error passing from inner modules to outer modules

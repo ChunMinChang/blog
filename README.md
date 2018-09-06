@@ -45,4 +45,7 @@ to log my working notes.
     - Using single-element (tuple) struct to wrap native types
     - How to wrap a callback from external library
   - Taste
-    - Error passing from inner modules to outer modules
+    - Error Handling
+      - Error passing from inner modules to outer modules
+    - Test
+      - Embed a test module inside every module

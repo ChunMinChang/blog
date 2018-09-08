@@ -39,7 +39,7 @@ to log my working notes.
     - Understand borrowing by read-write concepts
     - How to use phantom data
   - Common Error
-    - Initializating with returned object in new function
+    - Don't use the pointers of instances that will be returned from functions
   - FFI to C library
     - A Rust Library based on native C APIs
     - Using single-element (tuple) struct to wrap native types

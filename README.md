@@ -37,6 +37,7 @@ to log my working notes.
 - Rust Notes
   - Common
     - Understand borrowing by read-write concepts
+    - How to convert a C strings to Rust strings
     - How to use phantom data
   - Common Error
     - Don't use the pointers of instances that will be returned from functions

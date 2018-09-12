@@ -33,7 +33,8 @@ to log my working notes.
   - Write sample code to explain why we need to use ```WeakPtr```
 - Audio Seamless Looping
   - Need to rewrite the ffi analyser first
-- Music Blinking LED
+- Correct the circuit of audio-source-selecotr
+- Music Reactive Blinking LED(with circuit)
 - Rust Notes
   - Common
     - Understand borrowing by read-write concepts

@@ -59,7 +59,16 @@ To compare, I also implement a [_linked list_ in _C++_][gist_c++].
   - ```nullptr``` is always a pointer type. ```NULL```(0) could cause ambiguity
     when we have functions: ```void f(int)```, ```void f(foo *)```,
     and we call ```f(NULL)```.
+    
+## References
+- [你所不知道的 C 語言：物件導向程式設計篇（共筆）][]
+- [你所不知道的 C 語言：物件導向程式設計篇 video (上)][jserv-video-ooc-A]
+- [你所不知道的 C 語言：物件導向程式設計篇 video (下)][jserv-video-ooc-B]
 
 [gist_c]: https://gist.github.com/ChunMinChang/31f11789bb859356daf05107e8fc859e "Class in C for linked-list implementation"
 [gist_c++]: https://gist.github.com/ChunMinChang/8e04130e778d77e0b30b8954cc5f2473 "Linked-list in C++"
 [why]: https://isocpp.org/wiki/faq/templates#templates-defn-vs-decl "Why can’t I separate the definition of my templates class from its declaration and put it inside a .cpp file"
+
+[jserv-ooc]: http://hackfoldr.org/dykc/https%253A%252F%252Fhackmd.io%252Fs%252FHJLyQaQMl "你所不知道的 C 語言：物件導向程式設計篇（共筆）"
+[jserv-video-ooc-A]: https://www.youtube.com/watch?v=GON5vID8srE "你所不知道的 C 語言：物件導向程式設計篇 (上)"
+[jserv-video-ooc-B]: https://www.youtube.com/watch?v=k0k9ZK64g1s "你所不知道的 C 語言：物件導向程式設計篇 (下)"

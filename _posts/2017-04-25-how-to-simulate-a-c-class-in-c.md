@@ -61,8 +61,7 @@ To compare, I also implement a [_linked list_ in _C++_][gist_c++].
     and we call ```f(NULL)```.
     
 ## References
-- [你所不知道的 C 語言：物件導向程式設計篇（共筆）]
-[jserv-ooc]
+- [你所不知道的 C 語言：物件導向程式設計篇（共筆）][jserv-ooc]
 - [你所不知道的 C 語言：物件導向程式設計篇 video (上)][jserv-video-ooc-A]
 - [你所不知道的 C 語言：物件導向程式設計篇 video (下)][jserv-video-ooc-B]
 

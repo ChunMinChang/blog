@@ -14,6 +14,8 @@ comments: true
   - Phantom data
   - Common Error
     - [Don't misuse the pointers of the instances allocated in functions stack][func-stack]
+- Multi-threading
+  - [Mutex and RwLock][multithread]
 - FFI to C library
   - [A sample Rust library based on platform C APIs][ffi-rust-lib-sample]
   - [Using single-element (tuple) struct to wrap native types][ffi-newtype]
@@ -28,6 +30,8 @@ comments: true
     - Embeding a test module inside every module
 
 [borrowed-ptr]: https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003 "Learning notes for norrowed pointers"
+
+[multithread]: https://github.com/ChunMinChang/play-multithread "Learning multithread in Rust "
 
 [func-stack]: https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29 "Don't misuse the pointers of the instances allocated in functions stack"
 

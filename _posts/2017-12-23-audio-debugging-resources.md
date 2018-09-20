@@ -6,6 +6,8 @@ tags: [Firefox, Hardware]
 mathjax: true
 comments: true
 ---
+
+# Personal Tools
 I developed some tools to speed up the process for debugging malfunctions on audio.
 A simple table shows the audio hardware information and configuration.
 A device selector let me easily switch the audio sources
@@ -74,6 +76,24 @@ There are several ideas I believe it could ease my life as a developer:
 - Cross-platform Commands Warpper providing functions like
   - Disable/Enable audio devices.
   - Generate audio samples(by FFmpeg?)
+
+
+# Public Resources
+
+- [Hydrogenaudio Knowledgebase](http://wiki.hydrogenaud.io/index.php?title=Main_Page)
+- [FFmpeg](https://github.com/FFmpeg/FFmpeg)
+  - [Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide)
+- [vlc](https://github.com/videolan/vlc)
+
+## Audio Formats
+- [Flac](https://xiph.org/flac/format.html)
+  - [FFmpeg](https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c)
+    - [Force to run flac.c by converting file format](https://stackoverflow.com/questions/23333678/ffmpeg-to-convert-from-flac-to-wav)
+  - [vlc](https://github.com/videolan/vlc/blob/cc79f1f98f89465385c595f572eee9be1ce80c03/modules/codec/flac.c)
+
+## Sample files
+- [SONY: High-Resolution music files(AAC, FLAC)](http://helpguide.sony.net/high-res/sample1/v1/en/index.html)
+- [Hyperion Records(MP3, FLAC, M4A)](http://www.hyperion-records.co.uk/testfiles.asp)
 
 [aboutsupport]: ../images/posts/media-on-Firefox-aboutsupport.png "Troubleshooting Information"
 [deviceselector]: ../images/posts/device-selector.png "Device selector"

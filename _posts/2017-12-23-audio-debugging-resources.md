@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Audio Debugging Kit
+title: Audio Debugging Resources
 category: [Media]
 tags: [Firefox, Hardware]
 mathjax: true
@@ -51,6 +51,7 @@ of the speaker by simply flipping the controller.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/heBQHew3Guc" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
 
 The circuit is super easy. It's nothing more than a switch.
+(TODO: This is wrong. Update a new one.)
 ![][deviceselector]
 
 The above circuit diagram is for stereo speaker.

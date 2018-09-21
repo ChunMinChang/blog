@@ -8,6 +8,16 @@ comments: true
 
 # Rust Notes
 
+## Learning Resources
+- Quick guide for system programmer
+  - [30 minutes of Introduction to Rust for C++ programmers](https://legacy.gitbook.com/book/vnduongthanhtung/migrate-from-c-to-rust/details)
+  - [Rust For Systems Programmers](https://github.com/nrc/r4cppp)
+- Official books
+  - [The Rust Programming Language](https://doc.rust-lang.org/book/)
+  - [The Rust Programming Language(book)](https://nostarch.com/Rust)
+  - [Programming Rust](http://shop.oreilly.com/product/0636920040385.do)
+
+## Personal Notes
 - Common
   - [Understand borrowing by read-write concepts][borrowed-ptr]
   - How to convert a C strings to Rust strings

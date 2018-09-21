@@ -94,6 +94,8 @@ There are several ideas I believe it could ease my life as a developer:
 ## Sample files
 - [SONY: High-Resolution music files(AAC, FLAC)](http://helpguide.sony.net/high-res/sample1/v1/en/index.html)
 - [Hyperion Records(MP3, FLAC, M4A)](http://www.hyperion-records.co.uk/testfiles.asp)
+- [HiRes(FLAC, including 5.1 Surround)](http://www.2l.no/hires/)
+- [Audio Check](https://www.audiocheck.net/)
 
 [aboutsupport]: ../images/posts/media-on-Firefox-aboutsupport.png "Troubleshooting Information"
 [deviceselector]: ../images/posts/device-selector.png "Device selector"

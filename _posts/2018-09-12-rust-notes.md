@@ -26,6 +26,8 @@ comments: true
     - [Don't misuse the pointers of the instances allocated in functions stack][func-stack]
 - Multi-threading
   - [Mutex and RwLock][multithread]
+- Async
+  - [oneshot](https://play.rust-lang.org/?gist=e1a1b98654c3490e81d6ff9c262824a3&version=nightly&mode=debug&edition=2018)
 - FFI to C library
   - [A sample Rust library based on platform C APIs][ffi-rust-lib-sample]
   - [Using single-element (tuple) struct to wrap native types][ffi-newtype]

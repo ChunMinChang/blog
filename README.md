@@ -36,6 +36,11 @@ to log my working notes.
 - Correct the circuit of audio-source-selecotr
 - Music Reactive Blinking LED(with circuit)
 - Rust Notes
+  - Async
+    - Read [The Future With Futures](https://asquera.de/blog/2017-03-01/the-future-with-futures/)
+    - Implement its sample code and improve them
+    - Using *Instruments* on OSX to monitor threads
+      - Check the differences between using ```futures_cpupool``` and ```thread::spawn```
   - Common
     - Understand borrowing by read-write concepts
     - How to convert a C strings to Rust strings

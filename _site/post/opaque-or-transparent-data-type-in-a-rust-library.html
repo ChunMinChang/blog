@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+
+<meta name="keywords" content="Rust">
+
+
+<!-- Begin Jekyll SEO tag v1.3.3 -->
+<title>Opaque or Transparent Data Type in a Rust Library - Peak Up</title>
+<meta property="og:title" content="Opaque or Transparent Data Type in a Rust Library" />
+<meta name="description" content="To develop a Rust library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.In summary, an interoperable data must be a transparent-type data so it can be modified by external code directly, while a non-interoperable data must be an opaque-type data to prevent its values from being changed by the external code.In this article, we will explain the above ideas in detail by using some example Rust interfaces to C.Transparent Data Type in RustBy marking a data type with #[repr(C)], the data is interoperable with C/C++ since its memory layout is guaranteed to be aligned with C. It can be called as a normal C data. For example, you can operate the data with type struct Foo from Rust#[repr(C)]struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}...#[no_mangle]pub extern &quot;C&quot; fn get_foo() -&gt; *mut Foo {    Box::into_raw(Box::new(Foo::new()))}...in C code like:typedef struct {  int32_t bar;  float baz;  uint32_t qux[5];} Foo;...Foo* foo = get_foo();foo-&gt;qux[1] = 100;...Opaque Data Type in RustFor a non-interoperable data, we can just pass a pointer to its memory address with type *void. Without the knowledge of the underlaying data’s memory layout, C/C++ code cannot do anything.// No `#[repr(C)]` here!struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}...#[no_mangle]pub extern &quot;C&quot; fn get_foo() -&gt; *mut c_void {    Box::into_raw(Box::new(Foo::new())) as *mut _}......void* foo = get_foo();// Cannot do anything with `foo` without knowing the memory layout under this// void pointer....Even the data type is known, it’s unwise to cast the *void to a corresponding C data type since the memory layout may be different. That is, the memory layout of the following struct Foo in Rust:// No `#[repr(C)]` here!struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}may be different from the the following struct Foo in Ctypedef struct {  int32_t bar;  float baz;  uint32_t qux[5];} Foo;Therefore, it’s dangerous to cast a void pointer converted by a Rust-style Foo pointer to a C-style Foo pointer to operate it, without marking struct Foo with #[repr(C)] in Rust....Foo* foo = (Foo*) get_foo();foo-&gt;qux[1] = 100; // This is very likely to fail!...Why we need to use Opaque Data TypeThe reason why we need to use a opaque data type is well described in Opaque pointer and Opaque data type on Wiki page. In brief, it gives us the flexibility to change the underlying implementation without changing the interface or the need to recompile the code using the hidden data.For example, the following C code...void* res = get_resource();...set_something_to_resource(res, ...)...based on the following Rust codestruct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}impl Foo {  fn new() -&gt; Self {      ...  }}trait SetSomething {    fn set_something(...);}impl SetSomething for Foo {    fn set_something(...) {        ...    }}...#[no_mangle]pub extern &quot;C&quot; fn get_resource() -&gt; *mut c_void {    Box::into_raw(Box::new(Foo::new())) as *mut _}#[no_mangle]pub extern &quot;C&quot; fn set_something_to_resource(ptr: *mut c_void, ...) {    let foo = unsafe { &amp;mut *(ptr as *mut Foo) };    foo.set_something(...);    ...}...doesn’t need to be modified if we change the Rust code intostruct Bar {    foo: u32,    baz: f64,    qux: [i32; 10],}impl Bar {  fn new() -&gt; Self {      ...  }}trait SetSomething {    fn set_something(...);}impl SetSomething for Bar {    fn set_something(...) {        ...    }}...#[no_mangle]pub extern &quot;C&quot; fn get_resource() -&gt; *mut c_void {    Box::into_raw(Box::new(Bar::new())) as *mut _}#[no_mangle]pub extern &quot;C&quot; fn set_something_to_resource(ptr: *mut c_void, ...) {    let bar = unsafe { &amp;mut *(ptr as *mut Bar) };    bar.set_something(...);    ...}..." />
+<meta property="og:description" content="To develop a Rust library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.In summary, an interoperable data must be a transparent-type data so it can be modified by external code directly, while a non-interoperable data must be an opaque-type data to prevent its values from being changed by the external code.In this article, we will explain the above ideas in detail by using some example Rust interfaces to C.Transparent Data Type in RustBy marking a data type with #[repr(C)], the data is interoperable with C/C++ since its memory layout is guaranteed to be aligned with C. It can be called as a normal C data. For example, you can operate the data with type struct Foo from Rust#[repr(C)]struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}...#[no_mangle]pub extern &quot;C&quot; fn get_foo() -&gt; *mut Foo {    Box::into_raw(Box::new(Foo::new()))}...in C code like:typedef struct {  int32_t bar;  float baz;  uint32_t qux[5];} Foo;...Foo* foo = get_foo();foo-&gt;qux[1] = 100;...Opaque Data Type in RustFor a non-interoperable data, we can just pass a pointer to its memory address with type *void. Without the knowledge of the underlaying data’s memory layout, C/C++ code cannot do anything.// No `#[repr(C)]` here!struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}...#[no_mangle]pub extern &quot;C&quot; fn get_foo() -&gt; *mut c_void {    Box::into_raw(Box::new(Foo::new())) as *mut _}......void* foo = get_foo();// Cannot do anything with `foo` without knowing the memory layout under this// void pointer....Even the data type is known, it’s unwise to cast the *void to a corresponding C data type since the memory layout may be different. That is, the memory layout of the following struct Foo in Rust:// No `#[repr(C)]` here!struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}may be different from the the following struct Foo in Ctypedef struct {  int32_t bar;  float baz;  uint32_t qux[5];} Foo;Therefore, it’s dangerous to cast a void pointer converted by a Rust-style Foo pointer to a C-style Foo pointer to operate it, without marking struct Foo with #[repr(C)] in Rust....Foo* foo = (Foo*) get_foo();foo-&gt;qux[1] = 100; // This is very likely to fail!...Why we need to use Opaque Data TypeThe reason why we need to use a opaque data type is well described in Opaque pointer and Opaque data type on Wiki page. In brief, it gives us the flexibility to change the underlying implementation without changing the interface or the need to recompile the code using the hidden data.For example, the following C code...void* res = get_resource();...set_something_to_resource(res, ...)...based on the following Rust codestruct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}impl Foo {  fn new() -&gt; Self {      ...  }}trait SetSomething {    fn set_something(...);}impl SetSomething for Foo {    fn set_something(...) {        ...    }}...#[no_mangle]pub extern &quot;C&quot; fn get_resource() -&gt; *mut c_void {    Box::into_raw(Box::new(Foo::new())) as *mut _}#[no_mangle]pub extern &quot;C&quot; fn set_something_to_resource(ptr: *mut c_void, ...) {    let foo = unsafe { &amp;mut *(ptr as *mut Foo) };    foo.set_something(...);    ...}...doesn’t need to be modified if we change the Rust code intostruct Bar {    foo: u32,    baz: f64,    qux: [i32; 10],}impl Bar {  fn new() -&gt; Self {      ...  }}trait SetSomething {    fn set_something(...);}impl SetSomething for Bar {    fn set_something(...) {        ...    }}...#[no_mangle]pub extern &quot;C&quot; fn get_resource() -&gt; *mut c_void {    Box::into_raw(Box::new(Bar::new())) as *mut _}#[no_mangle]pub extern &quot;C&quot; fn set_something_to_resource(ptr: *mut c_void, ...) {    let bar = unsafe { &amp;mut *(ptr as *mut Bar) };    bar.set_something(...);    ...}..." />
+<link rel="canonical" href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" />
+<meta property="og:url" content="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" />
+<meta property="og:site_name" content="Peak Up" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-24T00:00:00+08:00" />
+<link rel="prev" href="http://localhost:4000/post/rust-notes" title="My Rust Notes" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Opaque or Transparent Data Type in a Rust Library",
+    "datePublished": "2018-09-24T00:00:00+08:00",
+    "description": "To develop a Rust library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.In summary, an interoperable data must be a transparent-type data so it can be modified by external code directly, while a non-interoperable data must be an opaque-type data to prevent its values from being changed by the external code.In this article, we will explain the above ideas in detail by using some example Rust interfaces to C.Transparent Data Type in RustBy marking a data type with #[repr(C)], the data is interoperable with C/C++ since its memory layout is guaranteed to be aligned with C. It can be called as a normal C data. For example, you can operate the data with type struct Foo from Rust#[repr(C)]struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}...#[no_mangle]pub extern &quot;C&quot; fn get_foo() -&gt; *mut Foo {    Box::into_raw(Box::new(Foo::new()))}...in C code like:typedef struct {  int32_t bar;  float baz;  uint32_t qux[5];} Foo;...Foo* foo = get_foo();foo-&gt;qux[1] = 100;...Opaque Data Type in RustFor a non-interoperable data, we can just pass a pointer to its memory address with type *void. Without the knowledge of the underlaying data’s memory layout, C/C++ code cannot do anything.// No `#[repr(C)]` here!struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}...#[no_mangle]pub extern &quot;C&quot; fn get_foo() -&gt; *mut c_void {    Box::into_raw(Box::new(Foo::new())) as *mut _}......void* foo = get_foo();// Cannot do anything with `foo` without knowing the memory layout under this// void pointer....Even the data type is known, it’s unwise to cast the *void to a corresponding C data type since the memory layout may be different. That is, the memory layout of the following struct Foo in Rust:// No `#[repr(C)]` here!struct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}may be different from the the following struct Foo in Ctypedef struct {  int32_t bar;  float baz;  uint32_t qux[5];} Foo;Therefore, it’s dangerous to cast a void pointer converted by a Rust-style Foo pointer to a C-style Foo pointer to operate it, without marking struct Foo with #[repr(C)] in Rust....Foo* foo = (Foo*) get_foo();foo-&gt;qux[1] = 100; // This is very likely to fail!...Why we need to use Opaque Data TypeThe reason why we need to use a opaque data type is well described in Opaque pointer and Opaque data type on Wiki page. In brief, it gives us the flexibility to change the underlying implementation without changing the interface or the need to recompile the code using the hidden data.For example, the following C code...void* res = get_resource();...set_something_to_resource(res, ...)...based on the following Rust codestruct Foo {    bar: i32,    baz: f32,    qux: [u32; 5],}impl Foo {  fn new() -&gt; Self {      ...  }}trait SetSomething {    fn set_something(...);}impl SetSomething for Foo {    fn set_something(...) {        ...    }}...#[no_mangle]pub extern &quot;C&quot; fn get_resource() -&gt; *mut c_void {    Box::into_raw(Box::new(Foo::new())) as *mut _}#[no_mangle]pub extern &quot;C&quot; fn set_something_to_resource(ptr: *mut c_void, ...) {    let foo = unsafe { &amp;mut *(ptr as *mut Foo) };    foo.set_something(...);    ...}...doesn’t need to be modified if we change the Rust code intostruct Bar {    foo: u32,    baz: f64,    qux: [i32; 10],}impl Bar {  fn new() -&gt; Self {      ...  }}trait SetSomething {    fn set_something(...);}impl SetSomething for Bar {    fn set_something(...) {        ...    }}...#[no_mangle]pub extern &quot;C&quot; fn get_resource() -&gt; *mut c_void {    Box::into_raw(Box::new(Bar::new())) as *mut _}#[no_mangle]pub extern &quot;C&quot; fn set_something_to_resource(ptr: *mut c_void, ...) {    let bar = unsafe { &amp;mut *(ptr as *mut Bar) };    bar.set_something(...);    ...}...",
+    "logo": "http://localhost:4000mountain.png",
+    "url": "http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Peak Up" />
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/font-awesome.min.css" />
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
+
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/favicons/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/favicons/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/favicons/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/favicons/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">
+
+    
+<div class="search-wrapper">
+    <div class="search-form">
+        <input type="text" id="search-input" class="search-field" placeholder="Search...">
+        <i id="search-close" class="fa fa-times-circle"></i>
+        <h4>Search results</h4>
+        <ul id="results-container" class="search-results post-list">
+        </ul>
+        <!-- /.search-results -->
+    </div>
+    <!-- /.search-form -->
+</div>
+<!-- ./search-wrapper -->
+
+
+<div id="fade"></div>
+<a id="slide" class="animated fade">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+</a>
+<aside id="sidebar">
+    <nav id="navigation">
+        <h2>MENU</h2>
+        <hr>
+        <ul> 
+            <li>
+                <a href="http://localhost:4000/"><!-- <i class="fa fa-home"></i>&nbsp;-->Home</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/categories"><!-- <i class="fa fa-sitemap"></i>&nbsp;-->Categories</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/tags"><!-- <i class="fa fa-tags"></i>&nbsp;-->Tags</a>  </li>
+            
+            <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+        </ul>
+    </nav>
+</aside>
+
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom" style="background-image: url(http://localhost:4000/images/background/yosemite/yosemite-tiny.jpg)"
+    itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <button class="menu-button animated fade dosearch">
+        <i class="fa fa-search"></i>
+    </button>
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="http://localhost:4000/" itemprop="url">
+                <img itemprop="logo" src="http://localhost:4000/images/mountain.png" alt="Peak Up Logo" />
+                <h1 class="blog-title light" itemprop="name">
+                    Peak Up
+                </h1>
+            </a>
+        </div>
+    </div>
+
+
+
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path> -->
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+
+</header>
+
+
+    <div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+        <div class="container">
+            <div class="row">
+                <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+                
+                
+                
+                
+
+                    <header class="post-header entry-header">
+
+                    
+
+                    
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">
+                        
+                            
+                        
+                        
+                        
+
+                        
+                            Opaque or Transparent Data Type in a Rust Library
+                        </h1>
+                    
+
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+
+                            <div class="post-info text-center small">
+                            
+                                <span class="entry-date date published updated">
+                            
+                            
+                                    <time datetime="2018-09-24T00:00:00+08:00" class="post-time" itemprop="datePublished">24 Sep 2018</time>
+                                </span>
+                            
+
+                                in <span class="post-tags">
+
+                            
+                                    <a href="http://localhost:4000/categories/index.html#Common" data-toggle="tooltip" title="Other posts from the Common category" rel="tag">Common</a>
+                                
+                            
+                                </span>
+                            
+                            &nbsp;
+                                <span class="post-tags"><i class="fa fa-clock-o"></i>&nbsp;
+
+                            
+
+                            
+                                    <span class="time">3.9</span> minutes read
+                            
+                                
+                            
+
+                                </span>
+                            
+                            </div>
+
+                    </header>
+
+                    <div class="post-body bordered-bottom" itemprop="description">
+                    
+
+                        <p>To develop a <em>Rust</em> library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.</p>
+
+<p>In summary, an interoperable data must be a transparent-type data so it can be modified by external code directly, while a non-interoperable data must be an opaque-type data to prevent its values from being changed by the external code.</p>
+
+<p>In this article, we will explain the above ideas in detail by using some example <em>Rust</em> interfaces to <em>C</em>.</p>
+
+<h2 id="transparent-data-type-in-rust">Transparent Data Type in Rust</h2>
+<p>By marking a data type with <code class="highlighter-rouge">#[repr(C)]</code>, the data is interoperable with <em>C/C++</em> since its memory layout is guaranteed to be aligned with <em>C</em>. It can be called as a normal <em>C</em> data. For example, you can operate the data with type <code class="highlighter-rouge">struct Foo</code> from <em>Rust</em></p>
+<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="err">#</span><span class="p">[</span><span class="nf">repr</span><span class="p">(</span><span class="n">C</span><span class="p">)]</span>
+<span class="k">struct</span> <span class="n">Foo</span> <span class="p">{</span>
+    <span class="n">bar</span><span class="p">:</span> <span class="nb">i32</span><span class="p">,</span>
+    <span class="n">baz</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+    <span class="n">qux</span><span class="p">:</span> <span class="p">[</span><span class="nb">u32</span><span class="p">;</span> <span class="mi">5</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="err">...</span>
+
+<span class="cp">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">get_foo</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">*</span><span class="k">mut</span> <span class="n">Foo</span> <span class="p">{</span>
+    <span class="nn">Box</span><span class="p">::</span><span class="nf">into_raw</span><span class="p">(</span><span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="nn">Foo</span><span class="p">::</span><span class="nf">new</span><span class="p">()))</span>
+<span class="p">}</span>
+
+<span class="err">...</span>
+</code></pre>
+</div>
+<p>in <em>C</em> code like:</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">int32_t</span> <span class="n">bar</span><span class="p">;</span>
+  <span class="kt">float</span> <span class="n">baz</span><span class="p">;</span>
+  <span class="kt">uint32_t</span> <span class="n">qux</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">Foo</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="n">Foo</span><span class="o">*</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">get_foo</span><span class="p">();</span>
+<span class="n">foo</span><span class="o">-&gt;</span><span class="n">qux</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+
+<span class="p">...</span>
+</code></pre>
+</div>
+
+<h2 id="opaque-data-type-in-rust">Opaque Data Type in Rust</h2>
+<p>For a non-interoperable data, we can just pass a pointer to its memory address with type <code class="highlighter-rouge">*void</code>. Without the knowledge of the underlaying data’s memory layout, <em>C/C++</em> code cannot do anything.</p>
+
+<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="c">// No `#[repr(C)]` here!</span>
+<span class="k">struct</span> <span class="n">Foo</span> <span class="p">{</span>
+    <span class="n">bar</span><span class="p">:</span> <span class="nb">i32</span><span class="p">,</span>
+    <span class="n">baz</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+    <span class="n">qux</span><span class="p">:</span> <span class="p">[</span><span class="nb">u32</span><span class="p">;</span> <span class="mi">5</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="err">...</span>
+
+<span class="cp">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">get_foo</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">*</span><span class="k">mut</span> <span class="nb">c_void</span> <span class="p">{</span>
+    <span class="nn">Box</span><span class="p">::</span><span class="nf">into_raw</span><span class="p">(</span><span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="nn">Foo</span><span class="p">::</span><span class="nf">new</span><span class="p">()))</span> <span class="k">as</span> <span class="o">*</span><span class="k">mut</span> <span class="n">_</span>
+<span class="p">}</span>
+
+<span class="err">...</span>
+</code></pre>
+</div>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
+
+<span class="kt">void</span><span class="o">*</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">get_foo</span><span class="p">();</span>
+<span class="c1">// Cannot do anything with `foo` without knowing the memory layout under this
+// void pointer.
+</span>
+<span class="p">...</span>
+</code></pre>
+</div>
+<p>Even the data type is known, it’s unwise to cast the <code class="highlighter-rouge">*void</code> to a corresponding <em>C</em> data type since the memory layout may be different. That is, the memory layout of the following <code class="highlighter-rouge">struct Foo</code> in <em>Rust</em>:</p>
+<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="c">// No `#[repr(C)]` here!</span>
+<span class="k">struct</span> <span class="n">Foo</span> <span class="p">{</span>
+    <span class="n">bar</span><span class="p">:</span> <span class="nb">i32</span><span class="p">,</span>
+    <span class="n">baz</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+    <span class="n">qux</span><span class="p">:</span> <span class="p">[</span><span class="nb">u32</span><span class="p">;</span> <span class="mi">5</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>may be different from the the following <code class="highlighter-rouge">struct Foo</code> in <em>C</em></p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">int32_t</span> <span class="n">bar</span><span class="p">;</span>
+  <span class="kt">float</span> <span class="n">baz</span><span class="p">;</span>
+  <span class="kt">uint32_t</span> <span class="n">qux</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">Foo</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>Therefore, it’s dangerous to cast a <code class="highlighter-rouge">void</code> pointer converted by a <em>Rust</em>-style <code class="highlighter-rouge">Foo</code> pointer to a <em>C</em>-style <code class="highlighter-rouge">Foo</code> pointer to operate it, without marking <code class="highlighter-rouge">struct Foo</code> with <code class="highlighter-rouge">#[repr(C)]</code> in <em>Rust</em>.</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
+
+<span class="n">Foo</span><span class="o">*</span> <span class="n">foo</span> <span class="o">=</span> <span class="p">(</span><span class="n">Foo</span><span class="o">*</span><span class="p">)</span> <span class="n">get_foo</span><span class="p">();</span>
+<span class="n">foo</span><span class="o">-&gt;</span><span class="n">qux</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span> <span class="c1">// This is very likely to fail!
+</span>
+<span class="p">...</span>
+</code></pre>
+</div>
+
+<h3 id="why-we-need-to-use-opaque-data-type">Why we need to use Opaque Data Type</h3>
+
+<p>The reason why we need to use a <em>opaque data type</em> is well described in <a href="https://en.wikipedia.org/wiki/Opaque_pointer" title="Opaque pointer">Opaque pointer</a> and <a href="https://en.wikipedia.org/wiki/Opaque_data_type" title="Opaque data type">Opaque data type</a> on <em>Wiki</em> page. In brief, it gives us the flexibility to change the underlying implementation without changing the interface or the need to recompile the code using the hidden data.</p>
+
+<p>For example, the following <em>C</em> code</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
+
+<span class="kt">void</span><span class="o">*</span> <span class="n">res</span> <span class="o">=</span> <span class="n">get_resource</span><span class="p">();</span>
+
+<span class="p">...</span>
+
+<span class="n">set_something_to_resource</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">...)</span>
+
+<span class="p">...</span>
+</code></pre>
+</div>
+
+<p>based on the following <em>Rust</em> code</p>
+
+<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Foo</span> <span class="p">{</span>
+    <span class="n">bar</span><span class="p">:</span> <span class="nb">i32</span><span class="p">,</span>
+    <span class="n">baz</span><span class="p">:</span> <span class="nb">f32</span><span class="p">,</span>
+    <span class="n">qux</span><span class="p">:</span> <span class="p">[</span><span class="nb">u32</span><span class="p">;</span> <span class="mi">5</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Foo</span> <span class="p">{</span>
+  <span class="k">fn</span> <span class="nf">new</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+      <span class="err">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">trait</span> <span class="n">SetSomething</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">set_something</span><span class="p">(</span><span class="err">...</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">SetSomething</span> <span class="k">for</span> <span class="n">Foo</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">set_something</span><span class="p">(</span><span class="err">...</span><span class="p">)</span> <span class="p">{</span>
+        <span class="err">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="err">...</span>
+
+<span class="cp">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">get_resource</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">*</span><span class="k">mut</span> <span class="nb">c_void</span> <span class="p">{</span>
+    <span class="nn">Box</span><span class="p">::</span><span class="nf">into_raw</span><span class="p">(</span><span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="nn">Foo</span><span class="p">::</span><span class="nf">new</span><span class="p">()))</span> <span class="k">as</span> <span class="o">*</span><span class="k">mut</span> <span class="n">_</span>
+<span class="p">}</span>
+
+<span class="cp">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">set_something_to_resource</span><span class="p">(</span><span class="n">ptr</span><span class="p">:</span> <span class="o">*</span><span class="k">mut</span> <span class="nb">c_void</span><span class="p">,</span> <span class="err">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">foo</span> <span class="o">=</span> <span class="k">unsafe</span> <span class="p">{</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="o">*</span><span class="p">(</span><span class="n">ptr</span> <span class="k">as</span> <span class="o">*</span><span class="k">mut</span> <span class="n">Foo</span><span class="p">)</span> <span class="p">};</span>
+    <span class="n">foo</span><span class="nf">.set_something</span><span class="p">(</span><span class="err">...</span><span class="p">);</span>
+    <span class="err">...</span>
+<span class="p">}</span>
+
+<span class="err">...</span>
+</code></pre>
+</div>
+
+<p>doesn’t need to be modified if we change the <em>Rust</em> code into</p>
+<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">struct</span> <span class="n">Bar</span> <span class="p">{</span>
+    <span class="n">foo</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span>
+    <span class="n">baz</span><span class="p">:</span> <span class="nb">f64</span><span class="p">,</span>
+    <span class="n">qux</span><span class="p">:</span> <span class="p">[</span><span class="nb">i32</span><span class="p">;</span> <span class="mi">10</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">Bar</span> <span class="p">{</span>
+  <span class="k">fn</span> <span class="nf">new</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="n">Self</span> <span class="p">{</span>
+      <span class="err">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="k">trait</span> <span class="n">SetSomething</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">set_something</span><span class="p">(</span><span class="err">...</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">impl</span> <span class="n">SetSomething</span> <span class="k">for</span> <span class="n">Bar</span> <span class="p">{</span>
+    <span class="k">fn</span> <span class="nf">set_something</span><span class="p">(</span><span class="err">...</span><span class="p">)</span> <span class="p">{</span>
+        <span class="err">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="err">...</span>
+
+<span class="cp">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">get_resource</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">*</span><span class="k">mut</span> <span class="nb">c_void</span> <span class="p">{</span>
+    <span class="nn">Box</span><span class="p">::</span><span class="nf">into_raw</span><span class="p">(</span><span class="nn">Box</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="nn">Bar</span><span class="p">::</span><span class="nf">new</span><span class="p">()))</span> <span class="k">as</span> <span class="o">*</span><span class="k">mut</span> <span class="n">_</span>
+<span class="p">}</span>
+
+<span class="cp">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">set_something_to_resource</span><span class="p">(</span><span class="n">ptr</span><span class="p">:</span> <span class="o">*</span><span class="k">mut</span> <span class="nb">c_void</span><span class="p">,</span> <span class="err">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">unsafe</span> <span class="p">{</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="o">*</span><span class="p">(</span><span class="n">ptr</span> <span class="k">as</span> <span class="o">*</span><span class="k">mut</span> <span class="n">Bar</span><span class="p">)</span> <span class="p">};</span>
+    <span class="n">bar</span><span class="nf">.set_something</span><span class="p">(</span><span class="err">...</span><span class="p">);</span>
+    <span class="err">...</span>
+<span class="p">}</span>
+
+<span class="err">...</span>
+</code></pre>
+</div>
+
+
+
+                        <br>
+
+                    
+                    
+                        <div class="entry-tags text-center">
+                            <i class="fa fa-tags"></i>&nbsp;
+                                Tagged with 
+                            
+                                <a href="http://localhost:4000/tags/index.html#Rust" data-toggle="tooltip" title="Posts tagged with Rust" rel="tag">Rust</a>
+
+                                
+                            
+                        </div>
+                    
+                    </div>
+
+                    <footer class="post-footer entry-meta">
+                    
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=Opaque+or+Transparent+Data+Type+in+a+Rust+Library%20http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library%20via%20&#64;"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
+                title="Share on Twitter" itemprop="Twitter">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+                data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="fa fa-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+                data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                    
+
+                        <div class="post-author text-center">
+	<img src="http://localhost:4000/images/yosemite.png" alt="Chun-Min Chang's photo" itemprop="image" class="post-avatar img-circle img-responsive" />
+	<h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+		By <span itemprop="name" class="fn"><a href="http://localhost:4000/about" title="About Chun-Min Chang" itemprop="url">Chun-Min Chang</a></span>
+	</h4>
+	<p>I am a self-directed learner and a maker who enjoys building products from original ideas.</p>
+</div> 
+                        
+                    
+                        <div id="disqus_thread"></div><!-- /#disqus_thread -->
+                    
+                    </footer>
+
+                </article>
+            </div>
+        </div>
+    </div>
+
+    
+<footer id="footer" class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(http://localhost:4000/images/background/yosemite/yosemite-tiny.jpg)">
+
+
+    <div class="inner">
+        <div class="container">
+            <ul class="social-icons">
+                    
+                <li>
+                    <a href="https://www.linkedin.com/in/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on LinkedIn" target="_blank">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                </li>
+                   
+                <li>
+                    <a href="http://github.com/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on Github" target="_blank">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </li>
+                
+            </ul>
+            <div>
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2018 &bull;
+                All rights reserved.
+            </div>
+            <ul class="menu-items">
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/"><i class="fa fa-home"></i>&nbsp;Home</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/categories"><i class="fa fa-sitemap"></i>&nbsp;Categories</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/tags"><i class="fa fa-tags"></i>&nbsp;Tags</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <div class="decor-wrapper">
+        <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path> -->
+            <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+    
+
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.12.4.min.js"><\/script>')</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jekyll-search.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.fitvids.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.waypoints.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/main.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+<!-- Jekyll Simple Search option -->
+<script>
+
+   SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: 'http://localhost:4000/assets/json/search.json',
+        searchResultTemplate: '<li><article><a href="{url}">{title} <span class="entry-date"><time datetime="{date}">{shortdate}</time></span></a></article></li>',
+        noResultsText: '<p>Nothing found.</p>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+
+  (function( $, window, undefined ) {
+    
+     var bs = {
+          close: $("#search-close"),
+          searchform: $(".search-form"),
+          canvas: $("body"),
+          dothis: $('.dosearch')
+      };
+    
+    bs.dothis.on('click', function() {
+      $('.search-wrapper').css({ display: "block" });
+      bs.searchform.toggleClass('active');
+      bs.searchform.find('input').focus();
+      bs.canvas.toggleClass('search-overlay');
+    });
+    
+      bs.close.on('click', function() {
+        $('.search-wrapper').removeAttr( 'style' );
+        bs.searchform.toggleClass('active');
+        bs.canvas.removeClass('search-overlay');
+    });
+  })( jQuery, window );
+</script>
+
+
+ 
+
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'chunminchang-blog'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        
+</body>
+</html>

@@ -1,6 +1,24 @@
 [
   
     {
+      "title"    : "Opaque or Transparent Data Type in a Rust Library",
+      "category" : "Common",
+      "tags"     : "Rust",
+      "url"      : "/post/opaque-or-transparent-data-type-in-a-rust-library",
+      "date"     : "2018-09-24 00:00:00 +0800",
+			"shortdate": "September 24, 2018"
+    } ,
+  
+    {
+      "title"    : "My Rust Notes",
+      "category" : "Common",
+      "tags"     : "Rust",
+      "url"      : "/post/rust-notes",
+      "date"     : "2018-09-12 00:00:00 +0800",
+			"shortdate": "September 12, 2018"
+    } ,
+  
+    {
       "title"    : "Audio 5.1",
       "category" : "Media",
       "tags"     : "Firefox",
@@ -28,10 +46,10 @@
     } ,
   
     {
-      "title"    : "Audio Debugging Kit",
+      "title"    : "Audio Debugging Resources",
       "category" : "Media",
       "tags"     : "Firefox, Hardware",
-      "url"      : "/post/audio-debugging-kit",
+      "url"      : "/post/audio-debugging-resources",
       "date"     : "2017-12-23 00:00:00 +0800",
 			"shortdate": "December 23, 2017"
     } ,

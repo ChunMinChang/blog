@@ -5,30 +5,30 @@
     <meta charset="utf-8">
 
 
-<meta name="keywords" content="Firefox, Hardware">
+<meta name="keywords" content="Rust">
 
 
 <!-- Begin Jekyll SEO tag v1.3.3 -->
-<title>Audio Debugging Kit - Peak Up</title>
-<meta property="og:title" content="Audio Debugging Kit" />
-<meta name="description" content="I developed some tools to speed up the process for debugging malfunctions on audio.A simple table shows the audio hardware information and configuration.A device selector let me easily switch the audio sourcesfrom different platforms/computers.SoftwareFirefoxKnowledge about the audio setting and its hardware information is necessarywhen we try to investigate the problems on audio.Unfortunately, it’s hard to know the audio configurationon the dysfunctional machine.It usually takes a few days to get this information from the reporters.about:supportTo reduce the workload on communication,I create a table shows the audio hardware informationon about:support in FirefoxWhen reporters file bugs, they can attach these information as wellso we don’t need to ask them for their settings.Further worksThere are some left works.I will try to arrange my time to finish them.  Show driver version of the sound card  Show unique hardware id  Integrate this info to crash reportHardwareAudio Device SelectorI need to frequently switch between computers with different OSto check the audio works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another computer again and again.Therefore, I made a device selector that can switch the audio sourcesof the speaker by simply flipping the controller.The circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo speaker.If the speaker is 5.1 or 7.1,we need to replace the 6-pin switch to 18 pin or 24-pin switch.In fact, the circuit is a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can connect two speakers to a computerand select what speaker you want to play.Future PlanThere are several ideas I believe it could ease my life as a developer:  Virtual Audio Device          Something like Soundflower but it’s cross-platformand provides APIs to install/uninstall devicesor access the buffer data for analysis.        Cross-platform Commands Warpper providing functions like          Disable/Enable audio devices.      Generate audio samples(by FFmpeg?)      " />
-<meta property="og:description" content="I developed some tools to speed up the process for debugging malfunctions on audio.A simple table shows the audio hardware information and configuration.A device selector let me easily switch the audio sourcesfrom different platforms/computers.SoftwareFirefoxKnowledge about the audio setting and its hardware information is necessarywhen we try to investigate the problems on audio.Unfortunately, it’s hard to know the audio configurationon the dysfunctional machine.It usually takes a few days to get this information from the reporters.about:supportTo reduce the workload on communication,I create a table shows the audio hardware informationon about:support in FirefoxWhen reporters file bugs, they can attach these information as wellso we don’t need to ask them for their settings.Further worksThere are some left works.I will try to arrange my time to finish them.  Show driver version of the sound card  Show unique hardware id  Integrate this info to crash reportHardwareAudio Device SelectorI need to frequently switch between computers with different OSto check the audio works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another computer again and again.Therefore, I made a device selector that can switch the audio sourcesof the speaker by simply flipping the controller.The circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo speaker.If the speaker is 5.1 or 7.1,we need to replace the 6-pin switch to 18 pin or 24-pin switch.In fact, the circuit is a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can connect two speakers to a computerand select what speaker you want to play.Future PlanThere are several ideas I believe it could ease my life as a developer:  Virtual Audio Device          Something like Soundflower but it’s cross-platformand provides APIs to install/uninstall devicesor access the buffer data for analysis.        Cross-platform Commands Warpper providing functions like          Disable/Enable audio devices.      Generate audio samples(by FFmpeg?)      " />
-<link rel="canonical" href="http://localhost:4000/post/audio-debugging-kit" />
-<meta property="og:url" content="http://localhost:4000/post/audio-debugging-kit" />
+<title>My Rust Notes - Peak Up</title>
+<meta property="og:title" content="My Rust Notes" />
+<meta name="description" content="Rust NotesLearning Resources  Quick guide for system programmer          30 minutes of Introduction to Rust for C++ programmers      Rust For Systems Programmers        Official books          The Rust Programming Language      The Rust Programming Language(book)      Programming Rust      Personal Notes  Common          Understand borrowing by read-write concepts      How to convert a C strings to Rust strings      Phantom data      Common Error                  Don’t misuse the pointers of the instances allocated in functions stack                      Multi-threading          Mutex and RwLock        Async          oneshot        FFI to C library          A sample Rust library based on platform C APIs      Using single-element (tuple) struct to wrap native types                  Size of the single-element struct          Benefits to wrap the C string          An example based on CoreAudio                    How to wrap a callback from external library        Taste          Error Handling                  Error passing from modules to modules                    Testing                  Embeding a test module inside every module                    " />
+<meta property="og:description" content="Rust NotesLearning Resources  Quick guide for system programmer          30 minutes of Introduction to Rust for C++ programmers      Rust For Systems Programmers        Official books          The Rust Programming Language      The Rust Programming Language(book)      Programming Rust      Personal Notes  Common          Understand borrowing by read-write concepts      How to convert a C strings to Rust strings      Phantom data      Common Error                  Don’t misuse the pointers of the instances allocated in functions stack                      Multi-threading          Mutex and RwLock        Async          oneshot        FFI to C library          A sample Rust library based on platform C APIs      Using single-element (tuple) struct to wrap native types                  Size of the single-element struct          Benefits to wrap the C string          An example based on CoreAudio                    How to wrap a callback from external library        Taste          Error Handling                  Error passing from modules to modules                    Testing                  Embeding a test module inside every module                    " />
+<link rel="canonical" href="http://localhost:4000/post/rust-notes" />
+<meta property="og:url" content="http://localhost:4000/post/rust-notes" />
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2017-12-23T00:00:00+08:00" />
-<link rel="next" href="http://localhost:4000/post/poor-students-are-missing-at-top-universities" title="Poor Students Are Missing at Top Universities" />
-<link rel="prev" href="http://localhost:4000/post/running-average" title="Running Average" />
+<meta property="article:published_time" content="2018-09-12T00:00:00+08:00" />
+<link rel="next" href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" title="Opaque or Transparent Data Type in a Rust Library" />
+<link rel="prev" href="http://localhost:4000/post/audio-5-1" title="Audio 5.1" />
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "Audio Debugging Kit",
-    "datePublished": "2017-12-23T00:00:00+08:00",
-    "description": "I developed some tools to speed up the process for debugging malfunctions on audio.A simple table shows the audio hardware information and configuration.A device selector let me easily switch the audio sourcesfrom different platforms/computers.SoftwareFirefoxKnowledge about the audio setting and its hardware information is necessarywhen we try to investigate the problems on audio.Unfortunately, it’s hard to know the audio configurationon the dysfunctional machine.It usually takes a few days to get this information from the reporters.about:supportTo reduce the workload on communication,I create a table shows the audio hardware informationon about:support in FirefoxWhen reporters file bugs, they can attach these information as wellso we don’t need to ask them for their settings.Further worksThere are some left works.I will try to arrange my time to finish them.  Show driver version of the sound card  Show unique hardware id  Integrate this info to crash reportHardwareAudio Device SelectorI need to frequently switch between computers with different OSto check the audio works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another computer again and again.Therefore, I made a device selector that can switch the audio sourcesof the speaker by simply flipping the controller.The circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo speaker.If the speaker is 5.1 or 7.1,we need to replace the 6-pin switch to 18 pin or 24-pin switch.In fact, the circuit is a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can connect two speakers to a computerand select what speaker you want to play.Future PlanThere are several ideas I believe it could ease my life as a developer:  Virtual Audio Device          Something like Soundflower but it’s cross-platformand provides APIs to install/uninstall devicesor access the buffer data for analysis.        Cross-platform Commands Warpper providing functions like          Disable/Enable audio devices.      Generate audio samples(by FFmpeg?)      ",
+    "headline": "My Rust Notes",
+    "datePublished": "2018-09-12T00:00:00+08:00",
+    "description": "Rust NotesLearning Resources  Quick guide for system programmer          30 minutes of Introduction to Rust for C++ programmers      Rust For Systems Programmers        Official books          The Rust Programming Language      The Rust Programming Language(book)      Programming Rust      Personal Notes  Common          Understand borrowing by read-write concepts      How to convert a C strings to Rust strings      Phantom data      Common Error                  Don’t misuse the pointers of the instances allocated in functions stack                      Multi-threading          Mutex and RwLock        Async          oneshot        FFI to C library          A sample Rust library based on platform C APIs      Using single-element (tuple) struct to wrap native types                  Size of the single-element struct          Benefits to wrap the C string          An example based on CoreAudio                    How to wrap a callback from external library        Taste          Error Handling                  Error passing from modules to modules                    Testing                  Embeding a test module inside every module                    ",
     "logo": "http://localhost:4000mountain.png",
-    "url": "http://localhost:4000/post/audio-debugging-kit"
+    "url": "http://localhost:4000/post/rust-notes"
   }
 </script>
 <!-- End Jekyll SEO tag -->
@@ -48,33 +48,6 @@
 <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
 <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
 
-
-<!--Load Mathjax-->
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-        MathJax.Hub.Config({
-            config: ["MMLorHTML.js"],
-            extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
-            jax: ["input/TeX"],
-            tex2jax: {
-                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                processEscapes: false
-            },
-            TeX: {
-                TagSide: "right",
-                TagIndent: ".8em",
-                MultLineWidth: "85%",
-                equationNumbers: {
-                   autoNumber: "AMS",
-                },
-                unicode: {
-                   fonts: "STIXGeneral,'Arial Unicode MS'"
-                }
-            },
-            showProcessingMessages: false
-        });
-</script>
 
 
 
@@ -197,7 +170,7 @@
                         
 
                         
-                            Audio Debugging Kit
+                            My Rust Notes
                         </h1>
                     
 
@@ -208,14 +181,14 @@
                                 <span class="entry-date date published updated">
                             
                             
-                                    <time datetime="2017-12-23T00:00:00+08:00" class="post-time" itemprop="datePublished">23 Dec 2017</time>
+                                    <time datetime="2018-09-12T00:00:00+08:00" class="post-time" itemprop="datePublished">12 Sep 2018</time>
                                 </span>
                             
 
                                 in <span class="post-tags">
 
                             
-                                    <a href="http://localhost:4000/categories/index.html#Media" data-toggle="tooltip" title="Other posts from the Media category" rel="tag">Media</a>
+                                    <a href="http://localhost:4000/categories/index.html#Common" data-toggle="tooltip" title="Other posts from the Common category" rel="tag">Common</a>
                                 
                             
                                 </span>
@@ -226,9 +199,9 @@
                             
 
                             
-                                    <span class="time">1.9777777777777779</span> minutes read
-                            
                                 
+                            
+                                    Less than 1 minute read
                             
 
                                 </span>
@@ -240,80 +213,74 @@
                     <div class="post-body bordered-bottom" itemprop="description">
                     
 
-                        <p>I developed some tools to speed up the process for debugging malfunctions on audio.
-A simple table shows the audio hardware information and configuration.
-A device selector let me easily switch the audio sources
-from different platforms/computers.</p>
+                        <h1 id="rust-notes">Rust Notes</h1>
 
-<h2 id="software">Software</h2>
-
-<h3 id="firefox">Firefox</h3>
-<p>Knowledge about the audio setting and its hardware information is necessary
-when we try to investigate the problems on audio.
-Unfortunately, it’s hard to know the audio configuration
-on the dysfunctional machine.
-It usually takes a few days to get this information from the reporters.</p>
-
-<h4 id="aboutsupport">about:support</h4>
-<p>To reduce the workload on communication,
-I create a table shows the audio hardware information
-on <strong>about:support</strong> in Firefox</p>
-
-<p><img src="../images/posts/media-on-Firefox-aboutsupport.png" alt="" title="Troubleshooting Information" /></p>
-
-<p>When reporters file bugs, they can attach these information as well
-so we don’t need to ask them for their settings.</p>
-
-<h5 id="further-works">Further works</h5>
-<p>There are some left works.
-I will try to arrange my time to finish them.</p>
-
+<h2 id="learning-resources">Learning Resources</h2>
 <ul>
-  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1378633" title="Bug 1378633 - Add a new Cubeb API to get the hardware name, driver name and version of the sound card">Show driver version of the sound card</a></li>
-  <li>Show unique hardware id</li>
-  <li>Integrate this info to crash report</li>
-</ul>
-
-<h2 id="hardware">Hardware</h2>
-
-<h3 id="audio-device-selector">Audio Device Selector</h3>
-<p>I need to frequently switch between computers with different OS
-to check the audio works on different platforms.
-It’s annoying to unconnect the speaker from one computer
-and then connect it to another computer again and again.
-Therefore, I made a device selector that can switch the audio sources
-of the speaker by simply flipping the controller.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/heBQHew3Guc" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen=""></iframe>
-
-<p>The circuit is super easy. It’s nothing more than a switch.
-<img src="../images/posts/device-selector.png" alt="" title="Device selector" /></p>
-
-<p>The above circuit diagram is for stereo speaker.
-If the speaker is 5.1 or 7.1,
-we need to replace the 6-pin switch to 18 pin or 24-pin switch.</p>
-
-<p>In fact, the circuit is a simple track selector,
-so it’s not only an audio source selector for a speaker,
-but also a speaker switcher for a computer.
-That is, you can connect two speakers to a computer
-and select what speaker you want to play.</p>
-
-<h2 id="future-plan">Future Plan</h2>
-
-<p>There are several ideas I believe it could ease my life as a developer:</p>
-<ul>
-  <li>Virtual Audio Device
+  <li>Quick guide for system programmer
     <ul>
-      <li>Something like <a href="https://github.com/akhudek/Soundflower" title="Soundflower">Soundflower</a> but it’s cross-platform
-and provides APIs to install/uninstall devices
-or access the buffer data for analysis.</li>
+      <li><a href="https://legacy.gitbook.com/book/vnduongthanhtung/migrate-from-c-to-rust/details">30 minutes of Introduction to Rust for C++ programmers</a></li>
+      <li><a href="https://github.com/nrc/r4cppp">Rust For Systems Programmers</a></li>
     </ul>
   </li>
-  <li>Cross-platform Commands Warpper providing functions like
+  <li>Official books
     <ul>
-      <li>Disable/Enable audio devices.</li>
-      <li>Generate audio samples(by FFmpeg?)</li>
+      <li><a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a></li>
+      <li><a href="https://nostarch.com/Rust">The Rust Programming Language(book)</a></li>
+      <li><a href="http://shop.oreilly.com/product/0636920040385.do">Programming Rust</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="personal-notes">Personal Notes</h2>
+<ul>
+  <li>Common
+    <ul>
+      <li><a href="https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003" title="Learning notes for norrowed pointers">Understand borrowing by read-write concepts</a></li>
+      <li>How to convert a C strings to Rust strings</li>
+      <li>Phantom data</li>
+      <li>Common Error
+        <ul>
+          <li><a href="https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29" title="Don't misuse the pointers of the instances allocated in functions stack">Don’t misuse the pointers of the instances allocated in functions stack</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Multi-threading
+    <ul>
+      <li><a href="https://github.com/ChunMinChang/play-multithread" title="Learning multithread in Rust ">Mutex and RwLock</a></li>
+    </ul>
+  </li>
+  <li>Async
+    <ul>
+      <li><a href="https://play.rust-lang.org/?gist=e1a1b98654c3490e81d6ff9c262824a3&amp;version=nightly&amp;mode=debug&amp;edition=2018">oneshot</a></li>
+    </ul>
+  </li>
+  <li>FFI to C library
+    <ul>
+      <li><a href="https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master" title="rust-audio-lib-sample">A sample Rust library based on platform C APIs</a></li>
+      <li><a href="https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461" title="Using single-element (tuple) struct to wrap native types">Using single-element (tuple) struct to wrap native types</a>
+        <ul>
+          <li><a href="https://gist.github.com/ChunMinChang/b76a61273374a1530bc4d6f3be6a7761" title="Size of the single-element struct">Size of the single-element struct</a></li>
+          <li><a href="https://gist.github.com/ChunMinChang/25f3608c285f1abf2a5c289d5f758427" title="Using single-element (tuple) struct to wrap C strings">Benefits to wrap the C string</a></li>
+          <li><a href="https://gist.github.com/ChunMinChang/07b806cb6a9ea1136cb3cbd8cda6c806" title="Using single-element (tuple) struct to CoreAudio types">An example based on CoreAudio</a></li>
+        </ul>
+      </li>
+      <li><a href="https://gist.github.com/ChunMinChang/8a22f8a1308b6e0a600e22c4629b2175" title="A counterexample to register the callback functions to the external libraries">How to wrap a callback from external library</a></li>
+    </ul>
+  </li>
+  <li>Taste
+    <ul>
+      <li>Error Handling
+        <ul>
+          <li><a href="https://gist.github.com/ChunMinChang/92d0006fb9fe35abcabff6983d31f0da" title="Error passing from modules to modules">Error passing from modules to modules</a></li>
+        </ul>
+      </li>
+      <li>Testing
+        <ul>
+          <li>Embeding a test module inside every module</li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ul>
@@ -328,13 +295,7 @@ or access the buffer data for analysis.</li>
                             <i class="fa fa-tags"></i>&nbsp;
                                 Tagged with 
                             
-                                <a href="http://localhost:4000/tags/index.html#Firefox" data-toggle="tooltip" title="Posts tagged with Firefox" rel="tag">Firefox</a>
-
-                                
-                                &nbsp;&bull;&nbsp;
-                                
-                            
-                                <a href="http://localhost:4000/tags/index.html#Hardware" data-toggle="tooltip" title="Posts tagged with Hardware" rel="tag">Hardware</a>
+                                <a href="http://localhost:4000/tags/index.html#Rust" data-toggle="tooltip" title="Posts tagged with Rust" rel="tag">Rust</a>
 
                                 
                             
@@ -350,20 +311,20 @@ or access the buffer data for analysis.</li>
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=Audio+Debugging+Kit%20http://localhost:4000/post/audio-debugging-kit%20via%20&#64;"
+            <a href="https://twitter.com/intent/tweet?text=My+Rust+Notes%20http://localhost:4000/post/rust-notes%20via%20&#64;"
                 onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
                 title="Share on Twitter" itemprop="Twitter">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
         <li>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/audio-debugging-kit" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/rust-notes" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
                 data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="fa fa-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=http://localhost:4000/post/audio-debugging-kit" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/rust-notes" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
                 data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="fa fa-google-plus"></i>
             </a>

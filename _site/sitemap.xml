@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</loc>
+<lastmod>2018-09-24T00:00:00+08:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/post/rust-notes</loc>
+<lastmod>2018-09-12T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/post/audio-5-1</loc>
 <lastmod>2018-01-23T00:00:00+08:00</lastmod>
 </url>
@@ -13,7 +21,7 @@
 <lastmod>2017-12-27T00:00:00+08:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/post/audio-debugging-kit</loc>
+<loc>http://localhost:4000/post/audio-debugging-resources</loc>
 <lastmod>2017-12-23T00:00:00+08:00</lastmod>
 </url>
 <url>
@@ -164,6 +172,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/archive/tag/tzchien%25E6%2585%2588%25E8%25AC%2599/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/archive/tag/rust/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/archive/category/algorithm/</loc>

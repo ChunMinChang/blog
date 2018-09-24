@@ -31,3 +31,28 @@ to log my working notes.
 - Explain how _weak ptr_ works and its use case
   - Implement ```WeakPtr``` and make it work with my ```RefPtr```
   - Write sample code to explain why we need to use ```WeakPtr```
+- Audio Seamless Looping
+  - Need to rewrite the ffi analyser first
+- Correct the circuit of audio-source-selecotr
+- Music Reactive Blinking LED(with circuit)
+- Rust Notes
+  - Async
+    - Read [The Future With Futures](https://asquera.de/blog/2017-03-01/the-future-with-futures/)
+    - Implement its sample code and improve them
+    - Using *Instruments* on OSX to monitor threads
+      - Check the differences between using ```futures_cpupool``` and ```thread::spawn```
+  - Common
+    - Understand borrowing by read-write concepts
+    - How to convert a C strings to Rust strings
+    - How to use phantom data
+  - Common Error
+    - Don't use the pointers of instances that will be returned from functions
+  - FFI to C library
+    - A Rust Library based on native C APIs
+    - Using single-element (tuple) struct to wrap native types
+    - How to wrap a callback from external library
+  - Taste
+    - Error Handling
+      - Error passing from inner modules to outer modules
+    - Test
+      - Embed a test module inside every module

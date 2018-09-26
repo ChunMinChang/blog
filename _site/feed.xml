@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-26T11:48:24+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-26T11:55:06+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
 
 &lt;p&gt;To develop a &lt;em&gt;Rust&lt;/em&gt; library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.&lt;/p&gt;
 
@@ -231,6 +231,7 @@
   &lt;li&gt;&lt;em&gt;ext.h&lt;/em&gt;: Header containes the interfaces for the &lt;em&gt;Rust&lt;/em&gt; library&lt;/li&gt;
   &lt;li&gt;&lt;em&gt;sample.c&lt;/em&gt;: Sample &lt;em&gt;C&lt;/em&gt; code to operate above data&lt;/li&gt;
   &lt;li&gt;&lt;em&gt;sample.cpp&lt;/em&gt; Sample &lt;em&gt;C++&lt;/em&gt; code to operate above data&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Makefile&lt;/em&gt;: Build the sample by &lt;code class=&quot;highlighter-rouge&quot;&gt;$ make&lt;/code&gt;. Clean files by &lt;code class=&quot;highlighter-rouge&quot;&gt;$ make clean&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;resourcers&quot;&gt;resource.rs&lt;/h3&gt;
@@ -395,7 +396,23 @@ int main() {
 
   return 0;
 }&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=sample.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;]" /><category term="Rust" /><summary type="html">This post is synchronized with my gist file.
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=sample.cpp&quot;&gt; &lt;/script&gt;
+
+&lt;h3 id=&quot;makefile&quot;&gt;Makefile&lt;/h3&gt;
+&lt;noscript&gt;&lt;pre&gt;all:
+				# Build a static library from the Rust file
+				rustc --crate-type=staticlib ext.rs
+				# Compile the C file with the static library
+				# gcc -o sample-c sample.c libext.a
+				gcc -o sample-c sample.c -L. -lext
+				# g++ -o sample-cpp sample.cpp libext.a
+				g++ -o sample-cpp sample.cpp -L. -lext
+
+clean:
+				rm libext.a
+				rm sample-c
+				rm sample-cpp&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=Makefile&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;]" /><category term="Rust" /><summary type="html">This post is synchronized with my gist file.
 
 To develop a Rust library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.</summary></entry><entry><title type="html">My Rust Notes</title><link href="http://localhost:4000/post/rust-notes" rel="alternate" type="text/html" title="My Rust Notes" /><published>2018-09-12T00:00:00+08:00</published><updated>2018-09-12T00:00:00+08:00</updated><id>http://localhost:4000/post/rust-notes</id><content type="html" xml:base="http://localhost:4000/post/rust-notes">&lt;h1 id=&quot;rust-notes&quot;&gt;Rust Notes&lt;/h1&gt;
 

@@ -229,6 +229,7 @@ The real-world example I've seen is [*Handle* class][handle]. [Here][stkovfl] is
 - *ext.h*: Header containes the interfaces for the *Rust* library
 - *sample.c*: Sample *C* code to operate above data
 - *sample.cpp* Sample *C++* code to operate above data
+- *Makefile*: Build the sample by ```$ make```. Clean files by ```$ make clean```
 
 [opa-data-type]: https://en.wikipedia.org/wiki/Opaque_data_type "Opaque data type"
 [opa-ptr]: https://en.wikipedia.org/wiki/Opaque_pointer "Opaque pointer"
@@ -252,5 +253,8 @@ The real-world example I've seen is [*Handle* class][handle]. [Here][stkovfl] is
 
 ### sample.cpp
 {% gist ChunMinChang/beb8db168260166e8f4759f97c7a11c7 sample.cpp %}
+
+### Makefile
+{% gist ChunMinChang/beb8db168260166e8f4759f97c7a11c7 Makefile %}
 
 [gist]: https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7 "Opaque or Transparent Data Type in a Rust Library"

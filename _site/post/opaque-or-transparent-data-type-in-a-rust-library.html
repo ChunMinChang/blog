@@ -198,7 +198,7 @@
                             
 
                             
-                                    <span class="time">7.8277777777777775</span> minutes read
+                                    <span class="time">8.2</span> minutes read
                             
                                 
                             
@@ -445,6 +445,7 @@
   <li><em>ext.h</em>: Header containes the interfaces for the <em>Rust</em> library</li>
   <li><em>sample.c</em>: Sample <em>C</em> code to operate above data</li>
   <li><em>sample.cpp</em> Sample <em>C++</em> code to operate above data</li>
+  <li><em>Makefile</em>: Build the sample by <code class="highlighter-rouge">$ make</code>. Clean files by <code class="highlighter-rouge">$ make clean</code></li>
 </ul>
 
 <h3 id="resourcers">resource.rs</h3>
@@ -610,6 +611,22 @@ int main() {
   return 0;
 }</pre></noscript>
 <script src="https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=sample.cpp"> </script>
+
+<h3 id="makefile">Makefile</h3>
+<noscript><pre>all:
+				# Build a static library from the Rust file
+				rustc --crate-type=staticlib ext.rs
+				# Compile the C file with the static library
+				# gcc -o sample-c sample.c libext.a
+				gcc -o sample-c sample.c -L. -lext
+				# g++ -o sample-cpp sample.cpp libext.a
+				g++ -o sample-cpp sample.cpp -L. -lext
+
+clean:
+				rm libext.a
+				rm sample-c
+				rm sample-cpp</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=Makefile"> </script>
 
 
 

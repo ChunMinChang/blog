@@ -1,11 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-24T13:05:45+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;To develop a &lt;em&gt;Rust&lt;/em&gt; library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-26T11:48:24+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
 
-&lt;p&gt;In summary, an interoperable data must be a transparent-type data so it can be modified by external code directly, while a non-interoperable data must be an opaque-type data to prevent its values from being changed by the external code.&lt;/p&gt;
+&lt;p&gt;To develop a &lt;em&gt;Rust&lt;/em&gt; library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.&lt;/p&gt;
 
-&lt;p&gt;In this article, we will explain the above ideas in detail by using some example &lt;em&gt;Rust&lt;/em&gt; interfaces to &lt;em&gt;C&lt;/em&gt;.&lt;/p&gt;
+&lt;!--read more--&gt;
+
+&lt;p&gt;In summary, an interoperable data must be a transparent-type data so it can be modified by external code, while a non-interoperable data must be an opaque-type data to prevent its values from being changed by the external code directly.&lt;/p&gt;
+
+&lt;p&gt;In this article, we will explain the above ideas in detail by using &lt;em&gt;Rust-to-C&lt;/em&gt; examples.&lt;/p&gt;
 
 &lt;h2 id=&quot;transparent-data-type-in-rust&quot;&gt;Transparent Data Type in Rust&lt;/h2&gt;
-&lt;p&gt;By marking a data type with &lt;code class=&quot;highlighter-rouge&quot;&gt;#[repr(C)]&lt;/code&gt;, the data is interoperable with &lt;em&gt;C/C++&lt;/em&gt; since its memory layout is guaranteed to be aligned with &lt;em&gt;C&lt;/em&gt;. It can be called as a normal &lt;em&gt;C&lt;/em&gt; data. For example, you can operate the data with type &lt;code class=&quot;highlighter-rouge&quot;&gt;struct Foo&lt;/code&gt; from &lt;em&gt;Rust&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;By marking a data type with &lt;code class=&quot;highlighter-rouge&quot;&gt;#[repr(C)]&lt;/code&gt;, the data is interoperable with &lt;em&gt;C/C++&lt;/em&gt; since its memory layout is guaranteed to be aligned with &lt;em&gt;C&lt;/em&gt;. It can be called as a normal &lt;em&gt;C&lt;/em&gt; data. For example, we can operate the data with type &lt;code class=&quot;highlighter-rouge&quot;&gt;struct Foo&lt;/code&gt; from &lt;em&gt;Rust&lt;/em&gt;&lt;/p&gt;
 &lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;repr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -33,8 +37,8 @@
 &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
+&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Data with type `Foo` can be modified directly!
+&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -92,8 +96,10 @@
 &lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// This is very likely to fail!
-&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// This is very likely to fail since `foo-&amp;gt;qux` may point to a different
+// address as expected!
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
 &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -198,205 +204,200 @@
 
 &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;]" /><category term="Rust" /><summary type="html">To develop a Rust library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.
+&lt;/div&gt;
 
-In summary, an interoperable data must be a transparent-type data so it can be modified by external code directly, while a non-interoperable data must be an opaque-type data to prevent its values from being changed by the external code.
+&lt;p&gt;The real-world example I’ve seen is &lt;a href=&quot;https://en.wikipedia.org/wiki/Handle_(computing)&quot; title=&quot;handle classes&quot;&gt;&lt;em&gt;Handle&lt;/em&gt; class&lt;/a&gt;. &lt;a href=&quot;https://stackoverflow.com/questions/902967/what-is-a-windows-handle/902987#902987&quot; title=&quot;stackoverflow&quot;&gt;Here&lt;/a&gt; is the discussion for Windows’ &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; type. The basic idea for Windows’ &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; can be found &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/desktop/SysInfo/user-objects&quot; title=&quot;User Objects&quot;&gt;here&lt;/a&gt;. One simple example for that is to &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/desktop/fileio/opening-a-file-for-reading-or-writing&quot; title=&quot;Opening a File for Reading or Writing&quot;&gt;open a file&lt;/a&gt;.&lt;/p&gt;
 
-In this article, we will explain the above ideas in detail by using some example Rust interfaces to C.
+&lt;p&gt;&lt;a href=&quot;https://searchfox.org/mozilla-central/rev/0640ea80fbc8d48f8b197cd363e2535c95a15eb3/dom/media/CubebUtils.cpp#89,406&quot; title=&quot;Handle for audio ipc&quot;&gt;Here&lt;/a&gt; is better example for us. This &lt;a href=&quot;https://searchfox.org/mozilla-central/rev/0640ea80fbc8d48f8b197cd363e2535c95a15eb3/dom/media/CubebUtils.cpp#89,406&quot; title=&quot;Handle for audio ipc&quot;&gt;example&lt;/a&gt; returns a &lt;em&gt;handle&lt;/em&gt; from &lt;em&gt;Rust&lt;/em&gt; code and it will be called in &lt;em&gt;C/C++&lt;/em&gt; code. That is exactly what we want to do in this post.&lt;/p&gt;
 
-Transparent Data Type in Rust
-By marking a data type with #[repr(C)], the data is interoperable with C/C++ since its memory layout is guaranteed to be aligned with C. It can be called as a normal C data. For example, you can operate the data with type struct Foo from Rust
+&lt;h2 id=&quot;sample-code&quot;&gt;Sample Code&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;resource.rs&lt;/em&gt;: List two &lt;em&gt;Rust&lt;/em&gt; structures:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Opaque&lt;/code&gt;: This is a &lt;em&gt;opaque&lt;/em&gt; data type for external code.&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Transparent&lt;/code&gt;: This is a &lt;em&gt;transparent&lt;/em&gt; data type for external &lt;em&gt;C&lt;/em&gt; code(marked with &lt;code class=&quot;highlighter-rouge&quot;&gt;#[repr(C)]&lt;/code&gt;).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;ext.rs&lt;/em&gt;: Interface to &lt;em&gt;C&lt;/em&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Operations for &lt;em&gt;non-interoperable&lt;/em&gt; data: &lt;code class=&quot;highlighter-rouge&quot;&gt;get_opaque&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;operate_opaque&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;return_opaque&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Operations for &lt;em&gt;interoperable&lt;/em&gt; data: &lt;code class=&quot;highlighter-rouge&quot;&gt;get_transparent&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;return_transparent&lt;/code&gt;
+        &lt;ul&gt;
+          &lt;li&gt;You can operate the underlying values of the data directly!&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;ext.h&lt;/em&gt;: Header containes the interfaces for the &lt;em&gt;Rust&lt;/em&gt; library&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;sample.c&lt;/em&gt;: Sample &lt;em&gt;C&lt;/em&gt; code to operate above data&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;sample.cpp&lt;/em&gt; Sample &lt;em&gt;C++&lt;/em&gt; code to operate above data&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;resourcers&quot;&gt;resource.rs&lt;/h3&gt;
+&lt;noscript&gt;&lt;pre&gt;// Non-interoperable resource
+pub struct Opaque {
+    value: i32,
+}
+impl Opaque {
+    pub fn new() -&amp;gt; Self {
+        Opaque { value: 100 }
+    }
+    pub fn add(&amp;amp;mut self, value: i32) {
+        self.value += value;
+    }
+    pub fn get_value(&amp;amp;self) -&amp;gt; i32 {
+        self.value
+    }
+}
+impl Drop for Opaque {
+    fn drop(&amp;amp;mut self) {
+        println!(&amp;quot;drop a Opaque with value: {}&amp;quot;, self.get_value());
+    }
+}
+
+// Interoperable resource
 #[repr(C)]
-struct Foo {
-    bar: i32,
-    baz: f32,
-    qux: [u32; 5],
+pub struct Transparent {
+    value: i32,
 }
-
-...
-
-#[no_mangle]
-pub extern &quot;C&quot; fn get_foo() -&amp;gt; *mut Foo {
-    Box::into_raw(Box::new(Foo::new()))
-}
-
-...
-
-
-in C code like:
-typedef struct {
-  int32_t bar;
-  float baz;
-  uint32_t qux[5];
-} Foo;
-
-...
-
-Foo* foo = get_foo();
-foo-&amp;gt;qux[1] = 100;
-
-...
-
-
-
-Opaque Data Type in Rust
-For a non-interoperable data, we can just pass a pointer to its memory address with type *void. Without the knowledge of the underlaying data’s memory layout, C/C++ code cannot do anything.
-
-// No `#[repr(C)]` here!
-struct Foo {
-    bar: i32,
-    baz: f32,
-    qux: [u32; 5],
-}
-
-...
-
-#[no_mangle]
-pub extern &quot;C&quot; fn get_foo() -&amp;gt; *mut c_void {
-    Box::into_raw(Box::new(Foo::new())) as *mut _
-}
-
-...
-
-
-
-...
-
-void* foo = get_foo();
-// Cannot do anything with `foo` without knowing the memory layout under this
-// void pointer.
-
-...
-
-
-Even the data type is known, it’s unwise to cast the *void to a corresponding C data type since the memory layout may be different. That is, the memory layout of the following struct Foo in Rust:
-// No `#[repr(C)]` here!
-struct Foo {
-    bar: i32,
-    baz: f32,
-    qux: [u32; 5],
-}
-
-
-may be different from the the following struct Foo in C
-typedef struct {
-  int32_t bar;
-  float baz;
-  uint32_t qux[5];
-} Foo;
-
-
-
-Therefore, it’s dangerous to cast a void pointer converted by a Rust-style Foo pointer to a C-style Foo pointer to operate it, without marking struct Foo with #[repr(C)] in Rust.
-
-...
-
-Foo* foo = (Foo*) get_foo();
-foo-&amp;gt;qux[1] = 100; // This is very likely to fail!
-
-...
-
-
-
-Why we need to use Opaque Data Type
-
-The reason why we need to use a opaque data type is well described in Opaque pointer and Opaque data type on Wiki page. In brief, it gives us the flexibility to change the underlying implementation without changing the interface or the need to recompile the code using the hidden data.
-
-For example, the following C code
-
-...
-
-void* res = get_resource();
-
-...
-
-set_something_to_resource(res, ...)
-
-...
-
-
-
-based on the following Rust code
-
-struct Foo {
-    bar: i32,
-    baz: f32,
-    qux: [u32; 5],
-}
-
-impl Foo {
-  fn new() -&amp;gt; Self {
-      ...
-  }
-}
-
-trait SetSomething {
-    fn set_something(...);
-}
-
-impl SetSomething for Foo {
-    fn set_something(...) {
-        ...
+impl Transparent {
+    pub fn new() -&amp;gt; Self {
+        Transparent { value: 100 }
+    }
+    pub fn get_value(&amp;amp;self) -&amp;gt; i32 {
+        self.value
     }
 }
-
-...
-
-#[no_mangle]
-pub extern &quot;C&quot; fn get_resource() -&amp;gt; *mut c_void {
-    Box::into_raw(Box::new(Foo::new())) as *mut _
-}
-
-#[no_mangle]
-pub extern &quot;C&quot; fn set_something_to_resource(ptr: *mut c_void, ...) {
-    let foo = unsafe { &amp;amp;mut *(ptr as *mut Foo) };
-    foo.set_something(...);
-    ...
-}
-
-...
-
-
-
-doesn’t need to be modified if we change the Rust code into
-struct Bar {
-    foo: u32,
-    baz: f64,
-    qux: [i32; 10],
-}
-
-impl Bar {
-  fn new() -&amp;gt; Self {
-      ...
-  }
-}
-
-
-trait SetSomething {
-    fn set_something(...);
-}
-
-impl SetSomething for Bar {
-    fn set_something(...) {
-        ...
+impl Drop for Transparent {
+    fn drop(&amp;amp;mut self) {
+        println!(&amp;quot;drop a Transparent with value: {}&amp;quot;, self.get_value());
     }
 }
+&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=resource.rs&quot;&gt; &lt;/script&gt;
 
-...
+&lt;h3 id=&quot;extrs&quot;&gt;ext.rs&lt;/h3&gt;
+&lt;noscript&gt;&lt;pre&gt;use resource::{Opaque, Transparent};
+use std::os::raw::c_void;
+
+mod resource;
+
+// Interface to a non-interoperable resource
+type Handle = *mut c_void;
 
 #[no_mangle]
-pub extern &quot;C&quot; fn get_resource() -&amp;gt; *mut c_void {
-    Box::into_raw(Box::new(Bar::new())) as *mut _
+pub extern &amp;quot;C&amp;quot; fn get_opaque() -&amp;gt; Handle {
+    // 1. Create a Opaque instance in stack by `Opaque::new()`
+    // 2. Copy the Opaque instance from stack into heap by `Box::new(...)`
+    // 3. Consume the `Box` and return the wrapped raw pointer
+    Box::into_raw(Box::new(Opaque::new())) as *mut _
 }
 
 #[no_mangle]
-pub extern &quot;C&quot; fn set_something_to_resource(ptr: *mut c_void, ...) {
-    let bar = unsafe { &amp;amp;mut *(ptr as *mut Bar) };
-    bar.set_something(...);
-    ...
+pub extern &amp;quot;C&amp;quot; fn operate_opaque(opa: Handle, value: i32) {
+    assert!(!opa.is_null());
+    // 1. Cast a void pointer to a Opaque pointer
+    // 2. Create a mutable Opaque reference from a Opaque pointer
+    let opaque = unsafe { &amp;amp;mut *(opa as *mut Opaque) };
+    opaque.add(value);
 }
 
-...</summary></entry><entry><title type="html">My Rust Notes</title><link href="http://localhost:4000/post/rust-notes" rel="alternate" type="text/html" title="My Rust Notes" /><published>2018-09-12T00:00:00+08:00</published><updated>2018-09-12T00:00:00+08:00</updated><id>http://localhost:4000/post/rust-notes</id><content type="html" xml:base="http://localhost:4000/post/rust-notes">&lt;h1 id=&quot;rust-notes&quot;&gt;Rust Notes&lt;/h1&gt;
+#[no_mangle]
+pub extern &amp;quot;C&amp;quot; fn return_opaque(opa: Handle) {
+    assert!(!opa.is_null());
+    // 1. Cast a void pointer to a Opaque pointer
+    // 2. Construct a box from a Opaque pointer
+    let _opaque = unsafe { Box::&amp;lt;Opaque&amp;gt;::from_raw(opa as *mut _) };
+    // The box will be dropped after going out ou the scope, or you can call:
+    // drop(_opaque);
+}
+
+// Interface to a interoperable resource
+#[no_mangle]
+pub extern &amp;quot;C&amp;quot; fn get_transparent() -&amp;gt; *mut Transparent {
+    // 1. Create a Transparent instance in stack by `Transparent::new()`
+    // 2. Copy the Transparent instance from stack into heap by `Box::new(...)`
+    // 3. Consume the `Box` and return the wrapped raw pointer
+    Box::into_raw(Box::new(Transparent::new()))
+}
+
+#[no_mangle]
+pub extern &amp;quot;C&amp;quot; fn return_transparent(tran: *mut Transparent) {
+    assert!(!tran.is_null());
+    // 1. Cast a void pointer to a Transparent pointer
+    // 2. Construct a box from a Transparent pointer
+    let _transparent = unsafe { Box::&amp;lt;Transparent&amp;gt;::from_raw(tran as *mut _) };
+    // The box will be dropped after going out ou the scope, or you can call:
+    // drop(_transparent);
+}&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=ext.rs&quot;&gt; &lt;/script&gt;
+
+&lt;h3 id=&quot;exth&quot;&gt;ext.h&lt;/h3&gt;
+&lt;noscript&gt;&lt;pre&gt;#if !defined(EXT_H)
+#define EXT_H
+
+#include &amp;lt;stdint.h&amp;gt; // uint32_t
+
+typedef struct {
+  uint32_t value;
+} Transparent;
+
+typedef void* Handle;
+
+#if defined(__cplusplus)
+extern &amp;quot;C&amp;quot; {
+#endif
+
+extern Transparent* get_transparent();
+extern void return_transparent(Transparent* transparent);
+
+extern Handle get_opaque();
+extern void return_opaque(Handle opaque);
+extern void operate_opaque(Handle opaque, uint32_t value);
+
+#if defined(__cplusplus)
+}
+#endif
+
+#endif // EXT_H&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=ext.h&quot;&gt; &lt;/script&gt;
+
+&lt;h3 id=&quot;samplec&quot;&gt;sample.c&lt;/h3&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;ext.h&amp;quot; // Types and in the external library
+
+int main() {
+  Transparent* transparent = get_transparent();
+  transparent-&amp;gt;value = 200;
+  return_transparent(transparent);
+  // Now transparent&amp;#39;s memory is freed and it&amp;#39;s a dangling pointer.
+
+  Handle opaque = get_opaque();
+  operate_opaque(opaque, 500);
+  return_opaque(opaque);
+  // Now opaque&amp;#39;s memory is freed and it&amp;#39;s a dangling pointer.
+
+  return 0;
+}&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=sample.c&quot;&gt; &lt;/script&gt;
+
+&lt;h3 id=&quot;samplecpp&quot;&gt;sample.cpp&lt;/h3&gt;
+&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;ext.h&amp;quot;  // Types and in the external library
+#include &amp;lt;memory&amp;gt; // std::unique_ptr
+
+int main() {
+  std::unique_ptr&amp;lt;Transparent, decltype(&amp;amp;return_transparent)&amp;gt;
+    transparent(get_transparent(), return_transparent);
+  transparent-&amp;gt;value = 200;
+
+  std::unique_ptr&amp;lt;void, decltype(&amp;amp;return_opaque)&amp;gt;
+    opaque(get_opaque(), return_opaque);
+  operate_opaque(opaque.get(), 500);
+
+  return 0;
+}&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=sample.cpp&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;]" /><category term="Rust" /><summary type="html">This post is synchronized with my gist file.
+
+To develop a Rust library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.</summary></entry><entry><title type="html">My Rust Notes</title><link href="http://localhost:4000/post/rust-notes" rel="alternate" type="text/html" title="My Rust Notes" /><published>2018-09-12T00:00:00+08:00</published><updated>2018-09-12T00:00:00+08:00</updated><id>http://localhost:4000/post/rust-notes</id><content type="html" xml:base="http://localhost:4000/post/rust-notes">&lt;h1 id=&quot;rust-notes&quot;&gt;Rust Notes&lt;/h1&gt;
 
 &lt;h2 id=&quot;learning-resources&quot;&gt;Learning Resources&lt;/h2&gt;
 &lt;ul&gt;

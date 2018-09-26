@@ -30,6 +30,7 @@ comments: true
   - [oneshot](https://play.rust-lang.org/?gist=e1a1b98654c3490e81d6ff9c262824a3&version=nightly&mode=debug&edition=2018)
 - FFI to C library
   - [A sample Rust library based on platform C APIs][ffi-rust-lib-sample]
+  - [Opaque or Transparent Data Type][ffi-opa-or-tra-data]
   - [Using single-element (tuple) struct to wrap native types][ffi-newtype]
     - [Size of the single-element struct][ffi-newtype-size]
     - [Benefits to wrap the C string][ffi-newtype-cstirng]
@@ -48,6 +49,7 @@ comments: true
 [func-stack]: https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29 "Don't misuse the pointers of the instances allocated in functions stack"
 
 [ffi-rust-lib-sample]: https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master "rust-audio-lib-sample"
+[ffi-opa-or-tra-data]: opaque-or-transparent-data-type-in-a-rust-library.md "Opaque or Transparent Data Type in a Rust Library"
 [ffi-newtype]: https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461 "Using single-element (tuple) struct to wrap native types"
 [ffi-newtype-size]: https://gist.github.com/ChunMinChang/b76a61273374a1530bc4d6f3be6a7761 "Size of the single-element struct"
 [ffi-newtype-cstirng]: https://gist.github.com/ChunMinChang/25f3608c285f1abf2a5c289d5f758427 "Using single-element (tuple) struct to wrap C strings"

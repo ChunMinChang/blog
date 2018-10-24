@@ -31,11 +31,20 @@ comments: true
 - FFI to C library
   - [A sample Rust library based on platform C APIs][ffi-rust-lib-sample]
   - [Opaque or Transparent Data Type][ffi-opa-or-tra-data]
+  - [Pass arrays from Rust to C][ffi-rs-array-2-c]
+  - [A counterexample to use the memory allocated in external library][ffi-memory]
+  - [Using reference /pointer instead of copying to get a variable-sized struct object][ffi-get-variable-sized-struct]
   - [Using single-element (tuple) struct to wrap native types][ffi-newtype]
     - [Size of the single-element struct][ffi-newtype-size]
     - [Benefits to wrap the C string][ffi-newtype-cstirng]
-    - [An example based on CoreAudio][ffi-newtype-coreaudio]
   - [How to wrap a callback from external library][ffi-callback]
+  - C, C++, Rust Examples to call C Query APIs
+    - [Basic: Wrap native type by tuple struct ][ffi-device-basic]
+    - [With String Handle][ffi-device-string]
+  - OSX
+    - [Single-element tuple structs wrapping native CoreAudio types][ffi-newtype-coreaudio]
+    - [Rust wrappers for OSX dispatch APIs][ffi-osx-dispatch]
+    - Rust wrappers for OSX CFString(Ref) APIs
 - Taste
   - Error Handling
     - [Error passing from modules to modules][error-passing]
@@ -50,10 +59,18 @@ comments: true
 
 [ffi-rust-lib-sample]: https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master "rust-audio-lib-sample"
 [ffi-opa-or-tra-data]: opaque-or-transparent-data-type-in-a-rust-library.md "Opaque or Transparent Data Type in a Rust Library"
+[ffi-rs-array-2-c]: https://gist.github.com/ChunMinChang/1e5410f3a7cb8c5bbf066e7dae09d7bc "Pass arrays from Rust to C "
+[ffi-memory]: https://gist.github.com/ChunMinChang/3f380eaced6265ab6e8dbb224bfec732 "A counterexample to use the memory allocated in external library"
+[ffi-get-variable-sized-struct]: https://gist.github.com/ChunMinChang/e8909506cfca774f623fc375fc8ee1d2 "Using reference /pointer instead of copying to get a variable-sized struct object"
 [ffi-newtype]: https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461 "Using single-element (tuple) struct to wrap native types"
 [ffi-newtype-size]: https://gist.github.com/ChunMinChang/b76a61273374a1530bc4d6f3be6a7761 "Size of the single-element struct"
 [ffi-newtype-cstirng]: https://gist.github.com/ChunMinChang/25f3608c285f1abf2a5c289d5f758427 "Using single-element (tuple) struct to wrap C strings"
 [ffi-newtype-coreaudio]: https://gist.github.com/ChunMinChang/07b806cb6a9ea1136cb3cbd8cda6c806 "Using single-element (tuple) struct to CoreAudio types"
 [ffi-callback]: https://gist.github.com/ChunMinChang/8a22f8a1308b6e0a600e22c4629b2175 "A counterexample to register the callback functions to the external libraries"
+[ffi-device-basic]: https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461 "Using single-element (tuple) struct to wrap native types"
+[ffi-device-string]: https://gist.github.com/ChunMinChang/22a30f214c97609d72f17d80740b8506 "C, C++, Rust Examples to call C-compatible Query APIs"
+
+
+[ffi-osx-dispatch]: https://gist.github.com/ChunMinChang/8d13946ebc6c95b2622466c89a0c9bcc "Rust wrappers for OSX dispatch apis"
 
 [error-passing]: https://gist.github.com/ChunMinChang/92d0006fb9fe35abcabff6983d31f0da "Error passing from modules to modules"

@@ -42,8 +42,9 @@ comments: true
     - [Basic: Wrap native type by tuple struct ][ffi-device-basic]
     - [With String Handle][ffi-device-string]
   - OSX
-    - [Single-element tuple structs wrapping native CoreAudio types][ffi-newtype-coreaudio]
+    - [Single-element tuple structs wrapping native CoreAudio types][ffi-osx-newtype-coreaudio]
     - [Rust wrappers for OSX dispatch APIs][ffi-osx-dispatch]
+    - [Rust wrappers for OSX property listner on audio devices][ffi-osx-audio-property-listener]
     - Rust wrappers for OSX CFString(Ref) APIs
 - Taste
   - Error Handling
@@ -65,12 +66,12 @@ comments: true
 [ffi-newtype]: https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461 "Using single-element (tuple) struct to wrap native types"
 [ffi-newtype-size]: https://gist.github.com/ChunMinChang/b76a61273374a1530bc4d6f3be6a7761 "Size of the single-element struct"
 [ffi-newtype-cstirng]: https://gist.github.com/ChunMinChang/25f3608c285f1abf2a5c289d5f758427 "Using single-element (tuple) struct to wrap C strings"
-[ffi-newtype-coreaudio]: https://gist.github.com/ChunMinChang/07b806cb6a9ea1136cb3cbd8cda6c806 "Using single-element (tuple) struct to CoreAudio types"
+[ffi-osx-newtype-coreaudio]: https://gist.github.com/ChunMinChang/07b806cb6a9ea1136cb3cbd8cda6c806 "Using single-element (tuple) struct to CoreAudio types"
 [ffi-callback]: https://gist.github.com/ChunMinChang/8a22f8a1308b6e0a600e22c4629b2175 "A counterexample to register the callback functions to the external libraries"
 [ffi-device-basic]: https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461 "Using single-element (tuple) struct to wrap native types"
 [ffi-device-string]: https://gist.github.com/ChunMinChang/22a30f214c97609d72f17d80740b8506 "C, C++, Rust Examples to call C-compatible Query APIs"
 
 
 [ffi-osx-dispatch]: https://gist.github.com/ChunMinChang/8d13946ebc6c95b2622466c89a0c9bcc "Rust wrappers for OSX dispatch apis"
-
+[ffi-osx-audio-property-listener]: https://gist.github.com/ChunMinChang/f0f4a71f78d1e1c6390493ab1c9d10d3 "Rust wrappers for OSX property listner on audio devices"
 [error-passing]: https://gist.github.com/ChunMinChang/92d0006fb9fe35abcabff6983d31f0da "Error passing from modules to modules"

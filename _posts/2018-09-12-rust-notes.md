@@ -20,6 +20,7 @@ comments: true
 ## Personal Notes
 - Common
   - [Understand borrowing by read-write concepts][borrowed-ptr]
+  - [Lifetime][lifetime]
   - How to convert a C strings to Rust strings
   - Phantom data
   - Common Error
@@ -53,6 +54,8 @@ comments: true
     - Embeding a test module inside every module
 
 [borrowed-ptr]: https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003 "Learning notes for norrowed pointers"
+
+[lifetime]: https://gist.github.com/ChunMinChang/e8096bc78d29b237cce3ff5f859834e7 "Lifetimes for The Rust References"
 
 [multithread]: https://github.com/ChunMinChang/play-multithread "Learning multithread in Rust "
 

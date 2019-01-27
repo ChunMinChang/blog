@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-26T12:03:07+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-01-27T13:51:39+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
 
 &lt;p&gt;To develop a &lt;em&gt;Rust&lt;/em&gt; library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.&lt;/p&gt;
 
@@ -291,12 +291,16 @@ pub extern &amp;quot;C&amp;quot; fn get_opaque() -&amp;gt; Handle {
     // 1. Create a Opaque instance in stack by `Opaque::new()`
     // 2. Copy the Opaque instance from stack into heap by `Box::new(...)`
     // 3. Consume the `Box` and return the wrapped raw pointer
-    Box::into_raw(Box::new(Opaque::new())) as *mut _
+    let boxed_opa = Box::new(Opaque::new());
+    println!(&amp;quot;leak opaque @ {:p}&amp;quot;, boxed_opa.as_ref());
+    Box::into_raw(boxed_opa) as Handle
+    // Box::into_raw(Box::new(Opaque::new())) as *mut _
 }
 
 #[no_mangle]
 pub extern &amp;quot;C&amp;quot; fn operate_opaque(opa: Handle, value: i32) {
     assert!(!opa.is_null());
+    println!(&amp;quot;operate leaked opaque @ {:p}&amp;quot;, opa);
     // 1. Cast a void pointer to a Opaque pointer
     // 2. Create a mutable Opaque reference from a Opaque pointer
     let opaque = unsafe { &amp;amp;mut *(opa as *mut Opaque) };
@@ -306,11 +310,13 @@ pub extern &amp;quot;C&amp;quot; fn operate_opaque(opa: Handle, value: i32) {
 #[no_mangle]
 pub extern &amp;quot;C&amp;quot; fn return_opaque(opa: Handle) {
     assert!(!opa.is_null());
+    println!(&amp;quot;retake leaked opaque @ {:p}&amp;quot;, opa);
     // 1. Cast a void pointer to a Opaque pointer
     // 2. Construct a box from a Opaque pointer
-    let _opaque = unsafe { Box::&amp;lt;Opaque&amp;gt;::from_raw(opa as *mut _) };
-    // The box will be dropped after going out ou the scope, or you can call:
-    // drop(_opaque);
+    let opaque = unsafe { Box::&amp;lt;Opaque&amp;gt;::from_raw(opa as *mut _ /* Opaque */) };
+    // The box will be dropped after program runs out of the scope, or we can
+    // call drop here directly.
+    drop(opaque);
 }
 
 // Interface to a interoperable resource
@@ -319,17 +325,22 @@ pub extern &amp;quot;C&amp;quot; fn get_transparent() -&amp;gt; *mut Transparent
     // 1. Create a Transparent instance in stack by `Transparent::new()`
     // 2. Copy the Transparent instance from stack into heap by `Box::new(...)`
     // 3. Consume the `Box` and return the wrapped raw pointer
-    Box::into_raw(Box::new(Transparent::new()))
+    let boxed_trans = Box::new(Transparent::new());
+    println!(&amp;quot;leak transparent @ {:p}&amp;quot;, boxed_trans.as_ref());
+    Box::into_raw(boxed_trans)
+    // Box::into_raw(Box::new(Transparent::new()))
 }
 
 #[no_mangle]
 pub extern &amp;quot;C&amp;quot; fn return_transparent(tran: *mut Transparent) {
     assert!(!tran.is_null());
+    println!(&amp;quot;retake leaked transparent @ {:p}&amp;quot;, tran);
     // 1. Cast a void pointer to a Transparent pointer
     // 2. Construct a box from a Transparent pointer
-    let _transparent = unsafe { Box::&amp;lt;Transparent&amp;gt;::from_raw(tran as *mut _) };
-    // The box will be dropped after going out ou the scope, or you can call:
-    // drop(_transparent);
+    let transparent = unsafe { Box::&amp;lt;Transparent&amp;gt;::from_raw(tran) };
+    // The box will be dropped after program runs out of the scope, or we can
+    // call drop here directly.
+    drop(transparent);
 }&lt;/pre&gt;&lt;/noscript&gt;
 &lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=ext.rs&quot;&gt; &lt;/script&gt;
 
@@ -364,15 +375,18 @@ extern void operate_opaque(Handle opaque, uint32_t value);
 &lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=ext.h&quot;&gt; &lt;/script&gt;
 
 &lt;h3 id=&quot;samplec&quot;&gt;sample.c&lt;/h3&gt;
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;ext.h&amp;quot; // Types and in the external library
+&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;ext.h&amp;quot;    // Types and in the external library
+#include &amp;quot;stdio.h&amp;quot;  // printf
 
 int main() {
   Transparent* transparent = get_transparent();
+  printf(&amp;quot;get a transparent @ %p\n&amp;quot;, transparent);
   transparent-&amp;gt;value = 200;
   return_transparent(transparent);
   // Now transparent&amp;#39;s memory is freed and it&amp;#39;s a dangling pointer.
 
   Handle opaque = get_opaque();
+  printf(&amp;quot;get a opaque @ %p\n&amp;quot;, opaque);
   operate_opaque(opaque, 500);
   return_opaque(opaque);
   // Now opaque&amp;#39;s memory is freed and it&amp;#39;s a dangling pointer.
@@ -382,16 +396,19 @@ int main() {
 &lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=sample.c&quot;&gt; &lt;/script&gt;
 
 &lt;h3 id=&quot;samplecpp&quot;&gt;sample.cpp&lt;/h3&gt;
-&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;ext.h&amp;quot;  // Types and in the external library
-#include &amp;lt;memory&amp;gt; // std::unique_ptr
+&lt;noscript&gt;&lt;pre&gt;#include &amp;quot;ext.h&amp;quot;    // Types and in the external library
+#include &amp;lt;iostream&amp;gt; // printf
+#include &amp;lt;memory&amp;gt;   // std::unique_ptr
 
 int main() {
   std::unique_ptr&amp;lt;Transparent, decltype(&amp;amp;return_transparent)&amp;gt;
     transparent(get_transparent(), return_transparent);
+  printf(&amp;quot;get a transparent @ %p\n&amp;quot;, transparent.get());
   transparent-&amp;gt;value = 200;
 
   std::unique_ptr&amp;lt;void, decltype(&amp;amp;return_opaque)&amp;gt;
     opaque(get_opaque(), return_opaque);
+  printf(&amp;quot;get a opaque @ %p\n&amp;quot;, opaque.get());
   operate_opaque(opaque.get(), 500);
 
   return 0;
@@ -405,8 +422,10 @@ int main() {
 				# Compile the C file with the static library
 				# gcc -o sample-c sample.c libext.a
 				gcc -o sample-c sample.c -L. -lext
+				./sample-c
 				# g++ -o sample-cpp sample.cpp libext.a
 				g++ -o sample-cpp sample.cpp -L. -lext
+				./sample-cpp
 
 clean:
 				rm libext.a
@@ -438,6 +457,7 @@ To develop a Rust library that will be used for the external code, the data may 
   &lt;li&gt;Common
     &lt;ul&gt;
       &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003&quot; title=&quot;Learning notes for norrowed pointers&quot;&gt;Understand borrowing by read-write concepts&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/e8096bc78d29b237cce3ff5f859834e7&quot; title=&quot;Lifetimes for The Rust References&quot;&gt;Lifetime&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;How to convert a C strings to Rust strings&lt;/li&gt;
       &lt;li&gt;Phantom data&lt;/li&gt;
       &lt;li&gt;Common Error
@@ -461,14 +481,31 @@ To develop a Rust library that will be used for the external code, the data may 
     &lt;ul&gt;
       &lt;li&gt;&lt;a href=&quot;https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master&quot; title=&quot;rust-audio-lib-sample&quot;&gt;A sample Rust library based on platform C APIs&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;opaque-or-transparent-data-type-in-a-rust-library.md&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;Opaque or Transparent Data Type&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/1e5410f3a7cb8c5bbf066e7dae09d7bc&quot; title=&quot;Pass arrays from Rust to C &quot;&gt;Pass arrays from Rust to C&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/27c7edb4ec45d61a1e8a788888f665cb&quot; title=&quot;A mistake when using a Rust vector as a buffer to get the data by a C API&quot;&gt;The size matters! How to mess up memory by using vector in a wrong way&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/3f380eaced6265ab6e8dbb224bfec732&quot; title=&quot;A counterexample to use the memory allocated in external library&quot;&gt;A counterexample to use the memory allocated in external library&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/e8909506cfca774f623fc375fc8ee1d2&quot; title=&quot;Using reference /pointer instead of copying to get a variable-sized struct object&quot;&gt;Using reference /pointer instead of copying to get a variable-sized struct object&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461&quot; title=&quot;Using single-element (tuple) struct to wrap native types&quot;&gt;Using single-element (tuple) struct to wrap native types&lt;/a&gt;
         &lt;ul&gt;
           &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/b76a61273374a1530bc4d6f3be6a7761&quot; title=&quot;Size of the single-element struct&quot;&gt;Size of the single-element struct&lt;/a&gt;&lt;/li&gt;
           &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/25f3608c285f1abf2a5c289d5f758427&quot; title=&quot;Using single-element (tuple) struct to wrap C strings&quot;&gt;Benefits to wrap the C string&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/07b806cb6a9ea1136cb3cbd8cda6c806&quot; title=&quot;Using single-element (tuple) struct to CoreAudio types&quot;&gt;An example based on CoreAudio&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/8a22f8a1308b6e0a600e22c4629b2175&quot; title=&quot;A counterexample to register the callback functions to the external libraries&quot;&gt;How to wrap a callback from external library&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;C, C++, Rust Examples to call C Query APIs
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461&quot; title=&quot;Using single-element (tuple) struct to wrap native types&quot;&gt;Basic: Wrap native type by tuple struct &lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/22a30f214c97609d72f17d80740b8506&quot; title=&quot;C, C++, Rust Examples to call C-compatible Query APIs&quot;&gt;With String Handle&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;OSX
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/07b806cb6a9ea1136cb3cbd8cda6c806&quot; title=&quot;Using single-element (tuple) struct to CoreAudio types&quot;&gt;Single-element tuple structs wrapping native CoreAudio types&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/8d13946ebc6c95b2622466c89a0c9bcc&quot; title=&quot;Rust wrappers for OSX dispatch apis&quot;&gt;Rust wrappers for OSX dispatch APIs&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/f0f4a71f78d1e1c6390493ab1c9d10d3&quot; title=&quot;Rust wrappers for OSX property listner on audio devices&quot;&gt;Rust wrappers for OSX property listner on audio devices&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;Rust wrappers for OSX CFString(Ref) APIs&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;Taste
@@ -509,6 +546,7 @@ Personal Notes
   Common
     
       Understand borrowing by read-write concepts
+      Lifetime
       How to convert a C strings to Rust strings
       Phantom data
       Common Error
@@ -532,14 +570,31 @@ Personal Notes
     
       A sample Rust library based on platform C APIs
       Opaque or Transparent Data Type
+      Pass arrays from Rust to C
+      The size matters! How to mess up memory by using vector in a wrong way
+      A counterexample to use the memory allocated in external library
+      Using reference /pointer instead of copying to get a variable-sized struct object
       Using single-element (tuple) struct to wrap native types
         
           Size of the single-element struct
           Benefits to wrap the C string
-          An example based on CoreAudio
         
       
       How to wrap a callback from external library
+      C, C++, Rust Examples to call C Query APIs
+        
+          Basic: Wrap native type by tuple struct 
+          With String Handle
+        
+      
+      OSX
+        
+          Single-element tuple structs wrapping native CoreAudio types
+          Rust wrappers for OSX dispatch APIs
+          Rust wrappers for OSX property listner on audio devices
+          Rust wrappers for OSX CFString(Ref) APIs
+        
+      
     
   
   Taste
@@ -1873,230 +1928,63 @@ It’s time to rock on the code!</summary></entry><entry><title type="html">A Ro
   &lt;li&gt;&lt;a href=&quot;http://paul-bruno.com/2014/04/why-education-reform-is-probably-not-the-best-way-to-fight-poverty/&quot;&gt;Why Education Reform is Probably Not The Best Way to Fight Poverty&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="社會議題" /><category term="教育" /><summary type="html">台大真不是窮人可以來讀的學校?
 雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
-雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。</summary></entry><entry><title type="html">Audio Debugging Resources</title><link href="http://localhost:4000/post/audio-debugging-resources" rel="alternate" type="text/html" title="Audio Debugging Resources" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-resources</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-resources">&lt;h1 id=&quot;personal-tools&quot;&gt;Personal Tools&lt;/h1&gt;
-&lt;p&gt;I developed some tools to speed up the process for debugging malfunctions on audio.
-A simple table shows the audio hardware information and configuration.
-A device selector let me easily switch the audio sources
-from different platforms/computers.&lt;/p&gt;
+雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。</summary></entry><entry><title type="html">Audio Debugging Resources</title><link href="http://localhost:4000/post/audio-debugging-resources" rel="alternate" type="text/html" title="Audio Debugging Resources" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-resources</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-resources">&lt;p&gt;The resources for debugging audio issues.&lt;/p&gt;
+
+&lt;!--read more--&gt;
 
 &lt;h2 id=&quot;software&quot;&gt;Software&lt;/h2&gt;
 
-&lt;h3 id=&quot;firefox&quot;&gt;Firefox&lt;/h3&gt;
-&lt;p&gt;Knowledge about the audio setting and its hardware information is necessary
-when we try to investigate the problems on audio.
-Unfortunately, it’s hard to know the audio configuration
-on the dysfunctional machine.
-It usually takes a few days to get this information from the reporters.&lt;/p&gt;
-
-&lt;h4 id=&quot;aboutsupport&quot;&gt;about:support&lt;/h4&gt;
-&lt;p&gt;To reduce the workload on communication,
-I create a table shows the audio hardware information
-on &lt;strong&gt;about:support&lt;/strong&gt; in Firefox&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/posts/media-on-Firefox-aboutsupport.png&quot; alt=&quot;&quot; title=&quot;Troubleshooting Information&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;When reporters file bugs, they can attach these information as well
-so we don’t need to ask them for their settings.&lt;/p&gt;
-
-&lt;h5 id=&quot;further-works&quot;&gt;Further works&lt;/h5&gt;
-&lt;p&gt;There are some left works.
-I will try to arrange my time to finish them.&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1378633&quot; title=&quot;Bug 1378633 - Add a new Cubeb API to get the hardware name, driver name and version of the sound card&quot;&gt;Show driver version of the sound card&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Show unique hardware id&lt;/li&gt;
-  &lt;li&gt;Integrate this info to crash report&lt;/li&gt;
+  &lt;li&gt;Firefox
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;audio-device-information-on-firefox&quot; title=&quot;Media info on about:support&quot;&gt;about:support&lt;/a&gt;: Show audio device info on Firefox page.&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/devtools-media-panel/&quot; title=&quot;DevTools Media Panel&quot;&gt;DevTools Media Panel&lt;/a&gt; (&lt;a href=&quot;https://github.com/mjfroman/media-devtools-panel-react&quot; title=&quot;Media Panel Devtool&quot;&gt;source code&lt;/a&gt;): An additional panel in the Web Developer Tools displaying technical information about media elements and webrtc.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;FFmpeg: A powerful tool to record, convert and stream audio and video.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.ffmpeg.org/&quot; title=&quot;FFmpeg website&quot;&gt;website&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg&quot; title=&quot;FFmpeg source code&quot;&gt;source code&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://trac.ffmpeg.org/wiki/CompilationGuide&quot; title=&quot;Compile FFmpeg&quot;&gt;Compilation Guide&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/akhudek/Soundflower&quot; title=&quot;Soundflower&quot;&gt;Soundflower&lt;/a&gt;: Create virtual (multiple channels) audio device on maxOS.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;hardware&quot;&gt;Hardware&lt;/h2&gt;
-
-&lt;h3 id=&quot;audio-device-selector&quot;&gt;Audio Device Selector&lt;/h3&gt;
-&lt;p&gt;I need to frequently switch between computers with different OS
-to check the audio works on different platforms.
-It’s annoying to unconnect the speaker from one computer
-and then connect it to another computer again and again.
-Therefore, I made a device selector that can switch the audio sources
-of the speaker by simply flipping the controller.&lt;/p&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/heBQHew3Guc&quot; frameborder=&quot;0&quot; gesture=&quot;media&quot; allow=&quot;encrypted-media&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;The circuit is super easy. It’s nothing more than a switch.
-(TODO: This is wrong. Update a new one.)
-&lt;img src=&quot;../images/posts/device-selector.png&quot; alt=&quot;&quot; title=&quot;Device selector&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The above circuit diagram is for stereo speaker.
-If the speaker is 5.1 or 7.1,
-we need to replace the 6-pin switch to 18 pin or 24-pin switch.&lt;/p&gt;
-
-&lt;p&gt;In fact, the circuit is a simple track selector,
-so it’s not only an audio source selector for a speaker,
-but also a speaker switcher for a computer.
-That is, you can connect two speakers to a computer
-and select what speaker you want to play.&lt;/p&gt;
-
-&lt;h2 id=&quot;future-plan&quot;&gt;Future Plan&lt;/h2&gt;
-
-&lt;p&gt;There are several ideas I believe it could ease my life as a developer:&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;Virtual Audio Device
-    &lt;ul&gt;
-      &lt;li&gt;Something like &lt;a href=&quot;https://github.com/akhudek/Soundflower&quot; title=&quot;Soundflower&quot;&gt;Soundflower&lt;/a&gt; but it’s cross-platform
-and provides APIs to install/uninstall devices
-or access the buffer data for analysis.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Cross-platform Commands Warpper providing functions like
-    &lt;ul&gt;
-      &lt;li&gt;Disable/Enable audio devices.&lt;/li&gt;
-      &lt;li&gt;Generate audio samples(by FFmpeg?)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;audio-device-selector&quot; title=&quot;Audio Device Selector&quot;&gt;Audio Device Selector&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&quot;public-resources&quot;&gt;Public Resources&lt;/h1&gt;
-
+&lt;h2 id=&quot;test-samples&quot;&gt;Test Samples&lt;/h2&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://wiki.hydrogenaud.io/index.php?title=Main_Page&quot;&gt;Hydrogenaudio Knowledgebase&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg&quot;&gt;FFmpeg&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://trac.ffmpeg.org/wiki/CompilationGuide&quot;&gt;Compilation Guide&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/videolan/vlc&quot;&gt;vlc&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ChunMinChang/raw2mp3&quot; title=&quot;Convert raw audio files to mp3 files by various mp3 encoders&quot;&gt;raw2mp3 (mp3)&lt;/a&gt;: Convert raw audio files to mp3 files with different header types.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://helpguide.sony.net/high-res/sample1/v1/en/index.html&quot;&gt;SONY: High-Resolution music files(AAC, FLAC)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.hyperion-records.co.uk/testfiles.asp&quot;&gt;Hyperion Records(MP3, FLAC, M4A)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.2l.no/hires/&quot;&gt;HiRes(FLAC, including 5.1 Surround)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.audiocheck.net/&quot;&gt;Audio Check (wav)&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;audio-formats&quot;&gt;Audio Formats&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://xiph.org/flac/format.html&quot;&gt;Flac&lt;/a&gt;
     &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c&quot;&gt;FFmpeg&lt;/a&gt;
-        &lt;ul&gt;
-          &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/23333678/ffmpeg-to-convert-from-flac-to-wav&quot;&gt;Force to run flac.c by converting file format&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c&quot;&gt;FFmpeg&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;https://github.com/videolan/vlc/blob/cc79f1f98f89465385c595f572eee9be1ce80c03/modules/codec/flac.c&quot;&gt;vlc&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;sample-files&quot;&gt;Sample files&lt;/h2&gt;
+&lt;h2 id=&quot;code-references&quot;&gt;Code References&lt;/h2&gt;
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://helpguide.sony.net/high-res/sample1/v1/en/index.html&quot;&gt;SONY: High-Resolution music files(AAC, FLAC)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.hyperion-records.co.uk/testfiles.asp&quot;&gt;Hyperion Records(MP3, FLAC, M4A)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.2l.no/hires/&quot;&gt;HiRes(FLAC, including 5.1 Surround)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.audiocheck.net/&quot;&gt;Audio Check&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><category term="Hardware" /><summary type="html">Personal Tools
-I developed some tools to speed up the process for debugging malfunctions on audio.
-A simple table shows the audio hardware information and configuration.
-A device selector let me easily switch the audio sources
-from different platforms/computers.
+  &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg&quot; title=&quot;FFmpeg source code&quot;&gt;FFmpeg&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/videolan/vlc&quot;&gt;vlc&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-Software
-
-Firefox
-Knowledge about the audio setting and its hardware information is necessary
-when we try to investigate the problems on audio.
-Unfortunately, it’s hard to know the audio configuration
-on the dysfunctional machine.
-It usually takes a few days to get this information from the reporters.
-
-about:support
-To reduce the workload on communication,
-I create a table shows the audio hardware information
-on about:support in Firefox
-
-
-
-When reporters file bugs, they can attach these information as well
-so we don’t need to ask them for their settings.
-
-Further works
-There are some left works.
-I will try to arrange my time to finish them.
-
-
-  Show driver version of the sound card
-  Show unique hardware id
-  Integrate this info to crash report
-
-
-Hardware
-
-Audio Device Selector
-I need to frequently switch between computers with different OS
-to check the audio works on different platforms.
-It’s annoying to unconnect the speaker from one computer
-and then connect it to another computer again and again.
-Therefore, I made a device selector that can switch the audio sources
-of the speaker by simply flipping the controller.
-
-
-
-The circuit is super easy. It’s nothing more than a switch.
-(TODO: This is wrong. Update a new one.)
-
-
-The above circuit diagram is for stereo speaker.
-If the speaker is 5.1 or 7.1,
-we need to replace the 6-pin switch to 18 pin or 24-pin switch.
-
-In fact, the circuit is a simple track selector,
-so it’s not only an audio source selector for a speaker,
-but also a speaker switcher for a computer.
-That is, you can connect two speakers to a computer
-and select what speaker you want to play.
-
-Future Plan
-
-There are several ideas I believe it could ease my life as a developer:
-
-  Virtual Audio Device
-    
-      Something like Soundflower but it’s cross-platform
-and provides APIs to install/uninstall devices
-or access the buffer data for analysis.
-    
-  
-  Cross-platform Commands Warpper providing functions like
-    
-      Disable/Enable audio devices.
-      Generate audio samples(by FFmpeg?)
-    
-  
-
-
-Public Resources
-
-
-  Hydrogenaudio Knowledgebase
-  FFmpeg
-    
-      Compilation Guide
-    
-  
-  vlc
-
-
-Audio Formats
-
-  Flac
-    
-      FFmpeg
-        
-          Force to run flac.c by converting file format
-        
-      
-      vlc
-    
-  
-
-
-Sample files
-
-  SONY: High-Resolution music files(AAC, FLAC)
-  Hyperion Records(MP3, FLAC, M4A)
-  HiRes(FLAC, including 5.1 Surround)
-  Audio Check</summary></entry><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
+&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://wiki.hydrogenaud.io/index.php?title=Main_Page&quot;&gt;Hydrogenaudio Knowledgebase&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">The resources for debugging audio issues.</summary></entry><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
 while calculating the average of a long series of data.
 One simplest method to avoid the problem is &lt;em&gt;running average&lt;/em&gt;
 (or &lt;em&gt;moving average&lt;/em&gt;, &lt;em&gt;rolling average&lt;/em&gt;, &lt;em&gt;incremental mean&lt;/em&gt;).&lt;/p&gt;

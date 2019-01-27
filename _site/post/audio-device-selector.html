@@ -5,30 +5,30 @@
     <meta charset="utf-8">
 
 
-<meta name="keywords" content="Rust">
+<meta name="keywords" content="Hardware">
 
 
 <!-- Begin Jekyll SEO tag v1.3.3 -->
-<title>My Rust Notes - Peak Up</title>
-<meta property="og:title" content="My Rust Notes" />
-<meta name="description" content="Rust NotesLearning Resources  Quick guide for system programmer          30 minutes of Introduction to Rust for C++ programmers      Rust For Systems Programmers        Official books          The Rust Programming Language      The Rust Programming Language(book)      Programming Rust      Personal Notes  Common          Understand borrowing by read-write concepts      Lifetime      How to convert a C strings to Rust strings      Phantom data      Common Error                  Don’t misuse the pointers of the instances allocated in functions stack                      Multi-threading          Mutex and RwLock        Async          oneshot        FFI to C library          A sample Rust library based on platform C APIs      Opaque or Transparent Data Type      Pass arrays from Rust to C      The size matters! How to mess up memory by using vector in a wrong way      A counterexample to use the memory allocated in external library      Using reference /pointer instead of copying to get a variable-sized struct object      Using single-element (tuple) struct to wrap native types                  Size of the single-element struct          Benefits to wrap the C string                    How to wrap a callback from external library      C, C++, Rust Examples to call C Query APIs                  Basic: Wrap native type by tuple struct           With String Handle                    OSX                  Single-element tuple structs wrapping native CoreAudio types          Rust wrappers for OSX dispatch APIs          Rust wrappers for OSX property listner on audio devices          Rust wrappers for OSX CFString(Ref) APIs                      Taste          Error Handling                  Error passing from modules to modules                    Testing                  Embeding a test module inside every module                    " />
-<meta property="og:description" content="Rust NotesLearning Resources  Quick guide for system programmer          30 minutes of Introduction to Rust for C++ programmers      Rust For Systems Programmers        Official books          The Rust Programming Language      The Rust Programming Language(book)      Programming Rust      Personal Notes  Common          Understand borrowing by read-write concepts      Lifetime      How to convert a C strings to Rust strings      Phantom data      Common Error                  Don’t misuse the pointers of the instances allocated in functions stack                      Multi-threading          Mutex and RwLock        Async          oneshot        FFI to C library          A sample Rust library based on platform C APIs      Opaque or Transparent Data Type      Pass arrays from Rust to C      The size matters! How to mess up memory by using vector in a wrong way      A counterexample to use the memory allocated in external library      Using reference /pointer instead of copying to get a variable-sized struct object      Using single-element (tuple) struct to wrap native types                  Size of the single-element struct          Benefits to wrap the C string                    How to wrap a callback from external library      C, C++, Rust Examples to call C Query APIs                  Basic: Wrap native type by tuple struct           With String Handle                    OSX                  Single-element tuple structs wrapping native CoreAudio types          Rust wrappers for OSX dispatch APIs          Rust wrappers for OSX property listner on audio devices          Rust wrappers for OSX CFString(Ref) APIs                      Taste          Error Handling                  Error passing from modules to modules                    Testing                  Embeding a test module inside every module                    " />
-<link rel="canonical" href="http://localhost:4000/post/rust-notes" />
-<meta property="og:url" content="http://localhost:4000/post/rust-notes" />
+<title>Audio Device Selector - Peak Up</title>
+<meta property="og:title" content="Audio Device Selector" />
+<meta name="description" content="To develop a cross-platform audio library,I need to switch between computerswith different OS frequentlyto check if my code works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another one again and again.Therefore, I made a device selector that can switch the audio sourceof the speaker by simply flipping a switch.CircuitThe circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo(2-channels) speaker.If the speaker layout is 5.1(6-channels) or 7.1(8-channels),we need to replace the 9-pin switch to 21-pin or 27-pin switch.In fact, the circuit is just a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can either share one speaker with two computers,or share one computer with two speakers.In general, it needs  pins/wires to make a device selectorfor one n-channels output device with k (n-channels) input sources,or k output devices with n-channels and one (n-channels) input source.The first  is for the ground wire,and the second  is for the input or output device." />
+<meta property="og:description" content="To develop a cross-platform audio library,I need to switch between computerswith different OS frequentlyto check if my code works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another one again and again.Therefore, I made a device selector that can switch the audio sourceof the speaker by simply flipping a switch.CircuitThe circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo(2-channels) speaker.If the speaker layout is 5.1(6-channels) or 7.1(8-channels),we need to replace the 9-pin switch to 21-pin or 27-pin switch.In fact, the circuit is just a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can either share one speaker with two computers,or share one computer with two speakers.In general, it needs  pins/wires to make a device selectorfor one n-channels output device with k (n-channels) input sources,or k output devices with n-channels and one (n-channels) input source.The first  is for the ground wire,and the second  is for the input or output device." />
+<link rel="canonical" href="http://localhost:4000/post/audio-device-selector" />
+<meta property="og:url" content="http://localhost:4000/post/audio-device-selector" />
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-09-12T00:00:00+08:00" />
-<link rel="next" href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" title="Opaque or Transparent Data Type in a Rust Library" />
-<link rel="prev" href="http://localhost:4000/post/audio-5-1" title="Audio 5.1" />
+<meta property="article:published_time" content="2017-01-22T00:00:00+08:00" />
+<link rel="next" href="http://localhost:4000/post/lunar-new-year" title="Lunar New Year" />
+<link rel="prev" href="http://localhost:4000/post/merge-sort" title="Merge Sort" />
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "My Rust Notes",
-    "datePublished": "2018-09-12T00:00:00+08:00",
-    "description": "Rust NotesLearning Resources  Quick guide for system programmer          30 minutes of Introduction to Rust for C++ programmers      Rust For Systems Programmers        Official books          The Rust Programming Language      The Rust Programming Language(book)      Programming Rust      Personal Notes  Common          Understand borrowing by read-write concepts      Lifetime      How to convert a C strings to Rust strings      Phantom data      Common Error                  Don’t misuse the pointers of the instances allocated in functions stack                      Multi-threading          Mutex and RwLock        Async          oneshot        FFI to C library          A sample Rust library based on platform C APIs      Opaque or Transparent Data Type      Pass arrays from Rust to C      The size matters! How to mess up memory by using vector in a wrong way      A counterexample to use the memory allocated in external library      Using reference /pointer instead of copying to get a variable-sized struct object      Using single-element (tuple) struct to wrap native types                  Size of the single-element struct          Benefits to wrap the C string                    How to wrap a callback from external library      C, C++, Rust Examples to call C Query APIs                  Basic: Wrap native type by tuple struct           With String Handle                    OSX                  Single-element tuple structs wrapping native CoreAudio types          Rust wrappers for OSX dispatch APIs          Rust wrappers for OSX property listner on audio devices          Rust wrappers for OSX CFString(Ref) APIs                      Taste          Error Handling                  Error passing from modules to modules                    Testing                  Embeding a test module inside every module                    ",
+    "headline": "Audio Device Selector",
+    "datePublished": "2017-01-22T00:00:00+08:00",
+    "description": "To develop a cross-platform audio library,I need to switch between computerswith different OS frequentlyto check if my code works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another one again and again.Therefore, I made a device selector that can switch the audio sourceof the speaker by simply flipping a switch.CircuitThe circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo(2-channels) speaker.If the speaker layout is 5.1(6-channels) or 7.1(8-channels),we need to replace the 9-pin switch to 21-pin or 27-pin switch.In fact, the circuit is just a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can either share one speaker with two computers,or share one computer with two speakers.In general, it needs  pins/wires to make a device selectorfor one n-channels output device with k (n-channels) input sources,or k output devices with n-channels and one (n-channels) input source.The first  is for the ground wire,and the second  is for the input or output device.",
     "logo": "http://localhost:4000mountain.png",
-    "url": "http://localhost:4000/post/rust-notes"
+    "url": "http://localhost:4000/post/audio-device-selector"
   }
 </script>
 <!-- End Jekyll SEO tag -->
@@ -48,6 +48,33 @@
 <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
 <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
 
+
+<!--Load Mathjax-->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+        MathJax.Hub.Config({
+            config: ["MMLorHTML.js"],
+            extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+            jax: ["input/TeX"],
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: false
+            },
+            TeX: {
+                TagSide: "right",
+                TagIndent: ".8em",
+                MultLineWidth: "85%",
+                equationNumbers: {
+                   autoNumber: "AMS",
+                },
+                unicode: {
+                   fonts: "STIXGeneral,'Arial Unicode MS'"
+                }
+            },
+            showProcessingMessages: false
+        });
+</script>
 
 
 
@@ -168,9 +195,11 @@
                         
                         
                         
+                            <i class="fa fa-play-circle"></i>
+                        
 
                         
-                            My Rust Notes
+                            Audio Device Selector
                         </h1>
                     
 
@@ -181,14 +210,14 @@
                                 <span class="entry-date date published updated">
                             
                             
-                                    <time datetime="2018-09-12T00:00:00+08:00" class="post-time" itemprop="datePublished">12 Sep 2018</time>
+                                    <time datetime="2017-01-22T00:00:00+08:00" class="post-time" itemprop="datePublished">22 Jan 2017</time>
                                 </span>
                             
 
                                 in <span class="post-tags">
 
                             
-                                    <a href="http://localhost:4000/categories/index.html#Common" data-toggle="tooltip" title="Other posts from the Common category" rel="tag">Common</a>
+                                    <a href="http://localhost:4000/categories/index.html#Media" data-toggle="tooltip" title="Other posts from the Media category" rel="tag">Media</a>
                                 
                             
                                 </span>
@@ -212,97 +241,41 @@
 
                     <div class="post-body bordered-bottom" itemprop="description">
                     
+                        
+                        <iframe width="940" height="529" src="//www.youtube.com/embed/heBQHew3Guc?theme=light&amp;color=white" frameborder="0" allowfullscreen> </iframe>
+                    
 
-                        <h1 id="rust-notes">Rust Notes</h1>
+                        <p>To develop a cross-platform audio library,
+I need to switch between computers
+with different OS frequently
+to check if my code works on different platforms.</p>
 
-<h2 id="learning-resources">Learning Resources</h2>
-<ul>
-  <li>Quick guide for system programmer
-    <ul>
-      <li><a href="https://legacy.gitbook.com/book/vnduongthanhtung/migrate-from-c-to-rust/details">30 minutes of Introduction to Rust for C++ programmers</a></li>
-      <li><a href="https://github.com/nrc/r4cppp">Rust For Systems Programmers</a></li>
-    </ul>
-  </li>
-  <li>Official books
-    <ul>
-      <li><a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a></li>
-      <li><a href="https://nostarch.com/Rust">The Rust Programming Language(book)</a></li>
-      <li><a href="http://shop.oreilly.com/product/0636920040385.do">Programming Rust</a></li>
-    </ul>
-  </li>
-</ul>
+<p>It’s annoying to unconnect the speaker from one computer
+and then connect it to another one again and again.
+Therefore, I made a device selector that can switch the audio source
+of the speaker by simply flipping a switch.</p>
 
-<h2 id="personal-notes">Personal Notes</h2>
-<ul>
-  <li>Common
-    <ul>
-      <li><a href="https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003" title="Learning notes for norrowed pointers">Understand borrowing by read-write concepts</a></li>
-      <li><a href="https://gist.github.com/ChunMinChang/e8096bc78d29b237cce3ff5f859834e7" title="Lifetimes for The Rust References">Lifetime</a></li>
-      <li>How to convert a C strings to Rust strings</li>
-      <li>Phantom data</li>
-      <li>Common Error
-        <ul>
-          <li><a href="https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29" title="Don't misuse the pointers of the instances allocated in functions stack">Don’t misuse the pointers of the instances allocated in functions stack</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>Multi-threading
-    <ul>
-      <li><a href="https://github.com/ChunMinChang/play-multithread" title="Learning multithread in Rust ">Mutex and RwLock</a></li>
-    </ul>
-  </li>
-  <li>Async
-    <ul>
-      <li><a href="https://play.rust-lang.org/?gist=e1a1b98654c3490e81d6ff9c262824a3&amp;version=nightly&amp;mode=debug&amp;edition=2018">oneshot</a></li>
-    </ul>
-  </li>
-  <li>FFI to C library
-    <ul>
-      <li><a href="https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master" title="rust-audio-lib-sample">A sample Rust library based on platform C APIs</a></li>
-      <li><a href="opaque-or-transparent-data-type-in-a-rust-library.md" title="Opaque or Transparent Data Type in a Rust Library">Opaque or Transparent Data Type</a></li>
-      <li><a href="https://gist.github.com/ChunMinChang/1e5410f3a7cb8c5bbf066e7dae09d7bc" title="Pass arrays from Rust to C ">Pass arrays from Rust to C</a></li>
-      <li><a href="https://gist.github.com/ChunMinChang/27c7edb4ec45d61a1e8a788888f665cb" title="A mistake when using a Rust vector as a buffer to get the data by a C API">The size matters! How to mess up memory by using vector in a wrong way</a></li>
-      <li><a href="https://gist.github.com/ChunMinChang/3f380eaced6265ab6e8dbb224bfec732" title="A counterexample to use the memory allocated in external library">A counterexample to use the memory allocated in external library</a></li>
-      <li><a href="https://gist.github.com/ChunMinChang/e8909506cfca774f623fc375fc8ee1d2" title="Using reference /pointer instead of copying to get a variable-sized struct object">Using reference /pointer instead of copying to get a variable-sized struct object</a></li>
-      <li><a href="https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461" title="Using single-element (tuple) struct to wrap native types">Using single-element (tuple) struct to wrap native types</a>
-        <ul>
-          <li><a href="https://gist.github.com/ChunMinChang/b76a61273374a1530bc4d6f3be6a7761" title="Size of the single-element struct">Size of the single-element struct</a></li>
-          <li><a href="https://gist.github.com/ChunMinChang/25f3608c285f1abf2a5c289d5f758427" title="Using single-element (tuple) struct to wrap C strings">Benefits to wrap the C string</a></li>
-        </ul>
-      </li>
-      <li><a href="https://gist.github.com/ChunMinChang/8a22f8a1308b6e0a600e22c4629b2175" title="A counterexample to register the callback functions to the external libraries">How to wrap a callback from external library</a></li>
-      <li>C, C++, Rust Examples to call C Query APIs
-        <ul>
-          <li><a href="https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461" title="Using single-element (tuple) struct to wrap native types">Basic: Wrap native type by tuple struct </a></li>
-          <li><a href="https://gist.github.com/ChunMinChang/22a30f214c97609d72f17d80740b8506" title="C, C++, Rust Examples to call C-compatible Query APIs">With String Handle</a></li>
-        </ul>
-      </li>
-      <li>OSX
-        <ul>
-          <li><a href="https://gist.github.com/ChunMinChang/07b806cb6a9ea1136cb3cbd8cda6c806" title="Using single-element (tuple) struct to CoreAudio types">Single-element tuple structs wrapping native CoreAudio types</a></li>
-          <li><a href="https://gist.github.com/ChunMinChang/8d13946ebc6c95b2622466c89a0c9bcc" title="Rust wrappers for OSX dispatch apis">Rust wrappers for OSX dispatch APIs</a></li>
-          <li><a href="https://gist.github.com/ChunMinChang/f0f4a71f78d1e1c6390493ab1c9d10d3" title="Rust wrappers for OSX property listner on audio devices">Rust wrappers for OSX property listner on audio devices</a></li>
-          <li>Rust wrappers for OSX CFString(Ref) APIs</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>Taste
-    <ul>
-      <li>Error Handling
-        <ul>
-          <li><a href="https://gist.github.com/ChunMinChang/92d0006fb9fe35abcabff6983d31f0da" title="Error passing from modules to modules">Error passing from modules to modules</a></li>
-        </ul>
-      </li>
-      <li>Testing
-        <ul>
-          <li>Embeding a test module inside every module</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
+<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/heBQHew3Guc" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> -->
+
+<h2 id="circuit">Circuit</h2>
+<p>The circuit is super easy. It’s nothing more than a switch.
+<img src="../images/posts/device-selector.png" alt="" title="Device selector" /></p>
+
+<p>The above circuit diagram is for stereo(<em>2</em>-channels) speaker.
+If the speaker layout is 5.1(<em>6</em>-channels) or 7.1(<em>8</em>-channels),
+we need to replace the 9-pin switch to 21-pin or 27-pin switch.</p>
+
+<p>In fact, the circuit is just a simple track selector,
+so it’s not only an audio source selector for a speaker,
+but also a speaker switcher for a computer.
+That is, you can either share one speaker with two computers,
+or share one computer with two speakers.</p>
+
+<p>In general, it needs <script type="math/tex">(n + 1) * (k + 1)</script> pins/wires to make a device selector
+for one <em>n</em>-channels output device with <em>k</em> (<em>n</em>-channels) input sources,
+or <em>k</em> output devices with <em>n</em>-channels and one (<em>n</em>-channels) input source.
+The first <script type="math/tex">+1</script> is for the <em>ground wire</em>,
+and the second <script type="math/tex">+1</script> is for the <em>input</em> or <em>output</em> device.</p>
 
 
 
@@ -314,7 +287,7 @@
                             <i class="fa fa-tags"></i>&nbsp;
                                 Tagged with 
                             
-                                <a href="http://localhost:4000/tags/index.html#Rust" data-toggle="tooltip" title="Posts tagged with Rust" rel="tag">Rust</a>
+                                <a href="http://localhost:4000/tags/index.html#Hardware" data-toggle="tooltip" title="Posts tagged with Hardware" rel="tag">Hardware</a>
 
                                 
                             
@@ -330,20 +303,20 @@
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=My+Rust+Notes%20http://localhost:4000/post/rust-notes%20via%20&#64;"
+            <a href="https://twitter.com/intent/tweet?text=Audio+Device+Selector%20http://localhost:4000/post/audio-device-selector%20via%20&#64;"
                 onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
                 title="Share on Twitter" itemprop="Twitter">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
         <li>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/rust-notes" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/audio-device-selector" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
                 data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="fa fa-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=http://localhost:4000/post/rust-notes" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/audio-device-selector" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
                 data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="fa fa-google-plus"></i>
             </a>

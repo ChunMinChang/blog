@@ -5,14 +5,14 @@
     <meta charset="utf-8">
 
 
-<meta name="keywords" content="Firefox, Hardware">
+<meta name="keywords" content="Firefox">
 
 
 <!-- Begin Jekyll SEO tag v1.3.3 -->
 <title>Audio Debugging Resources - Peak Up</title>
 <meta property="og:title" content="Audio Debugging Resources" />
-<meta name="description" content="Personal ToolsI developed some tools to speed up the process for debugging malfunctions on audio.A simple table shows the audio hardware information and configuration.A device selector let me easily switch the audio sourcesfrom different platforms/computers.SoftwareFirefoxKnowledge about the audio setting and its hardware information is necessarywhen we try to investigate the problems on audio.Unfortunately, it’s hard to know the audio configurationon the dysfunctional machine.It usually takes a few days to get this information from the reporters.about:supportTo reduce the workload on communication,I create a table shows the audio hardware informationon about:support in FirefoxWhen reporters file bugs, they can attach these information as wellso we don’t need to ask them for their settings.Further worksThere are some left works.I will try to arrange my time to finish them.  Show driver version of the sound card  Show unique hardware id  Integrate this info to crash reportHardwareAudio Device SelectorI need to frequently switch between computers with different OSto check the audio works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another computer again and again.Therefore, I made a device selector that can switch the audio sourcesof the speaker by simply flipping the controller.The circuit is super easy. It’s nothing more than a switch.(TODO: This is wrong. Update a new one.)The above circuit diagram is for stereo speaker.If the speaker is 5.1 or 7.1,we need to replace the 6-pin switch to 18 pin or 24-pin switch.In fact, the circuit is a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can connect two speakers to a computerand select what speaker you want to play.Future PlanThere are several ideas I believe it could ease my life as a developer:  Virtual Audio Device          Something like Soundflower but it’s cross-platformand provides APIs to install/uninstall devicesor access the buffer data for analysis.        Cross-platform Commands Warpper providing functions like          Disable/Enable audio devices.      Generate audio samples(by FFmpeg?)      Public Resources  Hydrogenaudio Knowledgebase  FFmpeg          Compilation Guide        vlcAudio Formats  Flac          FFmpeg                  Force to run flac.c by converting file format                    vlc      Sample files  SONY: High-Resolution music files(AAC, FLAC)  Hyperion Records(MP3, FLAC, M4A)  HiRes(FLAC, including 5.1 Surround)  Audio Check" />
-<meta property="og:description" content="Personal ToolsI developed some tools to speed up the process for debugging malfunctions on audio.A simple table shows the audio hardware information and configuration.A device selector let me easily switch the audio sourcesfrom different platforms/computers.SoftwareFirefoxKnowledge about the audio setting and its hardware information is necessarywhen we try to investigate the problems on audio.Unfortunately, it’s hard to know the audio configurationon the dysfunctional machine.It usually takes a few days to get this information from the reporters.about:supportTo reduce the workload on communication,I create a table shows the audio hardware informationon about:support in FirefoxWhen reporters file bugs, they can attach these information as wellso we don’t need to ask them for their settings.Further worksThere are some left works.I will try to arrange my time to finish them.  Show driver version of the sound card  Show unique hardware id  Integrate this info to crash reportHardwareAudio Device SelectorI need to frequently switch between computers with different OSto check the audio works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another computer again and again.Therefore, I made a device selector that can switch the audio sourcesof the speaker by simply flipping the controller.The circuit is super easy. It’s nothing more than a switch.(TODO: This is wrong. Update a new one.)The above circuit diagram is for stereo speaker.If the speaker is 5.1 or 7.1,we need to replace the 6-pin switch to 18 pin or 24-pin switch.In fact, the circuit is a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can connect two speakers to a computerand select what speaker you want to play.Future PlanThere are several ideas I believe it could ease my life as a developer:  Virtual Audio Device          Something like Soundflower but it’s cross-platformand provides APIs to install/uninstall devicesor access the buffer data for analysis.        Cross-platform Commands Warpper providing functions like          Disable/Enable audio devices.      Generate audio samples(by FFmpeg?)      Public Resources  Hydrogenaudio Knowledgebase  FFmpeg          Compilation Guide        vlcAudio Formats  Flac          FFmpeg                  Force to run flac.c by converting file format                    vlc      Sample files  SONY: High-Resolution music files(AAC, FLAC)  Hyperion Records(MP3, FLAC, M4A)  HiRes(FLAC, including 5.1 Surround)  Audio Check" />
+<meta name="description" content="The resources for debugging audio issues." />
+<meta property="og:description" content="The resources for debugging audio issues." />
 <link rel="canonical" href="http://localhost:4000/post/audio-debugging-resources" />
 <meta property="og:url" content="http://localhost:4000/post/audio-debugging-resources" />
 <meta property="og:site_name" content="Peak Up" />
@@ -26,7 +26,7 @@
     "@type": "BlogPosting",
     "headline": "Audio Debugging Resources",
     "datePublished": "2017-12-23T00:00:00+08:00",
-    "description": "Personal ToolsI developed some tools to speed up the process for debugging malfunctions on audio.A simple table shows the audio hardware information and configuration.A device selector let me easily switch the audio sourcesfrom different platforms/computers.SoftwareFirefoxKnowledge about the audio setting and its hardware information is necessarywhen we try to investigate the problems on audio.Unfortunately, it’s hard to know the audio configurationon the dysfunctional machine.It usually takes a few days to get this information from the reporters.about:supportTo reduce the workload on communication,I create a table shows the audio hardware informationon about:support in FirefoxWhen reporters file bugs, they can attach these information as wellso we don’t need to ask them for their settings.Further worksThere are some left works.I will try to arrange my time to finish them.  Show driver version of the sound card  Show unique hardware id  Integrate this info to crash reportHardwareAudio Device SelectorI need to frequently switch between computers with different OSto check the audio works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another computer again and again.Therefore, I made a device selector that can switch the audio sourcesof the speaker by simply flipping the controller.The circuit is super easy. It’s nothing more than a switch.(TODO: This is wrong. Update a new one.)The above circuit diagram is for stereo speaker.If the speaker is 5.1 or 7.1,we need to replace the 6-pin switch to 18 pin or 24-pin switch.In fact, the circuit is a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can connect two speakers to a computerand select what speaker you want to play.Future PlanThere are several ideas I believe it could ease my life as a developer:  Virtual Audio Device          Something like Soundflower but it’s cross-platformand provides APIs to install/uninstall devicesor access the buffer data for analysis.        Cross-platform Commands Warpper providing functions like          Disable/Enable audio devices.      Generate audio samples(by FFmpeg?)      Public Resources  Hydrogenaudio Knowledgebase  FFmpeg          Compilation Guide        vlcAudio Formats  Flac          FFmpeg                  Force to run flac.c by converting file format                    vlc      Sample files  SONY: High-Resolution music files(AAC, FLAC)  Hyperion Records(MP3, FLAC, M4A)  HiRes(FLAC, including 5.1 Surround)  Audio Check",
+    "description": "The resources for debugging audio issues.",
     "logo": "http://localhost:4000mountain.png",
     "url": "http://localhost:4000/post/audio-debugging-resources"
   }
@@ -48,33 +48,6 @@
 <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
 <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
 
-
-<!--Load Mathjax-->
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-        MathJax.Hub.Config({
-            config: ["MMLorHTML.js"],
-            extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
-            jax: ["input/TeX"],
-            tex2jax: {
-                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                processEscapes: false
-            },
-            TeX: {
-                TagSide: "right",
-                TagIndent: ".8em",
-                MultLineWidth: "85%",
-                equationNumbers: {
-                   autoNumber: "AMS",
-                },
-                unicode: {
-                   fonts: "STIXGeneral,'Arial Unicode MS'"
-                }
-            },
-            showProcessingMessages: false
-        });
-</script>
 
 
 
@@ -226,9 +199,9 @@
                             
 
                             
-                                    <span class="time">2.2444444444444445</span> minutes read
-                            
                                 
+                            
+                                    Less than 1 minute read
                             
 
                                 </span>
@@ -240,118 +213,62 @@
                     <div class="post-body bordered-bottom" itemprop="description">
                     
 
-                        <h1 id="personal-tools">Personal Tools</h1>
-<p>I developed some tools to speed up the process for debugging malfunctions on audio.
-A simple table shows the audio hardware information and configuration.
-A device selector let me easily switch the audio sources
-from different platforms/computers.</p>
+                        <p>The resources for debugging audio issues.</p>
+
+<!--read more-->
 
 <h2 id="software">Software</h2>
 
-<h3 id="firefox">Firefox</h3>
-<p>Knowledge about the audio setting and its hardware information is necessary
-when we try to investigate the problems on audio.
-Unfortunately, it’s hard to know the audio configuration
-on the dysfunctional machine.
-It usually takes a few days to get this information from the reporters.</p>
-
-<h4 id="aboutsupport">about:support</h4>
-<p>To reduce the workload on communication,
-I create a table shows the audio hardware information
-on <strong>about:support</strong> in Firefox</p>
-
-<p><img src="../images/posts/media-on-Firefox-aboutsupport.png" alt="" title="Troubleshooting Information" /></p>
-
-<p>When reporters file bugs, they can attach these information as well
-so we don’t need to ask them for their settings.</p>
-
-<h5 id="further-works">Further works</h5>
-<p>There are some left works.
-I will try to arrange my time to finish them.</p>
-
 <ul>
-  <li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1378633" title="Bug 1378633 - Add a new Cubeb API to get the hardware name, driver name and version of the sound card">Show driver version of the sound card</a></li>
-  <li>Show unique hardware id</li>
-  <li>Integrate this info to crash report</li>
+  <li>Firefox
+    <ul>
+      <li><a href="audio-device-information-on-firefox" title="Media info on about:support">about:support</a>: Show audio device info on Firefox page.</li>
+      <li><a href="https://addons.mozilla.org/en-US/firefox/addon/devtools-media-panel/" title="DevTools Media Panel">DevTools Media Panel</a> (<a href="https://github.com/mjfroman/media-devtools-panel-react" title="Media Panel Devtool">source code</a>): An additional panel in the Web Developer Tools displaying technical information about media elements and webrtc.</li>
+    </ul>
+  </li>
+  <li>FFmpeg: A powerful tool to record, convert and stream audio and video.
+    <ul>
+      <li><a href="https://www.ffmpeg.org/" title="FFmpeg website">website</a></li>
+      <li><a href="https://github.com/FFmpeg/FFmpeg" title="FFmpeg source code">source code</a></li>
+      <li><a href="https://trac.ffmpeg.org/wiki/CompilationGuide" title="Compile FFmpeg">Compilation Guide</a></li>
+    </ul>
+  </li>
+  <li><a href="https://github.com/akhudek/Soundflower" title="Soundflower">Soundflower</a>: Create virtual (multiple channels) audio device on maxOS.</li>
 </ul>
 
 <h2 id="hardware">Hardware</h2>
-
-<h3 id="audio-device-selector">Audio Device Selector</h3>
-<p>I need to frequently switch between computers with different OS
-to check the audio works on different platforms.
-It’s annoying to unconnect the speaker from one computer
-and then connect it to another computer again and again.
-Therefore, I made a device selector that can switch the audio sources
-of the speaker by simply flipping the controller.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/heBQHew3Guc" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen=""></iframe>
-
-<p>The circuit is super easy. It’s nothing more than a switch.
-(TODO: This is wrong. Update a new one.)
-<img src="../images/posts/device-selector.png" alt="" title="Device selector" /></p>
-
-<p>The above circuit diagram is for stereo speaker.
-If the speaker is 5.1 or 7.1,
-we need to replace the 6-pin switch to 18 pin or 24-pin switch.</p>
-
-<p>In fact, the circuit is a simple track selector,
-so it’s not only an audio source selector for a speaker,
-but also a speaker switcher for a computer.
-That is, you can connect two speakers to a computer
-and select what speaker you want to play.</p>
-
-<h2 id="future-plan">Future Plan</h2>
-
-<p>There are several ideas I believe it could ease my life as a developer:</p>
 <ul>
-  <li>Virtual Audio Device
-    <ul>
-      <li>Something like <a href="https://github.com/akhudek/Soundflower" title="Soundflower">Soundflower</a> but it’s cross-platform
-and provides APIs to install/uninstall devices
-or access the buffer data for analysis.</li>
-    </ul>
-  </li>
-  <li>Cross-platform Commands Warpper providing functions like
-    <ul>
-      <li>Disable/Enable audio devices.</li>
-      <li>Generate audio samples(by FFmpeg?)</li>
-    </ul>
-  </li>
+  <li><a href="audio-device-selector" title="Audio Device Selector">Audio Device Selector</a></li>
 </ul>
 
-<h1 id="public-resources">Public Resources</h1>
-
+<h2 id="test-samples">Test Samples</h2>
 <ul>
-  <li><a href="http://wiki.hydrogenaud.io/index.php?title=Main_Page">Hydrogenaudio Knowledgebase</a></li>
-  <li><a href="https://github.com/FFmpeg/FFmpeg">FFmpeg</a>
-    <ul>
-      <li><a href="https://trac.ffmpeg.org/wiki/CompilationGuide">Compilation Guide</a></li>
-    </ul>
-  </li>
-  <li><a href="https://github.com/videolan/vlc">vlc</a></li>
+  <li><a href="https://github.com/ChunMinChang/raw2mp3" title="Convert raw audio files to mp3 files by various mp3 encoders">raw2mp3 (mp3)</a>: Convert raw audio files to mp3 files with different header types.</li>
+  <li><a href="http://helpguide.sony.net/high-res/sample1/v1/en/index.html">SONY: High-Resolution music files(AAC, FLAC)</a></li>
+  <li><a href="http://www.hyperion-records.co.uk/testfiles.asp">Hyperion Records(MP3, FLAC, M4A)</a></li>
+  <li><a href="http://www.2l.no/hires/">HiRes(FLAC, including 5.1 Surround)</a></li>
+  <li><a href="https://www.audiocheck.net/">Audio Check (wav)</a></li>
 </ul>
 
 <h2 id="audio-formats">Audio Formats</h2>
 <ul>
   <li><a href="https://xiph.org/flac/format.html">Flac</a>
     <ul>
-      <li><a href="https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c">FFmpeg</a>
-        <ul>
-          <li><a href="https://stackoverflow.com/questions/23333678/ffmpeg-to-convert-from-flac-to-wav">Force to run flac.c by converting file format</a></li>
-        </ul>
-      </li>
+      <li><a href="https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c">FFmpeg</a></li>
       <li><a href="https://github.com/videolan/vlc/blob/cc79f1f98f89465385c595f572eee9be1ce80c03/modules/codec/flac.c">vlc</a></li>
     </ul>
   </li>
 </ul>
 
-<h2 id="sample-files">Sample files</h2>
+<h2 id="code-references">Code References</h2>
 <ul>
-  <li><a href="http://helpguide.sony.net/high-res/sample1/v1/en/index.html">SONY: High-Resolution music files(AAC, FLAC)</a></li>
-  <li><a href="http://www.hyperion-records.co.uk/testfiles.asp">Hyperion Records(MP3, FLAC, M4A)</a></li>
-  <li><a href="http://www.2l.no/hires/">HiRes(FLAC, including 5.1 Surround)</a></li>
-  <li><a href="https://www.audiocheck.net/">Audio Check</a></li>
+  <li><a href="https://github.com/FFmpeg/FFmpeg" title="FFmpeg source code">FFmpeg</a></li>
+  <li><a href="https://github.com/videolan/vlc">vlc</a></li>
+</ul>
+
+<h2 id="others">Others</h2>
+<ul>
+  <li><a href="http://wiki.hydrogenaud.io/index.php?title=Main_Page">Hydrogenaudio Knowledgebase</a></li>
 </ul>
 
 
@@ -365,12 +282,6 @@ or access the buffer data for analysis.</li>
                                 Tagged with 
                             
                                 <a href="http://localhost:4000/tags/index.html#Firefox" data-toggle="tooltip" title="Posts tagged with Firefox" rel="tag">Firefox</a>
-
-                                
-                                &nbsp;&bull;&nbsp;
-                                
-                            
-                                <a href="http://localhost:4000/tags/index.html#Hardware" data-toggle="tooltip" title="Posts tagged with Hardware" rel="tag">Hardware</a>
 
                                 
                             
@@ -448,7 +359,7 @@ or access the buffer data for analysis.</li>
                 
             </ul>
             <div>
-                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2018 &bull;
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2019 &bull;
                 All rights reserved.
             </div>
             <ul class="menu-items">

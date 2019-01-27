@@ -48,7 +48,7 @@
     {
       "title"    : "Audio Debugging Resources",
       "category" : "Media",
-      "tags"     : "Firefox, Hardware",
+      "tags"     : "Firefox",
       "url"      : "/post/audio-debugging-resources",
       "date"     : "2017-12-23 00:00:00 +0800",
 			"shortdate": "December 23, 2017"
@@ -133,6 +133,15 @@
       "url"      : "/post/refptr-v-s-shared-ptr",
       "date"     : "2017-07-31 00:00:00 +0800",
 			"shortdate": "July 31, 2017"
+    } ,
+  
+    {
+      "title"    : "Audio Device Information on Firefox",
+      "category" : "Media",
+      "tags"     : "Firefox",
+      "url"      : "/post/audio-device-information-on-firefox",
+      "date"     : "2017-07-27 00:00:00 +0800",
+			"shortdate": "July 27, 2017"
     } ,
   
     {
@@ -223,6 +232,15 @@
       "url"      : "/post/lunar-new-year",
       "date"     : "2017-01-28 00:00:00 +0800",
 			"shortdate": "January 28, 2017"
+    } ,
+  
+    {
+      "title"    : "Audio Device Selector",
+      "category" : "Media",
+      "tags"     : "Hardware",
+      "url"      : "/post/audio-device-selector",
+      "date"     : "2017-01-22 00:00:00 +0800",
+			"shortdate": "January 22, 2017"
     } ,
   
     {

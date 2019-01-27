@@ -198,7 +198,7 @@
                             
 
                             
-                                    <span class="time">8.2</span> minutes read
+                                    <span class="time">8.666666666666666</span> minutes read
                             
                                 
                             
@@ -505,12 +505,16 @@ pub extern &quot;C&quot; fn get_opaque() -&gt; Handle {
     // 1. Create a Opaque instance in stack by `Opaque::new()`
     // 2. Copy the Opaque instance from stack into heap by `Box::new(...)`
     // 3. Consume the `Box` and return the wrapped raw pointer
-    Box::into_raw(Box::new(Opaque::new())) as *mut _
+    let boxed_opa = Box::new(Opaque::new());
+    println!(&quot;leak opaque @ {:p}&quot;, boxed_opa.as_ref());
+    Box::into_raw(boxed_opa) as Handle
+    // Box::into_raw(Box::new(Opaque::new())) as *mut _
 }
 
 #[no_mangle]
 pub extern &quot;C&quot; fn operate_opaque(opa: Handle, value: i32) {
     assert!(!opa.is_null());
+    println!(&quot;operate leaked opaque @ {:p}&quot;, opa);
     // 1. Cast a void pointer to a Opaque pointer
     // 2. Create a mutable Opaque reference from a Opaque pointer
     let opaque = unsafe { &amp;mut *(opa as *mut Opaque) };
@@ -520,11 +524,13 @@ pub extern &quot;C&quot; fn operate_opaque(opa: Handle, value: i32) {
 #[no_mangle]
 pub extern &quot;C&quot; fn return_opaque(opa: Handle) {
     assert!(!opa.is_null());
+    println!(&quot;retake leaked opaque @ {:p}&quot;, opa);
     // 1. Cast a void pointer to a Opaque pointer
     // 2. Construct a box from a Opaque pointer
-    let _opaque = unsafe { Box::&lt;Opaque&gt;::from_raw(opa as *mut _) };
-    // The box will be dropped after going out ou the scope, or you can call:
-    // drop(_opaque);
+    let opaque = unsafe { Box::&lt;Opaque&gt;::from_raw(opa as *mut _ /* Opaque */) };
+    // The box will be dropped after program runs out of the scope, or we can
+    // call drop here directly.
+    drop(opaque);
 }
 
 // Interface to a interoperable resource
@@ -533,17 +539,22 @@ pub extern &quot;C&quot; fn get_transparent() -&gt; *mut Transparent {
     // 1. Create a Transparent instance in stack by `Transparent::new()`
     // 2. Copy the Transparent instance from stack into heap by `Box::new(...)`
     // 3. Consume the `Box` and return the wrapped raw pointer
-    Box::into_raw(Box::new(Transparent::new()))
+    let boxed_trans = Box::new(Transparent::new());
+    println!(&quot;leak transparent @ {:p}&quot;, boxed_trans.as_ref());
+    Box::into_raw(boxed_trans)
+    // Box::into_raw(Box::new(Transparent::new()))
 }
 
 #[no_mangle]
 pub extern &quot;C&quot; fn return_transparent(tran: *mut Transparent) {
     assert!(!tran.is_null());
+    println!(&quot;retake leaked transparent @ {:p}&quot;, tran);
     // 1. Cast a void pointer to a Transparent pointer
     // 2. Construct a box from a Transparent pointer
-    let _transparent = unsafe { Box::&lt;Transparent&gt;::from_raw(tran as *mut _) };
-    // The box will be dropped after going out ou the scope, or you can call:
-    // drop(_transparent);
+    let transparent = unsafe { Box::&lt;Transparent&gt;::from_raw(tran) };
+    // The box will be dropped after program runs out of the scope, or we can
+    // call drop here directly.
+    drop(transparent);
 }</pre></noscript>
 <script src="https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=ext.rs"> </script>
 
@@ -578,15 +589,18 @@ extern void operate_opaque(Handle opaque, uint32_t value);
 <script src="https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=ext.h"> </script>
 
 <h3 id="samplec">sample.c</h3>
-<noscript><pre>#include &quot;ext.h&quot; // Types and in the external library
+<noscript><pre>#include &quot;ext.h&quot;    // Types and in the external library
+#include &quot;stdio.h&quot;  // printf
 
 int main() {
   Transparent* transparent = get_transparent();
+  printf(&quot;get a transparent @ %p\n&quot;, transparent);
   transparent-&gt;value = 200;
   return_transparent(transparent);
   // Now transparent&#39;s memory is freed and it&#39;s a dangling pointer.
 
   Handle opaque = get_opaque();
+  printf(&quot;get a opaque @ %p\n&quot;, opaque);
   operate_opaque(opaque, 500);
   return_opaque(opaque);
   // Now opaque&#39;s memory is freed and it&#39;s a dangling pointer.
@@ -596,16 +610,19 @@ int main() {
 <script src="https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=sample.c"> </script>
 
 <h3 id="samplecpp">sample.cpp</h3>
-<noscript><pre>#include &quot;ext.h&quot;  // Types and in the external library
-#include &lt;memory&gt; // std::unique_ptr
+<noscript><pre>#include &quot;ext.h&quot;    // Types and in the external library
+#include &lt;iostream&gt; // printf
+#include &lt;memory&gt;   // std::unique_ptr
 
 int main() {
   std::unique_ptr&lt;Transparent, decltype(&amp;return_transparent)&gt;
     transparent(get_transparent(), return_transparent);
+  printf(&quot;get a transparent @ %p\n&quot;, transparent.get());
   transparent-&gt;value = 200;
 
   std::unique_ptr&lt;void, decltype(&amp;return_opaque)&gt;
     opaque(get_opaque(), return_opaque);
+  printf(&quot;get a opaque @ %p\n&quot;, opaque.get());
   operate_opaque(opaque.get(), 500);
 
   return 0;
@@ -619,8 +636,10 @@ int main() {
 				# Compile the C file with the static library
 				# gcc -o sample-c sample.c libext.a
 				gcc -o sample-c sample.c -L. -lext
+				./sample-c
 				# g++ -o sample-cpp sample.cpp libext.a
 				g++ -o sample-cpp sample.cpp -L. -lext
+				./sample-cpp
 
 clean:
 				rm libext.a
@@ -716,7 +735,7 @@ clean:
                 
             </ul>
             <div>
-                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2018 &bull;
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2019 &bull;
                 All rights reserved.
             </div>
             <ul class="menu-items">

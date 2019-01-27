@@ -61,6 +61,10 @@
 <lastmod>2017-07-31T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/post/audio-device-information-on-firefox</loc>
+<lastmod>2017-07-27T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/post/development-notes-for-mozilla</loc>
 <lastmod>2017-07-19T00:00:00+08:00</lastmod>
 </url>
@@ -101,6 +105,10 @@
 <lastmod>2017-01-28T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/post/audio-device-selector</loc>
+<lastmod>2017-01-22T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/post/merge-sort</loc>
 <lastmod>2017-01-05T00:00:00+08:00</lastmod>
 </url>
@@ -121,6 +129,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/archive/tag/sorting/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/archive/tag/hardware/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/archive/tag/goal/</loc>
@@ -159,9 +170,6 @@
 <loc>http://localhost:4000/archive/tag/demuxer/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/archive/tag/hardware/</loc>
-</url>
-<url>
 <loc>http://localhost:4000/archive/tag/%25E6%2595%2599%25E8%2582%25B2/</loc>
 </url>
 <url>
@@ -180,6 +188,9 @@
 <loc>http://localhost:4000/archive/category/algorithm/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/archive/category/media/</loc>
+</url>
+<url>
 <loc>http://localhost:4000/archive/category/life/</loc>
 </url>
 <url>
@@ -187,9 +198,6 @@
 </url>
 <url>
 <loc>http://localhost:4000/archive/category/common/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/archive/category/media/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/archive/category/math/</loc>
@@ -208,6 +216,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/blog/5/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/blog/6/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/404</loc>

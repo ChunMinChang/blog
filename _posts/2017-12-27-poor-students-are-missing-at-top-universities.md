@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Poor Students Are Missing at Top Universities
-category: 社會議題
-tags: [教育]
+category: [Social Issues]
+tags: [Education]
 comments: true
 ---
 # 台大真不是窮人可以來讀的學校?

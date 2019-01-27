@@ -1,4 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-01-27T14:03:21+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-01-27T14:15:31+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Audio Debugging Resources</title><link href="http://localhost:4000/post/audio-debugging-resources" rel="alternate" type="text/html" title="Audio Debugging Resources" /><published>2019-01-26T00:00:00+08:00</published><updated>2019-01-26T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-resources</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-resources">&lt;p&gt;The resources collection for debugging audio issues.&lt;/p&gt;
+
+&lt;!--read more--&gt;
+
+&lt;h2 id=&quot;software&quot;&gt;Software&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Firefox
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;audio-device-information-on-firefox&quot; title=&quot;Media info on about:support&quot;&gt;about:support&lt;/a&gt;: Show audio device info on Firefox page.&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/devtools-media-panel/&quot; title=&quot;DevTools Media Panel&quot;&gt;DevTools Media Panel&lt;/a&gt; (&lt;a href=&quot;https://github.com/mjfroman/media-devtools-panel-react&quot; title=&quot;Media Panel Devtool&quot;&gt;source code&lt;/a&gt;): An additional panel in the Web Developer Tools displaying technical information about media elements and webrtc.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;FFmpeg: A powerful tool to record, convert and stream audio and video.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.ffmpeg.org/&quot; title=&quot;FFmpeg website&quot;&gt;website&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg&quot; title=&quot;FFmpeg source code&quot;&gt;source code&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://trac.ffmpeg.org/wiki/CompilationGuide&quot; title=&quot;Compile FFmpeg&quot;&gt;Compilation Guide&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/akhudek/Soundflower&quot; title=&quot;Soundflower&quot;&gt;Soundflower&lt;/a&gt;: Create virtual (multiple channels) audio device on maxOS.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;hardware&quot;&gt;Hardware&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;audio-device-selector&quot; title=&quot;Audio Device Selector&quot;&gt;Audio Device Selector&lt;/a&gt;: Share one output/input deivces with multiple input/output devices.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;test-samples&quot;&gt;Test Samples&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ChunMinChang/raw2mp3&quot; title=&quot;Convert raw audio files to mp3 files by various mp3 encoders&quot;&gt;raw2mp3 (mp3)&lt;/a&gt;: Convert raw audio files to mp3 files with different header types.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://helpguide.sony.net/high-res/sample1/v1/en/index.html&quot;&gt;SONY: High-Resolution music files(AAC, FLAC)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.hyperion-records.co.uk/testfiles.asp&quot;&gt;Hyperion Records(MP3, FLAC, M4A)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.2l.no/hires/&quot;&gt;HiRes(FLAC, including 5.1 Surround)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.audiocheck.net/&quot;&gt;Audio Check (wav)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;audio-formats&quot;&gt;Audio Formats&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://xiph.org/flac/format.html&quot;&gt;Flac&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c&quot;&gt;FFmpeg&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/videolan/vlc/blob/cc79f1f98f89465385c595f572eee9be1ce80c03/modules/codec/flac.c&quot;&gt;vlc&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;code-references&quot;&gt;Code References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg&quot; title=&quot;FFmpeg source code&quot;&gt;FFmpeg&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/videolan/vlc&quot;&gt;vlc&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://wiki.hydrogenaud.io/index.php?title=Main_Page&quot;&gt;Hydrogenaudio Knowledgebase&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">The resources collection for debugging audio issues.</summary></entry><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
 
 &lt;p&gt;To develop a &lt;em&gt;Rust&lt;/em&gt; library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.&lt;/p&gt;
 
@@ -1928,63 +1984,7 @@ It’s time to rock on the code!</summary></entry><entry><title type="html">A Ro
   &lt;li&gt;&lt;a href=&quot;http://paul-bruno.com/2014/04/why-education-reform-is-probably-not-the-best-way-to-fight-poverty/&quot;&gt;Why Education Reform is Probably Not The Best Way to Fight Poverty&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Social Issues&quot;]" /><category term="Education" /><summary type="html">台大真不是窮人可以來讀的學校?
 雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
-雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。</summary></entry><entry><title type="html">Audio Debugging Resources</title><link href="http://localhost:4000/post/audio-debugging-resources" rel="alternate" type="text/html" title="Audio Debugging Resources" /><published>2017-12-23T00:00:00+08:00</published><updated>2017-12-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-resources</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-resources">&lt;p&gt;The resources for debugging audio issues.&lt;/p&gt;
-
-&lt;!--read more--&gt;
-
-&lt;h2 id=&quot;software&quot;&gt;Software&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Firefox
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;audio-device-information-on-firefox&quot; title=&quot;Media info on about:support&quot;&gt;about:support&lt;/a&gt;: Show audio device info on Firefox page.&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://addons.mozilla.org/en-US/firefox/addon/devtools-media-panel/&quot; title=&quot;DevTools Media Panel&quot;&gt;DevTools Media Panel&lt;/a&gt; (&lt;a href=&quot;https://github.com/mjfroman/media-devtools-panel-react&quot; title=&quot;Media Panel Devtool&quot;&gt;source code&lt;/a&gt;): An additional panel in the Web Developer Tools displaying technical information about media elements and webrtc.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;FFmpeg: A powerful tool to record, convert and stream audio and video.
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://www.ffmpeg.org/&quot; title=&quot;FFmpeg website&quot;&gt;website&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg&quot; title=&quot;FFmpeg source code&quot;&gt;source code&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://trac.ffmpeg.org/wiki/CompilationGuide&quot; title=&quot;Compile FFmpeg&quot;&gt;Compilation Guide&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/akhudek/Soundflower&quot; title=&quot;Soundflower&quot;&gt;Soundflower&lt;/a&gt;: Create virtual (multiple channels) audio device on maxOS.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;hardware&quot;&gt;Hardware&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;audio-device-selector&quot; title=&quot;Audio Device Selector&quot;&gt;Audio Device Selector&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;test-samples&quot;&gt;Test Samples&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/ChunMinChang/raw2mp3&quot; title=&quot;Convert raw audio files to mp3 files by various mp3 encoders&quot;&gt;raw2mp3 (mp3)&lt;/a&gt;: Convert raw audio files to mp3 files with different header types.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://helpguide.sony.net/high-res/sample1/v1/en/index.html&quot;&gt;SONY: High-Resolution music files(AAC, FLAC)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.hyperion-records.co.uk/testfiles.asp&quot;&gt;Hyperion Records(MP3, FLAC, M4A)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.2l.no/hires/&quot;&gt;HiRes(FLAC, including 5.1 Surround)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.audiocheck.net/&quot;&gt;Audio Check (wav)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;audio-formats&quot;&gt;Audio Formats&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://xiph.org/flac/format.html&quot;&gt;Flac&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c&quot;&gt;FFmpeg&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/videolan/vlc/blob/cc79f1f98f89465385c595f572eee9be1ce80c03/modules/codec/flac.c&quot;&gt;vlc&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;code-references&quot;&gt;Code References&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/FFmpeg/FFmpeg&quot; title=&quot;FFmpeg source code&quot;&gt;FFmpeg&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/videolan/vlc&quot;&gt;vlc&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://wiki.hydrogenaud.io/index.php?title=Main_Page&quot;&gt;Hydrogenaudio Knowledgebase&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">The resources for debugging audio issues.</summary></entry><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
+雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。</summary></entry><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
 while calculating the average of a long series of data.
 One simplest method to avoid the problem is &lt;em&gt;running average&lt;/em&gt;
 (or &lt;em&gt;moving average&lt;/em&gt;, &lt;em&gt;rolling average&lt;/em&gt;, &lt;em&gt;incremental mean&lt;/em&gt;).&lt;/p&gt;

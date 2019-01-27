@@ -6,7 +6,7 @@ tags: [Firefox]
 comments: true
 ---
 
-The resources for debugging audio issues.
+The resources collection for debugging audio issues.
 
 <!--read more-->
 
@@ -22,7 +22,7 @@ The resources for debugging audio issues.
 - [Soundflower][soundflower]: Create virtual (multiple channels) audio device on maxOS.
 
 ## Hardware
-- [Audio Device Selector][ads]
+- [Audio Device Selector][ads]: Share one output/input deivces with multiple input/output devices. 
 
 ## Test Samples
 - [raw2mp3 (mp3)][raw2mp3]: Convert raw audio files to mp3 files with different header types.

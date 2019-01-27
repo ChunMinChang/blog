@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://localhost:4000/post/audio-debugging-resources</loc>
+<lastmod>2019-01-26T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</loc>
 <lastmod>2018-09-24T00:00:00+08:00</lastmod>
 </url>
@@ -19,10 +23,6 @@
 <url>
 <loc>http://localhost:4000/post/poor-students-are-missing-at-top-universities</loc>
 <lastmod>2017-12-27T00:00:00+08:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/post/audio-debugging-resources</loc>
-<lastmod>2017-12-23T00:00:00+08:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/post/running-average</loc>

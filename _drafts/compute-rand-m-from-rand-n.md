@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Compute Rand M from Rand N
-category: [Math]
-tags: [Rust, Puzzles]
+category: [Puzzle, Math, Algorithm]
+tags: [Random, Probabilitiy]
 mathjax: true
 comments: true
 ---
@@ -92,6 +92,12 @@ This is same for all number $$i$$, where $$i \in [0, M)$$.
 By now, we alreay know how to randomly generate a number in a smaller range
 from a random number generator in a bigger range.
 
+In brief, the algorithm is
+1. Get a random number $$x$$ in $$[0, N)$$
+2. If $$x$$ is in $$[0, M)$$, then return $$x$$
+3. Otherwise, repeat from 1
+
+
 The following *Rust* program is the method we developed above:
 
 ```rs
@@ -116,7 +122,7 @@ See the live demo [here][rand_small_from_big].
 ## $$M \gt N$$
 
 However, if $$M \gt N$$, our method above doesn't work,
-since the range of $$[0, M)$$ is wider than $$[0, N)$$ *(really? keep reading!)*.
+since the range of $$[0, M)$$ is bigger than $$[0, N)$$ *(really? keep reading!)*.
 
 To get a random number in $$[0, M)$$,
 we need to **enlarge** the range of the numbers produced
@@ -124,21 +130,128 @@ by the given generator. How to do that ?
 
 OK, the number of results from the the generator is $$N$$ now.
 How to enlarge the range of results ?
-Should we generate two numbers and do some math computation ?
+Should we generate two numbers and do some magic math ?
 
 How many results we have if we generate two numbers ?
-If we see the results as permutations, it's $$N^2$$.
+If we see the results as **permutations**, it's $$N^2$$.
 
-When $$N = 2$$, the results for generating two numbers can be:
+When $$N = 2$$, the results are $$(0, 0), (0, 1), (1, 0), (1, 1)$$.
+The probability of each result is $$1/4$$.
 
-| 1st num | 2nd num | probability                                     |
-| ------- | ------- | ----------------------------------------------- |
-| 0       | 0       | $$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$$ |
-| 0       | 1       | $$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$$ |
-| 1       | 0       | $$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$$ |
-| 1       | 1       | $$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$$ |
+| 1st | 2nd | probability                                     |
+| --- | --- | ----------------------------------------------- |
+| 0   | 0   | $$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$$ |
+| 0   | 1   | $$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$$ |
+| 1   | 0   | $$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$$ |
+| 1   | 1   | $$\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}$$ |
+
+If the results can be mapped from $$(0, 0), (0, 1), (1, 0), (1, 1)$$
+to $$0, 1, 2, 3$$, it means we **have a way** to enlarge the range of results
+from $$[0, 1]$$ to $$[0, 1, 2, 3]$$.
+
+Well, is it possible to do that ?
+If we observe carefully,
+it's natural to map $$(0, 0), (0, 1), (1, 0), (1, 1)$$ to $$0, 1, 2, 3$$.
+If we see $$00, 01, 10, 11$$ as binary numbers $${00}_{2}, {01}_{2}, {10}_{2}, {11}_{2}$$,
+then they are naturally $$0, 1, 2, 3$$.
+
+The same approach also works
+when we produce two numbers from random number generator whose range is $$[0, 3)$$.
+There are $$3 \cdot 3 = 9$$ results: $$(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)$$.
+
+| 1st | 2nd | probability                                     |
+| --- | --- | ----------------------------------------------- |
+| 0   | 0   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+| 0   | 1   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+| 0   | 2   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+| 1   | 0   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+| 1   | 1   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+| 1   | 2   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+| 2   | 0   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+| 2   | 1   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+| 2   | 2   | $$\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}$$ |
+
+If we see them as the **base-$$3$$** numbers, they are naturally $$0, 1, 2, 3, 4, 5, 6, 7, 8$$.
+
+By applying this generating-two-numbers approach for a random number generator with range in $$[0, N)$$,
+the sequential results $$(i, j)$$, where $$i, j \in [0, N)$$,
+can be mapped to $$0, 1, 2, \ldots, N^2 - 1$$ (range in $$[0, N^2)$$)
+by treating them as **base-$$N$$** numbers $${ij}_{N}$$.
+
+In general, for the random number generator with range in $$[0, N)$$,
+there are $$N^k$$ sequential results for producing $$k$$ numbers.
+The sequential results are $$(x_0, x_1, \ldots, x_{k-1})$$, where $$x_i \in [0, N)$$ and $$i \in [0, k)$$.
+By taking the sequential results in **base-$$N$$** : $${(x_0 x_1 \ldots x_{k-1})}_{N}$$,
+their valus are naturally $$0, 1, 2, \ldots, N^k$$.
+
+| 1st        | 2nd        | $$\ldots$$ | kth        | probability       |
+| ---------- | ---------- | ---------- | ---------- | ----------------- |
+| 0          | 0          | $$\ldots$$ | 0          | $$\frac{1}{N^k}$$ |
+| 0          | 0          | $$\ldots$$ | 1          | $$\frac{1}{N^k}$$ |
+| 0          | 0          | $$\ldots$$ | 2          | $$\frac{1}{N^k}$$ |
+| $$\vdots$$ | $$\vdots$$ | $$\vdots$$ | $$\vdots$$ | $$\vdots$$        |
+| 0          | 0          | $$\ldots$$ | N-1        | $$\frac{1}{N^k}$$ |
+| $$\vdots$$ | $$\vdots$$ | $$\vdots$$ | $$\vdots$$ | $$\vdots$$        |
+| N-1        | N-1        | $$\ldots$$ | 0          | $$\frac{1}{N^k}$$ |
+| N-1        | N-1        | $$\ldots$$ | 1          | $$\frac{1}{N^k}$$ |
+| N-1        | N-1        | $$\ldots$$ | 2          | $$\frac{1}{N^k}$$ |
+| $$\vdots$$ | $$\vdots$$ | $$\vdots$$ | $$\vdots$$ | $$\vdots$$        |
+| N-1        | N-1        | $$\ldots$$ | N-1        | $$\frac{1}{N^k}$$ |
 
 
+When producing $$k$$ numbers by the random number generator with range in $$[0, N)$$,
+the sequential results $$x_0, x_1, \ldots, x_{k-1}$$ can be mapped to a number in $$[0, N^k)$$
+by encoding them as a **base-$$N$$** number $${(x_0 x_1 \ldots x_{k-1})}_{N}$$.
+
+The idea can be implemented as the following program:
+```rs
+// Map the result of (x_0, x_1, ..., x_{k-1})
+// to (x_0 x_1 ... x_{k-1}) in base-N number
+let mut x = 0;
+for _ in 0..k {
+    // Repeat k times
+    x = x * N + rand(N);
+}
+```
+
+There are $$N^k$$ kinds of sequential results for producing $$k$$ numbers.
+The probability for each one is $$\frac{1}{N^k}$$.
+By this approach, we have a way to get one result
+in the $$N^k$$ kinds of sequential results.
+That is, we have a way to generate a random number in $$[0, N^k)$$
+by the random number generator in $$[0, N)$$.
+
+The original problem is to find a way to generate a random number in $$[0, M)$$
+by the random number generator in $$[0, N)$$, where $$M \gt N$$.
+Since we alreay know how to get a random number in a smaller range by
+a random number generator in a bigger range
+(the method developped in the $$M \leq N$$ case),
+if we can find a $$k$$ such that $$N^k \geq M$$, then the problem can be solved!
+
+The $$k$$ can be calculated by *logarithm*:
+
+$$
+N^k \geq M
+\Rightarrow k \geq \log_N M
+$$
+
+The corresponding program is:
+```rs
+// Return minimal k such that N^k >= M
+fn min_pow(N: u32, M: u32) -> u32 {
+    let M_f64 = f64::from(M);
+    let N_f64 = f64::from(N);
+    M_f64.log(N_f64).ceil()) as u32
+}
+```
+
+To sum up, if $$M \gt N$$, then
+1. Find a $$k$$ such that $$N^k \geq M$$
+2. Get the random number generator in $$[0, N^k)$$
+3. Generate a random number in $$[0, M)$$ by the above generator
+    1. Get a random number $$x$$ in $$[0, N^k)$$
+    2. If $$x$$ is in $$[0, M)$$, then return $$x$$
+    3. Otherwise, repeat from 3-1
 
 ```rs
 // Get a random number in [0, b) by a random number generator in [0, s),
@@ -178,8 +291,32 @@ fn min_pow(x: u32, y: u32) -> u32 {
 
 See the live demo [here][rand_big_from_small].
 
+<!-- ### Enlarge from [0, 1, ..., N-1] to [0, 1, ..., N^k-1]
+Look from another view ....
+
+```rs
+// Map the result of (x_0, x_1, ..., x_{k-1})
+// to (x_0 x_1 ... x_{k-1}) in base-N number
+let mut x = 0;
+for _ in 0..k {
+    // Repeat k times
+    x = x * N + rand(N);
+}
+```
+
+is actually enlarge a list from [0, 1, ..., N-1] to [0, 1, ..., N^k-1] -->
+
+
 ## Compute Rand *M* from Rand *N*
 
+In fact, the method developped for $$M \leq N$$ case
+is a special case in the method for $$M \gt N$$ case.
+
+In the method for $$M \gt N$$ case,
+the first step is to find a $$k$$ such that $$N^k \geq M$$.
+If $$M \leq N$$, then $$k$$ is $$1$$.
+
+Thus, the algorithm can be summarized as:
 ```rs
 // Get a random number in [0, m) by a random number generator in [0, n)
 fn rand_m_from_n(m: u32, n: u32) -> u32 {
@@ -218,16 +355,17 @@ See the live demo [here][rand_m_from_n].
 
 ### If *N* is 2
 
-Replace
+One mentionable trick is to replace
 ```rs
-r = r * x + rand(x);
+x = x * 2 + rand(2);
 ```
-bt
+by
 ```rs
-r = r << 1 | rand(2);
+x = x << 1 | rand(2);
 ```
+when $$N = 2$$.
 
-As a result the program is:
+As a result, the program is:
 ```rs
 // Get a random number in [0, x) by a random number generator in [0, 1]
 fn rand_from_2(x: u32) -> u32 {
@@ -265,11 +403,18 @@ fn min_pow(x: u32) -> u32 {
 See the live demo [here][rand_from_2].
 
 ### How to check if the distribution is uniform
+One easy way is to apply [*chi square test*][chi_sq_test].
+The discussion can be found [here][test_uni_dist].
+The [Testing a Random Number Generator][johndcook] chapter
+in *John D. Cook*'s *Beautiful Testing* is also a great reference to read.
 
 [rand_small_from_big]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=798f79143be66cecd08f81b48a97dd4b "Compute Rand([0, s)) from Rand([0, b)), where b, s are integers and b >= s"
 [rand_big_from_small]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=fb12e41948db39ebf49340a0a151529e "Compute Rand([0, b)) from Rand([0, s)), where b, s are integers and b >= s"
 [rand_m_from_n]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=ad02e341de49665aeef118bdbb10aae9 "Compute Rand([0, m)) from Rand([0, n)), where m, n are integers"
 [rand_from_2]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=5aa2d3ae1fe8e528628ca6fafbed5b86 "Compute Rand([0, k)) from Rand([0, 1]), where m, n are integers"
 
+[chi_sq_test]: https://en.wikipedia.org/wiki/Chi-squared_test
+[test_uni_dist]: https://math.stackexchange.com/questions/2435/is-there-a-simple-test-for-uniform-distributions
+[johndcook]: https://www.johndcook.com/Beautiful_Testing_ch10.pdf
 
 

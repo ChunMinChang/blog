@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://localhost:4000/post/compute-rand-m-from-rand-n</loc>
+<lastmod>2019-02-10T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/post/audio-debugging-resources</loc>
 <lastmod>2019-01-26T00:00:00+08:00</lastmod>
 </url>
@@ -185,6 +189,12 @@
 <loc>http://localhost:4000/archive/tag/rust/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/archive/tag/random/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/archive/tag/probabilitiy/</loc>
+</url>
+<url>
 <loc>http://localhost:4000/archive/category/algorithm/</loc>
 </url>
 <url>
@@ -204,6 +214,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/archive/category/social-issues/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/archive/category/puzzle/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/blog/2/</loc>

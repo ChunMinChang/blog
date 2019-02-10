@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+
+<meta name="keywords" content="Random, Probabilitiy">
+
+
+<!-- Begin Jekyll SEO tag v1.3.3 -->
+<title>Compute Rand M from Rand N - Peak Up</title>
+<meta property="og:title" content="Compute Rand M from Rand N" />
+<meta name="description" content="How to get a random number in [0, M) by a random number generatorthat randomly throws a number in [0, N) with equal probability ?" />
+<meta property="og:description" content="How to get a random number in [0, M) by a random number generatorthat randomly throws a number in [0, N) with equal probability ?" />
+<link rel="canonical" href="http://localhost:4000/post/compute-rand-m-from-rand-n" />
+<meta property="og:url" content="http://localhost:4000/post/compute-rand-m-from-rand-n" />
+<meta property="og:site_name" content="Peak Up" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-02-10T00:00:00+08:00" />
+<link rel="prev" href="http://localhost:4000/post/audio-debugging-resources" title="Audio Debugging Resources" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Compute Rand M from Rand N",
+    "datePublished": "2019-02-10T00:00:00+08:00",
+    "description": "How to get a random number in [0, M) by a random number generatorthat randomly throws a number in [0, N) with equal probability ?",
+    "logo": "http://localhost:4000mountain.png",
+    "url": "http://localhost:4000/post/compute-rand-m-from-rand-n"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Peak Up" />
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/font-awesome.min.css" />
+
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
+<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
+
+
+<!--Load Mathjax-->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+        MathJax.Hub.Config({
+            config: ["MMLorHTML.js"],
+            extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+            jax: ["input/TeX"],
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: false
+            },
+            TeX: {
+                TagSide: "right",
+                TagIndent: ".8em",
+                MultLineWidth: "85%",
+                equationNumbers: {
+                   autoNumber: "AMS",
+                },
+                unicode: {
+                   fonts: "STIXGeneral,'Arial Unicode MS'"
+                }
+            },
+            showProcessingMessages: false
+        });
+</script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://localhost:4000/images/favicons/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://localhost:4000/images/favicons/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://localhost:4000/images/favicons/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://localhost:4000/images/favicons/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/images/favicons/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post-template" itemscope itemtype="http://schema.org/WebPage">
+
+    
+<div class="search-wrapper">
+    <div class="search-form">
+        <input type="text" id="search-input" class="search-field" placeholder="Search...">
+        <i id="search-close" class="fa fa-times-circle"></i>
+        <h4>Search results</h4>
+        <ul id="results-container" class="search-results post-list">
+        </ul>
+        <!-- /.search-results -->
+    </div>
+    <!-- /.search-form -->
+</div>
+<!-- ./search-wrapper -->
+
+
+<div id="fade"></div>
+<a id="slide" class="animated fade">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+</a>
+<aside id="sidebar">
+    <nav id="navigation">
+        <h2>MENU</h2>
+        <hr>
+        <ul> 
+            <li>
+                <a href="http://localhost:4000/"><!-- <i class="fa fa-home"></i>&nbsp;-->Home</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/categories"><!-- <i class="fa fa-sitemap"></i>&nbsp;-->Categories</a>  </li>
+            
+            <li>
+                <a href="http://localhost:4000/tags"><!-- <i class="fa fa-tags"></i>&nbsp;-->Tags</a>  </li>
+            
+            <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+        </ul>
+    </nav>
+</aside>
+
+
+<header id="masthead" class="blog-background overlay align-center align-middle animated from-bottom" style="background-image: url(http://localhost:4000/images/background/yosemite/yosemite-tiny.jpg)"
+    itemscope itemtype="http://schema.org/Organization">
+
+
+
+    <button class="menu-button animated fade dosearch">
+        <i class="fa fa-search"></i>
+    </button>
+
+
+
+    <div class="inner">
+        <div class="container">
+            <a class="brand" href="http://localhost:4000/" itemprop="url">
+                <img itemprop="logo" src="http://localhost:4000/images/mountain.png" alt="Peak Up Logo" />
+                <h1 class="blog-title light" itemprop="name">
+                    Peak Up
+                </h1>
+            </a>
+        </div>
+    </div>
+
+
+
+    <div class="decor-wrapper">
+        <svg id="header-decor" class="decor bottom" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 100 L50 50 L0 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 100 L50 50 L100 33.3" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 100 L50 50 L0 66.6" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 100 L50 50 L100 66.6" fill="rgba(255,255,255, .5)"></path> -->
+            <path d="M0 99.9 L50 49.9 L100 99.9 L0 99.9" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 52 L50 49 L52 52 L48 52" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+
+</header>
+
+
+    <div id="main" class="content" role="main" itemprop="mainContentOfPage" itemscope itemtype="http://schema.org/Blog">
+        <div class="container">
+            <div class="row">
+                <article class="post col-md-8 col-md-offset-2 hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+                
+                
+                
+                
+
+                    <header class="post-header entry-header">
+
+                    
+
+                    
+                        <h1 class="post-title text-center hyper lighter bordered-bottom entry-title" itemprop="headline">
+                        
+                            
+                        
+                        
+                        
+
+                        
+                            Compute Rand M from Rand N
+                        </h1>
+                    
+
+                        <div class="cursive" style="color: #000; font-style:italic;"></div>
+
+                            <div class="post-info text-center small">
+                            
+                                <span class="entry-date date published updated">
+                            
+                            
+                                    <time datetime="2019-02-10T00:00:00+08:00" class="post-time" itemprop="datePublished">10 Feb 2019</time>
+                                </span>
+                            
+
+                                in <span class="post-tags">
+
+                            
+                                    <a href="http://localhost:4000/categories/index.html#PuzzleMathAlgorithm" data-toggle="tooltip" title="Other posts from the Puzzle category" rel="tag">Puzzle</a>
+                                
+                                    &nbsp;&bull;&nbsp;
+                                
+                            
+                                    <a href="http://localhost:4000/categories/index.html#PuzzleMathAlgorithm" data-toggle="tooltip" title="Other posts from the Math category" rel="tag">Math</a>
+                                
+                                    &nbsp;&bull;&nbsp;
+                                
+                            
+                                    <a href="http://localhost:4000/categories/index.html#PuzzleMathAlgorithm" data-toggle="tooltip" title="Other posts from the Algorithm category" rel="tag">Algorithm</a>
+                                
+                            
+                                </span>
+                            
+                            &nbsp;
+                                <span class="post-tags"><i class="fa fa-clock-o"></i>&nbsp;
+
+                            
+
+                            
+                                    <span class="time">10.572222222222223</span> minutes read
+                            
+                                
+                            
+
+                                </span>
+                            
+                            </div>
+
+                    </header>
+
+                    <div class="post-body bordered-bottom" itemprop="description">
+                    
+
+                        <p>How to get a random number in <em>[0, M)</em> by a random number generator
+that randomly throws a number in <em>[0, N)</em> with equal probability ?</p>
+
+<!--read more-->
+
+<h1 id="randm-by-randn"><script type="math/tex">Rand(M)</script> by <script type="math/tex">Rand(N)</script></h1>
+
+<p>In this post, <script type="math/tex">Rand \; K</script> or <script type="math/tex">Rand(K)</script> denotes a random number generator
+that produce a integer randomly in <script type="math/tex">[0, K)</script>
+(or <script type="math/tex">[0, K - 1]</script>, from <script type="math/tex">0</script> to <script type="math/tex">K-1</script> inclusively)
+with equal probability.</p>
+
+<p>We can simply divide this problem into two cases: <script type="math/tex">M \leq N</script> or <script type="math/tex">M \gt N</script>.</p>
+
+<h2 id="m-leq-n"><script type="math/tex">M \leq N</script></h2>
+
+<p>If <script type="math/tex">M \leq N</script>, then the range <script type="math/tex">[0, M)</script> is in the range <script type="math/tex">[0, N)</script>.
+Therefore, the probability of a number choosed by <script type="math/tex">Rand(N)</script> in <script type="math/tex">[0, M)</script>
+is same. All of them are <script type="math/tex">\frac{1}{N}</script>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>number</th>
+      <th>probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">0</script></td>
+      <td><script type="math/tex">\frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">\frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">2</script></td>
+      <td><script type="math/tex">\frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">M-1</script></td>
+      <td><script type="math/tex">\frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">N-1</script></td>
+      <td><script type="math/tex">\frac{1}{N}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>What we want is to develop a method
+that can randomly choose a number in <script type="math/tex">[0, M)</script> with equal probability.
+We can leverage this fact.</p>
+
+<p>The simplest way is to <strong>re-produce</strong> a number
+if the number produced is out of the range we want (<script type="math/tex">[0, M)</script>).
+That is, if the number produced is in <script type="math/tex">[M, N)</script>,
+we <strong>re-generate</strong> a number.</p>
+
+<p>Does it work? That’s check the probability for each number.
+For each round, the probability we need to re-generate a number is <script type="math/tex">\frac{N - M}{N}</script>.
+Hence, the probability to get a number <script type="math/tex">i</script> in the <script type="math/tex">K</script> round
+can be organized as the following table,
+where <script type="math/tex">i \in [0, M)</script> and <script type="math/tex">K \in \mathbb{N}</script>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>round</th>
+      <th>probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">\frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">2</script></td>
+      <td><script type="math/tex">\frac{N - M}{N} \cdot \frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">3</script></td>
+      <td><script type="math/tex">{(\frac{N - M}{N})}^{2} \cdot \frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">K</script></td>
+      <td><script type="math/tex">{(\frac{N - M}{N})}^{K-1} \cdot \frac{1}{N}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As a result, the probability to get the number <script type="math/tex">i</script> is</p>
+
+<script type="math/tex; mode=display">\sum_{k=1}^\infty {(\frac{N - M}{N})}^{k-1} \cdot \frac{1}{N}
+= \frac{1}{N}
++ \frac{N - M}{N} \cdot \frac{1}{N}
++ {(\frac{N - M}{N})}^{2} \cdot \frac{1}{N}
++ \ldots
++ {(\frac{N - M}{N})}^{K-1} \cdot \frac{1}{N}</script>
+
+<p>This is same for all number <script type="math/tex">i</script>, where <script type="math/tex">i \in [0, M)</script>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>number</th>
+      <th>probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><script type="math/tex">0</script></td>
+      <td><script type="math/tex">\sum_{k=1}^\infty {(\frac{N - M}{N})}^{k-1} \cdot \frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">1</script></td>
+      <td><script type="math/tex">\sum_{k=1}^\infty {(\frac{N - M}{N})}^{k-1} \cdot \frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">2</script></td>
+      <td><script type="math/tex">\sum_{k=1}^\infty {(\frac{N - M}{N})}^{k-1} \cdot \frac{1}{N}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">M-1</script></td>
+      <td><script type="math/tex">\sum_{k=1}^\infty {(\frac{N - M}{N})}^{k-1} \cdot \frac{1}{N}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>By now, we alreay know how to randomly generate a number in a smaller range
+from a random number generator in a bigger range.</p>
+
+<p>In brief, the algorithm is</p>
+<ol>
+  <li>Get a random number <script type="math/tex">x</script> in <script type="math/tex">[0, N)</script></li>
+  <li>If <script type="math/tex">x</script> is in <script type="math/tex">[0, M)</script>, then return <script type="math/tex">x</script></li>
+  <li>Otherwise, repeat from 1</li>
+</ol>
+
+<p>The following <em>Rust</em> program is the method we developed above:</p>
+
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// Get a random number in [0, s) by a random number generator in [0, b),</span>
+<span class="c">// where both s, b are integers and s &gt; 1, b &gt; 1, s &lt;= b</span>
+<span class="k">fn</span> <span class="nf">rand_small_from_big</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">assert</span><span class="o">!</span><span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">s</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">);</span>
+    <span class="k">loop</span> <span class="p">{</span>
+        <span class="c">// Get a random number in [0, b)</span>
+        <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="nf">rand</span><span class="p">(</span><span class="n">b</span><span class="p">);</span>
+        <span class="c">// Return the random number if it is in [0, s)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">s</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// Repeating if the random number is in [s, b)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>See the live demo <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=798f79143be66cecd08f81b48a97dd4b" title="Compute Rand([0, s)) from Rand([0, b)), where b, s are integers and b &gt;= s">here</a>.</p>
+
+<h2 id="m-gt-n"><script type="math/tex">M \gt N</script></h2>
+
+<p>However, if <script type="math/tex">M \gt N</script>, our method above doesn’t work,
+since the range of <script type="math/tex">[0, M)</script> is bigger than <script type="math/tex">[0, N)</script> <em>(really? keep reading!)</em>.</p>
+
+<p>To get a random number in <script type="math/tex">[0, M)</script>,
+we need to <strong>enlarge</strong> the range of the numbers produced
+by the given generator. How to do that ?</p>
+
+<p>OK, the number of results from the generator is <script type="math/tex">N</script> now.
+How to enlarge the range of results ?
+Should we generate two numbers and do some magic math ?</p>
+
+<p>How many results we have if we generate two numbers ?
+If we see the results as <strong>permutations</strong>, it’s <script type="math/tex">N^2</script>.</p>
+
+<p>When <script type="math/tex">N = 2</script>, the results are <script type="math/tex">(0, 0), (0, 1), (1, 0), (1, 1)</script>.
+The probability of each result is <script type="math/tex">1/4</script>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>1st</th>
+      <th>2nd</th>
+      <th>probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td><script type="math/tex">\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}</script></td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td><script type="math/tex">\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}</script></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td><script type="math/tex">\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}</script></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td><script type="math/tex">\frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If the results can be mapped from <script type="math/tex">(0, 0), (0, 1), (1, 0), (1, 1)</script>
+to <script type="math/tex">0, 1, 2, 3</script>, it means we <strong>have a way</strong> to enlarge the range of results
+from <script type="math/tex">[0, 1]</script> to <script type="math/tex">[0, 1, 2, 3]</script>.</p>
+
+<p>Well, is it possible to do that ?
+If we observe carefully,
+it’s natural to map <script type="math/tex">(0, 0), (0, 1), (1, 0), (1, 1)</script> to <script type="math/tex">0, 1, 2, 3</script>.
+If we see <script type="math/tex">00, 01, 10, 11</script> as binary numbers <script type="math/tex">{00}_{2}, {01}_{2}, {10}_{2}, {11}_{2}</script>,
+then they are naturally <script type="math/tex">0, 1, 2, 3</script>.</p>
+
+<p>The same approach also works
+when we produce two numbers from random number generator whose range is <script type="math/tex">[0, 3)</script>.
+There are <script type="math/tex">3 \cdot 3 = 9</script> results: <script type="math/tex">(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)</script>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>1st</th>
+      <th>2nd</th>
+      <th>probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>2</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2</td>
+      <td><script type="math/tex">\frac{1}{3} \cdot \frac{1}{3} = \frac{1}{9}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If we see them as the <strong>base-<script type="math/tex">3</script></strong> numbers, they are naturally <script type="math/tex">0, 1, 2, 3, 4, 5, 6, 7, 8</script>.</p>
+
+<p>By applying this generating-two-numbers approach for a random number generator with range in <script type="math/tex">[0, N)</script>,
+the sequential results <script type="math/tex">(i, j)</script>, where <script type="math/tex">i, j \in [0, N)</script>,
+can be mapped to <script type="math/tex">0, 1, 2, \ldots, N^2 - 1</script> (range in <script type="math/tex">[0, N^2)</script>)
+by treating them as <strong>base-<script type="math/tex">N</script></strong> numbers <script type="math/tex">{ij}_{N}</script>.</p>
+
+<p>In general, for the random number generator with range in <script type="math/tex">[0, N)</script>,
+there are <script type="math/tex">N^k</script> sequential results for producing <script type="math/tex">k</script> numbers.
+The sequential results are <script type="math/tex">(x_0, x_1, \ldots, x_{k-1})</script>, where <script type="math/tex">x_i \in [0, N)</script> and <script type="math/tex">i \in [0, k)</script>.
+By taking the sequential results in <strong>base-<script type="math/tex">N</script></strong> : <script type="math/tex">{(x_0 x_1 \ldots x_{k-1})}_{N}</script>,
+their valus are naturally <script type="math/tex">0, 1, 2, \ldots, N^k</script>.
+It is how the <strong>base-<script type="math/tex">N</script></strong> numbers work.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>1st</th>
+      <th>2nd</th>
+      <th><script type="math/tex">\ldots</script></th>
+      <th>kth</th>
+      <th>probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td><script type="math/tex">\ldots</script></td>
+      <td>0</td>
+      <td><script type="math/tex">\frac{1}{N^k}</script></td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td><script type="math/tex">\ldots</script></td>
+      <td>1</td>
+      <td><script type="math/tex">\frac{1}{N^k}</script></td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td><script type="math/tex">\ldots</script></td>
+      <td>2</td>
+      <td><script type="math/tex">\frac{1}{N^k}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td><script type="math/tex">\ldots</script></td>
+      <td>N-1</td>
+      <td><script type="math/tex">\frac{1}{N^k}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+    </tr>
+    <tr>
+      <td>N-1</td>
+      <td>N-1</td>
+      <td><script type="math/tex">\ldots</script></td>
+      <td>0</td>
+      <td><script type="math/tex">\frac{1}{N^k}</script></td>
+    </tr>
+    <tr>
+      <td>N-1</td>
+      <td>N-1</td>
+      <td><script type="math/tex">\ldots</script></td>
+      <td>1</td>
+      <td><script type="math/tex">\frac{1}{N^k}</script></td>
+    </tr>
+    <tr>
+      <td>N-1</td>
+      <td>N-1</td>
+      <td><script type="math/tex">\ldots</script></td>
+      <td>2</td>
+      <td><script type="math/tex">\frac{1}{N^k}</script></td>
+    </tr>
+    <tr>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+      <td><script type="math/tex">\vdots</script></td>
+    </tr>
+    <tr>
+      <td>N-1</td>
+      <td>N-1</td>
+      <td><script type="math/tex">\ldots</script></td>
+      <td>N-1</td>
+      <td><script type="math/tex">\frac{1}{N^k}</script></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>When producing <script type="math/tex">k</script> numbers by the random number generator with range in <script type="math/tex">[0, N)</script>,
+the sequential results <script type="math/tex">x_0, x_1, \ldots, x_{k-1}</script> can be mapped to a number in <script type="math/tex">[0, N^k)</script>
+by encoding them as a <strong>base-<script type="math/tex">N</script></strong> number <script type="math/tex">{(x_0 x_1 \ldots x_{k-1})}_{N}</script>.</p>
+
+<p>The idea can be implemented as the following program:</p>
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// Map the result of (x_0, x_1, ..., x_{k-1})</span>
+<span class="c">// to (x_0 x_1 ... x_{k-1}) in base-N number</span>
+<span class="k">let</span> <span class="k">mut</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="n">_</span> <span class="n">in</span> <span class="mi">0</span><span class="err">.</span><span class="py">.k</span> <span class="p">{</span>
+    <span class="c">// Repeat k times</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="nf">rand</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>There are <script type="math/tex">N^k</script> kinds of sequential results for producing <script type="math/tex">k</script> numbers.
+The probability for each one is <script type="math/tex">\frac{1}{N^k}</script>.
+By this approach, we have a way to get one result
+in the <script type="math/tex">N^k</script> kinds of sequential results.
+That is, we have a way to generate a random number in <script type="math/tex">[0, N^k)</script>
+by the random number generator in <script type="math/tex">[0, N)</script>.</p>
+
+<p>The original problem is to find a way to generate a random number in <script type="math/tex">[0, M)</script>
+by the random number generator in <script type="math/tex">[0, N)</script>, where <script type="math/tex">M \gt N</script>.
+Since we alreay know how to get a random number in a smaller range by
+a random number generator in a bigger range
+(the method developped in the <script type="math/tex">M \leq N</script> case),
+if we can find a <script type="math/tex">k</script> such that <script type="math/tex">N^k \geq M</script>, then the problem can be solved!</p>
+
+<p>The <script type="math/tex">k</script> can be calculated by <em>logarithm</em>:</p>
+
+<script type="math/tex; mode=display">N^k \geq M
+\Rightarrow k \geq \log_N M</script>
+
+<p>The corresponding program is:</p>
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// Return minimal k such that N^k &gt;= M</span>
+<span class="k">fn</span> <span class="nf">min_pow</span><span class="p">(</span><span class="n">N</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span> <span class="n">M</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">M_f64</span> <span class="o">=</span> <span class="nn">f64</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="n">M</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">N_f64</span> <span class="o">=</span> <span class="nn">f64</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+    <span class="n">M_f64</span><span class="nf">.log</span><span class="p">(</span><span class="n">N_f64</span><span class="p">)</span><span class="nf">.ceil</span><span class="p">())</span> <span class="k">as</span> <span class="nb">u32</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>To sum up, if <script type="math/tex">M \gt N</script>, then</p>
+<ol>
+  <li>Find a <script type="math/tex">k</script> such that <script type="math/tex">N^k \geq M</script></li>
+  <li>Get the random number generator in <script type="math/tex">[0, N^k)</script></li>
+  <li>Generate a random number in <script type="math/tex">[0, M)</script> by the above generator
+    <ol>
+      <li>Get a random number <script type="math/tex">x</script> in <script type="math/tex">[0, N^k)</script></li>
+      <li>If <script type="math/tex">x</script> is in <script type="math/tex">[0, M)</script>, then return <script type="math/tex">x</script></li>
+      <li>Otherwise, repeat from 3-1</li>
+    </ol>
+  </li>
+</ol>
+
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// Get a random number in [0, b) by a random number generator in [0, s),</span>
+<span class="c">// where both s, b are integers and s &gt; 1, b &gt; 1, s &lt;= b</span>
+<span class="k">fn</span> <span class="nf">rand_big_from_small</span><span class="p">(</span><span class="n">b</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">assert</span><span class="o">!</span><span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">s</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">);</span>
+    <span class="c">// Get a minimal number p such that s^p &gt;= b</span>
+    <span class="k">let</span> <span class="n">p</span> <span class="o">=</span> <span class="nf">min_pow</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+    <span class="k">assert</span><span class="o">!</span><span class="p">(</span><span class="n">s</span><span class="nf">.pow</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">b</span><span class="p">);</span>
+    <span class="k">loop</span> <span class="p">{</span>
+        <span class="c">// Get a random number in [0, s^p)</span>
+        <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="nf">rand_pow</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">);</span>
+        <span class="c">// Return the random number if it is in [0, b)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">b</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// Repeating if the random number is in [b, s^p)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">// Get a random from [0, x^y)</span>
+<span class="k">fn</span> <span class="nf">rand_pow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">assert</span><span class="o">!</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="n">in</span> <span class="mi">0</span><span class="err">.</span><span class="py">.y</span> <span class="p">{</span>
+        <span class="c">// Repeat y times</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="nf">rand</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">r</span>
+<span class="p">}</span>
+
+<span class="c">// Return minimal k such that x^k &gt;= y</span>
+<span class="k">fn</span> <span class="nf">min_pow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="p">(</span><span class="nn">f64</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="nf">.log</span><span class="p">(</span><span class="nn">f64</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="nf">.ceil</span><span class="p">())</span> <span class="k">as</span> <span class="nb">u32</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>See the live demo <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=fb12e41948db39ebf49340a0a151529e" title="Compute Rand([0, b)) from Rand([0, s)), where b, s are integers and b &gt;= s">here</a>.</p>
+
+<h3 id="enlarge-from-0-1-ldots-n-1-to-0-1-ldots-nk-1">Enlarge from <script type="math/tex">[0, 1, \ldots, N-1]</script> to <script type="math/tex">[0, 1, \ldots, N^k-1]</script></h3>
+
+<p>An interesting view to look the line <script type="math/tex">x * N + rand(N)</script> is to think
+<script type="math/tex">x</script> is a <script type="math/tex">l</script> numbers sequence from <script type="math/tex">a</script> to <script type="math/tex">a + l - 1</script>, <script type="math/tex">[a, a + 1, a + 2, \ldots, a + l - 1]</script>
+and <script type="math/tex">rand(N)</script> is a list from <script type="math/tex">0</script> to <script type="math/tex">N-1</script>, <script type="math/tex">[0, 1, 2, \ldots, N - 1]</script>.
+In this case, <script type="math/tex">x * N + rand(N)</script> is something like</p>
+
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// x is [a, a + 1, a + 2, ..., a + l - 1]</span>
+<span class="k">fn</span> <span class="nf">enlarge</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u32</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u32</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">offsets</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u32</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="err">.</span><span class="py">.N</span><span class="p">)</span><span class="nf">.collect</span><span class="p">();</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">out</span> <span class="o">=</span> <span class="nn">Vec</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">x</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="n">offsets</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">out</span><span class="nf">.push</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">out</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>What <code class="highlighter-rouge">enlarge</code> does is to enlarge a sequence
+from <script type="math/tex">[a, a + 1, a + 2, \ldots, a + l - 1]</script>
+to <script type="math/tex">[a \cdot N, a \cdot N + 1, a \cdot N + 2, \ldots, (a + l) \cdot N  - 1)]</script>.</p>
+
+<p>By multiplying <script type="math/tex">N</script> on each value in <script type="math/tex">[a, a + 1, a + 2, \ldots, a + l - 1]</script>,
+the difference between <script type="math/tex">i</script> and <script type="math/tex">i + 1</script> is enlarged to <script type="math/tex">N</script>, where <script type="math/tex">i \in [0, a + l - 1)</script>.
+The sequence becomes <script type="math/tex">[a \cdot N, (a + 1) \cdot N, (a + 2) \cdot N, \ldots, (a + l - 1) \cdot N]</script>.
+By padding <script type="math/tex">0</script>, <script type="math/tex">1, 2, \ldots , N-1</script> to the gaps between each value
+in <script type="math/tex">[a \cdot N, (a + 1) \cdot N, (a + 2) \cdot N, \ldots, (a + l - 1) \cdot N]</script>,
+The sequence becomes <script type="math/tex">[a \cdot N, a \cdot N + 1, a \cdot N + 2, \ldots, (a + l) \cdot N  - 1)]</script>.
+This is all the values in <script type="math/tex">[a, (a + l) \cdot N)</script>. 
+In other words, the sequence containing all the values in <script type="math/tex">[a, a + l)</script>
+can be enlarged to a sequence containing all the values in <script type="math/tex">[a, (a + l) \cdot N)</script>
+by applying <code class="highlighter-rouge">enlarge</code>.</p>
+
+<p>If <script type="math/tex">a</script> is <script type="math/tex">0</script> and <script type="math/tex">l</script> is <script type="math/tex">N^p</script>,
+then we can <code class="highlighter-rouge">enlarge</code> a <script type="math/tex">[0, N^p)</script>-sequence to a <script type="math/tex">[0, N^{p+1})</script>-sequence.</p>
+
+<p>Based on this idea, the following code</p>
+
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="k">let</span> <span class="k">mut</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="n">_</span> <span class="n">in</span> <span class="mi">0</span><span class="err">.</span><span class="py">.k</span> <span class="p">{</span>
+    <span class="c">// Repeat k times</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="nf">rand</span><span class="p">(</span><span class="n">N</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>is similar to call <code class="highlighter-rouge">k-1</code>-times <code class="highlighter-rouge">enlarge</code></p>
+
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// x is [0, 1, ..., N-1]</span>
+<span class="k">for</span> <span class="n">_</span> <span class="n">in</span> <span class="mi">0</span><span class="err">.</span><span class="py">.k</span><span class="o">-</span><span class="mi">1</span> <span class="p">{</span>
+    <span class="c">// Repeat k-1 times</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nf">enlarge</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>to enlarge a list from <script type="math/tex">[0, 1, ..., N-1]</script> to <script type="math/tex">[0, 1, \ldots, N^k-1]</script>.
+The first <code class="highlighter-rouge">x = x * N + rand(N)</code> is to generate a <script type="math/tex">[0, 1, \ldots, N-1]</script> to <code class="highlighter-rouge">x</code>.</p>
+
+<p>See the live demo <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=34b7017dc0fb8c866b6c6a3543aac7c0">here</a>.</p>
+
+<h2 id="compute-rand-m-from-rand-n">Compute Rand <em>M</em> from Rand <em>N</em></h2>
+
+<p>In fact, the method developped for <script type="math/tex">M \leq N</script> case
+is a special case in the method for <script type="math/tex">M \gt N</script> case.</p>
+
+<p>Recall the algorithm for <script type="math/tex">M \gt N</script> case:</p>
+<ol>
+  <li>Find a <script type="math/tex">k</script> such that <script type="math/tex">N^k \geq M</script></li>
+  <li>Get the random number generator in <script type="math/tex">[0, N^k)</script></li>
+  <li>Generate a random number in <script type="math/tex">[0, M)</script> by the above generator
+    <ol>
+      <li>Get a random number <script type="math/tex">x</script> in <script type="math/tex">[0, N^k)</script></li>
+      <li>If <script type="math/tex">x</script> is in <script type="math/tex">[0, M)</script>, then return <script type="math/tex">x</script></li>
+      <li>Otherwise, repeat from 3-1</li>
+    </ol>
+  </li>
+</ol>
+
+<p>If <script type="math/tex">M \leq N</script>, then <script type="math/tex">k</script> is <script type="math/tex">1</script>!</p>
+
+<p>Thus, the algorithm can be summarized as:</p>
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// Get a random number in [0, m) by a random number generator in [0, n)</span>
+<span class="k">fn</span> <span class="nf">rand_m_from_n</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">assert</span><span class="o">!</span><span class="p">(</span><span class="n">m</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="c">// Get a minimal number p such that n^p &gt;= m</span>
+    <span class="k">let</span> <span class="n">p</span> <span class="o">=</span> <span class="nf">min_pow</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">);</span>
+    <span class="k">loop</span> <span class="p">{</span>
+        <span class="c">// Get a random number in [0, n^p)</span>
+        <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="nf">rand_pow</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">);</span>
+        <span class="c">// Return the random number if it is in [0, m)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// Repeating if the random number is in [m, n^p)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">// Get a random from [0, x^y)</span>
+<span class="k">fn</span> <span class="nf">rand_pow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">assert</span><span class="o">!</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="n">in</span> <span class="mi">0</span><span class="err">.</span><span class="py">.y</span> <span class="p">{</span>
+        <span class="c">// Repeat y times</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="nf">rand</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">r</span>
+<span class="p">}</span>
+
+<span class="c">// Return minimal k such that x^k &gt;= y</span>
+<span class="k">fn</span> <span class="nf">min_pow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">u32</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="p">(</span><span class="nn">f64</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="nf">.log</span><span class="p">(</span><span class="nn">f64</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="nf">.ceil</span><span class="p">())</span> <span class="k">as</span> <span class="nb">u32</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>See the live demo <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=ad02e341de49665aeef118bdbb10aae9" title="Compute Rand([0, m)) from Rand([0, n)), where m, n are integers">here</a>.</p>
+
+<h3 id="if-n-is-2">If <em>N</em> is 2</h3>
+
+<p>One mentionable trick is to replace</p>
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="nf">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</code></pre>
+</div>
+<p>by</p>
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="p">|</span> <span class="nf">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</code></pre>
+</div>
+<p>when <script type="math/tex">N = 2</script>.</p>
+
+<p>As a result, the program is:</p>
+<div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// Get a random number in [0, x) by a random number generator in [0, 1]</span>
+<span class="k">fn</span> <span class="nf">rand_from_2</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">assert</span><span class="o">!</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="c">// Get a minimal number p such that 2^p &gt;= x</span>
+    <span class="k">let</span> <span class="n">p</span> <span class="o">=</span> <span class="nf">min_pow</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="k">loop</span> <span class="p">{</span>
+        <span class="c">// Get a random number in [0, 2^p)</span>
+        <span class="k">let</span> <span class="n">r</span> <span class="o">=</span> <span class="nf">rand_pow</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+        <span class="c">// Return the random number if it is in [0, x)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c">// Repeating if the random number is in [x, 2^p)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">// Get a random from [0, 2^k)</span>
+<span class="k">fn</span> <span class="nf">rand_pow</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="k">assert</span><span class="o">!</span><span class="p">(</span><span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">let</span> <span class="k">mut</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="n">in</span> <span class="mi">0</span><span class="err">.</span><span class="py">.k</span> <span class="p">{</span>
+        <span class="c">// Repeat k times</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="p">|</span> <span class="nf">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">r</span>
+<span class="p">}</span>
+
+<span class="c">// Return minimal k such that 2^k &gt;= x</span>
+<span class="k">fn</span> <span class="nf">min_pow</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">u32</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">u32</span> <span class="p">{</span>
+    <span class="p">(</span><span class="nn">f64</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="nf">.log</span><span class="p">(</span><span class="nn">f64</span><span class="p">::</span><span class="nf">from</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="nf">.ceil</span><span class="p">())</span> <span class="k">as</span> <span class="nb">u32</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>See the live demo <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=5aa2d3ae1fe8e528628ca6fafbed5b86" title="Compute Rand([0, k)) from Rand([0, 1]), where m, n are integers">here</a>.</p>
+
+<h3 id="how-to-check-if-the-distribution-is-uniform">How to check if the distribution is uniform</h3>
+<p>One way to check if the distrubution of a random number generator is uniform
+is to apply <a href="https://en.wikipedia.org/wiki/Chi-squared_test"><em>chi square test</em></a>.
+The discussion can be found <a href="https://math.stackexchange.com/questions/2435/is-there-a-simple-test-for-uniform-distributions">here</a>.
+The <a href="https://www.johndcook.com/Beautiful_Testing_ch10.pdf">Testing a Random Number Generator</a> chapter
+in <em>John D. Cook</em>’s <em>Beautiful Testing</em> is also a great reference to read.</p>
+
+
+
+                        <br>
+
+                    
+                    
+                        <div class="entry-tags text-center">
+                            <i class="fa fa-tags"></i>&nbsp;
+                                Tagged with 
+                            
+                                <a href="http://localhost:4000/tags/index.html#Random" data-toggle="tooltip" title="Posts tagged with Random" rel="tag">Random</a>
+
+                                
+                                &nbsp;&bull;&nbsp;
+                                
+                            
+                                <a href="http://localhost:4000/tags/index.html#Probabilitiy" data-toggle="tooltip" title="Posts tagged with Probabilitiy" rel="tag">Probabilitiy</a>
+
+                                
+                            
+                        </div>
+                    
+                    </div>
+
+                    <footer class="post-footer entry-meta">
+                    
+                        <div class="post-share text-center">
+    <p class="light small">
+        Share this post
+    </p>
+    <ul class="social-mini">
+        <li>
+            <a href="https://twitter.com/intent/tweet?text=Compute+Rand+M+from+Rand+N%20http://localhost:4000/post/compute-rand-m-from-rand-n%20via%20&#64;"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
+                title="Share on Twitter" itemprop="Twitter">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/compute-rand-m-from-rand-n" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+                data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
+                <i class="fa fa-facebook"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/compute-rand-m-from-rand-n" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+                data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+                    
+
+                        <div class="post-author text-center">
+	<img src="http://localhost:4000/images/yosemite.png" alt="Chun-Min Chang's photo" itemprop="image" class="post-avatar img-circle img-responsive" />
+	<h4 class="bordered-bottom vcard author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+		By <span itemprop="name" class="fn"><a href="http://localhost:4000/about" title="About Chun-Min Chang" itemprop="url">Chun-Min Chang</a></span>
+	</h4>
+	<p>I am a self-directed learner and a maker who enjoys building products from original ideas.</p>
+</div> 
+                        
+                    
+                        <div id="disqus_thread"></div><!-- /#disqus_thread -->
+                    
+                    </footer>
+
+                </article>
+            </div>
+        </div>
+    </div>
+
+    
+<footer id="footer" class="blog-background overlay text-center align-middle animated from-top" style="background-image: url(http://localhost:4000/images/background/yosemite/yosemite-tiny.jpg)">
+
+
+    <div class="inner">
+        <div class="container">
+            <ul class="social-icons">
+                    
+                <li>
+                    <a href="https://www.linkedin.com/in/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on LinkedIn" target="_blank">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                </li>
+                   
+                <li>
+                    <a href="http://github.com/chunminchang" data-toggle="tooltip" title="Chun-Min Chang on Github" target="_blank">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </li>
+                
+            </ul>
+            <div>
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2019 &bull;
+                All rights reserved.
+            </div>
+            <ul class="menu-items">
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/"><i class="fa fa-home"></i>&nbsp;Home</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/categories"><i class="fa fa-sitemap"></i>&nbsp;Categories</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li>
+                    
+                    <a href="http://localhost:4000/tags"><i class="fa fa-tags"></i>&nbsp;Tags</a>&nbsp;&bull;
+                    
+                </li>
+                
+                <li><a href="http://localhost:4000/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss"></i> Feed</a></li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <div class="decor-wrapper">
+        <svg id="footer-decor" class="decor top" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- <path class="large left" d="M0 0 L50 50 L0 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="large right" d="M100 0 L50 50 L100 100" fill="rgba(255,255,255, .1)"></path>
+            <path class="medium left" d="M0 0 L50 50 L0 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="medium right" d="M100 0 L50 50 L100 66.6" fill="rgba(255,255,255, .3)"></path>
+            <path class="small left" d="M0 0 L50 50 L0 33.3" fill="rgba(255,255,255, .5)"></path>
+            <path class="small right" d="M100 0 L50 50 L100 33.3" fill="rgba(255,255,255, .5)"></path> -->
+            <path d="M0 0 L50 50 L100 0 L0 0" fill="rgba(255,255,255, 1)"></path>
+            <path d="M48 48 L50 51 L52 48 L48 48" fill="rgba(255,255,255, 1)"></path>
+        </svg>
+    </div>
+    
+
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.12.4.min.js"><\/script>')</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jekyll-search.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.fitvids.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.waypoints.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/plugins/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/main.js"></script>
+<script type="text/javascript" src="http://localhost:4000/assets/js/script.js"></script>
+<script type='text/javascript'>$(document).ready(function(){$(".time").text(function(a,b){return Math.round(parseFloat(b))})});</script>
+
+<script type="text/javascript">
+
+/*      Slides       */
+
+$("a#slide").click(function(){
+    $("#sidebar,body,a#slide,#fade").addClass("slide")
+});
+
+$("#fade,#header,#posts-container").click(function(){
+    $("#sidebar,body,a#slide,#fade").removeClass("slide")
+});
+
+$("a#click-filter").click(function(){
+    $("#slide-filter").slideToggle("medium");
+    $("#slide-pages").slideOut("medium");
+});
+
+$("a#click-pages").click(function(){
+    $("#slide-pages").slideToggle("medium");
+    $("#slide-filter").slideOut("medium");
+});
+
+/*      End-Slides      */
+
+</script>
+
+
+<!-- Jekyll Simple Search option -->
+<script>
+
+   SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: 'http://localhost:4000/assets/json/search.json',
+        searchResultTemplate: '<li><article><a href="{url}">{title} <span class="entry-date"><time datetime="{date}">{shortdate}</time></span></a></article></li>',
+        noResultsText: '<p>Nothing found.</p>',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      });
+
+  (function( $, window, undefined ) {
+    
+     var bs = {
+          close: $("#search-close"),
+          searchform: $(".search-form"),
+          canvas: $("body"),
+          dothis: $('.dosearch')
+      };
+    
+    bs.dothis.on('click', function() {
+      $('.search-wrapper').css({ display: "block" });
+      bs.searchform.toggleClass('active');
+      bs.searchform.find('input').focus();
+      bs.canvas.toggleClass('search-overlay');
+    });
+    
+      bs.close.on('click', function() {
+        $('.search-wrapper').removeAttr( 'style' );
+        bs.searchform.toggleClass('active');
+        bs.canvas.removeClass('search-overlay');
+    });
+  })( jQuery, window );
+</script>
+
+
+ 
+
+
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'chunminchang-blog'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        
+</body>
+</html>

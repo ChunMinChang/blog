@@ -8,7 +8,7 @@ comments: true
 ---
 
 How to get a random number in *[0, M)* by a random number generator
-that randomly throws a number in *[0, N)* with equal probability.
+that randomly throws a number in *[0, N)* with equal probability ?
 
 <!--read more-->
 
@@ -25,7 +25,7 @@ We can simply divide this problem into two cases: $$M \leq N$$ or $$M \gt N$$.
 
 If $$M \leq N$$, then the range $$[0, M)$$ is in the range $$[0, N)$$.
 Therefore, the probability of a number choosed by $$Rand(N)$$ in $$[0, M)$$
-is same. All of them are $$1/N$$.
+is same. All of them are $$\frac{1}{N}$$.
 
 
 | number     | probability     |
@@ -128,7 +128,7 @@ To get a random number in $$[0, M)$$,
 we need to **enlarge** the range of the numbers produced
 by the given generator. How to do that ?
 
-OK, the number of results from the the generator is $$N$$ now.
+OK, the number of results from the generator is $$N$$ now.
 How to enlarge the range of results ?
 Should we generate two numbers and do some magic math ?
 
@@ -183,6 +183,7 @@ there are $$N^k$$ sequential results for producing $$k$$ numbers.
 The sequential results are $$(x_0, x_1, \ldots, x_{k-1})$$, where $$x_i \in [0, N)$$ and $$i \in [0, k)$$.
 By taking the sequential results in **base-$$N$$** : $${(x_0 x_1 \ldots x_{k-1})}_{N}$$,
 their valus are naturally $$0, 1, 2, \ldots, N^k$$.
+It is how the **base-$$N$$** numbers work.
 
 | 1st        | 2nd        | $$\ldots$$ | kth        | probability       |
 | ---------- | ---------- | ---------- | ---------- | ----------------- |
@@ -291,12 +292,48 @@ fn min_pow(x: u32, y: u32) -> u32 {
 
 See the live demo [here][rand_big_from_small].
 
-<!-- ### Enlarge from [0, 1, ..., N-1] to [0, 1, ..., N^k-1]
-Look from another view ....
+### Enlarge from $$[0, 1, \ldots, N-1]$$ to $$[0, 1, \ldots, N^k-1]$$
+
+An interesting view to look the line $$x * N + rand(N)$$ is to think
+$$x$$ is a $$l$$ numbers sequence from $$a$$ to $$a + l - 1$$, $$[a, a + 1, a + 2, \ldots, a + l - 1]$$
+and $$rand(N)$$ is a list from $$0$$ to $$N-1$$, $$[0, 1, 2, \ldots, N - 1]$$.
+In this case, $$x * N + rand(N)$$ is something like
 
 ```rs
-// Map the result of (x_0, x_1, ..., x_{k-1})
-// to (x_0 x_1 ... x_{k-1}) in base-N number
+// x is [a, a + 1, a + 2, ..., a + l - 1]
+fn enlarge(x: Vec<u32>, N: u32) -> Vec<u32> {
+    let offsets: Vec<u32> = (0..N).collect();
+    let mut out = Vec::new();
+    for i in x.iter() {
+        for j in offsets.iter() {
+            out.push(N * i + j);
+        }
+    }
+    out
+}
+```
+
+What `enlarge` does is to enlarge a sequence
+from $$[a, a + 1, a + 2, \ldots, a + l - 1]$$
+to $$[a \cdot N, a \cdot N + 1, a \cdot N + 2, \ldots, (a + l) \cdot N  - 1)]$$.
+
+By multiplying $$N$$ on each value in $$[a, a + 1, a + 2, \ldots, a + l - 1]$$,
+the difference between $$i$$ and $$i + 1$$ is enlarged to $$N$$, where $$i \in [0, a + l - 1)$$.
+The sequence becomes $$[a \cdot N, (a + 1) \cdot N, (a + 2) \cdot N, \ldots, (a + l - 1) \cdot N]$$.
+By padding $$0$$, $$1, 2, \ldots , N-1$$ to the gaps between each value
+in $$[a \cdot N, (a + 1) \cdot N, (a + 2) \cdot N, \ldots, (a + l - 1) \cdot N]$$,
+The sequence becomes $$[a \cdot N, a \cdot N + 1, a \cdot N + 2, \ldots, (a + l) \cdot N  - 1)]$$.
+This is all the values in $$[a, (a + l) \cdot N)$$. 
+In other words, the sequence containing all the values in $$[a, a + l)$$
+can be enlarged to a sequence containing all the values in $$[a, (a + l) \cdot N)$$
+by applying `enlarge`.
+
+If $$a$$ is $$0$$ and $$l$$ is $$N^p$$,
+then we can `enlarge` a $$[0, N^p)$$-sequence to a $$[0, N^{p+1})$$-sequence.
+
+Based on this idea, the following code
+
+```rs
 let mut x = 0;
 for _ in 0..k {
     // Repeat k times
@@ -304,17 +341,35 @@ for _ in 0..k {
 }
 ```
 
-is actually enlarge a list from [0, 1, ..., N-1] to [0, 1, ..., N^k-1] -->
+is similar to call `k-1`-times `enlarge`
 
+```rs
+// x is [0, 1, ..., N-1]
+for _ in 0..k-1 {
+    // Repeat k-1 times
+    x = enlarge(x, N);
+}
+```
+
+to enlarge a list from $$[0, 1, ..., N-1]$$ to $$[0, 1, \ldots, N^k-1]$$.
+The first `x = x * N + rand(N)` is to generate a $$[0, 1, \ldots, N-1]$$ to `x`.
+
+See the live demo [here][enlarge].
 
 ## Compute Rand *M* from Rand *N*
 
 In fact, the method developped for $$M \leq N$$ case
 is a special case in the method for $$M \gt N$$ case.
 
-In the method for $$M \gt N$$ case,
-the first step is to find a $$k$$ such that $$N^k \geq M$$.
-If $$M \leq N$$, then $$k$$ is $$1$$.
+Recall the algorithm for $$M \gt N$$ case:
+1. Find a $$k$$ such that $$N^k \geq M$$
+2. Get the random number generator in $$[0, N^k)$$
+3. Generate a random number in $$[0, M)$$ by the above generator
+    1. Get a random number $$x$$ in $$[0, N^k)$$
+    2. If $$x$$ is in $$[0, M)$$, then return $$x$$
+    3. Otherwise, repeat from 3-1
+
+If $$M \leq N$$, then $$k$$ is $$1$$!
 
 Thus, the algorithm can be summarized as:
 ```rs
@@ -403,7 +458,8 @@ fn min_pow(x: u32) -> u32 {
 See the live demo [here][rand_from_2].
 
 ### How to check if the distribution is uniform
-One easy way is to apply [*chi square test*][chi_sq_test].
+One way to check if the distrubution of a random number generator is uniform
+is to apply [*chi square test*][chi_sq_test].
 The discussion can be found [here][test_uni_dist].
 The [Testing a Random Number Generator][johndcook] chapter
 in *John D. Cook*'s *Beautiful Testing* is also a great reference to read.
@@ -417,4 +473,4 @@ in *John D. Cook*'s *Beautiful Testing* is also a great reference to read.
 [test_uni_dist]: https://math.stackexchange.com/questions/2435/is-there-a-simple-test-for-uniform-distributions
 [johndcook]: https://www.johndcook.com/Beautiful_Testing_ch10.pdf
 
-
+[enlarge]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=34b7017dc0fb8c866b6c6a3543aac7c0

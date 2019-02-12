@@ -6,6 +6,10 @@ tags: [Rust]
 comments: true
 ---
 
+My personal Rust notes.
+
+<!--read more-->
+
 # Rust Notes
 
 ## Learning Resources
@@ -25,6 +29,7 @@ comments: true
   - Phantom data
   - Common Error
     - [Don't misuse the pointers of the instances allocated in functions stack][func-stack]
+    - [Temporary cstring as ptr][temporary_cstring_as_ptr]
 - Multi-threading
   - [Mutex and RwLock][multithread]
 - Async
@@ -61,6 +66,7 @@ comments: true
 [multithread]: https://github.com/ChunMinChang/play-multithread "Learning multithread in Rust "
 
 [func-stack]: https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29 "Don't misuse the pointers of the instances allocated in functions stack"
+[temporary_cstring_as_ptr]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=dda40d0b40a8d922649521544f260a91 "temporary cstring as ptr"
 
 [ffi-rust-lib-sample]: https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master "rust-audio-lib-sample"
 [ffi-opa-or-tra-data]: opaque-or-transparent-data-type-in-a-rust-library.md "Opaque or Transparent Data Type in a Rust Library"

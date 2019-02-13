@@ -38,6 +38,7 @@ My personal Rust notes.
   - [A sample Rust library based on platform C APIs][ffi-rust-lib-sample]
   - [Opaque or Transparent Data Type][ffi-opa-or-tra-data]
   - [Pass arrays from Rust to C][ffi-rs-array-2-c]
+    - [live demo][rs-array-2-c]
   - [The size matters! How to mess up memory by using vector in a wrong way][ffi-vec-size]
   - [A counterexample to use the memory allocated in external library][ffi-memory]
   - [Using reference /pointer instead of copying to get a variable-sized struct object][ffi-get-variable-sized-struct]
@@ -71,6 +72,7 @@ My personal Rust notes.
 [ffi-rust-lib-sample]: https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master "rust-audio-lib-sample"
 [ffi-opa-or-tra-data]: opaque-or-transparent-data-type-in-a-rust-library.md "Opaque or Transparent Data Type in a Rust Library"
 [ffi-rs-array-2-c]: https://gist.github.com/ChunMinChang/1e5410f3a7cb8c5bbf066e7dae09d7bc "Pass arrays from Rust to C "
+[rs-array-2-c]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=6d6c2271e3811d55f740b20a00975ecf "Leak a vec and then retake it"
 [ffi-vec-size]: https://gist.github.com/ChunMinChang/27c7edb4ec45d61a1e8a788888f665cb "A mistake when using a Rust vector as a buffer to get the data by a C API"
 [ffi-memory]: https://gist.github.com/ChunMinChang/3f380eaced6265ab6e8dbb224bfec732 "A counterexample to use the memory allocated in external library"
 [ffi-get-variable-sized-struct]: https://gist.github.com/ChunMinChang/e8909506cfca774f623fc375fc8ee1d2 "Using reference /pointer instead of copying to get a variable-sized struct object"

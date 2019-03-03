@@ -9,26 +9,25 @@
 
 
 <!-- Begin Jekyll SEO tag v1.3.3 -->
-<title>Audio Device Selector - Peak Up</title>
-<meta property="og:title" content="Audio Device Selector" />
-<meta name="description" content="To develop a cross-platform audio library,I need to switch between computerswith different OS frequentlyto check if my code works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another one again and again.Therefore, I made a device selector that can switch the audio sourceof the speaker by simply flipping a switch.CircuitThe circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo(2-channels) speaker.If the speaker layout is 5.1(6-channels) or 7.1(8-channels),we need to replace the 9-pin switch to 21-pin or 27-pin switch.In fact, the circuit is just a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can either share one speaker with two computers,or share one computer with two speakers.In general, it needs  pins/wires to make a device selectorfor one n-channels output device with k (n-channels) input sources,or k output devices with n-channels and one (n-channels) input source.The first  is for the ground wire,and the second  is for the input or output device." />
-<meta property="og:description" content="To develop a cross-platform audio library,I need to switch between computerswith different OS frequentlyto check if my code works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another one again and again.Therefore, I made a device selector that can switch the audio sourceof the speaker by simply flipping a switch.CircuitThe circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo(2-channels) speaker.If the speaker layout is 5.1(6-channels) or 7.1(8-channels),we need to replace the 9-pin switch to 21-pin or 27-pin switch.In fact, the circuit is just a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can either share one speaker with two computers,or share one computer with two speakers.In general, it needs  pins/wires to make a device selectorfor one n-channels output device with k (n-channels) input sources,or k output devices with n-channels and one (n-channels) input source.The first  is for the ground wire,and the second  is for the input or output device." />
-<link rel="canonical" href="http://localhost:4000/post/audio-device-selector" />
-<meta property="og:url" content="http://localhost:4000/post/audio-device-selector" />
+<title>Dancing LED - Peak Up</title>
+<meta property="og:title" content="Dancing LED" />
+<meta name="description" content="To make some fun in a snowing night,I built a simple audio reactive LEDthat can dance(blink) with the music.It’s an easy project for killing timesince the circuit just contains a couple of electronic components.I am not a professional electronic engineer.I cannot guarantee it won’t burn down your houseif you run that circuit all night long.I bet you will get much more funif you dance with real humans rather than the LED circuit!" />
+<meta property="og:description" content="To make some fun in a snowing night,I built a simple audio reactive LEDthat can dance(blink) with the music.It’s an easy project for killing timesince the circuit just contains a couple of electronic components.I am not a professional electronic engineer.I cannot guarantee it won’t burn down your houseif you run that circuit all night long.I bet you will get much more funif you dance with real humans rather than the LED circuit!" />
+<link rel="canonical" href="http://localhost:4000/post/dancing-led" />
+<meta property="og:url" content="http://localhost:4000/post/dancing-led" />
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2017-01-22T00:00:00+08:00" />
-<link rel="next" href="http://localhost:4000/post/lunar-new-year" title="Lunar New Year" />
-<link rel="prev" href="http://localhost:4000/post/merge-sort" title="Merge Sort" />
+<meta property="article:published_time" content="2019-03-03T00:00:00+08:00" />
+<link rel="prev" href="http://localhost:4000/post/compute-rand-m-from-rand-n" title="Compute Rand M from Rand N" />
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "Audio Device Selector",
-    "datePublished": "2017-01-22T00:00:00+08:00",
-    "description": "To develop a cross-platform audio library,I need to switch between computerswith different OS frequentlyto check if my code works on different platforms.It’s annoying to unconnect the speaker from one computerand then connect it to another one again and again.Therefore, I made a device selector that can switch the audio sourceof the speaker by simply flipping a switch.CircuitThe circuit is super easy. It’s nothing more than a switch.The above circuit diagram is for stereo(2-channels) speaker.If the speaker layout is 5.1(6-channels) or 7.1(8-channels),we need to replace the 9-pin switch to 21-pin or 27-pin switch.In fact, the circuit is just a simple track selector,so it’s not only an audio source selector for a speaker,but also a speaker switcher for a computer.That is, you can either share one speaker with two computers,or share one computer with two speakers.In general, it needs  pins/wires to make a device selectorfor one n-channels output device with k (n-channels) input sources,or k output devices with n-channels and one (n-channels) input source.The first  is for the ground wire,and the second  is for the input or output device.",
+    "headline": "Dancing LED",
+    "datePublished": "2019-03-03T00:00:00+08:00",
+    "description": "To make some fun in a snowing night,I built a simple audio reactive LEDthat can dance(blink) with the music.It’s an easy project for killing timesince the circuit just contains a couple of electronic components.I am not a professional electronic engineer.I cannot guarantee it won’t burn down your houseif you run that circuit all night long.I bet you will get much more funif you dance with real humans rather than the LED circuit!",
     "logo": "http://localhost:4000mountain.png",
-    "url": "http://localhost:4000/post/audio-device-selector"
+    "url": "http://localhost:4000/post/dancing-led"
   }
 </script>
 <!-- End Jekyll SEO tag -->
@@ -48,33 +47,6 @@
 <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/style.css" />
 <link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/syntax.css" />
 
-
-<!--Load Mathjax-->
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-        MathJax.Hub.Config({
-            config: ["MMLorHTML.js"],
-            extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
-            jax: ["input/TeX"],
-            tex2jax: {
-                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                processEscapes: false
-            },
-            TeX: {
-                TagSide: "right",
-                TagIndent: ".8em",
-                MultLineWidth: "85%",
-                equationNumbers: {
-                   autoNumber: "AMS",
-                },
-                unicode: {
-                   fonts: "STIXGeneral,'Arial Unicode MS'"
-                }
-            },
-            showProcessingMessages: false
-        });
-</script>
 
 
 
@@ -199,7 +171,7 @@
                         
 
                         
-                            Audio Device Selector
+                            Dancing LED
                         </h1>
                     
 
@@ -210,7 +182,7 @@
                                 <span class="entry-date date published updated">
                             
                             
-                                    <time datetime="2017-01-22T00:00:00+08:00" class="post-time" itemprop="datePublished">22 Jan 2017</time>
+                                    <time datetime="2019-03-03T00:00:00+08:00" class="post-time" itemprop="datePublished">03 Mar 2019</time>
                                 </span>
                             
 
@@ -242,40 +214,79 @@
                     <div class="post-body bordered-bottom" itemprop="description">
                     
                         
-                        <iframe width="940" height="529" src="//www.youtube.com/embed/heBQHew3Guc?theme=light&amp;color=white" frameborder="0" allowfullscreen> </iframe>
+                        <iframe width="940" height="529" src="//www.youtube.com/embed/DJeW6geKkkw?theme=light&amp;color=white" frameborder="0" allowfullscreen> </iframe>
                     
 
-                        <p>To develop a cross-platform audio library,
-I need to switch between computers
-with different OS frequently
-to check if my code works on different platforms.</p>
+                        <p>To make some fun in a snowing night,
+I built a simple audio reactive LED
+that can dance(blink) with the music.</p>
 
-<p>It’s annoying to unconnect the speaker from one computer
-and then connect it to another one again and again.
-Therefore, I made a device selector that can switch the audio source
-of the speaker by simply flipping a switch.</p>
+<p>It’s an easy project for killing time
+since the circuit just contains a couple of electronic components.</p>
 
-<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/heBQHew3Guc" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> -->
+<p>I am not a professional electronic engineer.
+I cannot guarantee it won’t burn down your house
+if you run that circuit all night long.</p>
+
+<p>I bet you will get much more fun
+if you dance with real humans rather than the LED circuit!</p>
+
+<!--read more-->
 
 <h2 id="circuit">Circuit</h2>
-<p>The circuit is super easy. It’s nothing more than a switch.
-<img src="../images/posts/device-selector.png" alt="" title="Device selector" /></p>
+<p><img src="../images/posts/audio-reactive-led.png" alt="" title="Device selector" /></p>
 
-<p>The above circuit diagram is for stereo(<em>2</em>-channels) speaker.
-If the speaker layout is 5.1(<em>6</em>-channels) or 7.1(<em>8</em>-channels),
-we need to replace the 9-pin switch to 21-pin or 27-pin switch.</p>
-
-<p>In fact, the circuit is just a simple track selector,
-so it’s not only an audio source selector for a speaker,
-but also a speaker switcher for a computer.
-That is, you can either share one speaker with two computers,
-or share one computer with two speakers.</p>
-
-<p>In general, it needs <script type="math/tex">(n + 1) * (k + 1)</script> pins/wires to make a device selector
-for one <em>n</em>-channels output device with <em>k</em> (<em>n</em>-channels) input sources,
-or <em>k</em> output devices with <em>n</em>-channels and one (<em>n</em>-channels) input source.
-The first <script type="math/tex">+1</script> is for the <em>ground wire</em>,
-and the second <script type="math/tex">+1</script> is for the <em>input</em> or <em>output</em> device.</p>
+<h2 id="references">References</h2>
+<ul>
+  <li>Audio Plugin
+    <ul>
+      <li><a href="http://www.circuitbasics.com/how-to-hack-a-headphone-jack/">HOW TO HACK A HEADPHONE JACK</a>
+        <ul>
+          <li>Tip-Ring-Sleeve: Left, Right, Ground</li>
+          <li>Tip-Ring-Ring-Sleeve: Left, Right, Ground, Microphone</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Power LED via headset jack
+    <ul>
+      <li><a href="https://engineering.stackexchange.com/questions/3648/powering-led-light-using-smartphone-headset-jack">Powering LED light using smartphone headset jack</a></li>
+    </ul>
+  </li>
+  <li>Blink LED to Music by connecting audio signal to transistor
+    <ul>
+      <li><a href="http://www.instructables.com/id/Blinking-LEDs-to-Music/">BLINKING LEDS TO MUSIC</a></li>
+      <li><a href="http://www.instructables.com/id/Creating-An-Audio-Reactive-LED-Circuit/">CREATING AN AUDIO-REACTIVE LED CIRCUIT</a></li>
+      <li><a href="http://www.instructables.com/id/Music-blinking-LED/">MUSIC BLINKING LED</a></li>
+      <li><a href="http://www.instructables.com/id/Music-LED-Light-Box/">MUSIC LED LIGHT BOX</a></li>
+      <li><a href="https://www.youtube.com/watch?v=1TUYNuh-iqQ">Music LED Light Box Walkthrough</a></li>
+      <li><a href="https://www.youtube.com/watch?v=tQErSCz2NiQ">Blinking LED lights to music with TIP31 transistor on a breadboard</a></li>
+      <li><a href="https://www.youtube.com/watch?v=3JTSfhakuZ8#t=60s">DIY - Music LED with TIP31 (Electric diagram in video) - By STE</a></li>
+      <li><a href="https://www.youtube.com/watch?v=dyahSDnpZpU#t=70s">Music sync LED’s - DIY (easy)</a></li>
+      <li><a href="https://electronics.stackexchange.com/questions/115468/how-to-blink-leds-with-mosfet-in-response-to-music">How To Blink LED’s with MOSFET in response to Music?</a></li>
+      <li><a href="https://circuitdigest.com/electronic-circuits/simple-led-music-light">Music Operated Dancing LEDs (via Microphone)</a></li>
+    </ul>
+  </li>
+  <li>Blink LED to Music by amplifier and regulator
+    <ul>
+      <li><a href="https://www.allaboutcircuits.com/projects/make-an-analog-sound-reactive-led-strip/">Make an Analog Sound Reactive LED Strip</a></li>
+      <li><a href="https://electronics.stackexchange.com/questions/36423/driving-leds-from-audio-signal">Driving LEDs from audio signal</a></li>
+    </ul>
+  </li>
+  <li>LED Color Organ: Divides sound into three frequency bands, and emits red, green and blue lights accordingly
+    <ul>
+      <li><a href="https://makezine.com/projects/easy-led-color-organ/">Easy LED Color Organ</a></li>
+      <li><a href="http://www.instructables.com/id/LED-Color-Organ-Triple-Deluxe/">LED COLOR ORGAN TRIPLE DELUXE</a></li>
+    </ul>
+  </li>
+  <li>Turn Light into Sound
+    <ul>
+      <li><a href="https://www.khanacademy.org/partner-content/exploratorium-ddp/expl-electromagnet/light-to-sound/v/light-to-sound-introduction">Light into sound introduction</a></li>
+      <li><a href="https://www.exploratorium.edu/square_wheels/modulated_led.pdf">detail</a></li>
+    </ul>
+  </li>
+  <li><a href="https://www.youtube.com/watch?v=-bg7ZIelqpA">Dancing LED Light</a></li>
+</ul>
 
 
 
@@ -303,20 +314,20 @@ and the second <script type="math/tex">+1</script> is for the <em>input</em> or 
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=Audio+Device+Selector%20http://localhost:4000/post/audio-device-selector%20via%20&#64;"
+            <a href="https://twitter.com/intent/tweet?text=Dancing+LED%20http://localhost:4000/post/dancing-led%20via%20&#64;"
                 onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
                 title="Share on Twitter" itemprop="Twitter">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
         <li>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/audio-device-selector" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/dancing-led" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
                 data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="fa fa-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=http://localhost:4000/post/audio-device-selector" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/dancing-led" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
                 data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="fa fa-google-plus"></i>
             </a>

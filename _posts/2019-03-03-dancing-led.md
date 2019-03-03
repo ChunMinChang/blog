@@ -1,7 +1,31 @@
 ---
 layout: post
-title: Music Blinking LED
+title: Dancing LED
+category: [Toy]
+tags: [Hardware]
+comments: true
+type: video
+video: https://www.youtube.com/watch?v=DJeW6geKkkw
 ---
+
+To make some fun in a snowing night,
+I built a simple audio reactive LED
+that can dance(blink) with the music.
+
+It's an easy project for killing time
+since the circuit just contains a couple of electronic components.
+
+I am not a professional electronic engineer.
+I cannot guarantee it won't burn down your house
+if you run that circuit all night long.
+
+I bet you will get much more fun
+if you dance with real humans rather than the LED circuit!
+
+<!--read more-->
+
+## Circuit
+![][deviceselector]
 
 ## References
 - Audio Plugin
@@ -30,3 +54,7 @@ title: Music Blinking LED
 - Turn Light into Sound
   - [Light into sound introduction](https://www.khanacademy.org/partner-content/exploratorium-ddp/expl-electromagnet/light-to-sound/v/light-to-sound-introduction)
   - [detail](https://www.exploratorium.edu/square_wheels/modulated_led.pdf)
+- [Dancing LED Light](https://www.youtube.com/watch?v=-bg7ZIelqpA)
+
+
+[deviceselector]: ../images/posts/audio-reactive-led.png "Device selector"

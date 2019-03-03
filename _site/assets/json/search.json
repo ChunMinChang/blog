@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Dancing LED",
+      "category" : "Toy",
+      "tags"     : "Hardware",
+      "url"      : "/post/dancing-led",
+      "date"     : "2019-03-03 00:00:00 +0800",
+			"shortdate": "March 03, 2019"
+    } ,
+  
+    {
       "title"    : "Compute Rand M from Rand N",
       "category" : "PuzzleMathAlgorithm",
       "tags"     : "Random, Probabilitiy",
@@ -245,7 +254,7 @@
   
     {
       "title"    : "Audio Device Selector",
-      "category" : "Media",
+      "category" : "Toy",
       "tags"     : "Hardware",
       "url"      : "/post/audio-device-selector",
       "date"     : "2017-01-22 00:00:00 +0800",

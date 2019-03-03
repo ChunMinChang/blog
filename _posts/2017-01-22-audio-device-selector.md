@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Audio Device Selector
-category: [Media]
+category: [Toy]
 tags: [Hardware]
 mathjax: true
 comments: true

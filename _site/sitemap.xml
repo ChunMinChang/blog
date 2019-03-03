@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://localhost:4000/post/dancing-led</loc>
+<lastmod>2019-03-03T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/post/compute-rand-m-from-rand-n</loc>
 <lastmod>2019-02-10T00:00:00+08:00</lastmod>
 </url>
@@ -198,7 +202,7 @@
 <loc>http://localhost:4000/archive/category/algorithm/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/archive/category/media/</loc>
+<loc>http://localhost:4000/archive/category/toy/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/archive/category/life/</loc>
@@ -208,6 +212,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/archive/category/common/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/archive/category/media/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/archive/category/math/</loc>

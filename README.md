@@ -34,7 +34,6 @@ to log my working notes.
 - Audio Seamless Looping
   - Need to rewrite the ffi analyser first
 - Nots for *ffmpeg* usage
-- Music Reactive Blinking LED(with circuit)
 - Rust Notes
   - Async
     - Read [The Future With Futures](https://asquera.de/blog/2017-03-01/the-future-with-futures/)

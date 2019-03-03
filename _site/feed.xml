@@ -1,4 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-02-11T07:56:56+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Compute Rand M from Rand N</title><link href="http://localhost:4000/post/compute-rand-m-from-rand-n" rel="alternate" type="text/html" title="Compute Rand M from Rand N" /><published>2019-02-10T00:00:00+08:00</published><updated>2019-02-10T00:00:00+08:00</updated><id>http://localhost:4000/post/compute-rand-m-from-rand-n</id><content type="html" xml:base="http://localhost:4000/post/compute-rand-m-from-rand-n">&lt;p&gt;How to get a random number in &lt;em&gt;[0, M)&lt;/em&gt; by a random number generator
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-03-03T10:30:16+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Dancing LED</title><link href="http://localhost:4000/post/dancing-led" rel="alternate" type="text/html" title="Dancing LED" /><published>2019-03-03T00:00:00+08:00</published><updated>2019-03-03T00:00:00+08:00</updated><id>http://localhost:4000/post/dancing-led</id><content type="html" xml:base="http://localhost:4000/post/dancing-led">&lt;p&gt;To make some fun in a snowing night,
+I built a simple audio reactive LED
+that can dance(blink) with the music.&lt;/p&gt;
+
+&lt;p&gt;It’s an easy project for killing time
+since the circuit just contains a couple of electronic components.&lt;/p&gt;
+
+&lt;p&gt;I am not a professional electronic engineer.
+I cannot guarantee it won’t burn down your house
+if you run that circuit all night long.&lt;/p&gt;
+
+&lt;p&gt;I bet you will get much more fun
+if you dance with real humans rather than the LED circuit!&lt;/p&gt;
+
+&lt;!--read more--&gt;
+
+&lt;h2 id=&quot;circuit&quot;&gt;Circuit&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;../images/posts/audio-reactive-led.png&quot; alt=&quot;&quot; title=&quot;Device selector&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Audio Plugin
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;http://www.circuitbasics.com/how-to-hack-a-headphone-jack/&quot;&gt;HOW TO HACK A HEADPHONE JACK&lt;/a&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Tip-Ring-Sleeve: Left, Right, Ground&lt;/li&gt;
+          &lt;li&gt;Tip-Ring-Ring-Sleeve: Left, Right, Ground, Microphone&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Power LED via headset jack
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://engineering.stackexchange.com/questions/3648/powering-led-light-using-smartphone-headset-jack&quot;&gt;Powering LED light using smartphone headset jack&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Blink LED to Music by connecting audio signal to transistor
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;http://www.instructables.com/id/Blinking-LEDs-to-Music/&quot;&gt;BLINKING LEDS TO MUSIC&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://www.instructables.com/id/Creating-An-Audio-Reactive-LED-Circuit/&quot;&gt;CREATING AN AUDIO-REACTIVE LED CIRCUIT&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://www.instructables.com/id/Music-blinking-LED/&quot;&gt;MUSIC BLINKING LED&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://www.instructables.com/id/Music-LED-Light-Box/&quot;&gt;MUSIC LED LIGHT BOX&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=1TUYNuh-iqQ&quot;&gt;Music LED Light Box Walkthrough&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=tQErSCz2NiQ&quot;&gt;Blinking LED lights to music with TIP31 transistor on a breadboard&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=3JTSfhakuZ8#t=60s&quot;&gt;DIY - Music LED with TIP31 (Electric diagram in video) - By STE&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=dyahSDnpZpU#t=70s&quot;&gt;Music sync LED’s - DIY (easy)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://electronics.stackexchange.com/questions/115468/how-to-blink-leds-with-mosfet-in-response-to-music&quot;&gt;How To Blink LED’s with MOSFET in response to Music?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://circuitdigest.com/electronic-circuits/simple-led-music-light&quot;&gt;Music Operated Dancing LEDs (via Microphone)&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Blink LED to Music by amplifier and regulator
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.allaboutcircuits.com/projects/make-an-analog-sound-reactive-led-strip/&quot;&gt;Make an Analog Sound Reactive LED Strip&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://electronics.stackexchange.com/questions/36423/driving-leds-from-audio-signal&quot;&gt;Driving LEDs from audio signal&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;LED Color Organ: Divides sound into three frequency bands, and emits red, green and blue lights accordingly
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://makezine.com/projects/easy-led-color-organ/&quot;&gt;Easy LED Color Organ&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://www.instructables.com/id/LED-Color-Organ-Triple-Deluxe/&quot;&gt;LED COLOR ORGAN TRIPLE DELUXE&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Turn Light into Sound
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.khanacademy.org/partner-content/exploratorium-ddp/expl-electromagnet/light-to-sound/v/light-to-sound-introduction&quot;&gt;Light into sound introduction&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.exploratorium.edu/square_wheels/modulated_led.pdf&quot;&gt;detail&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=-bg7ZIelqpA&quot;&gt;Dancing LED Light&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Toy&quot;]" /><category term="Hardware" /><summary type="html">To make some fun in a snowing night,
+I built a simple audio reactive LED
+that can dance(blink) with the music.
+
+It’s an easy project for killing time
+since the circuit just contains a couple of electronic components.
+
+I am not a professional electronic engineer.
+I cannot guarantee it won’t burn down your house
+if you run that circuit all night long.
+
+I bet you will get much more fun
+if you dance with real humans rather than the LED circuit!</summary></entry><entry><title type="html">Compute Rand M from Rand N</title><link href="http://localhost:4000/post/compute-rand-m-from-rand-n" rel="alternate" type="text/html" title="Compute Rand M from Rand N" /><published>2019-02-10T00:00:00+08:00</published><updated>2019-02-10T00:00:00+08:00</updated><id>http://localhost:4000/post/compute-rand-m-from-rand-n</id><content type="html" xml:base="http://localhost:4000/post/compute-rand-m-from-rand-n">&lt;p&gt;How to get a random number in &lt;em&gt;[0, M)&lt;/em&gt; by a random number generator
 that randomly throws a number in &lt;em&gt;[0, N)&lt;/em&gt; with equal probability ?&lt;/p&gt;
 
 &lt;!--read more--&gt;
@@ -3215,525 +3296,4 @@ I tried to get into this field:
   MPEG Audio Compression Basics
   MP3 Info Tag
   How can I get the duration of an MP3 file
-  MPEG簡介與如何計算CBR及VBR的播放時間</summary></entry><entry><title type="html">Master Fibonacci</title><link href="http://localhost:4000/post/master-fibonacci" rel="alternate" type="text/html" title="Master Fibonacci" /><published>2017-09-09T00:00:00+08:00</published><updated>2017-09-09T00:00:00+08:00</updated><id>http://localhost:4000/post/master-fibonacci</id><content type="html" xml:base="http://localhost:4000/post/master-fibonacci">&lt;p&gt;You may know how to get n-th Fibonacci number,
-but do you know what the fastest way to calculate it is?
-&lt;!--read more--&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; number is defined as:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = F_{n-1} + F_{n-2}&lt;/script&gt;
-
-&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;F_0 = 0, F_1 = 1&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;It can be directly written into the following most common code
-when we learned what the recursion is:&lt;/p&gt;
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
-// Recursive: O(2^n)
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;However, if you try calculating &lt;script type=&quot;math/tex&quot;&gt;F_{100}&lt;/script&gt;,
-then you will wait a long long time to get the result
-since it has so many overlapping processes.
-For example, if we calculate &lt;script type=&quot;math/tex&quot;&gt;F_4&lt;/script&gt;,
-then there are duplicated calculations(overlapping substructures) for &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{matrix}
- &amp; &amp; &amp; &amp; &amp; &amp; &amp; 4 &amp; &amp; &amp; &amp; &amp; \\
- &amp; &amp; &amp; &amp; &amp; &amp; \diagup &amp; &amp; \diagdown &amp; &amp; &amp; &amp; \\
- &amp; &amp; &amp; &amp; &amp; \diagup &amp; &amp; &amp; &amp; \diagdown &amp; &amp; &amp; \\
- &amp; &amp; &amp; &amp; 3 &amp; &amp; &amp; &amp; &amp; &amp; 2 &amp; &amp; \\
- &amp; &amp; &amp; \diagup &amp; &amp; \diagdown &amp; &amp; &amp; &amp; \diagup &amp; &amp; \diagdown &amp; \\
- &amp; &amp; 2 &amp; &amp; &amp; &amp; 1 &amp; &amp; 1 &amp; &amp; &amp; &amp; 0 \\
- &amp; \diagup &amp; &amp; \diagdown &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
- 1 &amp; &amp; &amp; &amp; 0 &amp; &amp; &amp; &amp; &amp; &amp; &amp; &amp;
-\end{matrix} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;The larger &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is, the more overlapping processes we have.
-As a result, the time-complexity is &lt;script type=&quot;math/tex&quot;&gt;O(2^n)&lt;/script&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;memoization&quot;&gt;Memoization&lt;/h3&gt;
-
-&lt;p&gt;To avoid that, we can use a &lt;strong&gt;cache&lt;/strong&gt; to save all the results
-and check it first before any calculation,
-so all the &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt; we need, for &lt;script type=&quot;math/tex&quot;&gt;k \in [0, n]&lt;/script&gt;,
-will be computed just once.
-Therefore, the time complexity can be shorten to &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
-// Recursive with memoization: O(n)
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mem&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(k) = mem[k], F(0) = 0, F(1) = 1.
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// if n is not calculated yet
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;mem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;push_back&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;dynamic-programming&quot;&gt;Dynamic programming&lt;/h3&gt;
-
-&lt;p&gt;The above implementation needs extra space to save the results,
-and pay time for memory allocation.
-If we iteratively calculate &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;
-from &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt;, … then we can get &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;
-without extra memory:&lt;/p&gt;
-
-&lt;p&gt;The above implementation needs extra space to save the results,
-and pay time for memory allocation.
-If we iteratively calculate &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;
-from &lt;script type=&quot;math/tex&quot;&gt;F_0, F_1&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_3&lt;/script&gt;, …,
-to &lt;script type=&quot;math/tex&quot;&gt;F_{n-1}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;F_{n+1}&lt;/script&gt;
-then we can use only three or four variables to get &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
-// Dynamic programming: O(n)
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = F(k), b = F(k+1), k = 0 now.
-&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// loop k from 1 to n.
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;swap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = F(k+1), b = F(k)
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// b = F(k) + F(k+1) = F(k+2)
-&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
-// Dynamic programming: O(n)
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// a = F(0), b = F(1)
-&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// run if n &amp;gt;= 2
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// sum = F(i+1)
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;       &lt;span class=&quot;c1&quot;&gt;// a = F(i)
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;// b = F(i+1)
-&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// Now, i = n, sum = F(n), a = F(n-1), b = F(n)
-&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;They also run in &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt; with less memory consumption
-than &lt;em&gt;memoization&lt;/em&gt; approach.
-Furthermore, they avoid the memory overhead for the &lt;em&gt;activation records&lt;/em&gt;
-on the &lt;em&gt;stack segment/space&lt;/em&gt; for the recursions.
-(The recursion will call itself multiple times,
-so it will push multiple &lt;em&gt;activation records&lt;/em&gt; for the same function itself,
-with different arguments, into the &lt;em&gt;stack segment/space&lt;/em&gt;
-of the process loading the program.)&lt;/p&gt;
-
-&lt;h3 id=&quot;closed-form&quot;&gt;Closed-form&lt;/h3&gt;
-
-&lt;p&gt;In fact, the &lt;em&gt;Fibonacci&lt;/em&gt; number can be calculated by the following formula:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;F_n = \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^n -  (\frac{1 - \sqrt{5}}{2})^n ]&lt;/script&gt;
-
-&lt;p&gt;(Please read
-&lt;!-- [this post](/post/closed-form-for-the-fibonacci-sequence) --&gt;
-&lt;a href=&quot;https://chunminchang.github.io/blog/post/closed-form-for-the-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
-to know how it’s derived.)&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
-// closed-form: O(log(n))
-//   Theoretically, the power of n could be done in O(log(n)), but it's
-//   complicated to calculate the floating numbers.
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// double sqrt5 = sqrt((double)5);
-&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqrt5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;2.2360679775&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqrt5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqrt5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqrt5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Its time-complexity depends on how the power of &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is calculated.
-It could be done in &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt; time(we will explain it below).
-However, the floating point operations limit the calculable number of &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;,
-and it might block the performance.&lt;/p&gt;
-
-&lt;h3 id=&quot;matrix-algebra&quot;&gt;Matrix Algebra&lt;/h3&gt;
-
-&lt;p&gt;The &lt;em&gt;Fibonacci&lt;/em&gt; numbers can be written into the following matrix:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\vec{F_n} =
-\begin{bmatrix} F_n \\ F_{F - 1} \end{bmatrix}
-=
-\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}
-\cdot
-\begin{bmatrix} F_{n - 1} \\ F_{n - 2} \end{bmatrix} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;, so it could be easily expanded by the same rule:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-\begin{bmatrix} F_{n+1} &amp; F_n \\ F_n &amp; F_{n - 1} \end{bmatrix}
-&amp;=
-\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}
-\cdot
-\begin{bmatrix} F_n &amp; F_{n - 1} \\ F_{n - 1} &amp; F_{n - 2} \end{bmatrix}
-\\
-&amp;=
-{\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^2
-\cdot
-\begin{bmatrix} F_{n - 1} &amp; F_{n - 2} \\ F_{n - 2} &amp; F_{n - 3} \end{bmatrix}
-\\
-\vdots
-\\
-&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^{n - 1}
-\cdot
-\begin{bmatrix} F_2 &amp; F_1 \\ F_1 &amp; F_0 \end{bmatrix}
-\\
-&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^{n - 1}
-\cdot
-\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}
-\\
-&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^n
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;(Please read
-&lt;!-- [this post](/post/matrix-difference-equation-for-fibonacci-sequence) --&gt;
-&lt;a href=&quot;https://chunminchang.github.io/blog/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
-for more discussion.)&lt;/p&gt;
-
-&lt;p&gt;That is, the &lt;em&gt;Fibonacci&lt;/em&gt; matrix turns into a perfect power.
-Applying
-&lt;!-- [exponentiation by squaring](/post/exponentiation-by-squaring) --&gt;
-&lt;a href=&quot;https://chunminchang.github.io/blog/post/exponentiation-by-squaring&quot;&gt;exponentiation by squaring&lt;/a&gt;
-:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-k^n =
-\begin{cases}
-(k^2)^\frac{n}{2},  &amp; \text{if $n$ is even} \\
-k \cdot (k^2)^\frac{n-1}{2}, &amp; \text{if $n$ is odd}
-\end{cases} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;, we could implement the above idea to:&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;///////////////////////////////////////////////////////////////////////////////
-// Power by matrix exponentiation: O(log(n))
-// Matrix A:
-//  &amp;lt;---  cols: n  ---&amp;gt;
-// +-                 -+
-// | A11, A12, ... A1n |   ^
-// | A21, A22, ... A2n |   |
-// | ...               | rows: m
-// | ...               |   |
-// | Am1, Am2, ... Amn |   v
-// +-                 -+
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Matrix&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-         &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;// friend std::ostream&amp;amp; operator&amp;lt;&amp;lt;(std::ostream&amp;amp; os, const Matrix&amp;amp; m)
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// {
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//   for (unsigned int i = 0; i &amp;lt; m.rows; ++i) {
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//     for (unsigned int j = 0; j &amp;lt; m.cols; ++j) {
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//       os &amp;lt;&amp;lt; m.data[i][j] &amp;lt;&amp;lt; &quot; &quot;;
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//     }
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//     os &amp;lt;&amp;lt; std::endl;
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//   }
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//   return os;
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// }
-&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;operator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Check if they can be multiplied.
-&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-          &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;// Calculate the power by fast doubling:
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//   k ^ n = (k^2) ^ (n/2)          , if n is even
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//        or k * (k^2) ^ ((k-1)/2)  , if n is odd
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Copy constructor = Matrix x(rows, cols, data);
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/*n % 2*/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-      &lt;span class=&quot;cm&quot;&gt;/*n /= 2*/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cols&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// The Fibonacci matrix can be written into the following equation:
-// +-             -+   +-    -+^n
-// | F(n+1)   F(n) |   | 1  1 |
-// |               | = |      |
-// | F(n)   F(n-1) |   | 1  0 |
-// +-             -+   +-    -+
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;// Using F.data[0][1] since n might be 0.
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// (we need to power by n - 1 if we return F.data[0][0].)
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Its time-complexity is &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt; by halving and halving.
-Without the floating point operations,
-the &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; could be larger than using the &lt;em&gt;closed-form&lt;/em&gt; approach.&lt;/p&gt;
-
-&lt;p&gt;To make it faster, you can use native array instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;std::vector&lt;/code&gt;,
-but you need to manage the memory usage by yourself.
-Please read
-&lt;!-- [this post](/post/matrix-difference-equation-for-fibonacci-sequence) --&gt;
-&lt;a href=&quot;https://chunminchang.github.io/blog/post/matrix-difference-equation-for-fibonacci-sequence&quot;&gt;this post&lt;/a&gt;
-to know how to do it.&lt;/p&gt;
-
-&lt;h3 id=&quot;fast-doubling&quot;&gt;Fast doubling&lt;/h3&gt;
-
-&lt;p&gt;The following equations:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-F_{2n+1} &amp;= {F_{n+1}}^2 + {F_n}^2
-\\
-F_{2n} &amp;= F_n \cdot (F_{n+1} + F_{n-1}) \\
-       &amp;= F_n \cdot (F_{n+1} + (F_{n+1} - F_n)) \\
-       &amp;= F_n \cdot (2 \cdot F_{n+1} - F_n)
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;can be derived by applying &lt;script type=&quot;math/tex&quot;&gt;2n&lt;/script&gt; to the above &lt;em&gt;Fibonacci&lt;/em&gt; matrix:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-\begin{bmatrix} F_{2n+1} &amp; F_{2n} \\ F_{2n} &amp; F_{2n - 1} \end{bmatrix}
-&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^{2n}
-\\
-&amp;= {\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^n
-\cdot
-{\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}}^n
-\\
-&amp;= \begin{bmatrix} F_{n+1} &amp; F_n \\ F_n &amp; F_{n - 1} \end{bmatrix}
-\cdot \begin{bmatrix} F_{n+1} &amp; F_n \\ F_n &amp; F_{n - 1} \end{bmatrix}
-\\
-&amp;=
-\begin{bmatrix}
-  {F_{n+1}}^2 + {F_n}^2 &amp; F_n \cdot (F_{n+1} + F_{n-1}) \\
-  F_n \cdot (F_{n+1} + F_{n-1}) &amp; {F_n}^2 + {F_{n-1}}^2
-\end{bmatrix}
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;Hence, we could calculate &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; by:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-F_n =
-\begin{cases}
-F_{2n'},  &amp; \text{if $n$ is even} \\
-F_{2n'+1}, &amp; \text{if $n$ is odd}
-\end{cases} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;As a consequence, we could use &lt;script type=&quot;math/tex&quot;&gt;F_{n'}, F_{n' + 1}&lt;/script&gt;
-to compute &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt; by the following program:
-(Please read
-&lt;!-- [this post](/post/calculating-fibonacci-numbers-by-fast-doubling) --&gt;
-&lt;a href=&quot;https://chunminchang.github.io/blog/post/calculating-fibonacci-numbers-by-fast-doubling&quot;&gt;this post&lt;/a&gt;
-to know how the code is derived.)&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fibonacci&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// The position of the highest bit of n.
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// So we need to loop `h` times to get the answer.
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// Example: n = (Dec)50 = (Bin)00110010, then h = 6.
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//                               ^ 6th bit from right side
-&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(0) = 0
-&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(1) = 1
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// There is only one `1` in the bits of `mask`. The `1`'s position is same as
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// iteratively to do `AND` operation with `n` to check `n / 2^j` is odd
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// or even.
-&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Run h times!
-&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// Let j = h-i (looping from i = 1 to i = h),
-&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// n_j = floor(n / 2^j) = n &amp;gt;&amp;gt; j (n_j = n when j = 0), k = floor(n_j / 2),
-&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// then a = F(k), b = F(k+1) now.
-&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
-&lt;/span&gt;    &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// F(2k+1) = F(k)^2 + F(k+1)^2
-&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mask&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// n_j is odd: k = (n_j-1)/2 =&amp;gt; n_j = 2k + 1
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//   F(n_j) = F(2k + 1)
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;//   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k + 1)
-&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;// n_j is even: k = n_j/2 =&amp;gt; n_j = 2k
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//   F(n_j) = F(2k)
-&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;        &lt;span class=&quot;c1&quot;&gt;//   F(n_j + 1) = F(2k + 1)
-&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Its time-complexity is also &lt;script type=&quot;math/tex&quot;&gt;O(\log n)&lt;/script&gt; by halving and halving.
-In contrast to &lt;em&gt;matrix algebra&lt;/em&gt; approach,
-there is no need for using matrix
-that contains the duplicated &lt;script type=&quot;math/tex&quot;&gt;F_k&lt;/script&gt;,
-so it will be faster.&lt;/p&gt;
-
-&lt;h3 id=&quot;performance&quot;&gt;Performance&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Approach&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;F_{45}&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;F_{13100}&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;F_{13500}&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;F_{29108}&lt;/script&gt;&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Recursive&lt;/td&gt;
-      &lt;td&gt;7440.61&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Memoization&lt;/td&gt;
-      &lt;td&gt;0.034841&lt;/td&gt;
-      &lt;td&gt;3.03045&lt;/td&gt;
-      &lt;td&gt;3.05931&lt;/td&gt;
-      &lt;td&gt;6.10806&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Dynamic programming&lt;/td&gt;
-      &lt;td&gt;0.000508&lt;/td&gt;
-      &lt;td&gt;0.052462&lt;/td&gt;
-      &lt;td&gt;0.05395&lt;/td&gt;
-      &lt;td&gt;0.1069&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Closed-form&lt;/td&gt;
-      &lt;td&gt;0.030075&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Matrix Algebra&lt;/td&gt;
-      &lt;td&gt;0.02013&lt;/td&gt;
-      &lt;td&gt;0.052985&lt;/td&gt;
-      &lt;td&gt;0.052427&lt;/td&gt;
-      &lt;td&gt;0.050423&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Fast doubling&lt;/td&gt;
-      &lt;td&gt;0.000446&lt;/td&gt;
-      &lt;td&gt;0.000737&lt;/td&gt;
-      &lt;td&gt;0.000785&lt;/td&gt;
-      &lt;td&gt;0.000724&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;The above results are the time in &lt;em&gt;millisecond&lt;/em&gt; for calculating &lt;script type=&quot;math/tex&quot;&gt;F_n&lt;/script&gt;.
-It will take too long time to get the results from the &lt;em&gt;recursive&lt;/em&gt; approach,
-so we skip it.
-The &lt;em&gt;closed-form&lt;/em&gt; approach is also ignored
-since the floating point operations only work
-when &lt;script type=&quot;math/tex&quot;&gt;n \leq 97&lt;/script&gt; in above implementation.&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
-
-&lt;p&gt;Although the performance is platform-dependent,
-it still indicates that:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The &lt;em&gt;fast doubling&lt;/em&gt; approach is always the fastest way
-and its performance is far far better than others.&lt;/li&gt;
-  &lt;li&gt;The &lt;em&gt;dynamic programming&lt;/em&gt; approach is faster than &lt;em&gt;matrix algebra&lt;/em&gt; one
-when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is small (&lt;script type=&quot;math/tex&quot;&gt;n \leq 13000&lt;/script&gt; here),
-but slower when &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is large.&lt;/li&gt;
-  &lt;li&gt;Therefore, if you are pretty sure you have a small &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;,
-and the bottleneck of your algorithm doesn’t depend on
-the &lt;em&gt;Fibonacci&lt;/em&gt; calculation, then &lt;em&gt;dynamic programming&lt;/em&gt; is acceptable
-and it’s easier to implement.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This post is the end of my journey for the &lt;em&gt;Fibonacci&lt;/em&gt; calculation.
-Hope you enjoyed.
-All the above code are uploaded to &lt;a href=&quot;https://gist.github.com/ChunMinChang/b6325c148e8aff15b6e72dcac0aa904e&quot; title=&quot;Ways to calculate Fibonacci&quot;&gt;gist here&lt;/a&gt;.
-Please clone them to play with it.&lt;/p&gt;
-
-&lt;p&gt;I will start another journey for other interesting topics soon.
-Stay tuned!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Algorithm&quot;]" /><category term="Fibonacci" /><category term="Recursion" /><category term="Dynamic Programming" /><summary type="html">You may know how to get n-th Fibonacci number,
-but do you know what the fastest way to calculate it is?</summary></entry></feed>
+  MPEG簡介與如何計算CBR及VBR的播放時間</summary></entry></feed>

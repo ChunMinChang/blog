@@ -546,8 +546,8 @@ when $$N = 2$$.
 On the other hand, we don't need to find the max multiple of $$x$$ in $$[0, 2^p)$$,
 where $$p$$ is the minimal number such that $$2^p \geq x$$.
 It doesn't exist! No multiple of $$x$$ is smaller than $$2^p$$.
-If it exists, it is at least $$2x$$, and such that $$2x \leq 2^p$$.
-However, if $$2x \leq 2^p$$, then $$x \leq 2^{p+1}$$ rather than $$x \leq 2^p$$!
+If it exists, it is at least $$2x$$, and it implies there is a $$2x \leq 2^p$$.
+However, if $$2x \leq 2^p$$, then $$x \leq 2^{p-1}$$ rather than $$x \leq 2^p$$!
 
 As a result, the program is:
 ```rs

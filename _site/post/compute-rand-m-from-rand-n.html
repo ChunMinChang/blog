@@ -236,7 +236,7 @@
                             
 
                             
-                                    <span class="time">13.35</span> minutes read
+                                    <span class="time">13.366666666666667</span> minutes read
                             
                                 
                             
@@ -1141,8 +1141,8 @@ one mentionable trick is to replace</p>
 <p>On the other hand, we don’t need to find the max multiple of <script type="math/tex">x</script> in <script type="math/tex">[0, 2^p)</script>,
 where <script type="math/tex">p</script> is the minimal number such that <script type="math/tex">2^p \geq x</script>.
 It doesn’t exist! No multiple of <script type="math/tex">x</script> is smaller than <script type="math/tex">2^p</script>.
-If it exists, it is at least <script type="math/tex">2x</script>, and such that <script type="math/tex">2x \leq 2^p</script>.
-However, if <script type="math/tex">2x \leq 2^p</script>, then <script type="math/tex">x \leq 2^{p+1}</script> rather than <script type="math/tex">x \leq 2^p</script>!</p>
+If it exists, it is at least <script type="math/tex">2x</script>, and it implies there is a <script type="math/tex">2x \leq 2^p</script>.
+However, if <script type="math/tex">2x \leq 2^p</script>, then <script type="math/tex">x \leq 2^{p-1}</script> rather than <script type="math/tex">x \leq 2^p</script>!</p>
 
 <p>As a result, the program is:</p>
 <div class="language-rs highlighter-rouge"><pre class="highlight"><code><span class="c">// Get a random number in [0, x) by a random number generator in [0, 1]</span>

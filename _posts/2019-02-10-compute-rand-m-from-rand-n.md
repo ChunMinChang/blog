@@ -119,6 +119,122 @@ fn rand_small_from_big(s: u32, b: u32) -> u32 {
 
 See the live demo [here][rand_small_from_big].
 
+Actually, we could make some improvement for this approach. 
+By the above approach, it's very likely to re-produce the random number 
+again and again when $$N$$ is much bigger than $$M$$.
+The problem is, the number is only valid when it's in $$[0, M)$$.
+When $$M \ll N$$, the chance to get a valid random number is very small.
+For example, if $$N = 101, M = 2$$,
+the probability to get a valid number is lower than $$2\%(2/101)$$.
+The produced number is only valid when it's $$0$$ or $$1$$.
+It's inefficient.
+
+A simple solution is to make the number valid in $$[0, k \cdot M)$$,
+where the $$k \in \mathbb{N}$$.
+The $$k \cdot M$$ is the maximal multiple of $$M$$ in $$[0, N)$$.
+If the number is in $$[0, k \cdot M)$$,
+then we can take the remainder of the produced number divided by $$M$$
+as the produced random number.
+
+| number     | probability     | evaluated  | 
+| ---------- | --------------- | ---------- |
+| $$0$$      | $$\frac{1}{N}$$ | $$0$$      |
+| $$1$$      | $$\frac{1}{N}$$ | $$1$$      |
+| $$2$$      | $$\frac{1}{N}$$ | $$2$$      |
+| $$\vdots$$ | $$\vdots$$      | $$\vdots$$ |
+| $$M-1$$    | $$\frac{1}{N}$$ | $$M-1$$    |
+| $$M$$      | $$\frac{1}{N}$$ | $$0$$      |
+| $$M+1$$    | $$\frac{1}{N}$$ | $$1$$      |
+| $$M+2$$    | $$\frac{1}{N}$$ | $$2$$      |
+| $$\vdots$$ | $$\vdots$$      | $$\vdots$$ |
+| $$2M-1$$   | $$\frac{1}{N}$$ | $$M-1$$    |
+| $$2M$$     | $$\frac{1}{N}$$ | $$0$$      |
+| $$2M+1$$   | $$\frac{1}{N}$$ | $$1$$      |
+| $$2M+2$$   | $$\frac{1}{N}$$ | $$2$$      |
+| $$\vdots$$ | $$\vdots$$      | $$\vdots$$ |
+| $$kM-1$$   | $$\frac{1}{N}$$ | $$M-1$$    |
+| $$kM$$     | $$\frac{1}{N}$$ | $$0$$      |
+| $$kM+1$$   | $$\frac{1}{N}$$ | $$kM+1$$   |
+| $$kM+2$$   | $$\frac{1}{N}$$ | $$kM+2$$   |
+| $$\vdots$$ | $$\vdots$$      | $$\vdots$$ |
+| $$N-1$$    | $$\frac{1}{N}$$ | $$N-1$$    |
+
+
+| evaluated  | probability                 |
+| ---------- | --------------------------- |
+| $$0$$      | $$\frac{k}{N}$$             | 
+| $$1$$      | $$\frac{k}{N}$$             | 
+| $$2$$      | $$\frac{k}{N}$$             | 
+| $$\vdots$$ | $$\vdots$$                  |
+| $$M-1$$    | $$\frac{k}{N}$$             |
+| others     | $$\frac{N - k \cdot M}{N}$$ |
+
+
+As a result, the probability to get the number $$i$$ is
+
+
+$$
+\sum_{j=1}^\infty {(\frac{N - k \cdot M}{N})}^{j-1} \cdot \frac{k}{N}
+= \frac{k}{N}
++ \frac{N - k \cdot M}{N} \cdot \frac{k}{N}
++ {(\frac{N - k \cdot M}{N})}^{2} \cdot \frac{k}{N}
++ \ldots
++ {(\frac{N - k \cdot M}{N})}^{j-1} \cdot \frac{k}{N}
+$$
+
+This is same for all number $$i$$, where $$i \in [0, M)$$.
+
+
+| number     | probability                                                               |
+| ---------- | ------------------------------------------------------------------------- |
+| $$0$$      | $$\sum_{j=1}^\infty {(\frac{N - k \cdot M}{N})}^{j-1} \cdot \frac{k}{N}$$ |
+| $$1$$      | $$\sum_{j=1}^\infty {(\frac{N - k \cdot M}{N})}^{j-1} \cdot \frac{k}{N}$$ |
+| $$2$$      | $$\sum_{j=1}^\infty {(\frac{N - k \cdot M}{N})}^{j-1} \cdot \frac{k}{N}$$ |
+| $$\vdots$$ | $$\vdots$$                                                                |
+| $$M-1$$    | $$\sum_{j=1}^\infty {(\frac{N - k \cdot M}{N})}^{j-1} \cdot \frac{k}{N}$$ |
+
+
+
+The higher $$k$$ is, the higher probability to get a valid number.
+In the above example, if $$N = 101, M = 2$$, then $$k = 50$$.
+The probability to get a valid number is $$100/101$$
+since the produced number is valid from $$0$$ to $$99$$.
+Every even number in $$[0, 100)$$ ($$0, 2, 4, \dots, 98$$)
+will be evaluated to $$0$$
+and every odd number in $$[0, 100)$$ ($$1, 3, 5, \dots, 99$$)
+will be evaluated to $$1$$,
+since the remainders of the produced even numbers divided by $$M$$
+and odd numbers divided by $$M$$ are $$0$$ and $$1$$ respectively.
+That is, the probability becomes $$k$$ times.
+
+To sum up, the algorithm is
+1. Define $$K$$ to the max multiple of $$M$$ in $$N$$
+2. Get a random number $$x$$ in $$[0, N)$$
+3. If $$x$$ is in $$[0, K)$$, then return $$x % M$$
+4. Otherwise, repeat from 2
+
+```rs
+// Get a random number in [0, s) by a random number generator in [0, b),
+// where both s, b are integers and s > 1, b > 1, s <= b
+fn rand_small_from_big(s: u32, b: u32) -> u32 {
+    assert!(s > 1 && b > 1 && s <= b);
+    // Get the max multiple of s in [0, b)
+    let max = (b / s) * s;
+    assert_eq!(max % s, 0);
+    loop {
+        // Get a random number in [0, b)
+        let x = rand(b);
+        // Return the random number if it is in [0, max)
+        if x < max {
+            return x % s;
+        }
+        // Repeating if the random number is in [max, b)
+    }
+}
+```
+
+See the live demo [here][rand_small_from_big_better].
+
 ## $$M \gt N$$
 
 However, if $$M \gt N$$, our method above doesn't work,
@@ -183,7 +299,7 @@ there are $$N^k$$ sequential results for producing $$k$$ numbers.
 The sequential results are $$(x_0, x_1, \ldots, x_{k-1})$$, where $$x_i \in [0, N)$$ and $$i \in [0, k)$$.
 By taking the sequential results in **base-$$N$$** : $${(x_0 x_1 \ldots x_{k-1})}_{N}$$,
 their valus are naturally $$0, 1, 2, \ldots, N^k$$.
-It is how the **base-$$N$$** numbers work.
+It is how the **base-$$N$$** number works.
 
 | 1st        | 2nd        | $$\ldots$$ | kth        | probability       |
 | ---------- | ---------- | ---------- | ---------- | ----------------- |
@@ -248,10 +364,11 @@ fn min_pow(N: u32, M: u32) -> u32 {
 
 To sum up, if $$M \gt N$$, then
 1. Find a $$k$$ such that $$N^k \geq M$$
-2. Get the random number generator in $$[0, N^k)$$
-3. Generate a random number in $$[0, M)$$ by the above generator
+2. Define $$Y$$ to the max multiple of $$M$$ in $$N^k$$
+3. Get the random number generator in $$[0, N^k)$$
+4. Generate a random number in $$[0, M)$$:
     1. Get a random number $$x$$ in $$[0, N^k)$$
-    2. If $$x$$ is in $$[0, M)$$, then return $$x$$
+    2. If $$x$$ is in $$[0, Y)$$, then return $$x % M$$
     3. Otherwise, repeat from 3-1
 
 ```rs
@@ -262,14 +379,17 @@ fn rand_big_from_small(b: u32, s: u32) -> u32 {
     // Get a minimal number p such that s^p >= b
     let p = min_pow(s, b);
     assert!(s.pow(p) >= b);
+    // Get the max multiple of b in [0, s^p)
+    let max = (s.pow(p) / b) * b;
+    assert_eq!(max % b, 0);
     loop {
         // Get a random number in [0, s^p)
         let r = rand_pow(s, p);
-        // Return the random number if it is in [0, b)
-        if r < b {
-            return r;
+        // Return the random number if it is in [0, max)
+        if r < max {
+            return r % b;
         }
-        // Repeating if the random number is in [b, s^p)
+        // Repeating if the random number is in [max, s^p)
     }
 }
 
@@ -290,7 +410,7 @@ fn min_pow(x: u32, y: u32) -> u32 {
 }
 ```
 
-See the live demo [here][rand_big_from_small].
+See the live demo [here][rand_big_from_small_better].
 
 ### Enlarge from $$[0, 1, \ldots, N-1]$$ to $$[0, 1, \ldots, N^k-1]$$
 
@@ -363,10 +483,11 @@ is a special case in the method for $$M \gt N$$ case.
 
 Recall the algorithm for $$M \gt N$$ case:
 1. Find a $$k$$ such that $$N^k \geq M$$
-2. Get the random number generator in $$[0, N^k)$$
-3. Generate a random number in $$[0, M)$$ by the above generator
+2. Define $$Y$$ to the max multiple of $$M$$ in $$N^k$$
+3. Get the random number generator in $$[0, N^k)$$
+4. Generate a random number in $$[0, M)$$:
     1. Get a random number $$x$$ in $$[0, N^k)$$
-    2. If $$x$$ is in $$[0, M)$$, then return $$x$$
+    2. If $$x$$ is in $$[0, Y)$$, then return $$x % M$$
     3. Otherwise, repeat from 3-1
 
 If $$M \leq N$$, then $$k$$ is $$1$$!
@@ -378,14 +499,16 @@ fn rand_m_from_n(m: u32, n: u32) -> u32 {
     assert!(m > 1 && n > 1);
     // Get a minimal number p such that n^p >= m
     let p = min_pow(n, m);
+    // Get the max multiple of m in [0, n^p)
+    let max = (n.pow(p) / m) * m;
     loop {
         // Get a random number in [0, n^p)
         let r = rand_pow(n, p);
-        // Return the random number if it is in [0, m)
-        if r < m {
-            return r;
+        // Return the random number if it is in [0, max)
+        if r < max {
+            return r % m;
         }
-        // Repeating if the random number is in [m, n^p)
+        // Repeating if the random number is in [max, n^p)
     }
 }
 
@@ -406,11 +529,11 @@ fn min_pow(x: u32, y: u32) -> u32 {
 }
 ```
 
-See the live demo [here][rand_m_from_n].
+See the live demo [here][rand_m_from_n_better].
 
 ### If *N* is 2
-
-One mentionable trick is to replace
+To get the random number in $$[0, 2^k)$$ where $$k \in \mathbb{N}$$,
+one mentionable trick is to replace
 ```rs
 x = x * 2 + rand(2);
 ```
@@ -419,6 +542,12 @@ by
 x = x << 1 | rand(2);
 ```
 when $$N = 2$$.
+
+On the other hand, we don't need to find the max multiple of $$x$$ in $$[0, 2^p)$$,
+where $$p$$ is the minimal number such that $$2^p \geq x$$.
+It doesn't exist! No multiple of $$x$$ is smaller than $$2^p$$.
+If it exists, it is at least $$2x$$, and such that $$2x \leq 2^p$$.
+However, if $$2x \leq 2^p$$, then $$x \leq 2^{p+1}$$ rather than $$x \leq 2^p$$!
 
 As a result, the program is:
 ```rs
@@ -465,8 +594,11 @@ The [Testing a Random Number Generator][johndcook] chapter
 in *John D. Cook*'s *Beautiful Testing* is also a great reference to read.
 
 [rand_small_from_big]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=798f79143be66cecd08f81b48a97dd4b "Compute Rand([0, s)) from Rand([0, b)), where b, s are integers and b >= s"
-[rand_big_from_small]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=fb12e41948db39ebf49340a0a151529e "Compute Rand([0, b)) from Rand([0, s)), where b, s are integers and b >= s"
-[rand_m_from_n]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=ad02e341de49665aeef118bdbb10aae9 "Compute Rand([0, m)) from Rand([0, n)), where m, n are integers"
+[rand_small_from_big_better]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=b7f99315bbdfdf475658529be8dc80b8 "Compute Rand([0, s)) from Rand([0, b)), where b, s are integers and b >= s"
+<!-- [rand_big_from_small]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=fb12e41948db39ebf49340a0a151529e "Compute Rand([0, b)) from Rand([0, s)), where b, s are integers and b >= s" -->
+[rand_big_from_small_better]:  https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=d91510a1d8e25fe29baf0d445d8eb0f4 "Compute Rand([0, b)) from Rand([0, s)), where b, s are integers and b >= s"
+<!-- [rand_m_from_n]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=ad02e341de49665aeef118bdbb10aae9 "Compute Rand([0, m)) from Rand([0, n)), where m, n are integers" -->
+[rand_m_from_n_better]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=d3baaff82b2a5480cdbda41bef6e2282 "Compute Rand([0, m)) from Rand([0, n)), where m, n are integers"
 [rand_from_2]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=5aa2d3ae1fe8e528628ca6fafbed5b86 "Compute Rand([0, k)) from Rand([0, 1]), where m, n are integers"
 
 [chi_sq_test]: https://en.wikipedia.org/wiki/Chi-squared_test

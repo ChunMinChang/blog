@@ -31,6 +31,7 @@ My personal Rust notes.
     - [Don't misuse the pointers of the instances allocated in functions stack][func-stack]
     - [Temporary cstring as ptr][temporary_cstring_as_ptr]
 - Multi-threading
+  - [The pointers or struct containing pointers cannot be passed across threads][ptr_across_thread]
   - [Mutex and RwLock][multithread]
 - Async
   - [oneshot](https://play.rust-lang.org/?gist=e1a1b98654c3490e81d6ff9c262824a3&version=nightly&mode=debug&edition=2018)
@@ -68,6 +69,7 @@ My personal Rust notes.
 
 [func-stack]: https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29 "Don't misuse the pointers of the instances allocated in functions stack"
 [temporary_cstring_as_ptr]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=dda40d0b40a8d922649521544f260a91 "temporary cstring as ptr"
+[ptr_across_thread]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2015&code=%2F%2F%20use%20std%3A%3Aptr%3B%0Ause%20std%3A%3Async%3A%3Ampsc%3A%3Achannel%3B%0Ause%20std%3A%3Async%3A%3A%7BArc%2C%20Mutex%7D%3B%0Ause%20std%3A%3Athread%3B%0A%0A%2F%2F%20If%20the%20struct%20containing%20any%20pointer%2C%20it%20could%20not%20be%20passed%20across%20threads!%0A%23%5Bderive(Debug)%5D%0Astruct%20Data%20%7B%0A%20%20%20%20value%3A%20usize%2C%0A%20%20%20%20%2F%2F%20ptr%3A%20*const%20()%2C%0A%7D%0A%0Aimpl%20Data%20%7B%0A%20%20%20%20fn%20new(value%3A%20usize)%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20Self%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20ptr%3A%20ptr%3A%3Anull()%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20const%20N%3A%20usize%20%3D%2010%3B%0A%0A%20%20%20%20let%20data%20%3D%20Arc%3A%3Anew(Mutex%3A%3Anew(Data%3A%3Anew(0)))%3B%0A%0A%20%20%20%20let%20(tx%2C%20rx)%20%3D%20channel()%3B%0A%20%20%20%20for%20_%20in%200..N%20%7B%0A%20%20%20%20%20%20%20%20let%20(data%2C%20tx)%20%3D%20(Arc%3A%3Aclone(%26data)%2C%20tx.clone())%3B%0A%20%20%20%20%20%20%20%20thread%3A%3Aspawn(move%20%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20let%20mut%20data%20%3D%20data.lock().unwrap()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20(*data).value%20%2B%3D%201%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20(*data).value%20%3D%3D%20N%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20tx.send(()).unwrap()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20rx.recv().unwrap()%3B%0A%20%20%20%20%2F%2F%20data%20may%20still%20be%20locked%20when%20rx%20receiveds%20response%20from%20tx.%0A%20%20%20%20let%20data%20%3D%20data.lock().unwrap()%3B%0A%20%20%20%20println!(%22data%3A%20%7B%3A%3F%7D%22%2C%20*data)%3B%0A%7D%0A
 
 [ffi-rust-lib-sample]: https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master "rust-audio-lib-sample"
 [ffi-opa-or-tra-data]: opaque-or-transparent-data-type-in-a-rust-library.md "Opaque or Transparent Data Type in a Rust Library"

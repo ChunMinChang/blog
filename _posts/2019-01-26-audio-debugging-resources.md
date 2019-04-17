@@ -43,6 +43,41 @@ The resources collection for debugging audio issues.
 ## Others
 - [Hydrogenaudio Knowledgebase](http://wiki.hydrogenaud.io/index.php?title=Main_Page)
 
+## Frequently Used Script
+
+### FFmpeg
+
+Show metadata:
+```
+ffmpeg -i <filename>
+```
+
+Show packet data:
+```
+ffprobe -show_packets <filename>
+```
+
+Create a sine wav file:
+```
+ffmpeg -f lavfi -i "sine=frequency=441:duration=5" sine_441hz_5s.wav
+```
+
+### OSX
+
+#### Unload/Reload the devices
+
+For the system devices:
+```
+sudo kextunload /System/Library/Extensions/AppleHDA.kext
+sudo kextload /System/Library/Extensions/AppleHDA.kext
+```
+
+For the Soundflower:
+```
+sudo kextunload -b com.Cycling74.driver.Soundflower
+sudo kextload -b com.Cycling74.driver.Soundflower
+```
+
 [aboutsupport]: audio-device-information-on-firefox "Media info on about:support"
 [ads]: audio-device-selector "Audio Device Selector"
 [raw2mp3]: https://github.com/ChunMinChang/raw2mp3 "Convert raw audio files to mp3 files by various mp3 encoders"

@@ -20,7 +20,7 @@ The resources collection for debugging audio issues.
   - [source code][ffmpeg-github]
   - [Compilation Guide][ffmpeg-compile]
 - [Soundflower][soundflower]: Create virtual (multiple channels) audio device on maxOS.
-- [REAPER]: Digital audio workstation for recording, mixing, ..., etc.
+- [REAPER][reaper]: Digital audio workstation for recording, mixing, ..., etc.
 
 ## Hardware
 - [Audio Device Selector][ads]: Share one output/input deivces with multiple input/output devices. 

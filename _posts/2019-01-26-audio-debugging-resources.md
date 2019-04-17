@@ -20,6 +20,7 @@ The resources collection for debugging audio issues.
   - [source code][ffmpeg-github]
   - [Compilation Guide][ffmpeg-compile]
 - [Soundflower][soundflower]: Create virtual (multiple channels) audio device on maxOS.
+- [REAPER]: Digital audio workstation for recording, mixing, ..., etc.
 
 ## Hardware
 - [Audio Device Selector][ads]: Share one output/input deivces with multiple input/output devices. 
@@ -86,6 +87,7 @@ sudo kextload -b com.Cycling74.driver.Soundflower
 [dtmp]: https://github.com/mjfroman/media-devtools-panel-react "Media Panel Devtool"
 
 [soundflower]: https://github.com/akhudek/Soundflower "Soundflower"
+[reaper]: https://www.reaper.fm/
 
 [ffmpeg-website]: https://www.ffmpeg.org/ "FFmpeg website"
 [ffmpeg-github]: https://github.com/FFmpeg/FFmpeg "FFmpeg source code"

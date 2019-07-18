@@ -27,6 +27,8 @@ My personal Rust notes.
   - [Lifetime][lifetime]
   - How to convert a C strings to Rust strings
   - Phantom data
+  - Polymorphism 
+    - [dynamically dispatch][dyn_dispatch]
   - Common Error
     - [Don't misuse the pointers of the instances allocated in functions stack][func-stack]
     - [Temporary cstring as ptr][temporary_cstring_as_ptr]
@@ -68,6 +70,8 @@ My personal Rust notes.
 [lifetime]: https://gist.github.com/ChunMinChang/e8096bc78d29b237cce3ff5f859834e7 "Lifetimes for The Rust References"
 
 [multithread]: https://github.com/ChunMinChang/play-multithread "Learning multithread in Rust "
+
+[dyn_dispatch]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=6ac0d45db681a07bab0d8eb52bc9880f
 
 [func-stack]: https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29 "Don't misuse the pointers of the instances allocated in functions stack"
 [temporary_cstring_as_ptr]: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=dda40d0b40a8d922649521544f260a91 "temporary cstring as ptr"

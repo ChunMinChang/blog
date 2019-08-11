@@ -8,7 +8,7 @@ My very first memory of my grandpa is that he stepped awkwardly in the hall of m
 
 I am the favorite grandchild of my grandpa, although I am not the firstborn grandson. I am the second one. The firstborn son is considered the most important son in the family. However, I am the only one grandson that can speak Taiwanese, which is my grandpa’s native language and also mine. Speaking Taiwanese in public was illegal in Taiwan many years ago due to political issues and that's one of the reason why many young people in Taiwan cannot speak Taiwanese.
 
-My grandpa always wants me to get a Phd degree in the U.S. because that is his American dream. His highest education is elementary school. If you only graduated from elementary school, the life would not be easy. Having a Phd degree in the United States means having a good life in a free world for him.
+My grandpa always wants me to get a Phd degree in the U.S. because that is his American dream. His highest education is elementary school. If you only graduated from elementary school, the life would not be easy. Having a Phd degree in the United States means having a good life in a free world for him. (However, I never try it. I was busy making money to pay bills.)
 
 About one year ago, somehow I got a job offer to work in the the United States. I took that chance and moved here to start a new life. My grandpa was so happy about that. He thought I might be able to achieve his American dream.
 

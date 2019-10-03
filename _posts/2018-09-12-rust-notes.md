@@ -25,6 +25,7 @@ My personal Rust notes.
 - Common
   - [Understand borrowing by read-write concepts][borrowed-ptr]
   - [Lifetime][lifetime]
+  - [Rust Strings](https://yodalee.blogspot.com/2019/09/rust-string.html)
   - How to convert a C strings to Rust strings
   - Phantom data
   - Common Error

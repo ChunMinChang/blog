@@ -65,6 +65,12 @@ My personal Rust notes.
     - [Error passing from modules to modules][error-passing]
   - Testing
     - Embeding a test module inside every module
+- Idioms/Patterns
+  - [rust-unofficial/patterns](https://github.com/rust-unofficial/patterns)
+  - [mre/idiomatic-rust](https://github.com/mre/idiomatic-rust)
+  - [Idiomatic callbacks in Rust](https://stackoverflow.com/questions/41081240/idiomatic-callbacks-in-rust)
+    - [Closure lifetimes in Rust](https://morestina.net/blog/793/closure-lifetimes-in-rust)
+
 
 [borrowed-ptr]: https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003 "Learning notes for norrowed pointers"
 

@@ -31,6 +31,7 @@ My personal Rust notes.
   - Common Error
     - [Don't misuse the pointers of the instances allocated in functions stack][func-stack]
     - [Temporary cstring as ptr][temporary_cstring_as_ptr]
+      - Will get a `temporary_cstring_as_ptr` error when running `cargo clippy`
     - [Panic while panicking][panic_while_panicking]
 - Polymorphism 
   - [dynamically dispatch][dyn_dispatch]

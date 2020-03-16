@@ -32,6 +32,9 @@ My personal Rust notes.
     - [Don't misuse the pointers of the instances allocated in functions stack][func-stack]
     - [Temporary cstring as ptr][temporary_cstring_as_ptr]
       - Will get a `temporary_cstring_as_ptr` error when running `cargo clippy`
+      - However, it's ok in some case
+        - [playground example](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=6229ad42133ceb20a5f25d10a10a313e): Check the IR
+        - [temporary-lifetimes](https://doc.rust-lang.org/reference/expressions.html#temporary-lifetimes)
     - [Panic while panicking][panic_while_panicking]
 - Polymorphism 
   - [dynamically dispatch][dyn_dispatch]

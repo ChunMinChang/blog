@@ -18,7 +18,7 @@ url:              https://chunminchang.github.io/blog
 # baseurl:
 
 # Gems used
-gems:
+plugins:
   - jekyll-feed
   - jekyll-archives
   - jekyll-paginate

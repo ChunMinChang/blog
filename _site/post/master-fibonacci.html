@@ -8,30 +8,23 @@
 <meta name="keywords" content="Fibonacci, Recursion, Dynamic Programming">
 
 
-<!-- Begin Jekyll SEO tag v1.3.3 -->
-<title>Master Fibonacci - Peak Up</title>
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Master Fibonacci | Peak Up</title>
+<meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="Master Fibonacci" />
-<meta name="description" content="You may know how to get n-th Fibonacci number,but do you know what the fastest way to calculate it is?" />
-<meta property="og:description" content="You may know how to get n-th Fibonacci number,but do you know what the fastest way to calculate it is?" />
+<meta name="author" content="Chun-Min Chang" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="You may know how to get n-th Fibonacci number, but do you know what the fastest way to calculate it is?" />
+<meta property="og:description" content="You may know how to get n-th Fibonacci number, but do you know what the fastest way to calculate it is?" />
 <link rel="canonical" href="http://localhost:4000/post/master-fibonacci" />
 <meta property="og:url" content="http://localhost:4000/post/master-fibonacci" />
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2017-09-09T00:00:00+08:00" />
-<link rel="next" href="http://localhost:4000/post/estimation-of-mp3-duration" title="Estimation of MP3 Duration" />
-<link rel="prev" href="http://localhost:4000/post/calculating-fibonacci-numbers-by-fast-doubling" title="Calculating Fibonacci Numbers by Fast Doubling" />
 <script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Master Fibonacci",
-    "datePublished": "2017-09-09T00:00:00+08:00",
-    "description": "You may know how to get n-th Fibonacci number,but do you know what the fastest way to calculate it is?",
-    "logo": "http://localhost:4000mountain.png",
-    "url": "http://localhost:4000/post/master-fibonacci"
-  }
-</script>
+{"headline":"Master Fibonacci","dateModified":"2017-09-09T00:00:00+08:00","url":"http://localhost:4000/post/master-fibonacci","datePublished":"2017-09-09T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/post/master-fibonacci"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/mountain.png"},"name":"Chun-Min Chang"},"author":{"@type":"Person","name":"Chun-Min Chang"},"description":"You may know how to get n-th Fibonacci number, but do you know what the fastest way to calculate it is?","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
+
 
 <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Peak Up" />
 
@@ -252,14 +245,13 @@ but do you know what the fastest way to calculate it is?
 
 <p>It can be directly written into the following most common code
 when we learned what the recursion is:</p>
-<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////
-// Recursive: O(2^n)
-</span><span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">// Recursive: O(2^n)</span>
+<span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="n">n</span> <span class="o">:</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>However, if you try calculating <script type="math/tex">F_{100}</script>,
 then you will wait a long long time to get the result
 since it has so many overlapping processes.
@@ -289,18 +281,17 @@ so all the <script type="math/tex">F_k</script> we need, for <script type="math/
 will be computed just once.
 Therefore, the time complexity can be shorten to <script type="math/tex">O(n)</script>.</p>
 
-<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////
-// Recursive with memoization: O(n)
-</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span> <span class="n">mem</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">};</span> <span class="c1">// F(k) = mem[k], F(0) = 0, F(1) = 1.
-</span><span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">// Recursive with memoization: O(n)</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span> <span class="n">mem</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">};</span> <span class="c1">// F(k) = mem[k], F(0) = 0, F(1) = 1.</span>
+<span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">mem</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span> <span class="c1">// if n is not calculated yet
-</span>    <span class="n">mem</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">));</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">mem</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span> <span class="c1">// if n is not calculated yet</span>
+    <span class="n">mem</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">));</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="n">mem</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="dynamic-programming">Dynamic programming</h3>
 
@@ -317,37 +308,35 @@ from <script type="math/tex">F_0, F_1</script> to <script type="math/tex">F_2</s
 to <script type="math/tex">F_{n-1}</script>, <script type="math/tex">F_n</script> or <script type="math/tex">F_n</script>, <script type="math/tex">F_{n+1}</script>
 then we can use only three or four variables to get <script type="math/tex">F_n</script>:</p>
 
-<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////
-// Dynamic programming: O(n)
-</span><span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">// Dynamic programming: O(n)</span>
+<span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// a = F(k), b = F(k+1), k = 0 now.
-</span>  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// loop k from 1 to n.
-</span>    <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span> <span class="c1">// a = F(k+1), b = F(k)
-</span>    <span class="n">b</span> <span class="o">+=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// b = F(k) + F(k+1) = F(k+2)
-</span>  <span class="p">}</span>
+  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// a = F(k), b = F(k+1), k = 0 now.</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// loop k from 1 to n.</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span> <span class="c1">// a = F(k+1), b = F(k)</span>
+    <span class="n">b</span> <span class="o">+=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// b = F(k) + F(k+1) = F(k+2)</span>
+  <span class="p">}</span>
   <span class="k">return</span> <span class="n">a</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>or</p>
 
-<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////
-// Dynamic programming: O(n)
-</span><span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">// Dynamic programming: O(n)</span>
+<span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// a = F(0), b = F(1)
-</span>  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// run if n &gt;= 2
-</span>    <span class="n">sum</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span> <span class="c1">// sum = F(i+1)
-</span>    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>       <span class="c1">// a = F(i)
-</span>    <span class="n">b</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>     <span class="c1">// b = F(i+1)
-</span>  <span class="p">}</span>
-  <span class="c1">// Now, i = n, sum = F(n), a = F(n-1), b = F(n)
-</span>  <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">?</span> <span class="n">n</span> <span class="o">:</span> <span class="n">sum</span><span class="p">;</span>
+  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// a = F(0), b = F(1)</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// run if n &gt;= 2</span>
+    <span class="n">sum</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span> <span class="c1">// sum = F(i+1)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>       <span class="c1">// a = F(i)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>     <span class="c1">// b = F(i+1)</span>
+  <span class="p">}</span>
+  <span class="c1">// Now, i = n, sum = F(n), a = F(n-1), b = F(n)</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">?</span> <span class="n">n</span> <span class="o">:</span> <span class="n">sum</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>They also run in <script type="math/tex">O(n)</script> with less memory consumption
 than <em>memoization</em> approach.
@@ -369,18 +358,17 @@ of the process loading the program.)</p>
 <a href="https://chunminchang.github.io/blog/post/closed-form-for-the-fibonacci-sequence">this post</a>
 to know how it’s derived.)</p>
 
-<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////
-// closed-form: O(log(n))
-//   Theoretically, the power of n could be done in O(log(n)), but it's
-//   complicated to calculate the floating numbers.
-</span><span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">// closed-form: O(log(n))</span>
+<span class="c1">//   Theoretically, the power of n could be done in O(log(n)), but it's</span>
+<span class="c1">//   complicated to calculate the floating numbers.</span>
+<span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="c1">// double sqrt5 = sqrt((double)5);
-</span>  <span class="kt">double</span> <span class="n">sqrt5</span> <span class="o">=</span> <span class="mf">2.2360679775</span><span class="p">;</span>
+  <span class="c1">// double sqrt5 = sqrt((double)5);</span>
+  <span class="kt">double</span> <span class="n">sqrt5</span> <span class="o">=</span> <span class="mf">2.2360679775</span><span class="p">;</span>
   <span class="k">return</span> <span class="p">(</span><span class="n">pow</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sqrt5</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">pow</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sqrt5</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="n">sqrt5</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Its time-complexity depends on how the power of <script type="math/tex">n</script> is calculated.
 It could be done in <script type="math/tex">O(\log n)</script> time(we will explain it below).
@@ -447,20 +435,20 @@ k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
 
 <p>, we could implement the above idea to:</p>
 
-<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////
-// Power by matrix exponentiation: O(log(n))
-// Matrix A:
-//  &lt;---  cols: n  ---&gt;
-// +-                 -+
-// | A11, A12, ... A1n |   ^
-// | A21, A22, ... A2n |   |
-// | ...               | rows: m
-// | ...               |   |
-// | Am1, Am2, ... Amn |   v
-// +-                 -+
-</span><span class="k">class</span> <span class="nc">Matrix</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">///////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">// Power by matrix exponentiation: O(log(n))</span>
+<span class="c1">// Matrix A:</span>
+<span class="c1">//  &lt;---  cols: n  ---&gt;</span>
+<span class="c1">// +-                 -+</span>
+<span class="c1">// | A11, A12, ... A1n |   ^</span>
+<span class="c1">// | A21, A22, ... A2n |   |</span>
+<span class="c1">// | ...               | rows: m</span>
+<span class="c1">// | ...               |   |</span>
+<span class="c1">// | Am1, Am2, ... Amn |   v</span>
+<span class="c1">// +-                 -+</span>
+<span class="k">class</span> <span class="nc">Matrix</span>
 <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
+<span class="nl">public:</span>
   <span class="n">Matrix</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">r</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">c</span><span class="p">,</span>
          <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">)</span>
     <span class="o">:</span> <span class="n">rows</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
@@ -489,21 +477,21 @@ k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
     <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">];</span>
   <span class="p">}</span>
 
-  <span class="c1">// friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const Matrix&amp; m)
-</span>  <span class="c1">// {
-</span>  <span class="c1">//   for (unsigned int i = 0; i &lt; m.rows; ++i) {
-</span>  <span class="c1">//     for (unsigned int j = 0; j &lt; m.cols; ++j) {
-</span>  <span class="c1">//       os &lt;&lt; m.data[i][j] &lt;&lt; " ";
-</span>  <span class="c1">//     }
-</span>  <span class="c1">//     os &lt;&lt; std::endl;
-</span>  <span class="c1">//   }
-</span>  <span class="c1">//   return os;
-</span>  <span class="c1">// }
-</span>
+  <span class="c1">// friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const Matrix&amp; m)</span>
+  <span class="c1">// {</span>
+  <span class="c1">//   for (unsigned int i = 0; i &lt; m.rows; ++i) {</span>
+  <span class="c1">//     for (unsigned int j = 0; j &lt; m.cols; ++j) {</span>
+  <span class="c1">//       os &lt;&lt; m.data[i][j] &lt;&lt; " ";</span>
+  <span class="c1">//     }</span>
+  <span class="c1">//     os &lt;&lt; std::endl;</span>
+  <span class="c1">//   }</span>
+  <span class="c1">//   return os;</span>
+  <span class="c1">// }</span>
+
   <span class="n">Matrix</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="k">const</span> <span class="n">Matrix</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>
   <span class="p">{</span>
-    <span class="n">assert</span><span class="p">(</span><span class="n">cols</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">rows</span><span class="p">);</span> <span class="c1">// Check if they can be multiplied.
-</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">cols</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">rows</span><span class="p">);</span> <span class="c1">// Check if they can be multiplied.</span>
+
     <span class="n">Matrix</span> <span class="n">z</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">cols</span><span class="p">);</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rows</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">other</span><span class="p">.</span><span class="n">cols</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
@@ -516,13 +504,13 @@ k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
     <span class="k">return</span> <span class="n">z</span><span class="p">;</span>
   <span class="p">}</span>
 
-  <span class="c1">// Calculate the power by fast doubling:
-</span>  <span class="c1">//   k ^ n = (k^2) ^ (n/2)          , if n is even
-</span>  <span class="c1">//        or k * (k^2) ^ ((k-1)/2)  , if n is odd
-</span>  <span class="n">Matrix</span> <span class="n">pow</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+  <span class="c1">// Calculate the power by fast doubling:</span>
+  <span class="c1">//   k ^ n = (k^2) ^ (n/2)          , if n is even</span>
+  <span class="c1">//        or k * (k^2) ^ ((k-1)/2)  , if n is odd</span>
+  <span class="n">Matrix</span> <span class="n">pow</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
   <span class="p">{</span>
-    <span class="n">Matrix</span> <span class="n">k</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span> <span class="c1">// Copy constructor = Matrix x(rows, cols, data);
-</span>    <span class="n">Matrix</span> <span class="n">r</span> <span class="o">=</span> <span class="n">Identity</span><span class="p">(</span><span class="n">rows</span><span class="p">);</span>
+    <span class="n">Matrix</span> <span class="n">k</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span> <span class="c1">// Copy constructor = Matrix x(rows, cols, data);</span>
+    <span class="n">Matrix</span> <span class="n">r</span> <span class="o">=</span> <span class="n">Identity</span><span class="p">(</span><span class="n">rows</span><span class="p">);</span>
     <span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">if</span> <span class="p">(</span><span class="cm">/*n % 2*/</span><span class="n">n</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">k</span><span class="p">;</span>
@@ -533,7 +521,7 @@ k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
     <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
   <span class="p">}</span>
 
-<span class="k">private</span><span class="o">:</span>
+<span class="nl">private:</span>
   <span class="n">Matrix</span> <span class="n">Identity</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
   <span class="p">{</span>
     <span class="n">Matrix</span> <span class="n">z</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
@@ -548,26 +536,25 @@ k \cdot (k^2)^\frac{n-1}{2}, & \text{if $n$ is odd}
   <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="c1">// The Fibonacci matrix can be written into the following equation:
-// +-             -+   +-    -+^n
-// | F(n+1)   F(n) |   | 1  1 |
-// |               | = |      |
-// | F(n)   F(n-1) |   | 1  0 |
-// +-             -+   +-    -+
-</span><span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="c1">// The Fibonacci matrix can be written into the following equation:</span>
+<span class="c1">// +-             -+   +-    -+^n</span>
+<span class="c1">// | F(n+1)   F(n) |   | 1  1 |</span>
+<span class="c1">// |               | = |      |</span>
+<span class="c1">// | F(n)   F(n-1) |   | 1  0 |</span>
+<span class="c1">// +-             -+   +-    -+</span>
+<span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">Matrix</span> <span class="n">F</span> <span class="p">{</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">{</span>
     <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">},</span>
     <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">}</span>
   <span class="p">}</span> <span class="p">};</span>
 
-  <span class="c1">// Using F.data[0][1] since n might be 0.
-</span>  <span class="c1">// (we need to power by n - 1 if we return F.data[0][0].)
-</span>  <span class="n">F</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">pow</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="c1">// Using F.data[0][1] since n might be 0.</span>
+  <span class="c1">// (we need to power by n - 1 if we return F.data[0][0].)</span>
+  <span class="n">F</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">pow</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
   <span class="k">return</span> <span class="n">F</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Its time-complexity is <script type="math/tex">O(\log n)</script> by halving and halving.
 Without the floating point operations,
@@ -630,41 +617,40 @@ to compute <script type="math/tex">F_n</script> by the following program:
 <a href="https://chunminchang.github.io/blog/post/calculating-fibonacci-numbers-by-fast-doubling">this post</a>
 to know how the code is derived.)</p>
 
-<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="c1">// The position of the highest bit of n.
-</span>  <span class="c1">// So we need to loop `h` times to get the answer.
-</span>  <span class="c1">// Example: n = (Dec)50 = (Bin)00110010, then h = 6.
-</span>  <span class="c1">//                               ^ 6th bit from right side
-</span>  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="c1">// The position of the highest bit of n.</span>
+  <span class="c1">// So we need to loop `h` times to get the answer.</span>
+  <span class="c1">// Example: n = (Dec)50 = (Bin)00110010, then h = 6.</span>
+  <span class="c1">//                               ^ 6th bit from right side</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
   <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="p">;</span> <span class="o">++</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">);</span>
 
-  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// F(0) = 0
-</span>  <span class="kt">uint64_t</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// F(1) = 1
-</span>  <span class="c1">// There is only one `1` in the bits of `mask`. The `1`'s position is same as
-</span>  <span class="c1">// the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right
-</span>  <span class="c1">// iteratively to do `AND` operation with `n` to check `n / 2^j` is odd
-</span>  <span class="c1">// or even.
-</span>  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">mask</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">;</span> <span class="n">mask</span> <span class="p">;</span> <span class="n">mask</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Run h times!
-</span>    <span class="c1">// Let j = h-i (looping from i = 1 to i = h),
-</span>    <span class="c1">// n_j = floor(n / 2^j) = n &gt;&gt; j (n_j = n when j = 0), k = floor(n_j / 2),
-</span>    <span class="c1">// then a = F(k), b = F(k+1) now.
-</span>    <span class="kt">uint64_t</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">);</span> <span class="c1">// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]
-</span>    <span class="kt">uint64_t</span> <span class="n">d</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>   <span class="c1">// F(2k+1) = F(k)^2 + F(k+1)^2
-</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">mask</span> <span class="o">&amp;</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// n_j is odd: k = (n_j-1)/2 =&gt; n_j = 2k + 1
-</span>      <span class="n">a</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>        <span class="c1">//   F(n_j) = F(2k + 1)
-</span>      <span class="n">b</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">;</span>    <span class="c1">//   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k + 1)
-</span>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>        <span class="c1">// n_j is even: k = n_j/2 =&gt; n_j = 2k
-</span>      <span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>        <span class="c1">//   F(n_j) = F(2k)
-</span>      <span class="n">b</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>        <span class="c1">//   F(n_j + 1) = F(2k + 1)
-</span>    <span class="p">}</span>
+  <span class="kt">uint64_t</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// F(0) = 0</span>
+  <span class="kt">uint64_t</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// F(1) = 1</span>
+  <span class="c1">// There is only one `1` in the bits of `mask`. The `1`'s position is same as</span>
+  <span class="c1">// the highest bit of n(mask = 2^(h-1) at first), and it will be shifted right</span>
+  <span class="c1">// iteratively to do `AND` operation with `n` to check `n / 2^j` is odd</span>
+  <span class="c1">// or even.</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">mask</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">;</span> <span class="n">mask</span> <span class="p">;</span> <span class="n">mask</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Run h times!</span>
+    <span class="c1">// Let j = h-i (looping from i = 1 to i = h),</span>
+    <span class="c1">// n_j = floor(n / 2^j) = n &gt;&gt; j (n_j = n when j = 0), k = floor(n_j / 2),</span>
+    <span class="c1">// then a = F(k), b = F(k+1) now.</span>
+    <span class="kt">uint64_t</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">);</span> <span class="c1">// F(2k) = F(k) * [ 2 * F(k+1) – F(k) ]</span>
+    <span class="kt">uint64_t</span> <span class="n">d</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>   <span class="c1">// F(2k+1) = F(k)^2 + F(k+1)^2</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">mask</span> <span class="o">&amp;</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// n_j is odd: k = (n_j-1)/2 =&gt; n_j = 2k + 1</span>
+      <span class="n">a</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>        <span class="c1">//   F(n_j) = F(2k + 1)</span>
+      <span class="n">b</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">;</span>    <span class="c1">//   F(n_j + 1) = F(2k + 2) = F(2k) + F(2k + 1)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>        <span class="c1">// n_j is even: k = n_j/2 =&gt; n_j = 2k</span>
+      <span class="n">a</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>        <span class="c1">//   F(n_j) = F(2k)</span>
+      <span class="n">b</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>        <span class="c1">//   F(n_j + 1) = F(2k + 1)</span>
+    <span class="p">}</span>
   <span class="p">}</span>
 
   <span class="k">return</span> <span class="n">a</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Its time-complexity is also <script type="math/tex">O(\log n)</script> by halving and halving.
 In contrast to <em>matrix algebra</em> approach,
@@ -862,7 +848,7 @@ Stay tuned!</p>
                 
             </ul>
             <div>
-                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2019 &bull;
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2020 &bull;
                 All rights reserved.
             </div>
             <ul class="menu-items">

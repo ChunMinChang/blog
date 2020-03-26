@@ -1,4 +1,201 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-08-11T11:48:22+08:00</updated><id>http://localhost:4000//</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Grandpa’s American Dream</title><link href="http://localhost:4000/post/grandpa-s-american-dream" rel="alternate" type="text/html" title="Grandpa’s American Dream" /><published>2019-07-21T00:00:00+08:00</published><updated>2019-07-21T00:00:00+08:00</updated><id>http://localhost:4000/post/grandpa-s-american-dream</id><content type="html" xml:base="http://localhost:4000/post/grandpa-s-american-dream">&lt;p&gt;My very first memory of my grandpa is that he stepped awkwardly in the hall of my preschool. He picked me up everyday. I lived with my grandparents before going to university.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-03-27T00:48:32+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">LRU Table</title><link href="http://localhost:4000/post/lru-table" rel="alternate" type="text/html" title="LRU Table" /><published>2020-03-20T00:00:00+08:00</published><updated>2020-03-20T00:00:00+08:00</updated><id>http://localhost:4000/post/lru-table</id><content type="html" xml:base="http://localhost:4000/post/lru-table">&lt;p&gt;&lt;em&gt;LRU(Least Recently Used)&lt;/em&gt; table is a simple data structure
+that is composed of &lt;em&gt;hash table&lt;/em&gt; and &lt;em&gt;linked list&lt;/em&gt;.
+The &lt;em&gt;insert&lt;/em&gt;, &lt;em&gt;erase&lt;/em&gt;, &lt;em&gt;lookup/search&lt;/em&gt; can be done naturally in &lt;em&gt;O(1)&lt;/em&gt;
+by its &lt;em&gt;hash-table&lt;/em&gt; part. But the best thing is,
+it can return the &lt;em&gt;least&lt;/em&gt; or &lt;em&gt;most&lt;/em&gt; recently used data in &lt;em&gt;O(1)&lt;/em&gt;
+by the its &lt;em&gt;linked-list&lt;/em&gt; in a &lt;em&gt;least-to-most&lt;/em&gt; recently used order.&lt;/p&gt;
+
+&lt;!--read more--&gt;
+
+&lt;h1 id=&quot;use-cases&quot;&gt;Use Cases&lt;/h1&gt;
+
+&lt;p&gt;There are several use cases&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;(LRU) cache:
+A data cache with limited capacity that only cache the most recently touched &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt;-element&lt;/li&gt;
+  &lt;li&gt;Focus problem:
+Keep tracking the touched elements, in a least-to-most recently used order
+    &lt;ul&gt;
+      &lt;li&gt;For example, in browser, we may want to prioritize the media elements by the touched-by-user order&lt;/li&gt;
+      &lt;li&gt;We can give user a way for a user to control the last touched media element.
+One media element at a time.&lt;/li&gt;
+      &lt;li&gt;If the last touched media element is destroyed,
+then the user can control the second-last touched media element, and so on.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The real worl use case is a &lt;a href=&quot;https://source.chromium.org/chromium/chromium/src/+/master:media/blink/multibuffer.h;l=198;drc=d9b91db0b32bcaed524db17b05f614c7e86326bc?originalUrl=https:%2F%2Fcs.chromium.org%2F&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mediabuffer&lt;/code&gt;&lt;/a&gt; with &lt;a href=&quot;https://source.chromium.org/chromium/chromium/src/+/master:media/blink/lru.h?q=lru&amp;amp;ss=chromium&amp;amp;originalUrl=https:%2F%2Fcs.chromium.org%2F&quot;&gt;&lt;em&gt;LRU&lt;/em&gt; mechanism&lt;/a&gt; in &lt;em&gt;chromium&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;sample-code&quot;&gt;Sample Code&lt;/h1&gt;
+
+&lt;h2 id=&quot;a-simple-lru-table&quot;&gt;A Simple &lt;em&gt;LRU&lt;/em&gt; Table&lt;/h2&gt;
+
+&lt;noscript&gt;&lt;pre&gt;#ifndef LRU_H
+#define LRU_H
+
+#include &amp;lt;cassert&amp;gt;
+#include &amp;lt;list&amp;gt;
+#include &amp;lt;optional&amp;gt;
+#include &amp;lt;unordered_map&amp;gt;
+
+#ifdef LRU_DEBUG
+#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;iterator&amp;gt;
+#endif  // LRU_DEBUG
+
+template &amp;lt;class T&amp;gt;
+class LRU {
+ public:
+  LRU() {}
+  ~LRU() {}
+
+  std::optional&amp;lt;T&amp;gt; least_recently_used() {
+    return list.empty() ? std::nullopt : std::make_optional(list.back());
+  }
+
+  std::optional&amp;lt;T&amp;gt; most_recently_used() {
+    return list.empty() ? std::nullopt : std::make_optional(list.front());
+  }
+
+  void use(const T&amp;amp; item) {
+    if (contains(item)) {
+      erase(item);
+    }
+    insert(item);
+  }
+
+  void insert(const T&amp;amp; item) {
+    assert(!contains(item));
+    list.emplace_front(item);
+    position[item] = list.begin();
+  }
+
+  void erase(const T&amp;amp; item) {
+    assert(contains(item));
+    list.erase(position[item]);
+    position.erase(item);
+  }
+
+#ifdef LRU_DEBUG
+  void display() {
+    for (auto i = list.begin(); i != list.end(); ++i) {
+      std::cout &amp;lt;&amp;lt; *i;
+      if (std::next(i) != list.end()) {
+        std::cout &amp;lt;&amp;lt; &amp;quot;, &amp;quot;;
+      }
+    }
+    std::cout &amp;lt;&amp;lt; std::endl;
+  }
+#endif  // LRU_DEBUG
+
+ private:
+  bool contains(const T&amp;amp; item) { return position.find(item) != position.end(); }
+
+  std::list&amp;lt;T&amp;gt; list;
+  std::unordered_map&amp;lt;T, typename std::list&amp;lt;T&amp;gt;::iterator&amp;gt; position;
+};
+
+#endif  // LRU_H&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/0ea1c445103452d88664534443e2b8fa.js?file=lru.h&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/0ea1c445103452d88664534443e2b8fa&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-lru-table-with-key-value-pair&quot;&gt;A &lt;em&gt;LRU&lt;/em&gt; table with Key-Value Pair&lt;/h2&gt;
+
+&lt;noscript&gt;&lt;pre&gt;#ifndef LRU_TABLE_H
+#define LRU_TABLE_H
+
+#include &amp;lt;list&amp;gt;
+#include &amp;lt;optional&amp;gt;
+#include &amp;lt;unordered_map&amp;gt;
+#include &amp;lt;utility&amp;gt;
+
+#ifdef LRU_TABLE_DEBUG
+#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;iterator&amp;gt;
+#endif  // LRU_TABLE_DEBUG
+
+template &amp;lt;class K, class V&amp;gt;
+class LRUTable {
+  typedef std::list&amp;lt;std::pair&amp;lt;K, V&amp;gt;&amp;gt; List;
+  typedef std::unordered_map&amp;lt;K, typename List::iterator&amp;gt; Position;
+
+ public:
+  LRUTable() {}
+  ~LRUTable() {}
+
+  std::optional&amp;lt;std::pair&amp;lt;K, V&amp;gt;&amp;gt; least_recently_used() {
+    return list.empty() ? std::nullopt : std::make_optional(list.back());
+  }
+
+  std::optional&amp;lt;std::pair&amp;lt;K, V&amp;gt;&amp;gt; most_recently_used() {
+    return list.empty() ? std::nullopt : std::make_optional(list.front());
+  }
+
+  std::optional&amp;lt;V&amp;gt; lookup(K key) {
+    auto pos = position.find(key);
+    if (pos == position.end()) {
+      return std::nullopt;
+    }
+
+    move_to_front(pos);
+    typename List::iterator&amp;amp; it = pos-&amp;gt;second;
+    return std::make_optional(it-&amp;gt;second);
+  }
+
+  void insert(K key, V value) {
+    auto pos = position.find(key);
+    // Insert a new item in the front
+    if (pos == position.end()) {
+      list.emplace_front(std::make_pair(key, value));
+      position[key] = list.begin();
+      return;
+    }
+
+    // Otherwise, update the value and move it to the front
+    typename List::iterator&amp;amp; it = pos-&amp;gt;second;
+    it-&amp;gt;second = value;
+    move_to_front(pos);
+  }
+
+  bool erase(K key) {
+    auto pos = position.find(key);
+    if (pos == position.end()) {
+      return false;
+    }
+
+    list.erase(pos-&amp;gt;second);
+    position.erase(pos);
+    return true;
+  }
+
+#ifdef LRU_TABLE_DEBUG
+  void display() {
+    for (auto i = list.begin(); i != list.end(); ++i) {
+      std::cout &amp;lt;&amp;lt; &amp;quot;&amp;lt;&amp;quot; &amp;lt;&amp;lt; i-&amp;gt;first &amp;lt;&amp;lt; &amp;quot;, &amp;quot; &amp;lt;&amp;lt; i-&amp;gt;second &amp;lt;&amp;lt; &amp;quot;&amp;gt;&amp;quot;;
+      if (std::next(i) != list.end()) {
+        std::cout &amp;lt;&amp;lt; &amp;quot;, &amp;quot;;
+      }
+    }
+    std::cout &amp;lt;&amp;lt; std::endl;
+  }
+#endif  // LRU_TABLE_DEBUG
+
+ private:
+  void move_to_front(typename Position::iterator&amp;amp; it) {
+    list.splice(list.begin(), list, it-&amp;gt;second);
+    it-&amp;gt;second = list.begin();
+  }
+
+  List list;
+  Position position;
+};
+
+#endif  // LRU_TABLE_H&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/d5a9229ff2bc5ba55385e0b601d43581.js?file=lru_table.h&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;See the files on &lt;a href=&quot;https://gist.github.com/ChunMinChang/d5a9229ff2bc5ba55385e0b601d43581&quot;&gt;gist here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Data Structure&quot;]" /><category term="LRU" /><category term="Common programming model" /><category term="hash table" /><category term="linked list" /><summary type="html">LRU(Least Recently Used) table is a simple data structure that is composed of hash table and linked list. The insert, erase, lookup/search can be done naturally in O(1) by its hash-table part. But the best thing is, it can return the least or most recently used data in O(1) by the its linked-list in a least-to-most recently used order.</summary></entry><entry><title type="html">Grandpa’s American Dream</title><link href="http://localhost:4000/post/grandpa-s-american-dream" rel="alternate" type="text/html" title="Grandpa’s American Dream" /><published>2019-07-21T00:00:00+08:00</published><updated>2019-07-21T00:00:00+08:00</updated><id>http://localhost:4000/post/grandpa-s-american-dream</id><content type="html" xml:base="http://localhost:4000/post/grandpa-s-american-dream">&lt;p&gt;My very first memory of my grandpa is that he stepped awkwardly in the hall of my preschool. He picked me up everyday. I lived with my grandparents before going to university.&lt;/p&gt;
 
 &lt;p&gt;I am the favorite grandchild of my grandpa, although I am not the firstborn grandson. I am the second one. The firstborn son is considered the most important son in the family. However, I am the only one grandson that can speak Taiwanese, which is my grandpa’s native language and also mine. Speaking Taiwanese in public was illegal in Taiwan many years ago due to political issues and that’s one of the reason why many young people in Taiwan cannot speak Taiwanese.&lt;/p&gt;
 
@@ -10,27 +207,12 @@
 
 &lt;p&gt;After hanging up the phone, I started searching the flight ticket back to Taiwan. It’s bloody expensive and I don’t have many time-offs. I just started my new job here and I was assigned to a challenging project. I don’t want to mess it up. It’s my first project of my first job in the United States. So I booked the ticket in Thanksgiving days.&lt;/p&gt;
 
-&lt;p&gt;I called home every week to check my grandpa. However, there was only one time he was awake. I had a video chat with him. During our chat, he looked the camera, and said: “The girl next to you is pretty. You should marry her.”. I said “She is my wife, already”. Then he laughed and said he was tired, so we ended our chat. A few minutes later, my mom called me again and said: “Your grandpa asks me to push you for a Phd”, and I just laughed.&lt;/p&gt;
+&lt;p&gt;I called home every week to check my grandpa. However, there was only one time he was awake. I had a video chat with him. During our chat, he looked the camera, and said: “The girl next to you is pretty. You should marry her.”. I said “She is my wife, already”. Then he laughed and said he couldn’t
+remember things these days. Then he said he was tired, so we ended our chat. A few minutes later, my mom called me again and said: “Your grandpa asks me to push you for a Phd”, and I just laughed.&lt;/p&gt;
 
 &lt;p&gt;Two weeks later, my grandpa passed away. I really regretted I was not being there with him. I rearranged an earlier ticket back to Taiwan.&lt;/p&gt;
 
-&lt;p&gt;After funeral, I told to my mom that I was truly sorry I was not being there with him. But my mom said: “That’s fine. You are not the firstborn son. We don’t really care.”. Her response really surprised me. I really don’t know what it mean actually. However, it makes me think: “Did my grandpa care about that? What does my grandpa care?”. I don’t know. I still don’t have an answer today. But one thing for sure is that I will have a better life than his.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Life" /><summary type="html">My very first memory of my grandpa is that he stepped awkwardly in the hall of my preschool. He picked me up everyday. I lived with my grandparents before going to university.
-
-I am the favorite grandchild of my grandpa, although I am not the firstborn grandson. I am the second one. The firstborn son is considered the most important son in the family. However, I am the only one grandson that can speak Taiwanese, which is my grandpa’s native language and also mine. Speaking Taiwanese in public was illegal in Taiwan many years ago due to political issues and that’s one of the reason why many young people in Taiwan cannot speak Taiwanese.
-
-My grandpa always wants me to get a Phd degree in the U.S. because that is his American dream. His highest education is elementary school. If you only graduated from elementary school, the life would not be easy. Having a Phd degree in the United States means having a good life in a free world for him. (However, I never try it. I was busy making money to pay bills.)
-
-About one year ago, somehow I got a job offer to work in the the United States. I took that chance and moved here to start a new life. My grandpa was so happy about that. He thought I might be able to achieve his American dream.
-
-Three months later after moving here, in middle October, I got a phone call from my mom. She said: “Your grandpa may be dying. He cannot remember things. He is lying in bed all day and most of the time he is in sleep. We don’t know how long this will last. He is too old.”
-
-After hanging up the phone, I started searching the flight ticket back to Taiwan. It’s bloody expensive and I don’t have many time-offs. I just started my new job here and I was assigned to a challenging project. I don’t want to mess it up. It’s my first project of my first job in the United States. So I booked the ticket in Thanksgiving days.
-
-I called home every week to check my grandpa. However, there was only one time he was awake. I had a video chat with him. During our chat, he looked the camera, and said: “The girl next to you is pretty. You should marry her.”. I said “She is my wife, already”. Then he laughed and said he was tired, so we ended our chat. A few minutes later, my mom called me again and said: “Your grandpa asks me to push you for a Phd”, and I just laughed.
-
-Two weeks later, my grandpa passed away. I really regretted I was not being there with him. I rearranged an earlier ticket back to Taiwan.
-
-After funeral, I told to my mom that I was truly sorry I was not being there with him. But my mom said: “That’s fine. You are not the firstborn son. We don’t really care.”. Her response really surprised me. I really don’t know what it mean actually. However, it makes me think: “Did my grandpa care about that? What does my grandpa care?”. I don’t know. I still don’t have an answer today. But one thing for sure is that I will have a better life than his.</summary></entry><entry><title type="html">Dancing LED</title><link href="http://localhost:4000/post/dancing-led" rel="alternate" type="text/html" title="Dancing LED" /><published>2019-03-03T00:00:00+08:00</published><updated>2019-03-03T00:00:00+08:00</updated><id>http://localhost:4000/post/dancing-led</id><content type="html" xml:base="http://localhost:4000/post/dancing-led">&lt;p&gt;To make some fun in a snowing night,
+&lt;p&gt;After funeral, I told to my mom that I was truly sorry I was not being there with him. But my mom said: “That’s fine. You are not the firstborn son. It’s ok.”. Her response really surprised me. I really don’t know what it mean actually. However, it makes me think: “Did my grandpa care about that? What does my grandpa care?”. I don’t know. I still don’t have an answer today. But one thing for sure is that I will have a better life than his.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="Life" /><summary type="html">My very first memory of my grandpa is that he stepped awkwardly in the hall of my preschool. He picked me up everyday. I lived with my grandparents before going to university. I am the favorite grandchild of my grandpa, although I am not the firstborn grandson. I am the second one. The firstborn son is considered the most important son in the family. However, I am the only one grandson that can speak Taiwanese, which is my grandpa’s native language and also mine. Speaking Taiwanese in public was illegal in Taiwan many years ago due to political issues and that’s one of the reason why many young people in Taiwan cannot speak Taiwanese. My grandpa always wants me to get a Phd degree in the U.S. because that is his American dream. His highest education is elementary school. If you only graduated from elementary school, the life would not be easy. Having a Phd degree in the United States means having a good life in a free world for him. (However, I never try it. I was busy making money to pay bills.) About one year ago, somehow I got a job offer to work in the the United States. I took that chance and moved here to start a new life. My grandpa was so happy about that. He thought I might be able to achieve his American dream. Three months later after moving here, in middle October, I got a phone call from my mom. She said: “Your grandpa may be dying. He cannot remember things. He is lying in bed all day and most of the time he is in sleep. We don’t know how long this will last. He is too old.” After hanging up the phone, I started searching the flight ticket back to Taiwan. It’s bloody expensive and I don’t have many time-offs. I just started my new job here and I was assigned to a challenging project. I don’t want to mess it up. It’s my first project of my first job in the United States. So I booked the ticket in Thanksgiving days. I called home every week to check my grandpa. However, there was only one time he was awake. I had a video chat with him. During our chat, he looked the camera, and said: “The girl next to you is pretty. You should marry her.”. I said “She is my wife, already”. Then he laughed and said he couldn’t remember things these days. Then he said he was tired, so we ended our chat. A few minutes later, my mom called me again and said: “Your grandpa asks me to push you for a Phd”, and I just laughed. Two weeks later, my grandpa passed away. I really regretted I was not being there with him. I rearranged an earlier ticket back to Taiwan. After funeral, I told to my mom that I was truly sorry I was not being there with him. But my mom said: “That’s fine. You are not the firstborn son. It’s ok.”. Her response really surprised me. I really don’t know what it mean actually. However, it makes me think: “Did my grandpa care about that? What does my grandpa care?”. I don’t know. I still don’t have an answer today. But one thing for sure is that I will have a better life than his.</summary></entry><entry><title type="html">Dancing LED</title><link href="http://localhost:4000/post/dancing-led" rel="alternate" type="text/html" title="Dancing LED" /><published>2019-03-03T00:00:00+08:00</published><updated>2019-03-03T00:00:00+08:00</updated><id>http://localhost:4000/post/dancing-led</id><content type="html" xml:base="http://localhost:4000/post/dancing-led">&lt;p&gt;To make some fun in a snowing night,
 I built a simple audio reactive LED
 that can dance(blink) with the music.&lt;/p&gt;
 
@@ -99,19 +281,7 @@ if you dance with real humans rather than the LED circuit!&lt;/p&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=-bg7ZIelqpA&quot;&gt;Dancing LED Light&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Toy&quot;]" /><category term="Hardware" /><summary type="html">To make some fun in a snowing night,
-I built a simple audio reactive LED
-that can dance(blink) with the music.
-
-It’s an easy project for killing time
-since the circuit just contains a couple of electronic components.
-
-I am not a professional electronic engineer.
-I cannot guarantee it won’t burn down your house
-if you run that circuit all night long.
-
-I bet you will get much more fun
-if you dance with real humans rather than the LED circuit!</summary></entry><entry><title type="html">Compute Rand M from Rand N</title><link href="http://localhost:4000/post/compute-rand-m-from-rand-n" rel="alternate" type="text/html" title="Compute Rand M from Rand N" /><published>2019-02-10T00:00:00+08:00</published><updated>2019-02-10T00:00:00+08:00</updated><id>http://localhost:4000/post/compute-rand-m-from-rand-n</id><content type="html" xml:base="http://localhost:4000/post/compute-rand-m-from-rand-n">&lt;p&gt;How to get a random number in &lt;em&gt;[0, M)&lt;/em&gt; by a random number generator
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Toy&quot;]" /><category term="Hardware" /><summary type="html">To make some fun in a snowing night, I built a simple audio reactive LED that can dance(blink) with the music. It’s an easy project for killing time since the circuit just contains a couple of electronic components. I am not a professional electronic engineer. I cannot guarantee it won’t burn down your house if you run that circuit all night long. I bet you will get much more fun if you dance with real humans rather than the LED circuit!</summary></entry><entry><title type="html">Compute Rand M from Rand N</title><link href="http://localhost:4000/post/compute-rand-m-from-rand-n" rel="alternate" type="text/html" title="Compute Rand M from Rand N" /><published>2019-02-10T00:00:00+08:00</published><updated>2019-02-10T00:00:00+08:00</updated><id>http://localhost:4000/post/compute-rand-m-from-rand-n</id><content type="html" xml:base="http://localhost:4000/post/compute-rand-m-from-rand-n">&lt;p&gt;How to get a random number in &lt;em&gt;[0, M)&lt;/em&gt; by a random number generator
 that randomly throws a number in &lt;em&gt;[0, N)&lt;/em&gt; with equal probability ?&lt;/p&gt;
 
 &lt;!--read more--&gt;
@@ -270,7 +440,7 @@ from a random number generator in a bigger range.&lt;/p&gt;
 
 &lt;p&gt;The following &lt;em&gt;Rust&lt;/em&gt; program is the method we developed above:&lt;/p&gt;
 
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, s) by a random number generator in [0, b),&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, s) by a random number generator in [0, b),&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;// where both s, b are integers and s &amp;gt; 1, b &amp;gt; 1, s &amp;lt;= b&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_small_from_big&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -284,8 +454,7 @@ from a random number generator in a bigger range.&lt;/p&gt;
         &lt;span class=&quot;c&quot;&gt;// Repeating if the random number is in [s, b)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;See the live demo &lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=798f79143be66cecd08f81b48a97dd4b&quot; title=&quot;Compute Rand([0, s)) from Rand([0, b)), where b, s are integers and b &amp;gt;= s&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -515,12 +684,12 @@ That is, the probability becomes &lt;script type=&quot;math/tex&quot;&gt;k&lt;/s
   &lt;li&gt;Otherwise, repeat from 2&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, s) by a random number generator in [0, b),&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, s) by a random number generator in [0, b),&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;// where both s, b are integers and s &amp;gt; 1, b &amp;gt; 1, s &amp;lt;= b&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_small_from_big&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;// Get the max multiple of s in [0, b)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;nd&quot;&gt;assert_eq!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;loop&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c&quot;&gt;// Get a random number in [0, b)&lt;/span&gt;
@@ -532,8 +701,7 @@ That is, the probability becomes &lt;script type=&quot;math/tex&quot;&gt;k&lt;/s
         &lt;span class=&quot;c&quot;&gt;// Repeating if the random number is in [max, b)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;See the live demo &lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=b7f99315bbdfdf475658529be8dc80b8&quot; title=&quot;Compute Rand([0, s)) from Rand([0, b)), where b, s are integers and b &amp;gt;= s&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -769,15 +937,14 @@ the sequential results &lt;script type=&quot;math/tex&quot;&gt;x_0, x_1, \ldots,
 by encoding them as a &lt;strong&gt;base-&lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt;&lt;/strong&gt; number &lt;script type=&quot;math/tex&quot;&gt;{(x_0 x_1 \ldots x_{k-1})}_{N}&lt;/script&gt;.&lt;/p&gt;
 
 &lt;p&gt;The idea can be implemented as the following program:&lt;/p&gt;
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Map the result of (x_0, x_1, ..., x_{k-1})&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Map the result of (x_0, x_1, ..., x_{k-1})&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;// to (x_0 x_1 ... x_{k-1}) in base-N number&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.k&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;// Repeat k times&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;There are &lt;script type=&quot;math/tex&quot;&gt;N^k&lt;/script&gt; kinds of sequential results for producing &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; numbers.
 The probability for each one is &lt;script type=&quot;math/tex&quot;&gt;\frac{1}{N^k}&lt;/script&gt;.
@@ -799,14 +966,13 @@ if we can find a &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; such t
 \Rightarrow k \geq \log_N M&lt;/script&gt;
 
 &lt;p&gt;The corresponding program is:&lt;/p&gt;
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Return minimal k such that N^k &amp;gt;= M&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Return minimal k such that N^k &amp;gt;= M&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;min_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;M_f64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;M&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N_f64&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;M_f64&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N_f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.ceil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;To sum up, if &lt;script type=&quot;math/tex&quot;&gt;M \gt N&lt;/script&gt;, then&lt;/p&gt;
 &lt;ol&gt;
@@ -822,7 +988,7 @@ if we can find a &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; such t
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, b) by a random number generator in [0, s),&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, b) by a random number generator in [0, s),&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;// where both s, b are integers and s &amp;gt; 1, b &amp;gt; 1, s &amp;lt;= b&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_big_from_small&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -830,7 +996,7 @@ if we can find a &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; such t
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;min_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;// Get the max multiple of b in [0, s^p)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;nd&quot;&gt;assert_eq!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;loop&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c&quot;&gt;// Get a random number in [0, s^p)&lt;/span&gt;
@@ -847,7 +1013,7 @@ if we can find a &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; such t
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c&quot;&gt;// Repeat y times&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -858,8 +1024,7 @@ if we can find a &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; such t
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;min_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.ceil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;See the live demo &lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=d91510a1d8e25fe29baf0d445d8eb0f4&quot; title=&quot;Compute Rand([0, b)) from Rand([0, s)), where b, s are integers and b &amp;gt;= s&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -870,9 +1035,9 @@ if we can find a &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; such t
 and &lt;script type=&quot;math/tex&quot;&gt;rand(N)&lt;/script&gt; is a list from &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;N-1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;[0, 1, 2, \ldots, N - 1]&lt;/script&gt;.
 In this case, &lt;script type=&quot;math/tex&quot;&gt;x * N + rand(N)&lt;/script&gt; is something like&lt;/p&gt;
 
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// x is [a, a + 1, a + 2, ..., a + l - 1]&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// x is [a, a + 1, a + 2, ..., a + l - 1]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;enlarge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Vec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Vec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;offsets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Vec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;offsets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Vec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.collect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Vec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;offsets&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -881,8 +1046,7 @@ In this case, &lt;script type=&quot;math/tex&quot;&gt;x * N + rand(N)&lt;/script
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;What &lt;code class=&quot;highlighter-rouge&quot;&gt;enlarge&lt;/code&gt; does is to enlarge a sequence
 from &lt;script type=&quot;math/tex&quot;&gt;[a, a + 1, a + 2, \ldots, a + l - 1]&lt;/script&gt;
@@ -904,23 +1068,21 @@ then we can &lt;code class=&quot;highlighter-rouge&quot;&gt;enlarge&lt;/code&gt;
 
 &lt;p&gt;Based on this idea, the following code&lt;/p&gt;
 
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.k&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;// Repeat k times&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;is similar to call &lt;code class=&quot;highlighter-rouge&quot;&gt;k-1&lt;/code&gt;-times &lt;code class=&quot;highlighter-rouge&quot;&gt;enlarge&lt;/code&gt;&lt;/p&gt;
 
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// x is [0, 1, ..., N-1]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// x is [0, 1, ..., N-1]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;// Repeat k-1 times&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;enlarge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;to enlarge a list from &lt;script type=&quot;math/tex&quot;&gt;[0, 1, ..., N-1]&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;[0, 1, \ldots, N^k-1]&lt;/script&gt;.
 The first &lt;code class=&quot;highlighter-rouge&quot;&gt;x = x * N + rand(N)&lt;/code&gt; is to generate a &lt;script type=&quot;math/tex&quot;&gt;[0, 1, \ldots, N-1]&lt;/script&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;x&lt;/code&gt;.&lt;/p&gt;
@@ -949,13 +1111,13 @@ is a special case in the method for &lt;script type=&quot;math/tex&quot;&gt;M \g
 &lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;M \leq N&lt;/script&gt;, then &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; is &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;!&lt;/p&gt;
 
 &lt;p&gt;Thus, the algorithm can be summarized as:&lt;/p&gt;
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, m) by a random number generator in [0, n)&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, m) by a random number generator in [0, n)&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_m_from_n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;// Get a minimal number p such that n^p &amp;gt;= m&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;min_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;// Get the max multiple of m in [0, n^p)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;loop&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c&quot;&gt;// Get a random number in [0, n^p)&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -971,7 +1133,7 @@ is a special case in the method for &lt;script type=&quot;math/tex&quot;&gt;M \g
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c&quot;&gt;// Repeat y times&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -982,21 +1144,18 @@ is a special case in the method for &lt;script type=&quot;math/tex&quot;&gt;M \g
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;min_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.ceil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;See the live demo &lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=d3baaff82b2a5480cdbda41bef6e2282&quot; title=&quot;Compute Rand([0, m)) from Rand([0, n)), where m, n are integers&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;if-n-is-2&quot;&gt;If &lt;em&gt;N&lt;/em&gt; is 2&lt;/h3&gt;
 &lt;p&gt;To get the random number in &lt;script type=&quot;math/tex&quot;&gt;[0, 2^k)&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;k \in \mathbb{N}&lt;/script&gt;,
 one mentionable trick is to replace&lt;/p&gt;
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;by&lt;/p&gt;
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;when &lt;script type=&quot;math/tex&quot;&gt;N = 2&lt;/script&gt;.&lt;/p&gt;
 
 &lt;p&gt;On the other hand, we don’t need to find the max multiple of &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;[0, 2^p)&lt;/script&gt;,
@@ -1006,7 +1165,7 @@ If it exists, it is at least &lt;script type=&quot;math/tex&quot;&gt;2x&lt;/scri
 However, if &lt;script type=&quot;math/tex&quot;&gt;2x \leq 2^p&lt;/script&gt;, then &lt;script type=&quot;math/tex&quot;&gt;x \leq 2^{p-1}&lt;/script&gt; rather than &lt;script type=&quot;math/tex&quot;&gt;x \leq 2^p&lt;/script&gt;!&lt;/p&gt;
 
 &lt;p&gt;As a result, the program is:&lt;/p&gt;
-&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, x) by a random number generator in [0, 1]&lt;/span&gt;
+&lt;div class=&quot;language-rs highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// Get a random number in [0, x) by a random number generator in [0, 1]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_from_2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;// Get a minimal number p such that 2^p &amp;gt;= x&lt;/span&gt;
@@ -1026,7 +1185,7 @@ However, if &lt;script type=&quot;math/tex&quot;&gt;2x \leq 2^p&lt;/script&gt;, 
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;py&quot;&gt;.k&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;..&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;c&quot;&gt;// Repeat k times&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -1037,8 +1196,7 @@ However, if &lt;script type=&quot;math/tex&quot;&gt;2x \leq 2^p&lt;/script&gt;, 
 &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;min_pow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.ceil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;See the live demo &lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=5aa2d3ae1fe8e528628ca6fafbed5b86&quot; title=&quot;Compute Rand([0, k)) from Rand([0, 1]), where m, n are integers&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -1050,8 +1208,7 @@ The &lt;a href=&quot;https://www.johndcook.com/Beautiful_Testing_ch10.pdf&quot;&
 in &lt;em&gt;John D. Cook&lt;/em&gt;’s &lt;em&gt;Beautiful Testing&lt;/em&gt; is also a great reference to read.&lt;/p&gt;
 
 &lt;!-- [rand_big_from_small]: https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=fb12e41948db39ebf49340a0a151529e &quot;Compute Rand([0, b)) from Rand([0, s)), where b, s are integers and b &gt;= s&quot; --&gt;
-&lt;!-- [rand_m_from_n]: https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=ad02e341de49665aeef118bdbb10aae9 &quot;Compute Rand([0, m)) from Rand([0, n)), where m, n are integers&quot; --&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Puzzle&quot;, &quot;Math&quot;, &quot;Algorithm&quot;]" /><category term="Random" /><category term="Probabilitiy" /><summary type="html">How to get a random number in [0, M) by a random number generator
-that randomly throws a number in [0, N) with equal probability ?</summary></entry><entry><title type="html">Audio Debugging Resources</title><link href="http://localhost:4000/post/audio-debugging-resources" rel="alternate" type="text/html" title="Audio Debugging Resources" /><published>2019-01-26T00:00:00+08:00</published><updated>2019-01-26T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-resources</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-resources">&lt;p&gt;The resources collection for debugging audio issues.&lt;/p&gt;
+&lt;!-- [rand_m_from_n]: https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=ad02e341de49665aeef118bdbb10aae9 &quot;Compute Rand([0, m)) from Rand([0, n)), where m, n are integers&quot; --&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Puzzle&quot;, &quot;Math&quot;, &quot;Algorithm&quot;]" /><category term="Random" /><category term="Probabilitiy" /><summary type="html">How to get a random number in [0, M) by a random number generator that randomly throws a number in [0, N) with equal probability ?</summary></entry><entry><title type="html">Audio Debugging Resources</title><link href="http://localhost:4000/post/audio-debugging-resources" rel="alternate" type="text/html" title="Audio Debugging Resources" /><published>2019-01-26T00:00:00+08:00</published><updated>2019-01-26T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-debugging-resources</id><content type="html" xml:base="http://localhost:4000/post/audio-debugging-resources">&lt;p&gt;The resources collection for debugging audio issues.&lt;/p&gt;
 
 &lt;!--read more--&gt;
 
@@ -1115,35 +1272,30 @@ that randomly throws a number in [0, N) with equal probability ?</summary></entr
 &lt;h3 id=&quot;ffmpeg&quot;&gt;FFmpeg&lt;/h3&gt;
 
 &lt;p&gt;Show metadata:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -i &amp;lt;filename&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -i &amp;lt;filename&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Show packet data:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffprobe -show_packets &amp;lt;filename&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffprobe -show_packets &amp;lt;filename&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Create a sine wav file:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -f lavfi -i &quot;sine=frequency=441:duration=5&quot; sine_441hz_5s.wav
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -f lavfi -i &quot;sine=frequency=441:duration=5&quot; sine_441hz_5s.wav
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;osx&quot;&gt;OSX&lt;/h3&gt;
 
 &lt;h4 id=&quot;unloadreload-the-devices&quot;&gt;Unload/Reload the devices&lt;/h4&gt;
 
 &lt;p&gt;For the system devices:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo kextunload /System/Library/Extensions/AppleHDA.kext
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo kextunload /System/Library/Extensions/AppleHDA.kext
 sudo kextload /System/Library/Extensions/AppleHDA.kext
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;For the Soundflower:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo kextunload -b com.Cycling74.driver.Soundflower
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo kextunload -b com.Cycling74.driver.Soundflower
 sudo kextload -b com.Cycling74.driver.Soundflower
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">The resources collection for debugging audio issues.</summary></entry><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">The resources collection for debugging audio issues.</summary></entry><entry><title type="html">Opaque or Transparent Data Type in a Rust Library</title><link href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" rel="alternate" type="text/html" title="Opaque or Transparent Data Type in a Rust Library" /><published>2018-09-24T00:00:00+08:00</published><updated>2018-09-24T00:00:00+08:00</updated><id>http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library</id><content type="html" xml:base="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library">&lt;p&gt;This post is synchronized with my &lt;a href=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7&quot; title=&quot;Opaque or Transparent Data Type in a Rust Library&quot;&gt;gist&lt;/a&gt; file.&lt;/p&gt;
 
 &lt;p&gt;To develop a &lt;em&gt;Rust&lt;/em&gt; library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.&lt;/p&gt;
 
@@ -1155,25 +1307,24 @@ sudo kextload -b com.Cycling74.driver.Soundflower
 
 &lt;h2 id=&quot;transparent-data-type-in-rust&quot;&gt;Transparent Data Type in Rust&lt;/h2&gt;
 &lt;p&gt;By marking a data type with &lt;code class=&quot;highlighter-rouge&quot;&gt;#[repr(C)]&lt;/code&gt;, the data is interoperable with &lt;em&gt;C/C++&lt;/em&gt; since its memory layout is guaranteed to be aligned with &lt;em&gt;C&lt;/em&gt;. It can be called as a normal &lt;em&gt;C&lt;/em&gt; data. For example, we can operate the data with type &lt;code class=&quot;highlighter-rouge&quot;&gt;struct Foo&lt;/code&gt; from &lt;em&gt;Rust&lt;/em&gt;&lt;/p&gt;
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;repr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;#[repr(C)]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;f32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 
-&lt;span class=&quot;cp&quot;&gt;#[no_mangle]&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[no_mangle]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;into_raw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;in &lt;em&gt;C&lt;/em&gt; code like:&lt;/p&gt;
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;int32_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;uint32_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
@@ -1182,72 +1333,66 @@ sudo kextload -b com.Cycling74.driver.Soundflower
 &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Data with type `Foo` can be modified directly!
-&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Data with type `Foo` can be modified directly!&lt;/span&gt;
+
 &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;opaque-data-type-in-rust&quot;&gt;Opaque Data Type in Rust&lt;/h2&gt;
 &lt;p&gt;For a non-interoperable data, we can just pass a pointer to its memory address with type &lt;code class=&quot;highlighter-rouge&quot;&gt;*void&lt;/code&gt;. Without the knowledge of the underlaying data’s memory layout, &lt;em&gt;C/C++&lt;/em&gt; code cannot do anything.&lt;/p&gt;
 
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// No `#[repr(C)]` here!&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// No `#[repr(C)]` here!&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;f32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 
-&lt;span class=&quot;cp&quot;&gt;#[no_mangle]&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[no_mangle]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;c_void&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;into_raw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;
+    &lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;into_raw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 
 &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Cannot do anything with `foo` without knowing the memory layout under this
-// void pointer.
-&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Cannot do anything with `foo` without knowing the memory layout under this&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// void pointer.&lt;/span&gt;
+
 &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;Even the data type is known, it’s unwise to cast the &lt;code class=&quot;highlighter-rouge&quot;&gt;*void&lt;/code&gt; to a corresponding &lt;em&gt;C&lt;/em&gt; data type since the memory layout may be different. That is, the memory layout of the following &lt;code class=&quot;highlighter-rouge&quot;&gt;struct Foo&lt;/code&gt; in &lt;em&gt;Rust&lt;/em&gt;:&lt;/p&gt;
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// No `#[repr(C)]` here!&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// No `#[repr(C)]` here!&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;f32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;may be different from the the following &lt;code class=&quot;highlighter-rouge&quot;&gt;struct Foo&lt;/code&gt; in &lt;em&gt;C&lt;/em&gt;&lt;/p&gt;
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;int32_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
   &lt;span class=&quot;kt&quot;&gt;uint32_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Therefore, it’s dangerous to cast a &lt;code class=&quot;highlighter-rouge&quot;&gt;void&lt;/code&gt; pointer converted by a &lt;em&gt;Rust&lt;/em&gt;-style &lt;code class=&quot;highlighter-rouge&quot;&gt;Foo&lt;/code&gt; pointer to a &lt;em&gt;C&lt;/em&gt;-style &lt;code class=&quot;highlighter-rouge&quot;&gt;Foo&lt;/code&gt; pointer to operate it, without marking &lt;code class=&quot;highlighter-rouge&quot;&gt;struct Foo&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;#[repr(C)]&lt;/code&gt; in &lt;em&gt;Rust&lt;/em&gt;.&lt;/p&gt;
 
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// This is very likely to fail since `foo-&amp;gt;qux` may point to a different
-// address as expected!
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// This is very likely to fail since `foo-&amp;gt;qux` may point to a different&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// address as expected!&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;why-we-need-to-use-opaque-data-type&quot;&gt;Why we need to use Opaque Data Type&lt;/h3&gt;
 
@@ -1255,7 +1400,7 @@ sudo kextload -b com.Cycling74.driver.Soundflower
 
 &lt;p&gt;For example, the following &lt;em&gt;C&lt;/em&gt; code&lt;/p&gt;
 
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
 
 &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;res&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 
@@ -1264,12 +1409,11 @@ sudo kextload -b com.Cycling74.driver.Soundflower
 &lt;span class=&quot;n&quot;&gt;set_something_to_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...)&lt;/span&gt;
 
 &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;based on the following &lt;em&gt;Rust&lt;/em&gt; code&lt;/p&gt;
 
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;f32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
@@ -1277,40 +1421,39 @@ sudo kextload -b com.Cycling74.driver.Soundflower
 
 &lt;span class=&quot;k&quot;&gt;impl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Self&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;trait&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SetSomething&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;impl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SetSomething&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 
-&lt;span class=&quot;cp&quot;&gt;#[no_mangle]&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[no_mangle]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;c_void&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;into_raw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;
+    &lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;into_raw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;cp&quot;&gt;#[no_mangle]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something_to_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;c_void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[no_mangle]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something_to_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;c_void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;unsafe&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;doesn’t need to be modified if we change the &lt;em&gt;Rust&lt;/em&gt; code into&lt;/p&gt;
-&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bar&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-rust highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bar&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;u32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;f64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;qux&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;i32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
@@ -1318,38 +1461,37 @@ sudo kextload -b com.Cycling74.driver.Soundflower
 
 &lt;span class=&quot;k&quot;&gt;impl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bar&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Self&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
 
 &lt;span class=&quot;k&quot;&gt;trait&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SetSomething&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;impl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SetSomething&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bar&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 
-&lt;span class=&quot;cp&quot;&gt;#[no_mangle]&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[no_mangle]&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;c_void&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;into_raw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;
+    &lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;into_raw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Box&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;_&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;cp&quot;&gt;#[no_mangle]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something_to_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;c_void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;#[no_mangle]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;pub&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_something_to_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;c_void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;unsafe&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;mut&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.set_something&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 
-&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The real-world example I’ve seen is &lt;a href=&quot;https://en.wikipedia.org/wiki/Handle_(computing)&quot; title=&quot;handle classes&quot;&gt;&lt;em&gt;Handle&lt;/em&gt; class&lt;/a&gt;. &lt;a href=&quot;https://stackoverflow.com/questions/902967/what-is-a-windows-handle/902987#902987&quot; title=&quot;stackoverflow&quot;&gt;Here&lt;/a&gt; is the discussion for Windows’ &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; type. The basic idea for Windows’ &lt;code class=&quot;highlighter-rouge&quot;&gt;Handle&lt;/code&gt; can be found &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/desktop/SysInfo/user-objects&quot; title=&quot;User Objects&quot;&gt;here&lt;/a&gt;. One simple example for that is to &lt;a href=&quot;https://docs.microsoft.com/en-us/windows/desktop/fileio/opening-a-file-for-reading-or-writing&quot; title=&quot;Opening a File for Reading or Writing&quot;&gt;open a file&lt;/a&gt;.&lt;/p&gt;
 
@@ -1576,9 +1718,7 @@ clean:
 				rm libext.a
 				rm sample-c
 				rm sample-cpp&lt;/pre&gt;&lt;/noscript&gt;
-&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=Makefile&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;]" /><category term="Rust" /><summary type="html">This post is synchronized with my gist file.
-
-To develop a Rust library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.</summary></entry><entry><title type="html">My Rust Notes</title><link href="http://localhost:4000/post/rust-notes" rel="alternate" type="text/html" title="My Rust Notes" /><published>2018-09-12T00:00:00+08:00</published><updated>2018-09-12T00:00:00+08:00</updated><id>http://localhost:4000/post/rust-notes</id><content type="html" xml:base="http://localhost:4000/post/rust-notes">&lt;p&gt;My personal Rust notes.&lt;/p&gt;
+&lt;script src=&quot;https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7.js?file=Makefile&quot;&gt; &lt;/script&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;]" /><category term="Rust" /><summary type="html">This post is synchronized with my gist file. To develop a Rust library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.</summary></entry><entry><title type="html">My Rust Notes</title><link href="http://localhost:4000/post/rust-notes" rel="alternate" type="text/html" title="My Rust Notes" /><published>2018-09-12T00:00:00+08:00</published><updated>2018-09-12T00:00:00+08:00</updated><id>http://localhost:4000/post/rust-notes</id><content type="html" xml:base="http://localhost:4000/post/rust-notes">&lt;p&gt;My personal Rust notes.&lt;/p&gt;
 
 &lt;!--read more--&gt;
 
@@ -1607,12 +1747,23 @@ To develop a Rust library that will be used for the external code, the data may 
     &lt;ul&gt;
       &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003&quot; title=&quot;Learning notes for norrowed pointers&quot;&gt;Understand borrowing by read-write concepts&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/e8096bc78d29b237cce3ff5f859834e7&quot; title=&quot;Lifetimes for The Rust References&quot;&gt;Lifetime&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://yodalee.blogspot.com/2019/09/rust-string.html&quot;&gt;Rust Strings&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;How to convert a C strings to Rust strings&lt;/li&gt;
       &lt;li&gt;Phantom data&lt;/li&gt;
       &lt;li&gt;Common Error
         &lt;ul&gt;
           &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29&quot; title=&quot;Don't misuse the pointers of the instances allocated in functions stack&quot;&gt;Don’t misuse the pointers of the instances allocated in functions stack&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=dda40d0b40a8d922649521544f260a91&quot; title=&quot;temporary cstring as ptr&quot;&gt;Temporary cstring as ptr&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=dda40d0b40a8d922649521544f260a91&quot; title=&quot;temporary cstring as ptr&quot;&gt;Temporary cstring as ptr&lt;/a&gt;
+            &lt;ul&gt;
+              &lt;li&gt;Will get a &lt;code class=&quot;highlighter-rouge&quot;&gt;temporary_cstring_as_ptr&lt;/code&gt; error when running &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo clippy&lt;/code&gt;&lt;/li&gt;
+              &lt;li&gt;However, it’s ok in some case
+                &lt;ul&gt;
+                  &lt;li&gt;&lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;gist=6229ad42133ceb20a5f25d10a10a313e&quot;&gt;playground example&lt;/a&gt;: Check the IR&lt;/li&gt;
+                  &lt;li&gt;&lt;a href=&quot;https://doc.rust-lang.org/reference/expressions.html#temporary-lifetimes&quot;&gt;temporary-lifetimes&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
           &lt;li&gt;&lt;a href=&quot;https://play.rust-lang.org/?version=stable&amp;amp;mode=debug&amp;amp;edition=2018&amp;amp;code=use%20std%3A%3Async%3A%3AMutex%3B%0A%0Astruct%20S%20%7B%0A%20%20%20%20mutex%3A%20Mutex%3Cu32%3E%2C%0A%7D%0A%0Aimpl%20S%20%7B%0A%20%20%20%20fn%20new()%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20Self%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20mutex%3A%20Mutex%3A%3Anew(0u32)%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%0A%20%20%20%20fn%20panic_while_locking(%26self)%20%7B%0A%20%20%20%20%20%20%20%20let%20_guard%20%3D%20self.mutex.lock().unwrap()%3B%0A%20%20%20%20%20%20%20%20panic!()%3B%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%20Drop%20for%20S%20%7B%0A%20%20%20%20fn%20drop(%26mut%20self)%20%7B%0A%20%20%20%20%20%20%20%20let%20_guard%20%3D%20self.mutex.lock().unwrap()%3B%0A%20%20%20%20%7D%0A%7D%0A%0A%2F%2F%20The%20backtrace%20cannot%20be%20logged%20when%20test%20thread%20panicked%20again%20while%0A%2F%2F%20panicking.%20See%20the%20backtrace%20by%20running%20main.%0A%23%5Btest%5D%0A%23%5Bshould_panic%5D%0Afn%20test()%20%7B%0A%20%20%20%20let%20s%20%3D%20S%3A%3Anew()%3B%0A%20%20%20%20s.panic_while_locking()%3B%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20let%20s%20%3D%20S%3A%3Anew()%3B%0A%20%20%20%20s.panic_while_locking()%3B%0A%20%20%20%20%2F%2F%20After%20panic_while_locking%20is%20called%2C%20the%20s.mutex%20is%20locked%20while%20panicking.%0A%20%20%20%20%2F%2F%20When%20s.drop()%20is%20called%2C%20we%20will%20get%20another%20panic%20when%20requiring%20lock%0A%20%20%20%20%2F%2F%20for%20the%20locked%20s.mutex.%0A%7D%0A&quot;&gt;Panic while panicking&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
@@ -1680,6 +1831,17 @@ To develop a Rust library that will be used for the external code, the data may 
       &lt;li&gt;Testing
         &lt;ul&gt;
           &lt;li&gt;Embeding a test module inside every module&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Idioms/Patterns
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/rust-unofficial/patterns&quot;&gt;rust-unofficial/patterns&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/mre/idiomatic-rust&quot;&gt;mre/idiomatic-rust&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/41081240/idiomatic-callbacks-in-rust&quot;&gt;Idiomatic callbacks in Rust&lt;/a&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;https://morestina.net/blog/793/closure-lifetimes-in-rust&quot;&gt;Closure lifetimes in Rust&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
@@ -2232,421 +2394,7 @@ The best way to learn that is to read the source code on github.
 Read the how other people use the APIs
 or the APIs’ implementation directly if it’s possible.&lt;/p&gt;
 
-&lt;p&gt;It’s time to rock on the code!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">Introduction for Audio 5.1
-
-Audio five-point one is a common surround sound 
-layouted in home theater.
-It has totally six channels: five speakers and a subwoofer
-and this is where the term five-point one comes from.
-
-Channel Layout
-
-Since we have more than one channel,
-we need to define an explicit channel ordering
-to know which channel the sent/received data is matched to.
-
-Channel layout specifies the order 
-of input/output channel data in audio buffer. 
-For example, if the layout is stereo, then we have two channel data.
-The first data is for left channel, the second one is right channel.
-
-The arrangement for the channels is different from format to format.
-The most common formats are defined in Wave Format Extensible(or WaveEx)
-or by Society of Motion Picture &amp;amp; Television Engineers(or SMPTE).
-They defines what channels are provided and
-the ordering of them in different layouts.
-
-In this post, we follow the SMPTE format.
-An advantage of taking this standard is that
-it specifies the up/downmixing behaviours
-between different layouts.
-(The SMPTE’s standard for multichannel can be founded in
-ITU-R BS.775 and ITU-R BS.2159-7.)
-
-Channels
-
-Before knowing how the channels are sorted,
-we should know what channel is provided.
-
-
-  
-    
-      Code
-      Channel Name
-    
-  
-  
-    
-      M
-      Mono
-    
-    
-      L
-      Left (Front Left)
-    
-    
-      R
-      Right (Front Right)
-    
-    
-      C
-      Center (Front Center)
-    
-    
-      LS
-      Left Surround (Side Left)
-    
-    
-      RS
-      Right Surround (Side Right)
-    
-    
-      RLS
-      Rear Left Surround (Back Left)
-    
-    
-      RC
-      Rear Center (Back Center)
-    
-    
-      RRS
-      Rear Right Surround (Back Right)
-    
-    
-      LFE
-      Low Frequency Effects
-    
-  
-
-
-Layouts
-
-The layout in SMPTE’s format is as follows.
-Each layout is defined by a particular permutation
-of the above channels.
-
-(The sample code to set channel layout on OSX is here.)
-
-
-
-
-
-
-  
-    
-      Layout
-      channel order
-    
-  
-  
-    
-      DUAL-MONO
-      L
-      R
-       
-       
-       
-       
-       
-       
-    
-    
-      DUAL-MONO-LFE
-      L
-      R
-      LFE
-       
-       
-       
-       
-       
-    
-    
-      MONO
-      M
-       
-       
-       
-       
-       
-       
-       
-    
-    
-      MONO-LFE
-      M
-      LFE
-       
-       
-       
-       
-       
-       
-    
-    
-      STEREO
-      L
-      R
-       
-       
-       
-       
-       
-       
-    
-    
-      STEREO-LFE
-      L
-      R
-      LFE
-       
-       
-       
-       
-       
-    
-    
-      3F
-      L
-      R
-      C
-       
-       
-       
-       
-       
-    
-    
-      3F-LFE
-      L
-      R
-      C
-      LFE
-       
-       
-       
-       
-    
-    
-      2F1
-      L
-      R
-      RC
-       
-       
-       
-       
-       
-    
-    
-      2F1-LFE
-      L
-      R
-      LFE
-      RC
-       
-       
-       
-       
-    
-    
-      3F1
-      L
-      R
-      C
-      RC
-       
-       
-       
-       
-    
-    
-      3F1-LFE
-      L
-      R
-      C
-      LFE
-      RC
-       
-       
-       
-    
-    
-      2F2
-      L
-      R
-      LS
-      RS
-       
-       
-       
-       
-    
-    
-      2F2-LFE
-      L
-      R
-      LFE
-      LS
-      RS
-       
-       
-       
-    
-    
-      3F2
-      L
-      R
-      C
-      LS
-      RS
-       
-       
-       
-    
-    
-      3F2-LFE
-      L
-      R
-      C
-      LFE
-      LS
-      RS
-       
-       
-    
-    
-      3F3R-LFE
-      L
-      R
-      C
-      LFE
-      RC
-      LS
-      RS
-       
-    
-    
-      3F4-LFE
-      L
-      R
-      C
-      LFE
-      RLS
-      RRS
-      LS
-      RS
-    
-  
-
-
-Mixing
-
-We already know that the audio layout can be configured into different types
-based on the number of the channels.
-The question is: what should we do when the input layout from the audio source 
-doesn’t match the user’s output layout?
-
-If the two channel layouts are equal, 
-then they must have same numbers of channels and same channel order.
-Conversely, if two audio settings have different numbers of channels
-(e.g., {L, R} and {M, LFE}),
-or they have same numbers of channels but different orders
-(e.g., {L, R} and {R, L}),
-then they must have different channel layouts.
-
-When the input layout is different from the output layout, 
-we need to convert the audio input data to fit the audio output’s configuration.
-We call it mixing.
-
-(The sample code to mix audio data on OSX is here.)
-
-Mixing matrix
-
-
-Although it may have different definitions
-to convert the audio data from input into output,
-they can be summarized into the following equations.
-The above figure illustrates their relationships,
-and the value of  varies from definition to definition.
-
-
-
-To simplify them, we can rewite these equations into a matrix form:
-
-
-
-Downmixing
-
-When numbers of input channels &amp;gt; numbers of output channels,
-we call it downmixing.
-(In this case, the input channel layout is definitiely
-different from the output one.)
-The most common case for downmixing is to
-downmix different audio layouts into stereo.
-The audio sources on the internet have various layouts
-while most users only have two speakers.
-
-(The downward mixing mechanism of SMPTE for audio 5.1
-is defined in Table 2 of ITU-R BS.775-3.)
-
-Downmix audio 5.1 to stereo(stereophonic sound)
-
-
-
-
-Downmix audio 5.1 to quad(quadraphonic sound/4.0 surround sound)
-
-
-
-
-Upmixing
-
-When numbers of input channels &amp;lt; numbers of output channels,
-we call it upmixing.
-(In this case, the input channel layout is definitiely
-different from the output one.)
-
-The most common case for this is to upmix stereo data(2 channels)
-into 3F2-LFE/audio 5.1(6 channels).
-There are several papers discussing how to achieve that.
-
-Other case
-
-The other case happens
-when numbers of input channels = numbers of output channels,
-but their channel layouts are different.
-
-The conversion is easy as converting 
-from STEREO-LFE: {L, R, LFE} to 3F: {L, R, C} (simply passing data):
-
-
-
-;it’s also as complicated as converting
-from 3F1: {L, R, C, RC} to 2F2(or quad): {L, R, LS, RS}:
-
-
-, where  are specific values.
-
-Implementation
-Many open source cross-platform audio libraries are good refereces
-to learn how to implement multi-channel on different platforms, such as
-
-  cubeb
-  portaudio
-  libsoundio
-
-
-My experience for developling multi-channel is limited on cubeb.
-The development project page is hosted here.
-From my experience, most documents for audio development are vague
-and sometimes you even cannot find the official manuals
-about how to use the APIs(especially on OSX).
-The best way to learn that is to read the source code on github.
-Read the how other people use the APIs
-or the APIs’ implementation directly if it’s possible.
-
-It’s time to rock on the code!</summary></entry><entry><title type="html">A Room without Windows</title><link href="http://localhost:4000/post/a-room-without-windows" rel="alternate" type="text/html" title="A Room without Windows" /><published>2017-12-30T00:00:00+08:00</published><updated>2017-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/a-room-without-windows</id><content type="html" xml:base="http://localhost:4000/post/a-room-without-windows">&lt;h1 id=&quot;無窗的房間&quot;&gt;無窗的房間&lt;/h1&gt;
+&lt;p&gt;It’s time to rock on the code!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">Introduction for Audio 5.1 Audio five-point one is a common surround sound layouted in home theater. It has totally six channels: five speakers and a subwoofer and this is where the term five-point one comes from. Channel Layout Since we have more than one channel, we need to define an explicit channel ordering to know which channel the sent/received data is matched to. Channel layout specifies the order of input/output channel data in audio buffer. For example, if the layout is stereo, then we have two channel data. The first data is for left channel, the second one is right channel. The arrangement for the channels is different from format to format. The most common formats are defined in Wave Format Extensible(or WaveEx) or by Society of Motion Picture &amp;amp; Television Engineers(or SMPTE). They defines what channels are provided and the ordering of them in different layouts. In this post, we follow the SMPTE format. An advantage of taking this standard is that it specifies the up/downmixing behaviours between different layouts. (The SMPTE’s standard for multichannel can be founded in ITU-R BS.775 and ITU-R BS.2159-7.) Channels Before knowing how the channels are sorted, we should know what channel is provided. Code Channel Name M Mono L Left (Front Left) R Right (Front Right) C Center (Front Center) LS Left Surround (Side Left) RS Right Surround (Side Right) RLS Rear Left Surround (Back Left) RC Rear Center (Back Center) RRS Rear Right Surround (Back Right) LFE Low Frequency Effects Layouts The layout in SMPTE’s format is as follows. Each layout is defined by a particular permutation of the above channels. (The sample code to set channel layout on OSX is here.) Layout channel order DUAL-MONO L R DUAL-MONO-LFE L R LFE MONO M MONO-LFE M LFE STEREO L R STEREO-LFE L R LFE 3F L R C 3F-LFE L R C LFE 2F1 L R RC 2F1-LFE L R LFE RC 3F1 L R C RC 3F1-LFE L R C LFE RC 2F2 L R LS RS 2F2-LFE L R LFE LS RS 3F2 L R C LS RS 3F2-LFE L R C LFE LS RS 3F3R-LFE L R C LFE RC LS RS 3F4-LFE L R C LFE RLS RRS LS RS Mixing We already know that the audio layout can be configured into different types based on the number of the channels. The question is: what should we do when the input layout from the audio source doesn’t match the user’s output layout? If the two channel layouts are equal, then they must have same numbers of channels and same channel order. Conversely, if two audio settings have different numbers of channels (e.g., {L, R} and {M, LFE}), or they have same numbers of channels but different orders (e.g., {L, R} and {R, L}), then they must have different channel layouts. When the input layout is different from the output layout, we need to convert the audio input data to fit the audio output’s configuration. We call it mixing. (The sample code to mix audio data on OSX is here.) Mixing matrix Although it may have different definitions to convert the audio data from input into output, they can be summarized into the following equations. The above figure illustrates their relationships, and the value of varies from definition to definition. To simplify them, we can rewite these equations into a matrix form: Downmixing When numbers of input channels &amp;gt; numbers of output channels, we call it downmixing. (In this case, the input channel layout is definitiely different from the output one.) The most common case for downmixing is to downmix different audio layouts into stereo. The audio sources on the internet have various layouts while most users only have two speakers. (The downward mixing mechanism of SMPTE for audio 5.1 is defined in Table 2 of ITU-R BS.775-3.) Downmix audio 5.1 to stereo(stereophonic sound) Downmix audio 5.1 to quad(quadraphonic sound/4.0 surround sound) Upmixing When numbers of input channels &amp;lt; numbers of output channels, we call it upmixing. (In this case, the input channel layout is definitiely different from the output one.) The most common case for this is to upmix stereo data(2 channels) into 3F2-LFE/audio 5.1(6 channels). There are several papers discussing how to achieve that. Other case The other case happens when numbers of input channels = numbers of output channels, but their channel layouts are different. The conversion is easy as converting from STEREO-LFE: {L, R, LFE} to 3F: {L, R, C} (simply passing data): ;it’s also as complicated as converting from 3F1: {L, R, C, RC} to 2F2(or quad): {L, R, LS, RS}: , where are specific values. Implementation Many open source cross-platform audio libraries are good refereces to learn how to implement multi-channel on different platforms, such as cubeb portaudio libsoundio My experience for developling multi-channel is limited on cubeb. The development project page is hosted here. From my experience, most documents for audio development are vague and sometimes you even cannot find the official manuals about how to use the APIs(especially on OSX). The best way to learn that is to read the source code on github. Read the how other people use the APIs or the APIs’ implementation directly if it’s possible. It’s time to rock on the code!</summary></entry><entry><title type="html">A Room without Windows</title><link href="http://localhost:4000/post/a-room-without-windows" rel="alternate" type="text/html" title="A Room without Windows" /><published>2017-12-30T00:00:00+08:00</published><updated>2017-12-30T00:00:00+08:00</updated><id>http://localhost:4000/post/a-room-without-windows</id><content type="html" xml:base="http://localhost:4000/post/a-room-without-windows">&lt;h1 id=&quot;無窗的房間&quot;&gt;無窗的房間&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.indievox.com/disc/14070&quot;&gt;〈無窗的房間〉&lt;/a&gt;在冬至那天的耳機裡迴盪，
 而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。
@@ -2881,11 +2629,7 @@ It’s time to rock on the code!</summary></entry><entry><title type="html">A Ro
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://blow.streetvoice.com/37778-%E6%B7%B7%E5%90%88%E5%8F%B0%E8%AA%9E%E3%80%81%E8%8B%B1%E6%96%87%E9%9B%99%E8%81%B2%E9%81%93-tzchien%E6%85%88%E8%AC%99%E6%BA%AB%E6%9F%94%E9%87%8B%E5%87%BA%E5%85%A8%E6%96%B0%E5%96%AE%E6%9B%B2%E3%80%88/&quot;&gt;Blow吹音樂：混合台語、英文雙聲道 TzChien慈謙溫柔釋出全新單曲〈無窗的房間〉&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://tw.news.yahoo.com/%E5%A4%96%E5%9C%A8%E8%88%87%E5%85%A7%E5%9C%A8%E4%BA%A4%E8%9E%8D-tzchien%E6%85%88%E8%AC%99%E7%82%BA%E7%84%A1%E7%AA%97%E6%88%BF%E9%96%93%E5%90%B6%E5%96%8A-070703108.html&quot;&gt;Yahoo!奇摩新聞：外在與內在交融 TzChien慈謙為無窗房間吶喊&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Life&quot;]" /><category term="Memory" /><category term="Music" /><category term="TzChien慈謙" /><summary type="html">無窗的房間
-
-〈無窗的房間〉在冬至那天的耳機裡迴盪，
-而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。
-剛出社會的那一年，大概是我目前人生體悟最多的一年。</summary></entry><entry><title type="html">Poor Students Are Missing at Top Universities</title><link href="http://localhost:4000/post/poor-students-are-missing-at-top-universities" rel="alternate" type="text/html" title="Poor Students Are Missing at Top Universities" /><published>2017-12-27T00:00:00+08:00</published><updated>2017-12-27T00:00:00+08:00</updated><id>http://localhost:4000/post/poor-students-are-missing-at-top-universities</id><content type="html" xml:base="http://localhost:4000/post/poor-students-are-missing-at-top-universities">&lt;h1 id=&quot;台大真不是窮人可以來讀的學校&quot;&gt;台大真不是窮人可以來讀的學校?&lt;/h1&gt;
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Life&quot;]" /><category term="Memory" /><category term="Music" /><category term="TzChien慈謙" /><summary type="html">無窗的房間 〈無窗的房間〉在冬至那天的耳機裡迴盪， 而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。 剛出社會的那一年，大概是我目前人生體悟最多的一年。</summary></entry><entry><title type="html">Poor Students Are Missing at Top Universities</title><link href="http://localhost:4000/post/poor-students-are-missing-at-top-universities" rel="alternate" type="text/html" title="Poor Students Are Missing at Top Universities" /><published>2017-12-27T00:00:00+08:00</published><updated>2017-12-27T00:00:00+08:00</updated><id>http://localhost:4000/post/poor-students-are-missing-at-top-universities</id><content type="html" xml:base="http://localhost:4000/post/poor-students-are-missing-at-top-universities">&lt;h1 id=&quot;台大真不是窮人可以來讀的學校&quot;&gt;台大真不是窮人可以來讀的學校?&lt;/h1&gt;
 &lt;p&gt;雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
 雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。&lt;/p&gt;
 
@@ -3004,336 +2748,4 @@ It’s time to rock on the code!</summary></entry><entry><title type="html">A Ro
   &lt;li&gt;&lt;a href=&quot;http://prospect.org/article/education-cure-poverty&quot;&gt;Is Education the Cure for Poverty?&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.demos.org/blog/12/2/15/why-education-does-not-fix-poverty&quot;&gt;Why Education Does Not Fix Poverty&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://paul-bruno.com/2014/04/why-education-reform-is-probably-not-the-best-way-to-fight-poverty/&quot;&gt;Why Education Reform is Probably Not The Best Way to Fight Poverty&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Social Issues&quot;]" /><category term="Education" /><summary type="html">台大真不是窮人可以來讀的學校?
-雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
-雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。</summary></entry><entry><title type="html">Running Average</title><link href="http://localhost:4000/post/running-average" rel="alternate" type="text/html" title="Running Average" /><published>2017-12-21T00:00:00+08:00</published><updated>2017-12-21T00:00:00+08:00</updated><id>http://localhost:4000/post/running-average</id><content type="html" xml:base="http://localhost:4000/post/running-average">&lt;p&gt;Preventing overflow is essential
-while calculating the average of a long series of data.
-One simplest method to avoid the problem is &lt;em&gt;running average&lt;/em&gt;
-(or &lt;em&gt;moving average&lt;/em&gt;, &lt;em&gt;rolling average&lt;/em&gt;, &lt;em&gt;incremental mean&lt;/em&gt;).&lt;/p&gt;
-
-&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;/h2&gt;
-&lt;p&gt;Suppose we have data &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_n&lt;/script&gt;.
-The &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt; will overflow when the new data &lt;script type=&quot;math/tex&quot;&gt;x_{n+1}&lt;/script&gt; is counted,
-where &lt;script type=&quot;math/tex&quot;&gt;sum_i = x_1 + x_2 + \cdots + x_i&lt;/script&gt;.
-At that time, &lt;script type=&quot;math/tex&quot;&gt;\mu_{n+1} = \frac{sum_{n+1}}{n+1}&lt;/script&gt; will be wrong,
-where &lt;script type=&quot;math/tex&quot;&gt;\mu_i&lt;/script&gt; is the average of &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_i&lt;/script&gt;,
-since &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt; is an overflowed value.&lt;/p&gt;
-
-&lt;p&gt;How could we solve the problem?&lt;/p&gt;
-
-&lt;h2 id=&quot;naive-approach&quot;&gt;Naive Approach&lt;/h2&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Overflow!
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GetAverage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;static_cast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The above approach to prevent overflow
-is extracted from &lt;a href=&quot;https://searchfox.org/mozilla-central/rev/f5f1c3f294f89cfd242c3af9eb2c40d19d5e04e7/dom/media/mp3/MP3Demuxer.cpp#709-715,720,728,756-760&quot; title=&quot;Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;Gecko MP3Demuxer&lt;/a&gt;,
-but it’s &lt;strong&gt;wrong&lt;/strong&gt; in most cases
-(it’s only correct when every incoming data is same).
-For example, if we have &lt;script type=&quot;math/tex&quot;&gt;x_1 = 10, x_2 = 20&lt;/script&gt;
-and &lt;script type=&quot;math/tex&quot;&gt;x_3 = 90&lt;/script&gt; will lead to overflow to the sum of &lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt;
-so the average computed by above approach will be &lt;script type=&quot;math/tex&quot;&gt;\frac{(10+20)/2 + 90}{2/2 + 1} = 52.5&lt;/script&gt;,
-which is different from &lt;script type=&quot;math/tex&quot;&gt;\frac{10 + 20 + 90}{3} = 40&lt;/script&gt;.
-I cannot believe this incorrect code
-lives in Firefox &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1093815&quot;&gt;more than 3 years&lt;/a&gt;.
-Fortunately, the overflow happens once in a blue moon
-so it’s not too much trouble.&lt;/p&gt;
-
-&lt;h3 id=&quot;proof&quot;&gt;Proof&lt;/h3&gt;
-&lt;p&gt;We can formally prove the above approach is incorrect.
-Let &lt;script type=&quot;math/tex&quot;&gt;sum_{k}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mu_k&lt;/script&gt; be the &lt;strong&gt;sum&lt;/strong&gt; and &lt;strong&gt;arithmetic mean&lt;/strong&gt;
-of &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_k&lt;/script&gt; respectively, and &lt;script type=&quot;math/tex&quot;&gt;E_k&lt;/script&gt; be the estimated average
-from above approach.&lt;/p&gt;
-
-&lt;p&gt;Since the new incoming data &lt;script type=&quot;math/tex&quot;&gt;x_{n+1}&lt;/script&gt; will cause overflow to &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt;, so&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;E_{n+1} = \frac{p + x_{n+1}}{q + 1}&lt;/script&gt;
-, where
-&lt;script type=&quot;math/tex&quot;&gt;p = \frac{sum_{n}}{2} = \frac{x_1 + x_2 + \cdots + x_n}{2}&lt;/script&gt;
-and
-&lt;script type=&quot;math/tex&quot;&gt;q = \frac{n}{2}&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;As a result,&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-E_{n+1}
-&amp;= \frac{p + x_{n+1}}{q + 1} \\
-&amp;= \frac{\frac{x_1 + x_2 + \cdots + x_n}{2} + x_{n+1}}{\frac{n}{2} + 1} \\
-&amp;= \frac{\frac{x_1 + x_2 + \cdots + x_n + 2 \cdot x_{n+1}}{2}}{\frac{n + 2}{2}} \\
-&amp;= \frac{x_1 + x_2 + \cdots + x_n + 2 \cdot x_{n+1}}{n+2}
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;We could compare &lt;script type=&quot;math/tex&quot;&gt;E_{n+1}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mu_{n+1}&lt;/script&gt; to see if they are equal:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-\mu_{n+1}
-&amp;= \frac{x_1 + x_2 + \cdots + x_n + x_{n+1}}{n+1} \\
-&amp;= \frac{(n+2) \cdot (x_1 + x_2 + \cdots + x_n + x_{n+1})}{(n+1) \cdot (n+2)} \\
-&amp;= \frac{(n+1) \cdot (x_1 + x_2 + \cdots + x_n + x_{n+1}) + (x_1 + x_2 + \cdots + x_n + x_{n+1})}{(n+1) \cdot (n+2)}
-\\
-E_{n+1}
-&amp;= \frac{x_1 + x_2 + \cdots + x_n + 2 \cdot x_{n+1}}{n+2} \\
-&amp;= \frac{(x_1 + x_2 + \cdots + x_n + x_{n+1}) + x_{n+1}}{n+2} \\
-&amp;= \frac{(n+1) \cdot ((x_1 + x_2 + \cdots + x_n + x_{n+1}) + x_{n+1})}{(n+1) \cdot (n+2)} \\
-&amp;= \frac{(n+1) \cdot (x_1 + x_2 + \cdots + x_n + x_{n+1}) + (n+1) \cdot x_{n+1}}{(n+1) \cdot (n+2)} \\
-&amp;= \frac{(n+1) \cdot (x_1 + x_2 + \cdots + x_n + x_{n+1}) + (\overbrace{x_{n+1} + \cdots + x_{n+1}}^{n+1}))}{(n+1) \cdot (n+2)}
-\\
-\mu_{n+1} - E_{n+1}
-&amp;= \frac{ (x_1 + x_2 + \cdots + x_n + x_{n+1}) - (\overbrace{x_{n+1} + \cdots + x_{n+1}}^{n+1}))}{(n+1) \cdot (n+2)} \\
-&amp;= \frac{ (x_1 - x_{n+1}) + (x_2 - x_{n+1}) + \cdots +  (x_n - x_{n+1}) + (x_{n+1} - x_{n+1})}{(n+1) \cdot (n+2)} \\
-&amp;= \frac{ (x_1 - x_{n+1}) + (x_2 - x_{n+1}) + \cdots +  (x_n - x_{n+1}) }{(n+1) \cdot (n+2)}
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;Thus, we can clearly see that
-&lt;script type=&quot;math/tex&quot;&gt;\mu_{n+1}&lt;/script&gt; will be equal to &lt;script type=&quot;math/tex&quot;&gt;E_{n+1}&lt;/script&gt;
-&lt;strong&gt;only&lt;/strong&gt; when &lt;script type=&quot;math/tex&quot;&gt;x_1 = x_2 = \cdots = x_n = x_{n+1}&lt;/script&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;running-average&quot;&gt;Running Average&lt;/h2&gt;
-
-&lt;p&gt;In fact, the average can be calculated
-without using the overflowed &lt;script type=&quot;math/tex&quot;&gt;sum_{n+1}&lt;/script&gt;.
-Let &lt;script type=&quot;math/tex&quot;&gt;\mu_n&lt;/script&gt; be the mean of &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2, \cdots, x_n&lt;/script&gt;,
-we can get &lt;script type=&quot;math/tex&quot;&gt;\mu_n&lt;/script&gt; by &lt;script type=&quot;math/tex&quot;&gt;\mu_{n-1}&lt;/script&gt;:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-\mu_n
-&amp;= \frac{ \mu_{n-1} \cdot (n-1) + x_n }{ n } \\
-&amp;= \frac{ n \cdot \mu_{n-1} + x_n - \mu_{n-1}}{ n } \\
-&amp;= \mu_{n-1} + \frac{ x_n - \mu_{n-1} }{ n }
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h3 id=&quot;sample-code&quot;&gt;Sample code&lt;/h3&gt;
-
-&lt;p&gt;On this ground, we could correct the &lt;a href=&quot;https://gist.github.com/ChunMinChang/a1d7533859dba59a1701d1d42c29bf82&quot; title=&quot;Calculating average without sum&quot;&gt;code&lt;/a&gt; into:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GetAverage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UpdateAverage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Averager&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;Averager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
-
-  &lt;span class=&quot;o&quot;&gt;~&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Averager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
-
-  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-  &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;GetAverage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;average&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;uint64_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1423834&quot; title=&quot;Bug 1423834 - Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;Bug 1423834&lt;/a&gt; has been filed for this problem
-when I found this code in &lt;a href=&quot;https://searchfox.org/mozilla-central/rev/f5f1c3f294f89cfd242c3af9eb2c40d19d5e04e7/dom/media/mp3/MP3Demuxer.cpp#709-715,720,728,756-760&quot; title=&quot;Wrong calculation for mp3 time length as we prevent overflow&quot;&gt;MP3Demuxer&lt;/a&gt;.
-You could find more detail there.&lt;/p&gt;
-
-&lt;p&gt;The following links are some related resources:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Moving_average&quot;&gt;Moving average on Wiki&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://math.stackexchange.com/questions/106700/incremental-averageing&quot;&gt;Incremental averageing&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/3316261/prevent-long-running-averaging-from-overflow&quot;&gt;Prevent long running averaging from overflow?&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;, &quot;Math&quot;]" /><category term="Firefox" /><summary type="html">Preventing overflow is essential
-while calculating the average of a long series of data.
-One simplest method to avoid the problem is running average
-(or moving average, rolling average, incremental mean).
-
-Problem
-Suppose we have data .
-The  will overflow when the new data  is counted,
-where .
-At that time,  will be wrong,
-where  is the average of ,
-since  is an overflowed value.
-
-How could we solve the problem?
-
-Naive Approach
-
-uint64_t count = 0;
-uint64_t sum = 0;
-
-void Add(uint64_t data)
-{
-  if (sum + data &amp;lt; sum) { // Overflow!
-    sum = sum / 2;
-    count = count / 2;
-  }
-
-  sum += data;
-  ++count;
-}
-
-double GetAverage()
-{
-  return static_cast&amp;lt;double&amp;gt;(sum) / count;
-}
-
-
-
-The above approach to prevent overflow
-is extracted from Gecko MP3Demuxer,
-but it’s wrong in most cases
-(it’s only correct when every incoming data is same).
-For example, if we have 
-and  will lead to overflow to the sum of 
-so the average computed by above approach will be ,
-which is different from .
-I cannot believe this incorrect code
-lives in Firefox more than 3 years.
-Fortunately, the overflow happens once in a blue moon
-so it’s not too much trouble.
-
-Proof
-We can formally prove the above approach is incorrect.
-Let  and  be the sum and arithmetic mean
-of  respectively, and  be the estimated average
-from above approach.
-
-Since the new incoming data  will cause overflow to , so
-
-
-, where
-
-and
-
-
-As a result,
-
-
-
-We could compare  and  to see if they are equal:
-
-
-
-Thus, we can clearly see that
- will be equal to 
-only when .
-
-Running Average
-
-In fact, the average can be calculated
-without using the overflowed .
-Let  be the mean of ,
-we can get  by :
-
-
-
-Sample code
-
-On this ground, we could correct the code into:
-
-double average = 0;
-uint64_t count = 0;
-void Add(uint64_t data)
-{
-  average += (data - average) / ++count;
-}
-
-double GetAverage()
-{
-  return average;
-}
-
-
-
-or
-
-double UpdateAverage(uint64_t data)
-{
-  static double average = 0;
-  static uint64_t count = 0;
-  average += (data - average) / ++count;
-  return average;
-}
-
-
-
-or
-
-class Averager
-{
-public:
-  Averager()
-    : average(0)
-    , count(0)
-  {}
-
-  ~Averager() {};
-
-  void Add(uint64_t data) { average += (data - average) / ++count; }
-
-  double GetAverage() { return average; }
-
-private:
-  double average;
-  uint64_t count;
-}
-
-
-
-References
-
-Bug 1423834 has been filed for this problem
-when I found this code in MP3Demuxer.
-You could find more detail there.
-
-The following links are some related resources:
-
-  Moving average on Wiki
-  Incremental averageing
-  Prevent long running averaging from overflow?</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Social Issues&quot;]" /><category term="Education" /><summary type="html">台大真不是窮人可以來讀的學校? 雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。 雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。</summary></entry></feed>

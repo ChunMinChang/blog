@@ -1,0 +1,95 @@
+I"�<p>When I tried to <a href="deadlock-when-using-audiounit">produce a deadlock in <em>CoreAudio</em></a> with pthread,
+I realized that the <em>mutex</em> with <strong>NORMAL</strong> type locked by one pthread
+could be unlocked by another pthread.
+Normally, this behavior should be <strong>disallowed</strong>.
+It will result in undefined behaviors.
+If one pthread could unlock a mutex owned by other thread whenever it wants,
+then the mutex will be meaningless,
+unless it’s a expected behavior.</p>
+
+<p>In my case, it’s exactly what I want, 
+because I need to break the deadlock to continue the program.
+However, in most case, this behavior should be <strong>forbidden</strong>,
+so I do some research about
+what the behaviors of mutexes with different types are.</p>
+
+<p>Here is my conclusion:</p>
+
+<noscript><pre># pthread
+
+Sample code for demonstrating different behavior
+in different pthread type
+- *PTHREAD_MUTEX_NORMAL*
+  - This type of mutex does **not** detect deadlock
+  - A thread attempting to relock this mutex without first unlocking it
+    shall deadlock
+  - A thread attempting to unlock a mutex locked by a different thread
+    results in undefined behavior
+  - A thread attempting to unlock an unlocked mutex
+    results in undefined behavior
+- *PTHREAD_MUTEX_ERRORCHECK*
+  - This type of mutex provides error checking
+  - A thread attempting to relock this mutex without first unlocking
+    it shall return with an error
+  - A thread attempting to unlock a mutex which another thread has locked
+    shall return with an error
+  - A thread attempting to unlock an unlocked mutex
+    shall return with an error
+- *PTHREAD_MUTEX_RECURSIVE*
+  - A thread attempting to relock this mutex without first unlocking it
+    shall succeed in locking the mutex
+    - The relocking is allowd only in the **same** thread
+    - The relocking deadlock which can occur with mutexes of type
+      *PTHREAD_MUTEX_NORMAL* **cannot** occur with this type of mutex
+    - Multiple locks of this mutex shall require the same number of unlocks
+      to release the mutex before another thread can acquire the mutex
+  - A thread attempting to unlock a mutex which another thread has locked
+    shall return with an error
+  - A thread attempting to unlock an unlocked mutex
+    shall return with an error
+- *PTHREAD_MUTEX_DEFAULT*
+  - Its default value is set to *PTHREAD_MUTEX_NORMAL*
+  - It&#39;s allowed to map its value to other types
+
+## Scenarios and results
+We have four scenarios:
+1. Lock a locked mutex in same thread
+2. Unlock a unlocked mutex
+3. (Wait to) Lock a locked mutex owned by another thread (__normal use case__)
+4. Unlock a locked mutex owned by another thread
+
+Unlocking a mutex owned by current thread is definitely ok,
+so it&#39;s exclusive in our scenarios.
+
+The results of our scenarios in different type is:
+
+|            | 1 | 2 | 3 | 4 |
+|------------|---|---|---|---|
+| NORMAL     | ! | v | v | v |
+| ERRORCHECK |   |   | v |   |
+| RECURSIVE  | v |   | v |   |
+| DEFAULT    | ! | v | v | v |
+
+- ```!```: It works without any error, but it will be **self-deadlocked**
+- ```v```: It works without any error
+- empty: It can not works, with an error returned
+
+
+## TODO
+- Sample code for ```pthread_kill``` and ```pthread_detach```
+
+
+## Note
+
+### pthread_mutex_trylock
+The ```pthread_mutex_trylock()``` shall be equivalent
+to ```pthread_mutex_lock()```,
+except that if the mutex object referenced by mutex is currently locked
+(by any thread, including the current thread),
+the call shall return immediately.
+</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/fe46f3760e2230c09675e258ae1cf8eb.js?file=README.md"> </script>
+
+<p>The test code can be found on <a href="https://gist.github.com/ChunMinChang/fe46f3760e2230c09675e258ae1cf8eb">gist here</a></p>
+
+:ET

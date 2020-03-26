@@ -1,0 +1,36 @@
+I"4<h1 id="running-multiple-firefox-at-the-same-time">Running multiple Firefox at the same time</h1>
+
+<p>I have two firefox: Firefox(normal version) and Firefox Developer Edition.
+Today morning, I deleted the Firefox Developer Edition by <em>AppCleaner</em>
+and re-installed it, then something weird happened.</p>
+
+<p>When I opened the new Firefox Developer Edition
+then launched my unchanged Firefox, the Firefox cannot be opened
+and it showed an error: <strong>A copy of Firefox is already open.
+Only one copy of Firefox an be opened at a time.</strong></p>
+
+<p><img src="../images/posts/a-copy-of-firefox-is-alreay-open.png" alt="" title="A copy of Firefox is already open" /></p>
+
+<p>AFAIK, the multiple Firefox instances are able to run at the same time,
+if they use <strong>different profiles</strong>.
+Therefore, I opened <code class="highlighter-rouge">about:profiles</code> on Firefox to check it.</p>
+
+<p><img src="../images/posts/firefox-about-profiles-wrong.png" alt="" title="Firefox - about:profiles(incorrect)" /></p>
+
+<p>From above, the setting was incorrect.
+It should use <em>Profile: default</em> instead of <em>Profile: dev-edition-default</em>.
+That’s why I cannot open Firefox and FirefoxDeveloperEdition at the same time.</p>
+
+<p>To fix the problem, I simply click <em>Set a default profile</em>
+under <em>Profile: default</em>, then closed it, and relaunched it to check the setting.</p>
+
+<p><img src="../images/posts/firefox-about-profiles-right.png" alt="" title="Firefox - about:profiles(correct)" /></p>
+
+<p>I also checked the FirefoxDeveloperEdition’s setting
+to make sure everything is fine.
+<img src="../images/posts/firefoxdeveloperedition-about-profiles.png" alt="" title="FirefoxDeveloperEdition - about:profiles" /></p>
+
+<p>I wrote this to remember how I fix it,
+in case the same problem happens again.</p>
+
+:ET

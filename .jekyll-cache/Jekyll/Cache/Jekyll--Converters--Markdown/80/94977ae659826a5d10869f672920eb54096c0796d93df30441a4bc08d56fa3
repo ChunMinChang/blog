@@ -1,0 +1,72 @@
+I"�<p>To make some fun in a snowing night,
+I built a simple audio reactive LED
+that can dance(blink) with the music.</p>
+
+<p>It’s an easy project for killing time
+since the circuit just contains a couple of electronic components.</p>
+
+<p>I am not a professional electronic engineer.
+I cannot guarantee it won’t burn down your house
+if you run that circuit all night long.</p>
+
+<p>I bet you will get much more fun
+if you dance with real humans rather than the LED circuit!</p>
+
+<!--read more-->
+
+<h2 id="circuit">Circuit</h2>
+<p><img src="../images/posts/audio-reactive-led.png" alt="" title="Device selector" /></p>
+
+<h2 id="references">References</h2>
+<ul>
+  <li>Audio Plugin
+    <ul>
+      <li><a href="http://www.circuitbasics.com/how-to-hack-a-headphone-jack/">HOW TO HACK A HEADPHONE JACK</a>
+        <ul>
+          <li>Tip-Ring-Sleeve: Left, Right, Ground</li>
+          <li>Tip-Ring-Ring-Sleeve: Left, Right, Ground, Microphone</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Power LED via headset jack
+    <ul>
+      <li><a href="https://engineering.stackexchange.com/questions/3648/powering-led-light-using-smartphone-headset-jack">Powering LED light using smartphone headset jack</a></li>
+    </ul>
+  </li>
+  <li>Blink LED to Music by connecting audio signal to transistor
+    <ul>
+      <li><a href="http://www.instructables.com/id/Blinking-LEDs-to-Music/">BLINKING LEDS TO MUSIC</a></li>
+      <li><a href="http://www.instructables.com/id/Creating-An-Audio-Reactive-LED-Circuit/">CREATING AN AUDIO-REACTIVE LED CIRCUIT</a></li>
+      <li><a href="http://www.instructables.com/id/Music-blinking-LED/">MUSIC BLINKING LED</a></li>
+      <li><a href="http://www.instructables.com/id/Music-LED-Light-Box/">MUSIC LED LIGHT BOX</a></li>
+      <li><a href="https://www.youtube.com/watch?v=1TUYNuh-iqQ">Music LED Light Box Walkthrough</a></li>
+      <li><a href="https://www.youtube.com/watch?v=tQErSCz2NiQ">Blinking LED lights to music with TIP31 transistor on a breadboard</a></li>
+      <li><a href="https://www.youtube.com/watch?v=3JTSfhakuZ8#t=60s">DIY - Music LED with TIP31 (Electric diagram in video) - By STE</a></li>
+      <li><a href="https://www.youtube.com/watch?v=dyahSDnpZpU#t=70s">Music sync LED’s - DIY (easy)</a></li>
+      <li><a href="https://electronics.stackexchange.com/questions/115468/how-to-blink-leds-with-mosfet-in-response-to-music">How To Blink LED’s with MOSFET in response to Music?</a></li>
+      <li><a href="https://circuitdigest.com/electronic-circuits/simple-led-music-light">Music Operated Dancing LEDs (via Microphone)</a></li>
+    </ul>
+  </li>
+  <li>Blink LED to Music by amplifier and regulator
+    <ul>
+      <li><a href="https://www.allaboutcircuits.com/projects/make-an-analog-sound-reactive-led-strip/">Make an Analog Sound Reactive LED Strip</a></li>
+      <li><a href="https://electronics.stackexchange.com/questions/36423/driving-leds-from-audio-signal">Driving LEDs from audio signal</a></li>
+    </ul>
+  </li>
+  <li>LED Color Organ: Divides sound into three frequency bands, and emits red, green and blue lights accordingly
+    <ul>
+      <li><a href="https://makezine.com/projects/easy-led-color-organ/">Easy LED Color Organ</a></li>
+      <li><a href="http://www.instructables.com/id/LED-Color-Organ-Triple-Deluxe/">LED COLOR ORGAN TRIPLE DELUXE</a></li>
+    </ul>
+  </li>
+  <li>Turn Light into Sound
+    <ul>
+      <li><a href="https://www.khanacademy.org/partner-content/exploratorium-ddp/expl-electromagnet/light-to-sound/v/light-to-sound-introduction">Light into sound introduction</a></li>
+      <li><a href="https://www.exploratorium.edu/square_wheels/modulated_led.pdf">detail</a></li>
+    </ul>
+  </li>
+  <li><a href="https://www.youtube.com/watch?v=-bg7ZIelqpA">Dancing LED Light</a></li>
+</ul>
+
+:ET

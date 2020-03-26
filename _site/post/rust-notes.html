@@ -8,9 +8,12 @@
 <meta name="keywords" content="Rust">
 
 
-<!-- Begin Jekyll SEO tag v1.3.3 -->
-<title>My Rust Notes - Peak Up</title>
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>My Rust Notes | Peak Up</title>
+<meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="My Rust Notes" />
+<meta name="author" content="Chun-Min Chang" />
+<meta property="og:locale" content="en_US" />
 <meta name="description" content="My personal Rust notes." />
 <meta property="og:description" content="My personal Rust notes." />
 <link rel="canonical" href="http://localhost:4000/post/rust-notes" />
@@ -18,20 +21,10 @@
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-09-12T00:00:00+08:00" />
-<link rel="next" href="http://localhost:4000/post/opaque-or-transparent-data-type-in-a-rust-library" title="Opaque or Transparent Data Type in a Rust Library" />
-<link rel="prev" href="http://localhost:4000/post/audio-5-1" title="Audio 5.1" />
 <script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    "headline": "My Rust Notes",
-    "datePublished": "2018-09-12T00:00:00+08:00",
-    "description": "My personal Rust notes.",
-    "logo": "http://localhost:4000mountain.png",
-    "url": "http://localhost:4000/post/rust-notes"
-  }
-</script>
+{"headline":"My Rust Notes","dateModified":"2018-09-12T00:00:00+08:00","url":"http://localhost:4000/post/rust-notes","datePublished":"2018-09-12T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/post/rust-notes"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/mountain.png"},"name":"Chun-Min Chang"},"author":{"@type":"Person","name":"Chun-Min Chang"},"description":"My personal Rust notes.","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
+
 
 <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Peak Up" />
 
@@ -197,9 +190,9 @@
                                 <span class="post-tags"><i class="fa fa-clock-o"></i>&nbsp;
 
                             
-                                    1 minute read
-                            
 
+                            
+                                    <span class="time">1.6166666666666667</span> minutes read
                             
                                 
                             
@@ -242,12 +235,23 @@
     <ul>
       <li><a href="https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003" title="Learning notes for norrowed pointers">Understand borrowing by read-write concepts</a></li>
       <li><a href="https://gist.github.com/ChunMinChang/e8096bc78d29b237cce3ff5f859834e7" title="Lifetimes for The Rust References">Lifetime</a></li>
+      <li><a href="https://yodalee.blogspot.com/2019/09/rust-string.html">Rust Strings</a></li>
       <li>How to convert a C strings to Rust strings</li>
       <li>Phantom data</li>
       <li>Common Error
         <ul>
           <li><a href="https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29" title="Don't misuse the pointers of the instances allocated in functions stack">Don’t misuse the pointers of the instances allocated in functions stack</a></li>
-          <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=dda40d0b40a8d922649521544f260a91" title="temporary cstring as ptr">Temporary cstring as ptr</a></li>
+          <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=dda40d0b40a8d922649521544f260a91" title="temporary cstring as ptr">Temporary cstring as ptr</a>
+            <ul>
+              <li>Will get a <code class="highlighter-rouge">temporary_cstring_as_ptr</code> error when running <code class="highlighter-rouge">cargo clippy</code></li>
+              <li>However, it’s ok in some case
+                <ul>
+                  <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=6229ad42133ceb20a5f25d10a10a313e">playground example</a>: Check the IR</li>
+                  <li><a href="https://doc.rust-lang.org/reference/expressions.html#temporary-lifetimes">temporary-lifetimes</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
           <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;code=use%20std%3A%3Async%3A%3AMutex%3B%0A%0Astruct%20S%20%7B%0A%20%20%20%20mutex%3A%20Mutex%3Cu32%3E%2C%0A%7D%0A%0Aimpl%20S%20%7B%0A%20%20%20%20fn%20new()%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20Self%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20mutex%3A%20Mutex%3A%3Anew(0u32)%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%0A%20%20%20%20fn%20panic_while_locking(%26self)%20%7B%0A%20%20%20%20%20%20%20%20let%20_guard%20%3D%20self.mutex.lock().unwrap()%3B%0A%20%20%20%20%20%20%20%20panic!()%3B%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%20Drop%20for%20S%20%7B%0A%20%20%20%20fn%20drop(%26mut%20self)%20%7B%0A%20%20%20%20%20%20%20%20let%20_guard%20%3D%20self.mutex.lock().unwrap()%3B%0A%20%20%20%20%7D%0A%7D%0A%0A%2F%2F%20The%20backtrace%20cannot%20be%20logged%20when%20test%20thread%20panicked%20again%20while%0A%2F%2F%20panicking.%20See%20the%20backtrace%20by%20running%20main.%0A%23%5Btest%5D%0A%23%5Bshould_panic%5D%0Afn%20test()%20%7B%0A%20%20%20%20let%20s%20%3D%20S%3A%3Anew()%3B%0A%20%20%20%20s.panic_while_locking()%3B%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20let%20s%20%3D%20S%3A%3Anew()%3B%0A%20%20%20%20s.panic_while_locking()%3B%0A%20%20%20%20%2F%2F%20After%20panic_while_locking%20is%20called%2C%20the%20s.mutex%20is%20locked%20while%20panicking.%0A%20%20%20%20%2F%2F%20When%20s.drop()%20is%20called%2C%20we%20will%20get%20another%20panic%20when%20requiring%20lock%0A%20%20%20%20%2F%2F%20for%20the%20locked%20s.mutex.%0A%7D%0A">Panic while panicking</a></li>
         </ul>
       </li>
@@ -315,6 +319,17 @@
       <li>Testing
         <ul>
           <li>Embeding a test module inside every module</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Idioms/Patterns
+    <ul>
+      <li><a href="https://github.com/rust-unofficial/patterns">rust-unofficial/patterns</a></li>
+      <li><a href="https://github.com/mre/idiomatic-rust">mre/idiomatic-rust</a></li>
+      <li><a href="https://stackoverflow.com/questions/41081240/idiomatic-callbacks-in-rust">Idiomatic callbacks in Rust</a>
+        <ul>
+          <li><a href="https://morestina.net/blog/793/closure-lifetimes-in-rust">Closure lifetimes in Rust</a></li>
         </ul>
       </li>
     </ul>
@@ -409,7 +424,7 @@
                 
             </ul>
             <div>
-                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2019 &bull;
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2020 &bull;
                 All rights reserved.
             </div>
             <ul class="menu-items">

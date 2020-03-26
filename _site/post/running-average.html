@@ -8,30 +8,23 @@
 <meta name="keywords" content="Firefox">
 
 
-<!-- Begin Jekyll SEO tag v1.3.3 -->
-<title>Running Average - Peak Up</title>
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Running Average | Peak Up</title>
+<meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="Running Average" />
-<meta name="description" content="Preventing overflow is essentialwhile calculating the average of a long series of data.One simplest method to avoid the problem is running average(or moving average, rolling average, incremental mean).ProblemSuppose we have data .The  will overflow when the new data  is counted,where .At that time,  will be wrong,where  is the average of ,since  is an overflowed value.How could we solve the problem?Naive Approachuint64_t count = 0;uint64_t sum = 0;void Add(uint64_t data){  if (sum + data &lt; sum) { // Overflow!    sum = sum / 2;    count = count / 2;  }  sum += data;  ++count;}double GetAverage(){  return static_cast&lt;double&gt;(sum) / count;}The above approach to prevent overflowis extracted from Gecko MP3Demuxer,but it’s wrong in most cases(it’s only correct when every incoming data is same).For example, if we have and  will lead to overflow to the sum of so the average computed by above approach will be ,which is different from .I cannot believe this incorrect codelives in Firefox more than 3 years.Fortunately, the overflow happens once in a blue moonso it’s not too much trouble.ProofWe can formally prove the above approach is incorrect.Let  and  be the sum and arithmetic meanof  respectively, and  be the estimated averagefrom above approach.Since the new incoming data  will cause overflow to , so, whereandAs a result,We could compare  and  to see if they are equal:Thus, we can clearly see that will be equal to only when .Running AverageIn fact, the average can be calculatedwithout using the overflowed .Let  be the mean of ,we can get  by :Sample codeOn this ground, we could correct the code into:double average = 0;uint64_t count = 0;void Add(uint64_t data){  average += (data - average) / ++count;}double GetAverage(){  return average;}ordouble UpdateAverage(uint64_t data){  static double average = 0;  static uint64_t count = 0;  average += (data - average) / ++count;  return average;}orclass Averager{public:  Averager()    : average(0)    , count(0)  {}  ~Averager() {};  void Add(uint64_t data) { average += (data - average) / ++count; }  double GetAverage() { return average; }private:  double average;  uint64_t count;}ReferencesBug 1423834 has been filed for this problemwhen I found this code in MP3Demuxer.You could find more detail there.The following links are some related resources:  Moving average on Wiki  Incremental averageing  Prevent long running averaging from overflow?" />
-<meta property="og:description" content="Preventing overflow is essentialwhile calculating the average of a long series of data.One simplest method to avoid the problem is running average(or moving average, rolling average, incremental mean).ProblemSuppose we have data .The  will overflow when the new data  is counted,where .At that time,  will be wrong,where  is the average of ,since  is an overflowed value.How could we solve the problem?Naive Approachuint64_t count = 0;uint64_t sum = 0;void Add(uint64_t data){  if (sum + data &lt; sum) { // Overflow!    sum = sum / 2;    count = count / 2;  }  sum += data;  ++count;}double GetAverage(){  return static_cast&lt;double&gt;(sum) / count;}The above approach to prevent overflowis extracted from Gecko MP3Demuxer,but it’s wrong in most cases(it’s only correct when every incoming data is same).For example, if we have and  will lead to overflow to the sum of so the average computed by above approach will be ,which is different from .I cannot believe this incorrect codelives in Firefox more than 3 years.Fortunately, the overflow happens once in a blue moonso it’s not too much trouble.ProofWe can formally prove the above approach is incorrect.Let  and  be the sum and arithmetic meanof  respectively, and  be the estimated averagefrom above approach.Since the new incoming data  will cause overflow to , so, whereandAs a result,We could compare  and  to see if they are equal:Thus, we can clearly see that will be equal to only when .Running AverageIn fact, the average can be calculatedwithout using the overflowed .Let  be the mean of ,we can get  by :Sample codeOn this ground, we could correct the code into:double average = 0;uint64_t count = 0;void Add(uint64_t data){  average += (data - average) / ++count;}double GetAverage(){  return average;}ordouble UpdateAverage(uint64_t data){  static double average = 0;  static uint64_t count = 0;  average += (data - average) / ++count;  return average;}orclass Averager{public:  Averager()    : average(0)    , count(0)  {}  ~Averager() {};  void Add(uint64_t data) { average += (data - average) / ++count; }  double GetAverage() { return average; }private:  double average;  uint64_t count;}ReferencesBug 1423834 has been filed for this problemwhen I found this code in MP3Demuxer.You could find more detail there.The following links are some related resources:  Moving average on Wiki  Incremental averageing  Prevent long running averaging from overflow?" />
+<meta name="author" content="Chun-Min Chang" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Preventing overflow is essential while calculating the average of a long series of data. One simplest method to avoid the problem is running average (or moving average, rolling average, incremental mean). Problem Suppose we have data . The will overflow when the new data is counted, where . At that time, will be wrong, where is the average of , since is an overflowed value. How could we solve the problem? Naive Approach uint64_t count = 0; uint64_t sum = 0; void Add(uint64_t data) { if (sum + data &lt; sum) { // Overflow! sum = sum / 2; count = count / 2; } sum += data; ++count; } double GetAverage() { return static_cast&lt;double&gt;(sum) / count; } The above approach to prevent overflow is extracted from Gecko MP3Demuxer, but it’s wrong in most cases (it’s only correct when every incoming data is same). For example, if we have and will lead to overflow to the sum of so the average computed by above approach will be , which is different from . I cannot believe this incorrect code lives in Firefox more than 3 years. Fortunately, the overflow happens once in a blue moon so it’s not too much trouble. Proof We can formally prove the above approach is incorrect. Let and be the sum and arithmetic mean of respectively, and be the estimated average from above approach. Since the new incoming data will cause overflow to , so , where and As a result, We could compare and to see if they are equal: Thus, we can clearly see that will be equal to only when . Running Average In fact, the average can be calculated without using the overflowed . Let be the mean of , we can get by : Sample code On this ground, we could correct the code into: double average = 0; uint64_t count = 0; void Add(uint64_t data) { average += (data - average) / ++count; } double GetAverage() { return average; } or double UpdateAverage(uint64_t data) { static double average = 0; static uint64_t count = 0; average += (data - average) / ++count; return average; } or class Averager { public: Averager() : average(0) , count(0) {} ~Averager() {}; void Add(uint64_t data) { average += (data - average) / ++count; } double GetAverage() { return average; } private: double average; uint64_t count; } References Bug 1423834 has been filed for this problem when I found this code in MP3Demuxer. You could find more detail there. The following links are some related resources: Moving average on Wiki Incremental averageing Prevent long running averaging from overflow?" />
+<meta property="og:description" content="Preventing overflow is essential while calculating the average of a long series of data. One simplest method to avoid the problem is running average (or moving average, rolling average, incremental mean). Problem Suppose we have data . The will overflow when the new data is counted, where . At that time, will be wrong, where is the average of , since is an overflowed value. How could we solve the problem? Naive Approach uint64_t count = 0; uint64_t sum = 0; void Add(uint64_t data) { if (sum + data &lt; sum) { // Overflow! sum = sum / 2; count = count / 2; } sum += data; ++count; } double GetAverage() { return static_cast&lt;double&gt;(sum) / count; } The above approach to prevent overflow is extracted from Gecko MP3Demuxer, but it’s wrong in most cases (it’s only correct when every incoming data is same). For example, if we have and will lead to overflow to the sum of so the average computed by above approach will be , which is different from . I cannot believe this incorrect code lives in Firefox more than 3 years. Fortunately, the overflow happens once in a blue moon so it’s not too much trouble. Proof We can formally prove the above approach is incorrect. Let and be the sum and arithmetic mean of respectively, and be the estimated average from above approach. Since the new incoming data will cause overflow to , so , where and As a result, We could compare and to see if they are equal: Thus, we can clearly see that will be equal to only when . Running Average In fact, the average can be calculated without using the overflowed . Let be the mean of , we can get by : Sample code On this ground, we could correct the code into: double average = 0; uint64_t count = 0; void Add(uint64_t data) { average += (data - average) / ++count; } double GetAverage() { return average; } or double UpdateAverage(uint64_t data) { static double average = 0; static uint64_t count = 0; average += (data - average) / ++count; return average; } or class Averager { public: Averager() : average(0) , count(0) {} ~Averager() {}; void Add(uint64_t data) { average += (data - average) / ++count; } double GetAverage() { return average; } private: double average; uint64_t count; } References Bug 1423834 has been filed for this problem when I found this code in MP3Demuxer. You could find more detail there. The following links are some related resources: Moving average on Wiki Incremental averageing Prevent long running averaging from overflow?" />
 <link rel="canonical" href="http://localhost:4000/post/running-average" />
 <meta property="og:url" content="http://localhost:4000/post/running-average" />
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2017-12-21T00:00:00+08:00" />
-<link rel="next" href="http://localhost:4000/post/poor-students-are-missing-at-top-universities" title="Poor Students Are Missing at Top Universities" />
-<link rel="prev" href="http://localhost:4000/post/estimation-of-mp3-duration" title="Estimation of MP3 Duration" />
 <script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Running Average",
-    "datePublished": "2017-12-21T00:00:00+08:00",
-    "description": "Preventing overflow is essentialwhile calculating the average of a long series of data.One simplest method to avoid the problem is running average(or moving average, rolling average, incremental mean).ProblemSuppose we have data .The  will overflow when the new data  is counted,where .At that time,  will be wrong,where  is the average of ,since  is an overflowed value.How could we solve the problem?Naive Approachuint64_t count = 0;uint64_t sum = 0;void Add(uint64_t data){  if (sum + data &lt; sum) { // Overflow!    sum = sum / 2;    count = count / 2;  }  sum += data;  ++count;}double GetAverage(){  return static_cast&lt;double&gt;(sum) / count;}The above approach to prevent overflowis extracted from Gecko MP3Demuxer,but it’s wrong in most cases(it’s only correct when every incoming data is same).For example, if we have and  will lead to overflow to the sum of so the average computed by above approach will be ,which is different from .I cannot believe this incorrect codelives in Firefox more than 3 years.Fortunately, the overflow happens once in a blue moonso it’s not too much trouble.ProofWe can formally prove the above approach is incorrect.Let  and  be the sum and arithmetic meanof  respectively, and  be the estimated averagefrom above approach.Since the new incoming data  will cause overflow to , so, whereandAs a result,We could compare  and  to see if they are equal:Thus, we can clearly see that will be equal to only when .Running AverageIn fact, the average can be calculatedwithout using the overflowed .Let  be the mean of ,we can get  by :Sample codeOn this ground, we could correct the code into:double average = 0;uint64_t count = 0;void Add(uint64_t data){  average += (data - average) / ++count;}double GetAverage(){  return average;}ordouble UpdateAverage(uint64_t data){  static double average = 0;  static uint64_t count = 0;  average += (data - average) / ++count;  return average;}orclass Averager{public:  Averager()    : average(0)    , count(0)  {}  ~Averager() {};  void Add(uint64_t data) { average += (data - average) / ++count; }  double GetAverage() { return average; }private:  double average;  uint64_t count;}ReferencesBug 1423834 has been filed for this problemwhen I found this code in MP3Demuxer.You could find more detail there.The following links are some related resources:  Moving average on Wiki  Incremental averageing  Prevent long running averaging from overflow?",
-    "logo": "http://localhost:4000mountain.png",
-    "url": "http://localhost:4000/post/running-average"
-  }
-</script>
+{"headline":"Running Average","dateModified":"2017-12-21T00:00:00+08:00","url":"http://localhost:4000/post/running-average","datePublished":"2017-12-21T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/post/running-average"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/mountain.png"},"name":"Chun-Min Chang"},"author":{"@type":"Person","name":"Chun-Min Chang"},"description":"Preventing overflow is essential while calculating the average of a long series of data. One simplest method to avoid the problem is running average (or moving average, rolling average, incremental mean). Problem Suppose we have data . The will overflow when the new data is counted, where . At that time, will be wrong, where is the average of , since is an overflowed value. How could we solve the problem? Naive Approach uint64_t count = 0; uint64_t sum = 0; void Add(uint64_t data) { if (sum + data &lt; sum) { // Overflow! sum = sum / 2; count = count / 2; } sum += data; ++count; } double GetAverage() { return static_cast&lt;double&gt;(sum) / count; } The above approach to prevent overflow is extracted from Gecko MP3Demuxer, but it’s wrong in most cases (it’s only correct when every incoming data is same). For example, if we have and will lead to overflow to the sum of so the average computed by above approach will be , which is different from . I cannot believe this incorrect code lives in Firefox more than 3 years. Fortunately, the overflow happens once in a blue moon so it’s not too much trouble. Proof We can formally prove the above approach is incorrect. Let and be the sum and arithmetic mean of respectively, and be the estimated average from above approach. Since the new incoming data will cause overflow to , so , where and As a result, We could compare and to see if they are equal: Thus, we can clearly see that will be equal to only when . Running Average In fact, the average can be calculated without using the overflowed . Let be the mean of , we can get by : Sample code On this ground, we could correct the code into: double average = 0; uint64_t count = 0; void Add(uint64_t data) { average += (data - average) / ++count; } double GetAverage() { return average; } or double UpdateAverage(uint64_t data) { static double average = 0; static uint64_t count = 0; average += (data - average) / ++count; return average; } or class Averager { public: Averager() : average(0) , count(0) {} ~Averager() {}; void Add(uint64_t data) { average += (data - average) / ++count; } double GetAverage() { return average; } private: double average; uint64_t count; } References Bug 1423834 has been filed for this problem when I found this code in MP3Demuxer. You could find more detail there. The following links are some related resources: Moving average on Wiki Incremental averageing Prevent long running averaging from overflow?","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
+
 
 <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Peak Up" />
 
@@ -262,13 +255,13 @@ since <script type="math/tex">sum_{n+1}</script> is an overflowed value.</p>
 
 <h2 id="naive-approach">Naive Approach</h2>
 
-<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">uint64_t</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kt">uint64_t</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
 <span class="kt">void</span> <span class="nf">Add</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">sum</span> <span class="o">+</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">sum</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Overflow!
-</span>    <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">sum</span> <span class="o">+</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">sum</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Overflow!</span>
+    <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
   <span class="p">}</span>
 
@@ -280,8 +273,7 @@ since <script type="math/tex">sum_{n+1}</script> is an overflowed value.</p>
 <span class="p">{</span>
   <span class="k">return</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span> <span class="o">/</span> <span class="n">count</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The above approach to prevent overflow
 is extracted from <a href="https://searchfox.org/mozilla-central/rev/f5f1c3f294f89cfd242c3af9eb2c40d19d5e04e7/dom/media/mp3/MP3Demuxer.cpp#709-715,720,728,756-760" title="Wrong calculation for mp3 time length as we prevent overflow">Gecko MP3Demuxer</a>,
@@ -366,7 +358,7 @@ we can get <script type="math/tex">\mu_n</script> by <script type="math/tex">\mu
 
 <p>On this ground, we could correct the <a href="https://gist.github.com/ChunMinChang/a1d7533859dba59a1701d1d42c29bf82" title="Calculating average without sum">code</a> into:</p>
 
-<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">double</span> <span class="n">average</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="n">average</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kt">uint64_t</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kt">void</span> <span class="nf">Add</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
@@ -377,26 +369,24 @@ we can get <script type="math/tex">\mu_n</script> by <script type="math/tex">\mu
 <span class="p">{</span>
   <span class="k">return</span> <span class="n">average</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>or</p>
 
-<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">double</span> <span class="nf">UpdateAverage</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="n">data</span><span class="p">)</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="nf">UpdateAverage</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">static</span> <span class="kt">double</span> <span class="n">average</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
   <span class="k">static</span> <span class="kt">uint64_t</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
   <span class="n">average</span> <span class="o">+=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">average</span><span class="p">)</span> <span class="o">/</span> <span class="o">++</span><span class="n">count</span><span class="p">;</span>
   <span class="k">return</span> <span class="n">average</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>or</p>
 
-<div class="language-cpp highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Averager</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Averager</span>
 <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
+<span class="nl">public:</span>
   <span class="n">Averager</span><span class="p">()</span>
     <span class="o">:</span> <span class="n">average</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -404,16 +394,15 @@ we can get <script type="math/tex">\mu_n</script> by <script type="math/tex">\mu
 
   <span class="o">~</span><span class="n">Averager</span><span class="p">()</span> <span class="p">{};</span>
 
-  <span class="kt">void</span> <span class="nf">Add</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span> <span class="n">average</span> <span class="o">+=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">average</span><span class="p">)</span> <span class="o">/</span> <span class="o">++</span><span class="n">count</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kt">void</span> <span class="n">Add</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span> <span class="n">average</span> <span class="o">+=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">average</span><span class="p">)</span> <span class="o">/</span> <span class="o">++</span><span class="n">count</span><span class="p">;</span> <span class="p">}</span>
 
-  <span class="kt">double</span> <span class="nf">GetAverage</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">average</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kt">double</span> <span class="n">GetAverage</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">average</span><span class="p">;</span> <span class="p">}</span>
 
-<span class="k">private</span><span class="o">:</span>
+<span class="nl">private:</span>
   <span class="kt">double</span> <span class="n">average</span><span class="p">;</span>
   <span class="kt">uint64_t</span> <span class="n">count</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="references">References</h2>
 
@@ -516,7 +505,7 @@ You could find more detail there.</p>
                 
             </ul>
             <div>
-                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2019 &bull;
+                <a href="http://localhost:4000/about/">Chun-Min Chang</a> &copy; 2020 &bull;
                 All rights reserved.
             </div>
             <ul class="menu-items">

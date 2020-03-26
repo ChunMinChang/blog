@@ -1,0 +1,200 @@
+I"×<p><em>LRU(Least Recently Used)</em> table is a simple data structure
+that is composed of <em>hash table</em> and <em>linked list</em>.
+The <em>insert</em>, <em>erase</em>, <em>lookup/search</em> can be done naturally in <em>O(1)</em>
+by its <em>hash-table</em> part. But the best thing is,
+it can return the <em>least</em> or <em>most</em> recently used data in <em>O(1)</em>
+by the its <em>linked-list</em> in a <em>least-to-most</em> recently used order.</p>
+
+<!--read more-->
+
+<h1 id="use-cases">Use Cases</h1>
+
+<p>There are several use cases</p>
+<ul>
+  <li>(LRU) cache:
+A data cache with limited capacity that only cache the most recently touched <script type="math/tex">N</script>-element</li>
+  <li>Focus problem:
+Keep tracking the touched elements, in a least-to-most recently used order
+    <ul>
+      <li>For example, in browser, we may want to prioritize the media elements by the touched-by-user order</li>
+      <li>We can give user a way for a user to control the last touched media element.
+One media element at a time.</li>
+      <li>If the last touched media element is destroyed,
+then the user can control the second-last touched media element, and so on.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The real worl use case is a <a href="https://source.chromium.org/chromium/chromium/src/+/master:media/blink/multibuffer.h;l=198;drc=d9b91db0b32bcaed524db17b05f614c7e86326bc?originalUrl=https:%2F%2Fcs.chromium.org%2F"><code class="highlighter-rouge">mediabuffer</code></a> with <a href="https://source.chromium.org/chromium/chromium/src/+/master:media/blink/lru.h?q=lru&amp;ss=chromium&amp;originalUrl=https:%2F%2Fcs.chromium.org%2F"><em>LRU</em> mechanism</a> in <em>chromium</em></p>
+
+<h1 id="sample-code">Sample Code</h1>
+
+<h2 id="a-simple-lru-table">A Simple <em>LRU</em> Table</h2>
+
+<noscript><pre>#ifndef LRU_H
+#define LRU_H
+
+#include &lt;cassert&gt;
+#include &lt;list&gt;
+#include &lt;optional&gt;
+#include &lt;unordered_map&gt;
+
+#ifdef LRU_DEBUG
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#endif  // LRU_DEBUG
+
+template &lt;class T&gt;
+class LRU {
+ public:
+  LRU() {}
+  ~LRU() {}
+
+  std::optional&lt;T&gt; least_recently_used() {
+    return list.empty() ? std::nullopt : std::make_optional(list.back());
+  }
+
+  std::optional&lt;T&gt; most_recently_used() {
+    return list.empty() ? std::nullopt : std::make_optional(list.front());
+  }
+
+  void use(const T&amp; item) {
+    if (contains(item)) {
+      erase(item);
+    }
+    insert(item);
+  }
+
+  void insert(const T&amp; item) {
+    assert(!contains(item));
+    list.emplace_front(item);
+    position[item] = list.begin();
+  }
+
+  void erase(const T&amp; item) {
+    assert(contains(item));
+    list.erase(position[item]);
+    position.erase(item);
+  }
+
+#ifdef LRU_DEBUG
+  void display() {
+    for (auto i = list.begin(); i != list.end(); ++i) {
+      std::cout &lt;&lt; *i;
+      if (std::next(i) != list.end()) {
+        std::cout &lt;&lt; &quot;, &quot;;
+      }
+    }
+    std::cout &lt;&lt; std::endl;
+  }
+#endif  // LRU_DEBUG
+
+ private:
+  bool contains(const T&amp; item) { return position.find(item) != position.end(); }
+
+  std::list&lt;T&gt; list;
+  std::unordered_map&lt;T, typename std::list&lt;T&gt;::iterator&gt; position;
+};
+
+#endif  // LRU_H</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/0ea1c445103452d88664534443e2b8fa.js?file=lru.h"> </script>
+
+<p>See the files on <a href="https://gist.github.com/ChunMinChang/0ea1c445103452d88664534443e2b8fa">gist here</a>.</p>
+
+<h2 id="a-lru-table-with-key-value-pair">A <em>LRU</em> table with Key-Value Pair</h2>
+
+<noscript><pre>#ifndef LRU_TABLE_H
+#define LRU_TABLE_H
+
+#include &lt;list&gt;
+#include &lt;optional&gt;
+#include &lt;unordered_map&gt;
+#include &lt;utility&gt;
+
+#ifdef LRU_TABLE_DEBUG
+#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#endif  // LRU_TABLE_DEBUG
+
+template &lt;class K, class V&gt;
+class LRUTable {
+  typedef std::list&lt;std::pair&lt;K, V&gt;&gt; List;
+  typedef std::unordered_map&lt;K, typename List::iterator&gt; Position;
+
+ public:
+  LRUTable() {}
+  ~LRUTable() {}
+
+  std::optional&lt;std::pair&lt;K, V&gt;&gt; least_recently_used() {
+    return list.empty() ? std::nullopt : std::make_optional(list.back());
+  }
+
+  std::optional&lt;std::pair&lt;K, V&gt;&gt; most_recently_used() {
+    return list.empty() ? std::nullopt : std::make_optional(list.front());
+  }
+
+  std::optional&lt;V&gt; lookup(K key) {
+    auto pos = position.find(key);
+    if (pos == position.end()) {
+      return std::nullopt;
+    }
+
+    move_to_front(pos);
+    typename List::iterator&amp; it = pos-&gt;second;
+    return std::make_optional(it-&gt;second);
+  }
+
+  void insert(K key, V value) {
+    auto pos = position.find(key);
+    // Insert a new item in the front
+    if (pos == position.end()) {
+      list.emplace_front(std::make_pair(key, value));
+      position[key] = list.begin();
+      return;
+    }
+
+    // Otherwise, update the value and move it to the front
+    typename List::iterator&amp; it = pos-&gt;second;
+    it-&gt;second = value;
+    move_to_front(pos);
+  }
+
+  bool erase(K key) {
+    auto pos = position.find(key);
+    if (pos == position.end()) {
+      return false;
+    }
+
+    list.erase(pos-&gt;second);
+    position.erase(pos);
+    return true;
+  }
+
+#ifdef LRU_TABLE_DEBUG
+  void display() {
+    for (auto i = list.begin(); i != list.end(); ++i) {
+      std::cout &lt;&lt; &quot;&lt;&quot; &lt;&lt; i-&gt;first &lt;&lt; &quot;, &quot; &lt;&lt; i-&gt;second &lt;&lt; &quot;&gt;&quot;;
+      if (std::next(i) != list.end()) {
+        std::cout &lt;&lt; &quot;, &quot;;
+      }
+    }
+    std::cout &lt;&lt; std::endl;
+  }
+#endif  // LRU_TABLE_DEBUG
+
+ private:
+  void move_to_front(typename Position::iterator&amp; it) {
+    list.splice(list.begin(), list, it-&gt;second);
+    it-&gt;second = list.begin();
+  }
+
+  List list;
+  Position position;
+};
+
+#endif  // LRU_TABLE_H</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/d5a9229ff2bc5ba55385e0b601d43581.js?file=lru_table.h"> </script>
+
+<p>See the files on <a href="https://gist.github.com/ChunMinChang/d5a9229ff2bc5ba55385e0b601d43581">gist here</a>.</p>
+
+:ET

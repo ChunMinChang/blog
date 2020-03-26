@@ -1,0 +1,316 @@
+I"‘?<h1 id="selection-sort">Selection sort</h1>
+
+<p>This post series is synchronized with my book <a href="https://www.gitbook.com/book/chunminchang/codeplay/details" title="CodePlay">CodePlay</a>
+and this post could be read <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html" title="Selection Sort">here</a>.</p>
+
+<h2 id="idea">Idea</h2>
+<p>The concept is quite straight.
+If we could get the minimal value from list <strong>one by one</strong>,
+then we could re-arrange the list from minimal to maximal values.</p>
+
+<p>Imagine we have two lists <script type="math/tex">L</script> and <script type="math/tex">L_{sorted}</script>,
+the <script type="math/tex">L</script> is a list contains several items with comparable values and
+the <script type="math/tex">L_{sorted}</script> is a sorted list of <script type="math/tex">L</script>.
+At first, <script type="math/tex">L_{sorted} = [ ]</script> is empty.</p>
+
+<p>Take <script type="math/tex">L = [ 5, 3, 1, 2, 3 ]</script> as an example:</p>
+
+<ul>
+  <li>At the first round, we get <script type="math/tex">1</script> as minimal value,
+so we move it into <script type="math/tex">L_{sorted}</script>. Now,
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L_{sorted} = [ 1 ]</script>
+      </li>
+      <li>
+        <script type="math/tex; mode=display">L = [ 5, 3, 2, 3 ]</script>
+      </li>
+    </ul>
+  </li>
+  <li>At the second round, we get <script type="math/tex">2</script> as minimal value, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L_{sorted} = [ 1, 2 ]</script>
+      </li>
+      <li>
+        <script type="math/tex; mode=display">L = [ 5, 3, 3 ]</script>
+      </li>
+    </ul>
+  </li>
+  <li>Next, <script type="math/tex">3</script> is picked and moved from <script type="math/tex">L</script> to <script type="math/tex">L_{sorted}</script>, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L_{sorted} = [ 1, 2, 3 ]</script>
+      </li>
+      <li>
+        <script type="math/tex; mode=display">L = [ 5, 3 ]</script>
+      </li>
+    </ul>
+  </li>
+  <li>Then, the current minimal value <script type="math/tex">3</script> is moved from <script type="math/tex">L</script> to <script type="math/tex">L_{sorted}</script>, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L_{sorted} = [ 1, 2, 3, 3 ]</script>
+      </li>
+      <li>
+        <script type="math/tex; mode=display">L = [ 5 ]</script>
+      </li>
+    </ul>
+  </li>
+  <li>Finally, <script type="math/tex">5</script> is moved into <script type="math/tex">L_{sorted}</script>, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L_{sorted} = [ 1, 2, 3, 3, 5 ]</script>
+      </li>
+      <li>
+        <script type="math/tex; mode=display">L = [ ]</script>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>See! the idea is quite simple.
+In the same way, to sort the list from maximal to minimal values,
+the only different is to pick the maximal value from list each round
+instead of minimal value.</p>
+
+<h3 id="how-to-get-minimalor-maximal-value">How to get minimal(or maximal) value</h3>
+<p>The way to get minimal(or maximal) items in <script type="math/tex">L</script>
+is to linearly search the whole list:
+<script type="math/tex">% <![CDATA[
+\begin{align}
+& \text{Min($L$):} \\
+& \space \space \space \space min = L[1] \\
+& \space \space \space \space \text{for $i \leftarrow 1$ to $N$:} \\
+& \space \space \space \space \space \space \space \space \text{if $L[i] < min$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space min = L[i] \\
+\end{align} %]]></script>
+or
+<script type="math/tex">% <![CDATA[
+\begin{align}
+& \text{Max($L$):} \\
+& \space \space \space \space max = L[1] \\
+& \space \space \space \space \text{for $i \leftarrow 1$ to $N$:} \\
+& \space \space \space \space \space \space \space \space \text{if $L[i] > max$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space max = L[i] \\
+\end{align} %]]></script>
+, where <script type="math/tex">L[i]</script> is the <script type="math/tex">i</script>th element in the list <script type="math/tex">L</script>
+and <script type="math/tex">N</script> is the length of <script type="math/tex">L</script>.</p>
+
+<h3 id="dividing-one-list-into-unsorted-list-and-sorted-list">Dividing one list into unsorted list and sorted list</h3>
+<p>In implementation, we usually divide the source list,
+which needs to be sorted, into two parts. One is sorted, the other is unsorted.
+This is better for memory usage than
+creating another list to put the sorted results.</p>
+
+<p>That is, if we have a source list <script type="math/tex">L = [ 5, 3, 1, 2, 3 ]</script>,
+it will be divided into <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script>.
+They are initialized to <script type="math/tex">[]</script> and <script type="math/tex">L</script> respectively,
+so <script type="math/tex">L = L_{sorted} \cup L_{unsorted} = [ ] \cup [ 5, 3, 1, 2, 3 ]</script>.</p>
+
+<ul>
+  <li>In the first round, <script type="math/tex">1</script> is picked and moved
+from <script type="math/tex">L_{unsorted}</script> to <script type="math/tex">L_{sorted}</script>, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1 ] \cup [ 5, 3, 2, 3 ] = [1 \vert 5, 3, 2, 3]</script>
+      </li>
+    </ul>
+  </li>
+  <li>In the second round, <script type="math/tex">2</script> is picked and moved
+from <script type="math/tex">L_{unsorted}</script> to <script type="math/tex">L_{sorted}</script>, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1, 2 ] \cup [ 5, 3, 3 ] = [1, 2 \vert 5, 3, 3]</script>
+      </li>
+    </ul>
+  </li>
+  <li>Next, <script type="math/tex">3</script> is picked, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3 ] \cup [ 5, 3 ] = [1, 2, 3 \vert 5, 3]</script>
+      </li>
+    </ul>
+  </li>
+  <li>Then, another <script type="math/tex">3</script> is picked, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3 ] \cup [ 5 ] = [1, 2, 3, 3 \vert 5]</script>
+      </li>
+    </ul>
+  </li>
+  <li>Finally, <script type="math/tex">5</script> is picked, so
+    <ul>
+      <li>
+        <script type="math/tex; mode=display">L = L_{sorted} \cup L_{unsorted} = [ 1, 2, 3, 3, 5 ] \cup [ ] = [1, 2, 3, 3, 5]</script>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="algorithm">Algorithm</h2>
+<p><script type="math/tex">% <![CDATA[
+\begin{align}
+& \text{SelectionSort($L$):} \\
+& \space \space \space \space \text{for $i \leftarrow 1$ to $\vert L \vert - 1$:} \\
+& \space \space \space \space \space \space \space \space m \leftarrow i \\
+& \space \space \space \space \space \space \space \space \text{for $j \leftarrow i + 1$ to $\vert L \vert$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j] < L[m]$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space m \leftarrow j \\
+& \space \space \space \space \space \space \space \space \text{swap $L[i]$ and $L[m]$} \\
+\end{align} %]]></script></p>
+
+<p>The above method will divide <script type="math/tex">L</script> into two parts.</p>
+
+<ul>
+  <li><script type="math/tex">L[1...i-1] = L_{sorted}</script> is sorted</li>
+  <li><script type="math/tex">L[i...N] = L_{unsorted}</script> is unsorted,</li>
+  <li>where <script type="math/tex">N = \vert L \vert</script> is the length of <script type="math/tex">L</script></li>
+</ul>
+
+<p>The following are step by step explanation:</p>
+
+<ul>
+  <li>When <script type="math/tex">i = 1</script>
+    <ul>
+      <li><script type="math/tex">L_{sorted} = []</script> and <script type="math/tex">L_{unsorted} = L[1...N]</script></li>
+      <li>we need to find the minimal element in list <script type="math/tex">L[1...N]</script></li>
+      <li>We use a value <script type="math/tex">m</script> to track the <strong>index</strong> of the minimal element</li>
+      <li>where <script type="math/tex">m</script> is initialized to <script type="math/tex">1</script></li>
+      <li><script type="math/tex">m</script> will be updated to <script type="math/tex">j</script>, where <script type="math/tex">2 \leq j \leq N</script>, if <script type="math/tex">% <![CDATA[
+L[j] < L[m] %]]></script></li>
+      <li>Repeatedly above instruction from <script type="math/tex">j = 2</script> to <script type="math/tex">N</script>(searching whole <script type="math/tex">L_{unsorted}</script>),
+<script type="math/tex">L[m]</script> would be the minimal value in <script type="math/tex">L[1...N]</script></li>
+      <li>swap <script type="math/tex">L[m]</script> and <script type="math/tex">L[i = 1]</script></li>
+      <li>then <script type="math/tex">L[1]</script> now can be considered as <script type="math/tex">L_{sorted}</script></li>
+      <li>so <script type="math/tex">L_{unsorted} = L[2...N]</script></li>
+    </ul>
+  </li>
+  <li>When <script type="math/tex">i = 2</script>
+    <ul>
+      <li><script type="math/tex">L_{sorted} = L[1]</script> and <script type="math/tex">L_{unsorted} = L[2...N]</script></li>
+      <li>we need to find the minimal element in list <script type="math/tex">L[2...N]</script></li>
+      <li>Same as above, <script type="math/tex">m</script> is used to keep tracking the index of the minimal
+element in <script type="math/tex">L_{unsorted}</script></li>
+      <li>where <script type="math/tex">m</script> is initialized to <script type="math/tex">2</script></li>
+      <li>After searching the whole <script type="math/tex">L_{unsorted}</script>,
+<script type="math/tex">L[m]</script> would be the minimal value in <script type="math/tex">L[2...N]</script></li>
+      <li>We can put <script type="math/tex">L[m]</script> into the <script type="math/tex">L_{sorted}</script> by swapping the <script type="math/tex">L[m]</script> and <script type="math/tex">L[i = 2]</script></li>
+      <li>Thus, <script type="math/tex">L_{sorted} = L[1...2]</script> and <script type="math/tex">L_{unsorted} = L[3...N]</script></li>
+    </ul>
+  </li>
+  <li>When <script type="math/tex">i = k</script>
+    <ul>
+      <li><script type="math/tex">L_{sorted} = [1...k-1]</script> and <script type="math/tex">L_{unsorted} = L[k...N]</script></li>
+      <li><script type="math/tex">m</script> is initialized to <script type="math/tex">k</script></li>
+      <li>After searching the whole <script type="math/tex">L_{unsorted}</script>,
+<script type="math/tex">L[m]</script> would be the minimal value in <script type="math/tex">L[k...N]</script></li>
+      <li>Swapping <script type="math/tex">L[m]</script> and <script type="math/tex">L[i = k]</script> would put <script type="math/tex">L[m]</script> into <script type="math/tex">L_{sorted}</script></li>
+      <li>Then, <script type="math/tex">L_{sorted} = L[1...k]</script> and <script type="math/tex">L_{unsorted} = L[k+1...N]</script></li>
+    </ul>
+  </li>
+  <li>When <script type="math/tex">i = N - 1</script>(final round)
+    <ul>
+      <li><script type="math/tex">L_{sorted} = [1...N-2]</script> and <script type="math/tex">L_{unsorted} = L[N-1...N]</script></li>
+      <li><script type="math/tex">m</script> is initialized to <script type="math/tex">N-1</script></li>
+      <li>Pick a smaller one between <script type="math/tex">L[N-1]</script> and <script type="math/tex">L[N]</script></li>
+      <li>and put it into the <script type="math/tex">L_{sorted}</script> like above(by swapping with <script type="math/tex">L[m]</script>)</li>
+      <li>Then <script type="math/tex">L_{sorted} = [1...N-1]</script> and <script type="math/tex">L_{unsorted} = L[N]</script></li>
+      <li>The left one(now is <script type="math/tex">L[N]</script>) is definitely the <strong>maximal</strong> item
+in <script type="math/tex">L[1...N]</script>, so we donâ€™t need to do anything</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="proof">Proof</h3>
+
+<h4 id="proof-by-contradiction">Proof by contradiction</h4>
+
+<ul>
+  <li>Assume this method can <strong>not</strong> give us an ordered list</li>
+  <li>so it exists one <script type="math/tex">L[p] > L[q]</script>, where <script type="math/tex">% <![CDATA[
+p < q %]]></script>, in the result list <script type="math/tex">L</script></li>
+  <li>Before the result is computed, the unsorted list could be
+<script type="math/tex">L[..p..q..]</script> or <script type="math/tex">L[..q..p..]</script></li>
+  <li>It means that <script type="math/tex">L[p]</script> is picked <strong>before</strong> <script type="math/tex">L[q]</script>
+because <script type="math/tex">% <![CDATA[
+p < q %]]></script> in the result list <script type="math/tex">L</script></li>
+  <li>It means <script type="math/tex">% <![CDATA[
+L[p] < L[q] %]]></script> and it is contradictory to the assumption</li>
+  <li>Thus, the assumption is wrong. This method will give us an ordered list.</li>
+</ul>
+
+<h2 id="complexity">Complexity</h2>
+<p>We need to search whole <script type="math/tex">L_{unsorted}</script> to find a minimal(or maximal) item.
+Suppose <script type="math/tex">\vert L_{unsorted} \vert = N</script> at first.
+(the length of <script type="math/tex">L_{unsorted}</script> is <script type="math/tex">N</script>).</p>
+
+<p>At the first round, we need to search <script type="math/tex">N</script> items
+to find the minimal(or maximal) item and move it into <script type="math/tex">L_{sorted}</script>.
+After then, <script type="math/tex">\vert L_{unsorted} \vert = N - 1</script>.</p>
+
+<p>At the second round, whole <script type="math/tex">N - 1</script> items in <script type="math/tex">L_{unsorted}</script> would be counted
+to find the minimal(or maximal) one.
+After the picked one is moved into <script type="math/tex">L_{sorted}</script>,
+the size of <script type="math/tex">L_{unsorted}</script> is reduced to <script type="math/tex">\vert L_{unsorted} \vert = N - 2</script>.</p>
+
+<p>The procedure keep working until the list <script type="math/tex">L_{unsorted}</script> is empty
+(<script type="math/tex">\vert L_{unsorted} \vert = 0</script>).
+Thus, we need to search
+<script type="math/tex">% <![CDATA[
+\begin{align}
+N + (N - 1) + (N - 2) + .... + 1
+&= \frac{ N \cdot (N + 1) }{ 2 } \\
+&= \frac{ 1 }{ 2 } \cdot N^2 + \frac{ 1 }{ 2 } N
+\end{align} %]]></script>
+times to move all the items into <script type="math/tex">L_{sorted}</script>.
+Thus, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>,
+where the <script type="math/tex">N</script> is the length of the list <script type="math/tex">L</script>.</p>
+
+<h2 id="implementation">Implementation</h2>
+<p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="Sorting">gist here</a>.</p>
+
+<noscript><pre>#include &lt;algorithm&gt;  // for std::swap
+#include &lt;cassert&gt;
+#include &quot;sorting.h&quot;
+
+/*
+ * Selection sort: O(n^2)
+ */
+void selectionSort(int list[], unsigned int length)
+{
+  assert(length);
+
+  // &lt;--  sorted  --&gt;|&lt;--  unsorted  --&gt;
+  // +---+---+-------+---+---+---------+
+  // | 0 | 1 | ..... | h | i |  .....  |
+  // +---+---+-------+---+---+---------+
+  //                   ^
+  //                head is the begin index of unsorted list.
+  for (unsigned int head = 0 ; head &lt; length - 1 ; ++head) {
+    // Assume the current head value is the minimal item.
+    int minIndex = head;
+    for (unsigned int i = head + 1 ; i &lt; length ; ++i) {
+      if (list[i] &lt; list[minIndex]) {
+        minIndex = i;
+      }
+    }
+
+    if (head != minIndex) {
+      std::swap(list[head], list[minIndex]);
+    }
+    // After swap with the minimal value of unsorted list, the head now
+    // is the tail of the sorted list.
+    //
+    // &lt;--    sorted    --&gt;|&lt;-- unsorted --&gt;
+    // +---+---+-------+---+---------------+
+    // | 0 | 1 | ..... | h | ............  |
+    // +---+---+-------+---+---------------+
+    //                   ^
+    //  head now is the last index of the sorted list.
+  }
+}
+</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=selection_sort.cpp"> </script>
+
+:ET

@@ -1,0 +1,339 @@
+I"ÛQ<h1 id="insertion-sort">Insertion sort</h1>
+
+<p>This post series is synchronized with my book <a href="https://www.gitbook.com/book/chunminchang/codeplay/details" title="CodePlay">CodePlay</a>
+and this post could be read <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/insertion_sort.html" title="Insertion Sort">here</a>.</p>
+
+<h2 id="idea">Idea</h2>
+<p>The basic concept is similar to <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/selection_sort.html" title="Selection Sort"><em>Selection Sort</em></a>.
+Considering there are two lists. One is already sorted,
+and the other is unsorted, denoted <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script> respectively.
+The key idea is to pick the element from <script type="math/tex">L_{unsorted}</script> one by one
+and then <strong>insert</strong> them into the correct positions of <script type="math/tex">L_{sorted}</script>.
+Suppose we have <script type="math/tex">L_{sorted} = [3, 8, 34]</script>
+and <script type="math/tex">L_{unsorted} = [23, 2, 67, 34, 97]</script>:</p>
+
+<ul>
+  <li>Step 1
+    <ul>
+      <li>Pick <script type="math/tex">23</script> (which is the first element) from <script type="math/tex">L_{unsorted}</script>,
+and insert it into <script type="math/tex">L_{sorted}</script></li>
+      <li>Find a position in <script type="math/tex">L_{sorted}</script> such that
+<strong>all elements before it is less than or equal to <script type="math/tex">23</script>
+and all elements after it is greater than <script type="math/tex">23</script></strong></li>
+      <li>Start comparing it from the <strong>last(maximal)</strong> element
+to the <strong>first(minimal)</strong> one in <script type="math/tex">L_{sorted}</script>
+(Or you can do same thing from the first element to the last one)</li>
+      <li><script type="math/tex">34</script> is greater than <script type="math/tex">23</script>, so we keep moving</li>
+      <li>Next, we found that <script type="math/tex">8</script> is less than <script type="math/tex">23</script></li>
+      <li>A-ha! <script type="math/tex">23</script> should be inserted between <script type="math/tex">8</script> and <script type="math/tex">34</script></li>
+      <li>The <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script> are updated to <script type="math/tex">[3, 8, 23, 34]</script>
+and <script type="math/tex">[2, 67, 34, 97]</script> respectively.</li>
+    </ul>
+  </li>
+  <li>Step 2
+    <ul>
+      <li>Pick the current first element of <script type="math/tex">L_{unsorted}</script>, <script type="math/tex">2</script>,
+and insert it into <script type="math/tex">L_{sorted}</script></li>
+      <li>Same as the previous step, we start comparing <script type="math/tex">2</script> from the maximal element
+of <script type="math/tex">L_{sorted}</script> to find the position to insert</li>
+      <li><script type="math/tex">34</script> is obviously larger than <script type="math/tex">2</script>, so we should keep moving</li>
+      <li>In this step, we can not find any element less than or equal to <script type="math/tex">2</script> after
+the all elements in <script type="math/tex">L_{sorted}</script> are checked</li>
+      <li>Thus, the <script type="math/tex">2</script> is the minimal value among these elements</li>
+      <li>We should put <script type="math/tex">2</script> as the first element in <script type="math/tex">L_{sorted}</script></li>
+      <li>The <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script> are updated to <script type="math/tex">[2, 3, 8, 23, 34]</script>
+and <script type="math/tex">[67, 34, 97]</script> respectively</li>
+    </ul>
+  </li>
+  <li>Step 3
+    <ul>
+      <li>pick the current first element of <script type="math/tex">L_{unsorted}</script>, <script type="math/tex">67</script>,
+and then insert it into <script type="math/tex">L_{sorted}</script></li>
+      <li>Start comparing <script type="math/tex">67</script> with <script type="math/tex">34</script>, we found <script type="math/tex">67</script> is greater</li>
+      <li>It means that <script type="math/tex">67</script> is the maximal value among these elements</li>
+      <li>Therefore, <script type="math/tex">67</script> should be inserted at the last position of <script type="math/tex">L_{sorted}</script></li>
+      <li>The <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script> are updated to
+<script type="math/tex">[2, 3, 8, 23, 34, 67]</script> and <script type="math/tex">[34, 97]</script> respectively</li>
+    </ul>
+  </li>
+  <li>Step 4
+    <ul>
+      <li><script type="math/tex">34</script> is picked to compare with the elements in <script type="math/tex">L_{sorted}</script>.</li>
+      <li><script type="math/tex">67</script> is greater than <script type="math/tex">34</script>, so go next</li>
+      <li><script type="math/tex">34</script> is equal to <script type="math/tex">34</script>, so we stop here</li>
+      <li>The picked <script type="math/tex">34</script> should be inserted between the existed <script type="math/tex">34</script> and <script type="math/tex">67</script></li>
+      <li>so the <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script> are updated to
+<script type="math/tex">[2, 3, 8, 23, 34, 34, 67]</script> and <script type="math/tex">[97]</script> respectively.</li>
+    </ul>
+  </li>
+  <li>Step 5
+    <ul>
+      <li><script type="math/tex">97</script> is picked to insert.</li>
+      <li><script type="math/tex">97</script> is greater than <script type="math/tex">67</script>,</li>
+      <li>so it should be put to the last position of <script type="math/tex">L_{sorted}</script></li>
+      <li>Finally, <script type="math/tex">L_{unsorted}</script> is empty
+and <script type="math/tex">L_{sorted} = [2, 3, 8, 23, 34, 34, 67, 97]</script>.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="how-to-find-the-inserted-position">How to find the inserted position</h3>
+
+<p>We can use the following method to find the <strong>first</strong> element
+whose value is <strong>less than or equal to</strong> the picked element:
+<script type="math/tex">% <![CDATA[
+\begin{align}
+& \text{Position($L, x$):} \\
+& \space \space \space \space i \leftarrow N\\
+& \space \space \space \space \text{while $i > 0$ and $L[i] > x$:} \\
+& \space \space \space \space \space \space \space \space i \leftarrow i - 1 \\
+& \space \space \space \space \text{return} \space i \\
+\end{align} %]]></script>
+,where <script type="math/tex">x</script> is the element needs to be inserted,
+<script type="math/tex">L[i]</script> is the <script type="math/tex">i</script>th element in the sorted list <script type="math/tex">L</script>,
+and <script type="math/tex">N = \vert L \vert</script> is the length of <script type="math/tex">L</script>.</p>
+
+<p>After getting the position <script type="math/tex">p = Position(L, x)</script> given the element <script type="math/tex">x</script>,
+we need to insert <script type="math/tex">x</script> between <script type="math/tex">L[p]</script> and <script type="math/tex">L[p+1]</script>.
+(If <script type="math/tex">p = 0</script>, then we insert <script type="math/tex">x</script> as the first element <script type="math/tex">L[1]</script>.
+If <script type="math/tex">p = N</script>, then we insert <script type="math/tex">x</script> as the last element <script type="math/tex">L[p + 1]</script>.)</p>
+
+<h3 id="dividing-one-list-into-unsorted-list-and-sorted-list">Dividing one list into unsorted list and sorted list</h3>
+
+<p>In implementation, we usually divide the source list <script type="math/tex">L</script> into two parts.
+One is sorted, the other is unsorted.
+They are denoted <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script> respectively.
+This is better for memory usage than
+creating another list to put the sorted results.</p>
+
+<p>Suppose we have <script type="math/tex">L = [73, 24, 37, 9, 97, 29] = L_{sorted} \cup L_{unsorted}</script>,
+where <script type="math/tex">L_{sorted}</script> and <script type="math/tex">L_{unsorted}</script> are initialized to <script type="math/tex">[]</script>
+and <script type="math/tex">[73, 24, 37, 9, 97, 29]</script>.</p>
+
+<ul>
+  <li>First round
+    <ul>
+      <li><script type="math/tex">73</script> is picked, but there is nothing could be compared</li>
+      <li>so we just put it into <script type="math/tex">L_{sorted}</script></li>
+      <li><script type="math/tex">L_{sorted} = [73]</script> and <script type="math/tex">L_{unsorted} = [24, 37, 9, 97, 29]</script></li>
+      <li>now <script type="math/tex">L = L_{sorted} \cup L_{unsorted} = [73 \vert 24, 37, 9, 97, 29]</script></li>
+    </ul>
+  </li>
+  <li>Second round
+    <ul>
+      <li><script type="math/tex">24</script> is picked and <script type="math/tex">p = Position(L_{sorted}, 24) = 0</script></li>
+      <li>so, we should insert <script type="math/tex">24</script> as the <strong>first</strong> element and update lists</li>
+      <li>then <script type="math/tex">L_{sorted} = [24, 73]</script> and <script type="math/tex">L_{unsorted} = [37, 9, 97, 29]</script></li>
+      <li>now <script type="math/tex">L = L_{sorted} \cup L_{unsorted} = [24, 73 \vert 37, 9, 97, 29]</script></li>
+    </ul>
+  </li>
+  <li>Third round
+    <ul>
+      <li><script type="math/tex">37</script> is picked and <script type="math/tex">p = Position(L_{sorted}, 37) = 1</script></li>
+      <li>so we should insert <script type="math/tex">37</script> between <script type="math/tex">L[p] = L[1] = 24</script> and <script type="math/tex">L[p + 1] = L[2] = 73</script></li>
+      <li>then <script type="math/tex">L_{sorted} = [24, 37, 73]</script> and <script type="math/tex">L_{unsorted} = [9, 97, 29]</script></li>
+      <li>now <script type="math/tex">L = L_{sorted} \cup L_{unsorted} = [24, 37, 73 \vert 9, 97, 29]</script></li>
+    </ul>
+  </li>
+  <li>Fourth round
+    <ul>
+      <li><script type="math/tex">9</script> is picked and <script type="math/tex">p = Position(L_{sorted}, 9) = 0</script></li>
+      <li>Thus, <script type="math/tex">L_{sorted}, L_{unsorted}</script> are updated to
+<script type="math/tex">[9, 24, 37, 73]</script> and <script type="math/tex">[97, 29]</script>.</li>
+      <li>now <script type="math/tex">L = L_{sorted} \cup L_{unsorted} = [9, 24, 37, 73 \vert 97, 29]</script></li>
+    </ul>
+  </li>
+  <li>Fifth round
+    <ul>
+      <li><script type="math/tex">97</script> is picked and <script type="math/tex">p = Position(L_{sorted}, 97) = 4 = \vert L_{sorted} \vert</script></li>
+      <li>so we should put <script type="math/tex">97</script> as the <strong>last</strong> element of the <script type="math/tex">L_{sorted}</script></li>
+      <li>then <script type="math/tex">L_{sorted} = [9, 24, 37, 73, 97]</script> and <script type="math/tex">L_{unsorted} = [29]</script></li>
+      <li>now <script type="math/tex">L = L_{sorted} \cup L_{unsorted} = [9, 24, 37, 73, 97 \vert 29]</script>.</li>
+    </ul>
+  </li>
+  <li>Final round
+    <ul>
+      <li><script type="math/tex">29</script> is picked and <script type="math/tex">p = Position(L_{sorted}, 29) = 2</script></li>
+      <li>so we should insert <script type="math/tex">29</script> between <script type="math/tex">L[p] = L[2] = 24</script> and <script type="math/tex">L[p + 1] = L[3] = 37</script></li>
+      <li>then <script type="math/tex">L_{sorted} = [9, 24, 29, 37, 73, 97]</script> and <script type="math/tex">L_{unsorted} = []</script> is empty</li>
+      <li>now <script type="math/tex">L = L_{sorted} \cup L_{unsorted} = [9, 24, 29, 37, 73, 97]</script>.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="algorithm">Algorithm</h2>
+<p><script type="math/tex">% <![CDATA[
+\begin{align}
+& \text{InsertionSort($L$):} \\
+& \space \space \space \space \text{for $i \leftarrow 2$ to $\vert L \vert$:} \\
+& \space \space \space \space \space \space \space \space j \leftarrow i\\
+& \space \space \space \space \space \space \space \space \text{while $j > 1$ and $L[j-1] > L[j]$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j-1]$ and $L[j]$} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space j \leftarrow j - 1 \\
+\end{align} %]]></script></p>
+
+<p>The above method will divide <script type="math/tex">L</script> into two parts.
+<script type="math/tex">L[1...i-1] = L_{sorted}</script> is sorted, and <script type="math/tex">L[i...N] = L_{unsorted}</script> is unsorted,
+where <script type="math/tex">N = \vert L \vert</script> is the length of <script type="math/tex">L</script>.
+The <script type="math/tex">L[i]</script> will be picked to insert into <script type="math/tex">L_{sorted}</script> iteratively.</p>
+
+<ul>
+  <li>When <script type="math/tex">i = 2</script>
+    <ul>
+      <li><script type="math/tex">L_{sorted} = L[1]</script> and <script type="math/tex">L_{unsorted} = L[2...N]</script></li>
+      <li>The goal in this round is to insert the <script type="math/tex">L[2]</script> into <script type="math/tex">L_{sorted}</script></li>
+      <li>The <script type="math/tex">L[2]</script> is picked and compare with <script type="math/tex">L[1]</script></li>
+      <li>If <script type="math/tex">% <![CDATA[
+L[2] < L[1] %]]></script>, then we swap them</li>
+      <li>Otherwise, do nothing</li>
+      <li>Then, <script type="math/tex">L_{sorted} = L[1...2]</script> is sorted and <script type="math/tex">L_{unsorted} = L[3...N]</script></li>
+    </ul>
+  </li>
+  <li>When <script type="math/tex">i = 3</script>
+    <ul>
+      <li><script type="math/tex">L_{sorted} = L[1...2]</script> and <script type="math/tex">L_{unsorted} = L[3...N]</script></li>
+      <li>The goal in this round is to insert the <script type="math/tex">L[3]</script> into <script type="math/tex">L_{sorted}</script></li>
+      <li>The <script type="math/tex">L[3]</script> is picked</li>
+      <li>If <script type="math/tex">L[3] >= L[2]</script>, it means that <script type="math/tex">L[1...3]</script> is sorted, so we donâ€™t need to do anything</li>
+      <li>Otherwise(<script type="math/tex">% <![CDATA[
+L[3] < L[2] %]]></script>), swap <script type="math/tex">L[3]</script> and <script type="math/tex">L[2]</script>
+and check whether it needs to swap again if <script type="math/tex">% <![CDATA[
+L[2] < L[1] %]]></script></li>
+      <li>After finishing checking, <script type="math/tex">L_{sorted} = L[1...3]</script> is sorted
+and <script type="math/tex">L_{unsorted} = L[4...N]</script></li>
+    </ul>
+  </li>
+  <li>When <script type="math/tex">i = k</script>
+    <ul>
+      <li><script type="math/tex">L_{sorted} = L[1...k-1]</script> and <script type="math/tex">L_{unsorted} = L[k...N]</script></li>
+      <li>The goal in this round is to insert the <script type="math/tex">L[k]</script> into <script type="math/tex">L_{sorted}</script></li>
+      <li>The <script type="math/tex">L[k]</script> is picked to compare with the elements one by one in <script type="math/tex">L_{sorted}</script>,
+from the maximal(<script type="math/tex">L[k-1]</script>) to minimal item(<script type="math/tex">L[1]</script>), to find a place to insert</li>
+      <li>After finishing checking, <script type="math/tex">L_{sorted} = L[1...k]</script> is sorted
+and <script type="math/tex">L_{unsorted}</script> is <script type="math/tex">L[k+1...N]</script></li>
+    </ul>
+  </li>
+  <li>When <script type="math/tex">i = N</script>
+    <ul>
+      <li><script type="math/tex">L_{sorted} = L[1...N-1]</script> and <script type="math/tex">L_{unsorted} = L[N]</script></li>
+      <li>The goal in this round is to insert the <script type="math/tex">L[N]</script> into <script type="math/tex">L_{sorted}</script></li>
+      <li>In the same way, the <script type="math/tex">L[1...N]</script> is sorted after finishing the procedure</li>
+      <li>so <script type="math/tex">L_{sorted}</script> is updated to <script type="math/tex">L[1...N]</script> and <script type="math/tex">L_{unsorted} = []</script> is empty</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="another-method-without-swapping">Another method without swapping</h3>
+<p><script type="math/tex">% <![CDATA[
+\begin{align}
+& \text{InsertionSort($L$):} \\
+& \space \space \space \space \text{for $i \leftarrow 2$ to $\vert L \vert$:} \\
+& \space \space \space \space \space \space \space \space c \leftarrow L[i] \\
+& \space \space \space \space \space \space \space \space j \leftarrow i \\
+& \space \space \space \space \space \space \space \space \text{while $j > 1$ and $L[j-1] > c$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space L[j] = L[j-1] \\
+& \space \space \space \space \space \space \space \space \space \space \space \space j = j - 1 \\
+& \space \space \space \space \space \space \space \space L[j] = c \\
+\end{align} %]]></script></p>
+
+<h3 id="proof">Proof</h3>
+
+<h4 id="proof-by-mathematical-induction">Proof by mathematical induction</h4>
+
+<blockquote>
+  <p>After each iteration for <script type="math/tex">i</script> in <script type="math/tex">InsertionSort</script>,
+  the <script type="math/tex">L[1...i]</script> is sorted array.</p>
+</blockquote>
+
+<p>We need to prove this statement is true.</p>
+
+<ul>
+  <li>when <script type="math/tex">i = 2</script>:
+    <ul>
+      <li>Same as the above explanation</li>
+      <li>The assumption is hold</li>
+    </ul>
+  </li>
+  <li>when <script type="math/tex">i = k</script>:
+    <ul>
+      <li>Assume the statement is hold when <script type="math/tex">i = k</script></li>
+      <li><script type="math/tex">L[1...k]</script> is sorted array</li>
+    </ul>
+  </li>
+  <li>when <script type="math/tex">i = k + 1</script>
+    <ul>
+      <li>If <script type="math/tex">L[k + 1] > L[k]</script>, then <script type="math/tex">L[1...k + 1]</script> is naturally sorted
+so the proof is done</li>
+      <li>Otherwise, the <script type="math/tex">L[k + 1]</script> is swapped with <script type="math/tex">L[k]</script></li>
+      <li>Now <script type="math/tex">L[1...k-1]</script> is sorted and <script type="math/tex">L[k + 1] > L[k]</script>(after swapping!)</li>
+      <li>Next, we apply this algorithm to <script type="math/tex">L = L[1...k-1] \cup L[k]</script> and now <script type="math/tex">i = k</script></li>
+      <li>The statement is hold when <script type="math/tex">i = k</script>,
+so <script type="math/tex">L[1...k]</script> is sorted after applying the algorithm</li>
+      <li>Now <script type="math/tex">L[1...k]</script> is sorted and <script type="math/tex">L[k + 1] > L[k]</script>, so the proof is done</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="complexity">Complexity</h2>
+<p>The time complexity depends on the speed to find the inserted position.
+The more iterations to find the value of <script type="math/tex">Position(L, x)</script> need,
+the more time it takes.
+The worst case is that we need to go through whole <script type="math/tex">L_{sorted}</script> to find correct
+positions to insert. It happens when the list is arranged from maximal to
+minimal values(e.g.,<script type="math/tex">[5, 4, 3, 2, 1]</script>).
+In this case, if the length of list is <script type="math/tex">N</script>, we need to search
+<script type="math/tex">% <![CDATA[
+\begin{align}
+0 + 1 + 2 + ... + (N - 1)
+&= \frac{ N \cdot (N - 1) }{ 2 } \\
+&= \frac{ 1 }{ 2 } \cdot N^2 - \frac{ 1 }{ 2 } N
+\end{align} %]]></script>
+times to move all the items into <script type="math/tex">L_{sorted}</script>.
+Thus, the complexity is <script type="math/tex">\mathcal{O}(N^2)</script>.</p>
+
+<h2 id="implementation">Implementation</h2>
+
+<p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="Sorting">gist here</a>.</p>
+
+<noscript><pre>#include &lt;algorithm&gt;  // for std::swap
+#include &lt;cassert&gt;
+#include &quot;sorting.h&quot;
+
+/*
+ * Insertion sort: O(n^2)
+ */
+void insertionSort(int list[], unsigned int length)
+{
+  assert(length);
+
+  // &lt;-- sorted --&gt;|&lt;-- unsorted --&gt;
+  // +---+-----+---+---------------+
+  // | 0 | ... | t | ............  |
+  // +---+-----+---+---------------+
+  //             ^
+  //       tail is the index of last item of sorted list.
+  for (unsigned int tail = 1 ; tail &lt; length; ++tail) { // list[0] is sorted!
+    for (unsigned int j = tail; j &gt; 0 &amp;&amp; list[j - 1] &gt; list[j] ; --j) {
+      std::swap(list[j], list[j - 1]);
+    }
+  }
+}
+
+// void insertionSort(int list[], unsigned int length)
+// {
+//   assert(length);
+//
+//   for (unsigned int tail = 1 ; tail &lt; length; ++tail) {
+//     int current = list[tail];
+//     unsigned int j = tail;
+//     while(j &gt; 0 &amp;&amp; list[j-1] &gt; current) {
+//       list[j] = list[j - 1];
+//       --j;
+//     }
+//     list[j] = current;
+//   }
+// }
+</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=insertion_sort.cpp"> </script>
+
+:ET

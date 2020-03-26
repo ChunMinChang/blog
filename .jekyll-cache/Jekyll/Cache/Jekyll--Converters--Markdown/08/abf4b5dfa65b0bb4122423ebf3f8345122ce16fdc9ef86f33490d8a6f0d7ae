@@ -1,0 +1,551 @@
+I"	:<h2 id="introduction-for-audio-51">Introduction for Audio 5.1</h2>
+
+<p>Audio <em>five-point one</em> is a common surround sound 
+layouted in home theater.
+It has totally six channels: five speakers and a subwoofer
+and this is where the term <em>five-point one</em> comes from.</p>
+
+<h2 id="channel-layout">Channel Layout</h2>
+
+<p>Since we have more than one channel,
+we need to define an explicit channel ordering
+to know which channel the sent/received data is matched to.</p>
+
+<p>Channel layout specifies the order 
+of input/output channel data in audio buffer. 
+For example, if the layout is stereo, then we have two channel data.
+The first data is for left channel, the second one is right channel.</p>
+
+<p>The arrangement for the channels is different from format to format.
+The most common formats are defined in <em>Wave Format Extensible</em>(or <em>WaveEx</em>)
+or by <em>Society of Motion Picture &amp; Television Engineers</em>(or <em>SMPTE</em>).
+They defines what channels are provided and
+the ordering of them in different layouts.</p>
+
+<p>In this post, we follow the <em>SMPTE</em> format.
+An advantage of taking this standard is that
+it specifies the <em>up/downmixing</em> behaviours
+between different layouts.
+(The SMPTE’s standard for multichannel can be founded in
+<a href="https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.775-3-201208-I!!PDF-E.pdf" title="ITU-R BS.775-3">ITU-R BS.775</a> and <a href="https://www.itu.int/dms_pub/itu-r/opb/rep/R-REP-BS.2159-7-2015-PDF-E.pdf" title="ITU-R BS.2159">ITU-R BS.2159-7</a>.)</p>
+
+<h3 id="channels">Channels</h3>
+
+<p>Before knowing how the channels are sorted,
+we should know what channel is provided.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Channel Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>M</td>
+      <td>Mono</td>
+    </tr>
+    <tr>
+      <td>L</td>
+      <td>Left (Front Left)</td>
+    </tr>
+    <tr>
+      <td>R</td>
+      <td>Right (Front Right)</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>Center (Front Center)</td>
+    </tr>
+    <tr>
+      <td>LS</td>
+      <td>Left Surround (Side Left)</td>
+    </tr>
+    <tr>
+      <td>RS</td>
+      <td>Right Surround (Side Right)</td>
+    </tr>
+    <tr>
+      <td>RLS</td>
+      <td>Rear Left Surround (Back Left)</td>
+    </tr>
+    <tr>
+      <td>RC</td>
+      <td>Rear Center (Back Center)</td>
+    </tr>
+    <tr>
+      <td>RRS</td>
+      <td>Rear Right Surround (Back Right)</td>
+    </tr>
+    <tr>
+      <td>LFE</td>
+      <td>Low Frequency Effects</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="layouts">Layouts</h3>
+
+<p>The layout in <em>SMPTE</em>’s format is as follows.
+Each layout is defined by a particular permutation
+of the above channels.</p>
+
+<p>(The sample code to set channel layout on OSX is <a href="https://gist.github.com/ChunMinChang/ea74c8228745449873716e1d98ba956e" title="sample code for setting channel layout on OSX">here</a>.)</p>
+
+<!--
+| Layout        | channel ||||||||
+| ------------- | ----------------------------- |
+| DUAL-MONO     | L | R |
+| DUAL-MONO-LFE | L | R | LFE |
+| MONO          | M |
+| MONO-LFE      | M | LFE |
+| STEREO        | L | R |
+| STEREO-LFE    | L | R | LFE |
+| 3F            | L | R | C |
+| 3F-LFE        | L | R | C | LFE |
+| 2F1           | L | R | RC |
+| 2F1-LFE       | L | R | LFE | RC |
+| 3F1           | L | R | C | RC |
+| 3F1-LFE       | L | R | C | LFE | RC |
+| 2F2           | L | R | LS | RS |
+| 2F2-LFE       | L | R | LFE | LS | RS |
+| 3F2           | L | R | C | LS | RS |
+| 3F2-LFE       | L | R | C | LFE | LS | RS |
+| 3F3R-LFE      | L | R | C | LFE | RC | LS | RS |
+| 3F4-LFE       | L | R | C | LFE | RLS | RRS | LS | RS |
+-->
+
+<!--
+The following table is made by
+1. copying the generated table syntax by the above markdown
+2. adding `colspan` to the <th> tag
+-->
+
+<table>
+  <thead>
+    <tr>
+      <th>Layout</th>
+      <th colspan="8">channel order</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DUAL-MONO</td>
+      <td>L</td>
+      <td>R</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>DUAL-MONO-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LFE</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>MONO</td>
+      <td>M</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>MONO-LFE</td>
+      <td>M</td>
+      <td>LFE</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>STEREO</td>
+      <td>L</td>
+      <td>R</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>STEREO-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LFE</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2F1</td>
+      <td>L</td>
+      <td>R</td>
+      <td>RC</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2F1-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LFE</td>
+      <td>RC</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F1</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>RC</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F1-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td>RC</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2F2</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2F2-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>LFE</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F2</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F2-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F3R-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td>RC</td>
+      <td>LS</td>
+      <td>RS</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3F4-LFE</td>
+      <td>L</td>
+      <td>R</td>
+      <td>C</td>
+      <td>LFE</td>
+      <td>RLS</td>
+      <td>RRS</td>
+      <td>LS</td>
+      <td>RS</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="mixing">Mixing</h2>
+
+<p>We already know that the audio layout can be configured into different types
+based on the number of the channels.
+The question is: what should we do when the input layout from the audio source 
+doesn’t match the user’s output layout?</p>
+
+<p>If the two channel layouts are equal, 
+then they must have same numbers of channels and same channel order.
+Conversely, if two audio settings have different numbers of channels
+(e.g., {L, R} and {M, LFE}),
+or they have same numbers of channels but different orders
+(e.g., {L, R} and {R, L}),
+then they must have different channel layouts.</p>
+
+<p>When the <strong>input layout is different from the output layout</strong>, 
+we need to convert the audio input data to fit the audio output’s configuration.
+We call it <strong>mixing</strong>.</p>
+
+<p>(The sample code to mix audio data on OSX is <a href="https://gist.github.com/ChunMinChang/0de31bd5b3213409544ef89db91b696b" title="sample code for audio mixing on OSX">here</a>.)</p>
+
+<h3 id="mixing-matrix">Mixing matrix</h3>
+<p><img src="../images/posts/multichannel/mixing-matrix.png" alt="Mixing matrix" title="Mixing matrix" /></p>
+
+<p>Although it may have different definitions
+to convert the audio data from input into output,
+they can be summarized into the following equations.
+The above figure illustrates their relationships,
+and the value of <script type="math/tex">m_{ij}</script> varies from definition to definition.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+L_{out} &= m_{11} \cdot L_{in} +
+           m_{12} \cdot R_{in} +
+           m_{13} \cdot C_{in} +
+           m_{14} \cdot LFE_{in} +
+           m_{15} \cdot LS_{in} +
+           m_{16} \cdot RS_{in}
+\\
+R_{out} &= m_{21} \cdot L_{in} +
+           m_{22} \cdot R_{in} +
+           m_{23} \cdot C_{in} +
+           m_{24} \cdot LFE_{in} +
+           m_{25} \cdot LS_{in} +
+           m_{26} \cdot RS_{in}
+\\
+C_{out} &= m_{31} \cdot L_{in} +
+           m_{32} \cdot R_{in} +
+           m_{33} \cdot C_{in} +
+           m_{34} \cdot LFE_{in} +
+           m_{35} \cdot LS_{in} +
+           m_{36} \cdot RS_{in}
+\\
+LFE_{out} &= m_{41} \cdot L_{in} +
+             m_{42} \cdot R_{in} +
+             m_{43} \cdot C_{in} +
+             m_{44} \cdot LFE_{in} +
+             m_{45} \cdot LS_{in} +
+             m_{46} \cdot RS_{in}
+\\
+LS_{out} &= m_{51} \cdot L_{in} +
+            m_{52} \cdot R_{in} +
+            m_{53} \cdot C_{in} +
+            m_{54} \cdot LFE_{in} +
+            m_{55} \cdot LS_{in} +
+            m_{56} \cdot RS_{in}
+\\
+RS_{out} &= m_{61} \cdot L_{in} +
+            m_{62} \cdot R_{in} +
+            m_{63} \cdot C_{in} +
+            m_{64} \cdot LFE_{in} +
+            m_{65} \cdot LS_{in} +
+            m_{66} \cdot RS_{in}
+\end{align} %]]></script>
+
+<p>To simplify them, we can rewite these equations into a matrix form:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\vec{Audio_{out}} =
+\begin{bmatrix}
+  L_{out} \\ 
+  R_{out} \\ 
+  C_{out} \\ 
+  LFE_{out} \\ 
+  LS_{out} \\ 
+  RS_{out}
+\end{bmatrix}
+&=
+\begin{bmatrix}
+  m_{11} & m_{12} & m_{13} & m_{14} & m_{15} & m_{16} \\
+  m_{21} & m_{22} & m_{23} & m_{24} & m_{25} & m_{26} \\
+  m_{31} & m_{32} & m_{33} & m_{34} & m_{35} & m_{36} \\
+  m_{41} & m_{42} & m_{43} & m_{44} & m_{45} & m_{46} \\
+  m_{51} & m_{52} & m_{53} & m_{54} & m_{55} & m_{56} \\
+  m_{61} & m_{62} & m_{63} & m_{64} & m_{65} & m_{66} \\
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+  L_{in} \\ 
+  R_{in} \\
+  C_{in} \\
+  LFE_{in} \\
+  LS_{in} \\
+  RS_{in}
+\end{bmatrix}
+\\
+&=
+\vec{Matrix_{mixing}} \cdot \vec{Audio_{in}}
+\end{align} %]]></script>
+
+<h3 id="downmixing">Downmixing</h3>
+
+<p>When <strong>numbers of input channels &gt; numbers of output channels</strong>,
+we call it <strong>downmixing</strong>.
+(In this case, the input channel layout is definitiely
+different from the output one.)
+The most common case for downmixing is to
+downmix different audio layouts into <em>stereo</em>.
+The audio sources on the internet have various layouts
+while most users only have two speakers.</p>
+
+<p>(The downward mixing mechanism of SMPTE for audio 5.1
+is defined in <a href="https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.775-3-201208-I!!PDF-E.pdf" title="ITU-R BS.775-3">Table 2 of ITU-R BS.775-3</a>.)</p>
+
+<h5 id="downmix-audio-51-to-stereostereophonic-sound">Downmix audio 5.1 to stereo(stereophonic sound)</h5>
+<p><img src="../images/posts/multichannel/dowmix-5point1-to-stereo.png" alt="Downmix 5.1 to stereo" title="Downmix 5.1 to stereo" /></p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+L_{out} &= L_{in} +
+           \frac{1}{\sqrt{2}} \cdot C_{in} +
+           \frac{1}{\sqrt{2}} \cdot LS_{in}
+\\
+R_{out} &= R_{in} +
+           \frac{1}{\sqrt{2}} \cdot C_{in} +
+           \frac{1}{\sqrt{2}} \cdot RS_{in} +
+\end{align} %]]></script>
+
+<h5 id="downmix-audio-51-to-quadquadraphonic-sound40-surround-sound">Downmix audio 5.1 to quad(quadraphonic sound/4.0 surround sound)</h5>
+<p><img src="../images/posts/multichannel/dowmix-5point1-to-quad.png" alt="Downmix 5.1 to quad" title="Downmix 5.1 to quad" /></p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+L_{out} &= L_{in} + \frac{1}{\sqrt{2}} \cdot C_{in}
+\\
+R_{out} &= R_{in} + \frac{1}{\sqrt{2}} \cdot C_{in} 
+\\
+LS_{out} &= LS_{in}
+\\
+RS_{out} &= RS_{in}
+\end{align} %]]></script>
+
+<h3 id="upmixing">Upmixing</h3>
+
+<p>When <strong>numbers of input channels &lt; numbers of output channels</strong>,
+we call it <strong>upmixing</strong>.
+(In this case, the input channel layout is definitiely
+different from the output one.)</p>
+
+<p>The most common case for this is to upmix <em>stereo</em> data(2 channels)
+into <em>3F2-LFE/audio 5.1</em>(6 channels).
+There are several papers discussing how to achieve that.</p>
+
+<h3 id="other-case">Other case</h3>
+
+<p>The other case happens
+when <strong>numbers of input channels = numbers of output channels</strong>,
+but their channel layouts are different.</p>
+
+<p>The conversion is easy as converting 
+from <em>STEREO-LFE</em>: {L, R, LFE} to <em>3F</em>: {L, R, C} (simply passing data):</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+L_{out} &= L_{in}
+\\
+R_{out} &= R_{in}
+\\
+C_{out} &= 0
+\end{align} %]]></script>
+
+<p>;it’s also as complicated as converting
+from <em>3F1</em>: {L, R, C, RC} to <em>2F2(or quad)</em>: {L, R, LS, RS}:</p>
+
+<p><script type="math/tex">% <![CDATA[
+\begin{align}
+L_{out} &= L_{in} + p \cdot C_{in}
+\\
+R_{out} &= R_{in} + p \cdot C_{in} 
+\\
+LS_{out} &= q \cdot RC_{in}
+\\
+RS_{out} &= q \cdot RC_{in}
+\end{align} %]]></script>
+, where <script type="math/tex">p, q</script> are specific values.</p>
+
+<h2 id="implementation">Implementation</h2>
+<p>Many open source cross-platform audio libraries are good refereces
+to learn how to implement multi-channel on different platforms, such as</p>
+<ul>
+  <li><a href="https://github.com/kinetiknz/cubeb" title="cubeb">cubeb</a></li>
+  <li><a href="http://www.portaudio.com/" title="portaudio">portaudio</a></li>
+  <li><a href="http://libsound.io/" title="libsoundio">libsoundio</a></li>
+</ul>
+
+<p>My experience for developling multi-channel is limited on <em>cubeb</em>.
+The development project page is hosted <a href="https://wiki.mozilla.org/Media/multichannel">here</a>.
+From my experience, most documents for audio development are vague
+and sometimes you even cannot find the official manuals
+about how to use the APIs(especially on OSX).
+The best way to learn that is to read the source code on github.
+Read the how other people use the APIs
+or the APIs’ implementation directly if it’s possible.</p>
+
+<p>It’s time to rock on the code!</p>
+
+:ET

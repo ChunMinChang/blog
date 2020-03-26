@@ -1,0 +1,94 @@
+I""<p>The <em>Fibonacci</em> number can be defined as:</p>
+
+<script type="math/tex; mode=display">F_n = F_{n-1} + F_{n-2}</script>
+
+<p>where <script type="math/tex">F_0 = 0, F_1 = 1</script>.</p>
+
+<p>Assume <script type="math/tex">F_n = s \cdot r^n</script>,
+then <script type="math/tex">F_n = F_{n-1} + F_{n-2}</script> can be rewritten into:</p>
+
+<script type="math/tex; mode=display">s \cdot r^n = s \cdot r^{n-1} + s \cdot r^{n-2}</script>
+
+<p>Thus,</p>
+
+<script type="math/tex; mode=display">s \cdot r^{n-2} \cdot (r^2 - r - 1) = 0</script>
+
+<p>and <script type="math/tex">r = \frac{1\pm \sqrt{5}}{2}</script></p>
+
+<p>Let <script type="math/tex">p = \frac{1 + \sqrt{5}}{2}</script>, <script type="math/tex">r = \frac{1 - \sqrt{5}}{2}</script>,
+and <script type="math/tex">x_k = u \cdot p^k + v \cdot q^k</script>,
+we now show that <script type="math/tex">x_k</script> is also a solution for <script type="math/tex">F_k</script>.
+That is, we need to show <script type="math/tex">x_k = x_{k-1} + x_{k-2}</script>.</p>
+
+<p><em>Proof</em>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+x_{k-1} + x_{k-2}
+&= u \cdot p^{k-1} + v \cdot q^{k-1} + u \cdot p^{k-2} + v \cdot q^{k-2} \\
+&= u \cdot p^{k-2} \cdot (1 + p) + v \cdot q^{k-2} \cdot (1 + q) \\
+\end{align} %]]></script>
+
+<p>Since <script type="math/tex">r + 1 = r^2(\text{by } r^2 - r - 1 = 0)</script>,
+we know <script type="math/tex">p + 1 = p^2</script> and <script type="math/tex">q + 1 = q^2</script>
+Thus,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+x_{k-1} + x_{k-2}
+&= u \cdot p^{k-2} \cdot (1 + p) + v \cdot q^{k-2} \cdot (1 + q) \\
+&= u \cdot p^{k-2} \cdot p^2 + v \cdot q^{k-2} \cdot q^2 \\
+&= u \cdot p^k + v \cdot q^k \\
+&= x_k
+\end{align} %]]></script>
+
+<p>Next, if we take <script type="math/tex">x_k</script> as our closed form for the <em>Fibonacci</em> number,
+we also need to know what <script type="math/tex">u, v</script> are.
+Fortunately, by the definition, we already know <script type="math/tex">F_0 = 0, F_1 = 1</script>,
+so</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+x_0 &= 0 = u \cdot p^0+ v \cdot q^0 = u + v \\
+x_1 &= 1 = u \cdot p + v \cdot q
+= u \cdot \frac{1 + \sqrt{5}}{2} + v \cdot \frac{1 - \sqrt{5}}{2} \\
+\Rightarrow 2 &= u + u \cdot \sqrt{5} + v - v \cdot \sqrt{5} \\
+&= (u + v) + \sqrt{5} \cdot (u - v) \\
+&= \sqrt{5} \cdot (u - v)
+\end{align} %]]></script>
+
+<p>By <script type="math/tex">u + v = 0</script> and <script type="math/tex">u - v = \frac{2}{\sqrt{5}}</script>, we know that</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+u &= \frac{1}{\sqrt{5}} \\
+v &= \frac{-1}{\sqrt{5}}
+\end{align} %]]></script>
+
+<p>As a result,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+x_k &= u \cdot p^k + v \cdot q^k \\
+&= \frac{1}{\sqrt{5}} \cdot (\frac{1 + \sqrt{5}}{2})^k - \frac{1}{\sqrt{5}} \cdot (\frac{1 - \sqrt{5}}{2})^k \\
+&= \frac{1}{\sqrt{5}} \cdot [ (\frac{1 + \sqrt{5}}{2})^k -  (\frac{1 - \sqrt{5}}{2})^k ]
+\end{align} %]]></script>
+
+<h2 id="graph">Graph</h2>
+<p>See the online <a href="https://www.wolframalpha.com/input/?i=(((1%2Bsqrt(5))%2F2)%5Ex+-+((1-sqrt(5))%2F2)%5Ex)%2Fsqrt(5)">graph here</a></p>
+
+<h2 id="questions">Questions</h2>
+<ul>
+  <li>Why we assume <script type="math/tex">F_n = s \cdot r^n</script>?</li>
+  <li>Why we use <script type="math/tex">F_n = u \cdot p^n + v \cdot q^n</script>
+instead of <script type="math/tex">F_n = s \cdot r^n</script> as our closed form?</li>
+</ul>
+
+<h2 id="references">References</h2>
+<ul>
+  <li>http://math.ucr.edu/~res/math153/history07a.pdf</li>
+  <li>http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm</li>
+  <li>https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence</li>
+  <li>http://mathproofs.blogspot.tw/2005/04/nth-term-of-fibonacci-sequence.html</li>
+</ul>
+:ET

@@ -1,0 +1,90 @@
+I"x<p>The resources collection for debugging audio issues.</p>
+
+<!--read more-->
+
+<h2 id="software">Software</h2>
+
+<ul>
+  <li>Firefox
+    <ul>
+      <li><a href="audio-device-information-on-firefox" title="Media info on about:support">about:support</a>: Show audio device info on Firefox page.</li>
+      <li><a href="https://addons.mozilla.org/en-US/firefox/addon/devtools-media-panel/" title="DevTools Media Panel">DevTools Media Panel</a> (<a href="https://github.com/mjfroman/media-devtools-panel-react" title="Media Panel Devtool">source code</a>): An additional panel in the Web Developer Tools displaying technical information about media elements and webrtc.</li>
+    </ul>
+  </li>
+  <li>FFmpeg: A powerful tool to record, convert and stream audio and video.
+    <ul>
+      <li><a href="https://www.ffmpeg.org/" title="FFmpeg website">website</a></li>
+      <li><a href="https://github.com/FFmpeg/FFmpeg" title="FFmpeg source code">source code</a></li>
+      <li><a href="https://trac.ffmpeg.org/wiki/CompilationGuide" title="Compile FFmpeg">Compilation Guide</a></li>
+    </ul>
+  </li>
+  <li><a href="https://github.com/akhudek/Soundflower" title="Soundflower">Soundflower</a>: Create virtual (multiple channels) audio device on maxOS.</li>
+  <li><a href="https://www.reaper.fm/">REAPER</a>: Digital audio workstation for recording, mixing, …, etc.</li>
+</ul>
+
+<h2 id="hardware">Hardware</h2>
+<ul>
+  <li><a href="audio-device-selector" title="Audio Device Selector">Audio Device Selector</a>: Share one output/input deivces with multiple input/output devices.</li>
+</ul>
+
+<h2 id="test-samples">Test Samples</h2>
+<ul>
+  <li><a href="https://github.com/ChunMinChang/raw2mp3" title="Convert raw audio files to mp3 files by various mp3 encoders">raw2mp3 (mp3)</a>: Convert raw audio files to mp3 files with different header types.</li>
+  <li><a href="http://helpguide.sony.net/high-res/sample1/v1/en/index.html">SONY: High-Resolution music files(AAC, FLAC)</a></li>
+  <li><a href="http://www.hyperion-records.co.uk/testfiles.asp">Hyperion Records(MP3, FLAC, M4A)</a></li>
+  <li><a href="http://www.2l.no/hires/">HiRes(FLAC, including 5.1 Surround)</a></li>
+  <li><a href="https://www.audiocheck.net/">Audio Check (wav)</a></li>
+</ul>
+
+<h2 id="audio-formats">Audio Formats</h2>
+<ul>
+  <li><a href="https://xiph.org/flac/format.html">Flac</a>
+    <ul>
+      <li><a href="https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c">FFmpeg</a></li>
+      <li><a href="https://github.com/videolan/vlc/blob/cc79f1f98f89465385c595f572eee9be1ce80c03/modules/codec/flac.c">vlc</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="code-references">Code References</h2>
+<ul>
+  <li><a href="https://github.com/FFmpeg/FFmpeg" title="FFmpeg source code">FFmpeg</a></li>
+  <li><a href="https://github.com/videolan/vlc">vlc</a></li>
+</ul>
+
+<h2 id="others">Others</h2>
+<ul>
+  <li><a href="http://wiki.hydrogenaud.io/index.php?title=Main_Page">Hydrogenaudio Knowledgebase</a></li>
+</ul>
+
+<h2 id="frequently-used-script">Frequently Used Script</h2>
+
+<h3 id="ffmpeg">FFmpeg</h3>
+
+<p>Show metadata:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg -i &lt;filename&gt;
+</code></pre></div></div>
+
+<p>Show packet data:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffprobe -show_packets &lt;filename&gt;
+</code></pre></div></div>
+
+<p>Create a sine wav file:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg -f lavfi -i "sine=frequency=441:duration=5" sine_441hz_5s.wav
+</code></pre></div></div>
+
+<h3 id="osx">OSX</h3>
+
+<h4 id="unloadreload-the-devices">Unload/Reload the devices</h4>
+
+<p>For the system devices:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo kextunload /System/Library/Extensions/AppleHDA.kext
+sudo kextload /System/Library/Extensions/AppleHDA.kext
+</code></pre></div></div>
+
+<p>For the Soundflower:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo kextunload -b com.Cycling74.driver.Soundflower
+sudo kextload -b com.Cycling74.driver.Soundflower
+</code></pre></div></div>
+
+:ET

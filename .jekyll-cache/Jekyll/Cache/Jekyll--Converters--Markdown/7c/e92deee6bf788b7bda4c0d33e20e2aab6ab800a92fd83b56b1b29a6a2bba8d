@@ -1,0 +1,5 @@
+I"µ<p>This post is synchronized with my <a href="https://gist.github.com/ChunMinChang/beb8db168260166e8f4759f97c7a11c7" title="Opaque or Transparent Data Type in a Rust Library">gist</a> file.</p>
+
+<p>To develop a <em>Rust</em> library that will be used for the external code, the data may be interoperable or non-interoperable. The interoperable data is a data whose underlying memory layout is known and their values can be modified directly by the external code. On the contrary, the non-interoperable data is a data whose underlying memory layout is unknown so their values cannot be changed directly. The underlying values can only be changed when they provide related APIs to do that.</p>
+
+:ET

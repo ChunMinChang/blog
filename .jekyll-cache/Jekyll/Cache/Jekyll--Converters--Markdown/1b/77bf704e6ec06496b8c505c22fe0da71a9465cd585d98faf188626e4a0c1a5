@@ -1,0 +1,131 @@
+I"�6<p>My personal Rust notes.</p>
+
+<!--read more-->
+
+<h1 id="rust-notes">Rust Notes</h1>
+
+<h2 id="learning-resources">Learning Resources</h2>
+<ul>
+  <li>Quick guide for system programmer
+    <ul>
+      <li><a href="https://legacy.gitbook.com/book/vnduongthanhtung/migrate-from-c-to-rust/details">30 minutes of Introduction to Rust for C++ programmers</a></li>
+      <li><a href="https://github.com/nrc/r4cppp">Rust For Systems Programmers</a></li>
+    </ul>
+  </li>
+  <li>Official books
+    <ul>
+      <li><a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a></li>
+      <li><a href="https://nostarch.com/Rust">The Rust Programming Language(book)</a></li>
+      <li><a href="http://shop.oreilly.com/product/0636920040385.do">Programming Rust</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="personal-notes">Personal Notes</h2>
+<ul>
+  <li>Common
+    <ul>
+      <li><a href="https://gist.github.com/ChunMinChang/ac1f00e3521755814714436a80d72003" title="Learning notes for norrowed pointers">Understand borrowing by read-write concepts</a></li>
+      <li><a href="https://gist.github.com/ChunMinChang/e8096bc78d29b237cce3ff5f859834e7" title="Lifetimes for The Rust References">Lifetime</a></li>
+      <li><a href="https://yodalee.blogspot.com/2019/09/rust-string.html">Rust Strings</a></li>
+      <li>How to convert a C strings to Rust strings</li>
+      <li>Phantom data</li>
+      <li>Common Error
+        <ul>
+          <li><a href="https://gist.github.com/ChunMinChang/099cd7d88938ad8840dc98e376a8da29" title="Don't misuse the pointers of the instances allocated in functions stack">Don’t misuse the pointers of the instances allocated in functions stack</a></li>
+          <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=dda40d0b40a8d922649521544f260a91" title="temporary cstring as ptr">Temporary cstring as ptr</a>
+            <ul>
+              <li>Will get a <code class="highlighter-rouge">temporary_cstring_as_ptr</code> error when running <code class="highlighter-rouge">cargo clippy</code></li>
+              <li>However, it’s ok in some case
+                <ul>
+                  <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=6229ad42133ceb20a5f25d10a10a313e">playground example</a>: Check the IR</li>
+                  <li><a href="https://doc.rust-lang.org/reference/expressions.html#temporary-lifetimes">temporary-lifetimes</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;code=use%20std%3A%3Async%3A%3AMutex%3B%0A%0Astruct%20S%20%7B%0A%20%20%20%20mutex%3A%20Mutex%3Cu32%3E%2C%0A%7D%0A%0Aimpl%20S%20%7B%0A%20%20%20%20fn%20new()%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20Self%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20mutex%3A%20Mutex%3A%3Anew(0u32)%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%0A%20%20%20%20fn%20panic_while_locking(%26self)%20%7B%0A%20%20%20%20%20%20%20%20let%20_guard%20%3D%20self.mutex.lock().unwrap()%3B%0A%20%20%20%20%20%20%20%20panic!()%3B%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%20Drop%20for%20S%20%7B%0A%20%20%20%20fn%20drop(%26mut%20self)%20%7B%0A%20%20%20%20%20%20%20%20let%20_guard%20%3D%20self.mutex.lock().unwrap()%3B%0A%20%20%20%20%7D%0A%7D%0A%0A%2F%2F%20The%20backtrace%20cannot%20be%20logged%20when%20test%20thread%20panicked%20again%20while%0A%2F%2F%20panicking.%20See%20the%20backtrace%20by%20running%20main.%0A%23%5Btest%5D%0A%23%5Bshould_panic%5D%0Afn%20test()%20%7B%0A%20%20%20%20let%20s%20%3D%20S%3A%3Anew()%3B%0A%20%20%20%20s.panic_while_locking()%3B%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20let%20s%20%3D%20S%3A%3Anew()%3B%0A%20%20%20%20s.panic_while_locking()%3B%0A%20%20%20%20%2F%2F%20After%20panic_while_locking%20is%20called%2C%20the%20s.mutex%20is%20locked%20while%20panicking.%0A%20%20%20%20%2F%2F%20When%20s.drop()%20is%20called%2C%20we%20will%20get%20another%20panic%20when%20requiring%20lock%0A%20%20%20%20%2F%2F%20for%20the%20locked%20s.mutex.%0A%7D%0A">Panic while panicking</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Polymorphism
+    <ul>
+      <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=6ac0d45db681a07bab0d8eb52bc9880f">dynamically dispatch</a></li>
+    </ul>
+  </li>
+  <li>Multi-threading
+    <ul>
+      <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;code=use%20std%3A%3Async%3A%3AMutex%3B%0A%0Astruct%20S%20%7B%0A%20%20%20%20m%3A%20Mutex%3Ci32%3E%2C%0A%20%20%20%20x%3A%20u32%2C%0A%7D%0A%0Aimpl%20S%20%7B%0A%20%20%20%20fn%20new()%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20Self%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20m%3A%20Mutex%3A%3Anew(0)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20x%3A%200%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20fn%20immutable_borrow(%26self)%20-%3E%20u32%20%7B%0A%20%20%20%20%20%20%20%20self.x%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20fn%20mutable_borrow(%26mut%20self)%20%7B%0A%20%20%20%20%20%20%20%20self.x%20%2B%3D%201%3B%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20fn%20critical_section(%26self)%20%7B%0A%20%20%20%20%20%20%20%20%2F%2F%20Enter%20critical%20section%0A%20%20%20%20%20%20%20%20let%20mut%20guard%20%3D%20self.m.lock().unwrap()%3B%0A%20%20%20%20%20%20%20%20*guard%20%2B%3D%201%3B%0A%20%20%20%20%20%20%20%20%2F%2F%20Leave%20critical%20section%0A%20%20%20%20%7D%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20let%20s%20%3D%20S%3A%3Anew()%3B%0A%20%20%20%20%0A%20%20%20%20%2F%2F%20Enter%20critical%20section%2C%20borrow%20%60s%60%20immutably%0A%20%20%20%20let%20_guard%20%3D%20s.m.lock()%3B%0A%20%20%20%20%0A%20%20%20%20%2F%2F%20It%27s%20ok%20to%20borrow%20%60s%60%20immutably%20again.%0A%20%20%20%20let%20_%20%3D%20s.immutable_borrow()%3B%0A%20%20%20%20%0A%20%20%20%20%2F%2F%20%60s%60%20cannot%20be%20borrowed%20mutably%20when%20it%27s%20already%20borrowed%20immutably%0A%20%20%20%20%2F%2F%20s.mutable_borrow()%3B%0A%20%20%20%20%0A%20%20%20%20%0A%20%20%20%20%2F%2F%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20belong%0A%20%20%20%20%2F%2F%20%20%20%20%20%20%20%20%20%2B-------------------%2B%0A%20%20%20%20%2F%2F%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%2F%2F%20%20%20%20%20%20%20%20%20v%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%2F%2F%20current%20thread%20%20%20%20%20%20%20%20%20%20mutex%20m%0A%20%20%20%20%2F%2F%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5E%0A%20%20%20%20%2F%2F%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%2F%2F%20%20%20%20%20%20%20%20%20%2B------------------%2B%0A%20%20%20%20%2F%2F%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20require%0A%20%20%20%20%2F%2F%0A%20%20%20%20%2F%2F%20Lead%20to%20a%20deadlock%20when%20requiring%20a%20locked%20mutex.%0A%20%20%20%20%2F%2F%20s.critical_section()%3B%0A%7D">Rules for using mutex</a></li>
+      <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2015&amp;code=%2F%2F%20use%20std%3A%3Aptr%3B%0Ause%20std%3A%3Async%3A%3Ampsc%3A%3Achannel%3B%0Ause%20std%3A%3Async%3A%3A%7BArc%2C%20Mutex%7D%3B%0Ause%20std%3A%3Athread%3B%0A%0A%2F%2F%20If%20the%20struct%20containing%20any%20pointer%2C%20it%20could%20not%20be%20passed%20across%20threads!%0A%23%5Bderive(Debug)%5D%0Astruct%20Data%20%7B%0A%20%20%20%20value%3A%20usize%2C%0A%20%20%20%20%2F%2F%20ptr%3A%20*const%20()%2C%0A%7D%0A%0Aimpl%20Data%20%7B%0A%20%20%20%20fn%20new(value%3A%20usize)%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20Self%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20ptr%3A%20ptr%3A%3Anull()%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20const%20N%3A%20usize%20%3D%2010%3B%0A%0A%20%20%20%20let%20data%20%3D%20Arc%3A%3Anew(Mutex%3A%3Anew(Data%3A%3Anew(0)))%3B%0A%0A%20%20%20%20let%20(tx%2C%20rx)%20%3D%20channel()%3B%0A%20%20%20%20for%20_%20in%200..N%20%7B%0A%20%20%20%20%20%20%20%20let%20(data%2C%20tx)%20%3D%20(Arc%3A%3Aclone(%26data)%2C%20tx.clone())%3B%0A%20%20%20%20%20%20%20%20thread%3A%3Aspawn(move%20%7C%7C%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20let%20mut%20data%20%3D%20data.lock().unwrap()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20(*data).value%20%2B%3D%201%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20(*data).value%20%3D%3D%20N%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20tx.send(()).unwrap()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20rx.recv().unwrap()%3B%0A%20%20%20%20%2F%2F%20data%20may%20still%20be%20locked%20when%20rx%20receiveds%20response%20from%20tx.%0A%20%20%20%20let%20data%20%3D%20data.lock().unwrap()%3B%0A%20%20%20%20println!(%22data%3A%20%7B%3A%3F%7D%22%2C%20*data)%3B%0A%7D%0A">The pointers or struct containing pointers cannot be passed across threads</a></li>
+      <li><a href="https://github.com/ChunMinChang/play-multithread" title="Learning multithread in Rust ">Mutex and RwLock</a></li>
+    </ul>
+  </li>
+  <li>Async
+    <ul>
+      <li><a href="https://play.rust-lang.org/?gist=e1a1b98654c3490e81d6ff9c262824a3&amp;version=nightly&amp;mode=debug&amp;edition=2018">oneshot</a></li>
+    </ul>
+  </li>
+  <li>FFI to C library
+    <ul>
+      <li><a href="https://github.com/ChunMinChang/rust-audio-lib-sample/tree/master" title="rust-audio-lib-sample">A sample Rust library based on platform C APIs</a></li>
+      <li><a href="opaque-or-transparent-data-type-in-a-rust-library.md" title="Opaque or Transparent Data Type in a Rust Library">Opaque or Transparent Data Type</a></li>
+      <li><a href="https://gist.github.com/ChunMinChang/1e5410f3a7cb8c5bbf066e7dae09d7bc" title="Pass arrays from Rust to C ">Pass arrays from Rust to C</a>
+        <ul>
+          <li><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=6d6c2271e3811d55f740b20a00975ecf" title="Leak a vec and then retake it">live demo</a></li>
+        </ul>
+      </li>
+      <li><a href="https://gist.github.com/ChunMinChang/27c7edb4ec45d61a1e8a788888f665cb" title="A mistake when using a Rust vector as a buffer to get the data by a C API">The size matters! How to mess up memory by using vector in a wrong way</a></li>
+      <li><a href="https://gist.github.com/ChunMinChang/3f380eaced6265ab6e8dbb224bfec732" title="A counterexample to use the memory allocated in external library">A counterexample to use the memory allocated in external library</a></li>
+      <li><a href="https://gist.github.com/ChunMinChang/e8909506cfca774f623fc375fc8ee1d2" title="Using reference /pointer instead of copying to get a variable-sized struct object">Using reference /pointer instead of copying to get a variable-sized struct object</a></li>
+      <li><a href="https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461" title="Using single-element (tuple) struct to wrap native types">Using single-element (tuple) struct to wrap native types</a>
+        <ul>
+          <li><a href="https://gist.github.com/ChunMinChang/b76a61273374a1530bc4d6f3be6a7761" title="Size of the single-element struct">Size of the single-element struct</a></li>
+          <li><a href="https://gist.github.com/ChunMinChang/25f3608c285f1abf2a5c289d5f758427" title="Using single-element (tuple) struct to wrap C strings">Benefits to wrap the C string</a></li>
+        </ul>
+      </li>
+      <li><a href="https://gist.github.com/ChunMinChang/8a22f8a1308b6e0a600e22c4629b2175" title="A counterexample to register the callback functions to the external libraries">How to wrap a callback from external library</a></li>
+      <li>C, C++, Rust Examples to call C Query APIs
+        <ul>
+          <li><a href="https://gist.github.com/ChunMinChang/1acf672babd4e8f79fcf83fa228d1461" title="Using single-element (tuple) struct to wrap native types">Basic: Wrap native type by tuple struct </a></li>
+          <li><a href="https://gist.github.com/ChunMinChang/22a30f214c97609d72f17d80740b8506" title="C, C++, Rust Examples to call C-compatible Query APIs">With String Handle</a></li>
+        </ul>
+      </li>
+      <li>OSX
+        <ul>
+          <li><a href="https://gist.github.com/ChunMinChang/07b806cb6a9ea1136cb3cbd8cda6c806" title="Using single-element (tuple) struct to CoreAudio types">Single-element tuple structs wrapping native CoreAudio types</a></li>
+          <li><a href="https://gist.github.com/ChunMinChang/8d13946ebc6c95b2622466c89a0c9bcc" title="Rust wrappers for OSX dispatch apis">Rust wrappers for OSX dispatch APIs</a></li>
+          <li><a href="https://gist.github.com/ChunMinChang/f0f4a71f78d1e1c6390493ab1c9d10d3" title="Rust wrappers for OSX property listner on audio devices">Rust wrappers for OSX property listner on audio devices</a></li>
+          <li>Rust wrappers for OSX CFString(Ref) APIs</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Taste
+    <ul>
+      <li>Error Handling
+        <ul>
+          <li><a href="https://gist.github.com/ChunMinChang/92d0006fb9fe35abcabff6983d31f0da" title="Error passing from modules to modules">Error passing from modules to modules</a></li>
+        </ul>
+      </li>
+      <li>Testing
+        <ul>
+          <li>Embeding a test module inside every module</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Idioms/Patterns
+    <ul>
+      <li><a href="https://github.com/rust-unofficial/patterns">rust-unofficial/patterns</a></li>
+      <li><a href="https://github.com/mre/idiomatic-rust">mre/idiomatic-rust</a></li>
+      <li><a href="https://stackoverflow.com/questions/41081240/idiomatic-callbacks-in-rust">Idiomatic callbacks in Rust</a>
+        <ul>
+          <li><a href="https://morestina.net/blog/793/closure-lifetimes-in-rust">Closure lifetimes in Rust</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+:ET

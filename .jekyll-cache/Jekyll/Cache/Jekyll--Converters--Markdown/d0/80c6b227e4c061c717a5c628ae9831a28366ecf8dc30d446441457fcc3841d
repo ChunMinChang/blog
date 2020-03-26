@@ -1,0 +1,837 @@
+I"��<h1 id="merge-sort">Merge Sort</h1>
+
+<p>This post series is synchronized with my book <a href="https://www.gitbook.com/book/chunminchang/codeplay/details" title="CodePlay">CodePlay</a>
+and this post could be read <a href="https://chunminchang.gitbooks.io/codeplay/content/sorting/merge_sort.html" title="Merge Sort">here</a>.</p>
+
+<h2 id="idea">Idea</h2>
+<p><em>Merge sort</em> is an efficient algorithm that
+applies the concepts of <a href="https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm" title="Divide and conquer algorithm"><em>divide and conquer</em></a> to sort the list.</p>
+
+<p>The key idea of <a href="https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm" title="Divide and conquer algorithm"><em>divide and conquer</em></a> is to recursively break down the problems
+into two or more sub-problems and they are same or related to the original problem,
+until these divided sub-problems are simple enough to solve directly.
+Then, the solutions of the original problem can be combined and derived
+by the solutions of all the sub-problems.</p>
+
+<h3 id="divide-and-conquer">Divide and conquer</h3>
+<p>The calculation of <a href="https://en.wikipedia.org/wiki/Fibonacci_number" title="Fibonacci number"><em>Fibonacci number</em></a>, <script type="math/tex">F(n) = F(n-1) + F(n-2)</script>,
+is one example.
+To calculate <script type="math/tex">F(n)</script>, it needs to find <script type="math/tex">F(n-1)</script> and <script type="math/tex">F(n-2)</script>.
+Similarly, to calculate <script type="math/tex">F(n-1)</script>, it needs to <script type="math/tex">F(n-2)</script> and <script type="math/tex">F(n-3)</script>.
+The sub-problems for calculating <script type="math/tex">F(n-1)</script> and <script type="math/tex">F(n-2)</script> have same form
+as the one for <script type="math/tex">F(n)</script>.</p>
+
+<p>Recursively, we will need to get <script type="math/tex">F(n-1)</script>, <script type="math/tex">F(n-2)</script>, …, <script type="math/tex">F(2)</script>, <script type="math/tex">F(1)</script>
+and <script type="math/tex">F(1)</script> and <script type="math/tex">F(2)</script> are easy enough to solve directly. They are both <script type="math/tex">1</script>.
+Thus, <script type="math/tex">F(3) = F(2) + F(1) = 2</script>, <script type="math/tex">F(4) = F(3) + F(2) = 3</script>, … and then <script type="math/tex">F(n)</script>
+can be computed.</p>
+
+<h3 id="dividing-the-sorting-problem">Dividing the sorting-problem</h3>
+<p>Let’s apply this concept to the sorting problem.
+If we want to sort the list <script type="math/tex">L = [6, 3, 7, 1, 9, 2, 5]</script>,
+the sub-lists <script type="math/tex">[6, 3, 7, 1], [9, 2, 5]</script> must also be sorted,
+so we can narrow down our problem scope for handling the sub-lists.
+Next, <script type="math/tex">[6, 3, 7, 1]</script> can be divided to <script type="math/tex">[6, 3], [7, 1]</script>
+and <script type="math/tex">[6, 3]</script> also can be split into <script type="math/tex">[6]</script> and <script type="math/tex">[3]</script>.
+Finally, <script type="math/tex">[6], [3]</script> are not dividable
+so we stop breaking down the list.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       [6, 3, 7, 1, 9, 2, 5]
+         /               \
+   [6, 3, 7, 1]       [9, 2, 5]
+    /        \          /     \
+ [6, 3]    [7, 1]    [9, 2]  [5]
+ /    \    /    \    /    \
+[6]  [3]  [7]  [1]  [9]  [2]
+</code></pre></div></div>
+
+<p>In the same way, the whole list can be divided into
+<script type="math/tex">[6], [3], [7], [1], [9], [2], [5]</script>.</p>
+
+<h3 id="conquering-the-sub-problems">Conquering the sub-problems</h3>
+<p>After there is only one element left,
+the subproblem is solved by nature since it’s already sorted.</p>
+
+<p>However, the problem becomes</p>
+<blockquote>
+  <p>how do we combine these sorted chunks into a sorted list</p>
+</blockquote>
+
+<p>We need a method that can merge two sorted lists,
+<script type="math/tex">L_1[1...X]</script> and <script type="math/tex">L_2[1...Y]</script>, where <script type="math/tex">X, Y \geq 1</script>,
+into a bigger sorted list <script type="math/tex">L[1...(X+Y)]</script>.</p>
+
+<h3 id="combining-all-the-results-of-sub-sorting-problem">Combining all the results of sub-sorting-problem</h3>
+
+<p>Suppose we have two sorted lists <script type="math/tex">A = [3, 6, 10, 23]</script> and <script type="math/tex">B = [2, 7, 50, 55]</script>.
+We provide two ways to merge them into a sorted list.</p>
+
+<h4 id="picking-the-smallest-elements-one-by-one">Picking the smallest elements one by one</h4>
+<p>The simplest method is to pick the smallest elements iteratively
+by searching both lists from the minimal to maximal.</p>
+
+<p>We only need to compare the left most elements of both lists
+and pick the smaller one since <script type="math/tex">A</script> and <script type="math/tex">B</script> are already sorted.</p>
+
+<p>The following example demonstrate the process of this idea:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- search index
+
+A = [(3), 6, 10, 23]
+B = [(2), 7, 50, 55]
+L = []                            // &lt;- 2
+</code></pre></div></div>
+<p>In the first round, <script type="math/tex">2</script> is picked since <script type="math/tex">% <![CDATA[
+2 < 3 %]]></script>
+and going to be put into another list <script type="math/tex">L</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                                  // You can think the left most element
+                                  // is shifted one by one
+A = [(3), 6, 10, 23]              // [3, 6, 10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2]                           // &lt;- 3
+</code></pre></div></div>
+
+<p>After <script type="math/tex">2</script> is picked, we move the index of <script type="math/tex">B</script> from <script type="math/tex">2</script> to <script type="math/tex">7</script>.
+Next, <script type="math/tex">3</script> is picked since <script type="math/tex">% <![CDATA[
+3 < 7 %]]></script> and going to be put into <script type="math/tex">L</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A = [3, (6), 10, 23]              // [6, 10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2, 3]                        // &lt;- 6
+</code></pre></div></div>
+
+<p>After <script type="math/tex">3</script> is picked, we move the index of <script type="math/tex">A</script> from <script type="math/tex">3</script> to <script type="math/tex">6</script>.
+Next, <script type="math/tex">6</script> is picked since <script type="math/tex">% <![CDATA[
+6 < 7 %]]></script> and going to be put into <script type="math/tex">L</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A = [3, 6, (10), 23]              // [10, 23]
+B = [2, (7), 50, 55]              // [7, 50, 55]
+L = [2, 3, 6]                     // &lt;- 7
+</code></pre></div></div>
+
+<p>After <script type="math/tex">6</script> is picked, we move the index of <script type="math/tex">A</script> from <script type="math/tex">6</script> to <script type="math/tex">10</script>.
+Next, <script type="math/tex">7</script> is picked since <script type="math/tex">% <![CDATA[
+7 < 10 %]]></script> and going to be put into <script type="math/tex">L</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A = [3, 6, (10), 23]              // [10, 23]
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7]                  // &lt;- 10
+</code></pre></div></div>
+
+<p>After <script type="math/tex">7</script> is picked, we move the index of <script type="math/tex">B</script> from <script type="math/tex">7</script> to <script type="math/tex">50</script>.
+Next, <script type="math/tex">10</script> is picked since <script type="math/tex">% <![CDATA[
+10 < 50 %]]></script> and going to be put into <script type="math/tex">L</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A = [3, 6, 10, (23)]              // [23]
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7, 10]
+</code></pre></div></div>
+
+<p>After <script type="math/tex">10</script> is picked, we move the index of <script type="math/tex">A</script> from <script type="math/tex">10</script> to <script type="math/tex">23</script>.
+Next, <script type="math/tex">23</script> is picked since <script type="math/tex">% <![CDATA[
+23 < 50 %]]></script> and going to be put into <script type="math/tex">L</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A = [3, 6, 10, 23]                // []
+B = [2, 7, (50), 55]              // [50, 55]
+L = [2, 3, 6, 7, 10, 23]
+</code></pre></div></div>
+
+<p>After <script type="math/tex">23</script> is picked, there is no need to compare again
+since the <script type="math/tex">23</script> is the last element in <script type="math/tex">A</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A = [3, 6, 10, 23]                // []
+B = [2, 7, 50, 55]                // []
+L = [2, 3, 6, 7, 10, 23, 50, 55]
+</code></pre></div></div>
+
+<p>Next, we can append all the rest elements
+from <script type="math/tex">50</script> to the end of <script type="math/tex">B</script> into the <script type="math/tex">L</script>.
+Finally, we get a sort list <script type="math/tex">L</script>.</p>
+
+<h4 id="swapping-the-elements-one-by-one">Swapping the elements one by one</h4>
+
+<p>Another idea to merge the two sorted lists
+<script type="math/tex">A = [3, 6, 10, 23]</script> and <script type="math/tex">B = [2, 7, 50, 55]</script>,
+is to couple them together into a list <script type="math/tex">L = A \cup B</script></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- element who will be moved
+L = [3, 6, 10, 23, | (2), 7, 50, 55]
+
+// The '|' doesn't exist! It's only a notation for better explanation.
+</code></pre></div></div>
+
+<p>and then move the minimal element of the later list(<script type="math/tex">B</script>)
+to the right position of the former list(<script type="math/tex">A</script>).</p>
+
+<p>The way for finding right the position is to compare the elements one by one
+from the end of the former list(<script type="math/tex">A</script>) to its head.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- element who will be moved
+L = [3, 6, 10, (2), 23, | 7, 50, 55]
+</code></pre></div></div>
+
+<p>In our example, the <script type="math/tex">2</script> is swapped with <script type="math/tex">23</script> since <script type="math/tex">% <![CDATA[
+2 < 23 %]]></script>.
+Then we keep comparing <script type="math/tex">2</script> with <script type="math/tex">10</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- element who will be moved
+L = [3, 6, (2), 10, 23, | 7, 50, 55]
+</code></pre></div></div>
+
+<p>Similarly, the <script type="math/tex">2, 10</script> are swapped since <script type="math/tex">% <![CDATA[
+2 < 10 %]]></script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- element who will be moved
+L = [3, (2), 6,  10, 23, | 7, 50, 55]
+</code></pre></div></div>
+
+<p>Next, the <script type="math/tex">2, 6</script> are swapped since <script type="math/tex">% <![CDATA[
+2 < 6 %]]></script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- element who will be moved
+L = [(2), 3, 6,  10, 23, | 7, 50, 55]
+</code></pre></div></div>
+
+<p>Next, the <script type="math/tex">2, 3</script> are swapped since <script type="math/tex">% <![CDATA[
+2 < 3 %]]></script>.
+After this round, there is nothing to compare,
+so the <script type="math/tex">2</script> is moved to its right position.
+Now <script type="math/tex">A = [2, 3, 6, 10, 23]</script> and <script type="math/tex">B = [7, 50, 55]</script></p>
+
+<p>In the same way, we can do this process again with <script type="math/tex">7</script>.
+It’s the minimal element of the later list <script type="math/tex">B</script> now.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- element who will be moved
+L = [2, 3, 6, 10, 23, | (7), 50, 55]
+L = [2, 3, 6, 10, (7), 23, | 50, 55]
+L = [2, 3, 6, (7), 10, 23, | 50, 55]
+
+L = [2, 3, 6, 7, 10, 23, | 50, 55]
+</code></pre></div></div>
+
+<p>After this round, <script type="math/tex">A = [2, 3, 6, 7, 10, 23]</script> and <script type="math/tex">B = [50, 55]</script>.</p>
+
+<p>Then do it again with with <script type="math/tex">50</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- element who will be moved
+L = [2, 3, 6,  7, 10, 23, | (50), 55]
+
+L = [2, 3, 6,  7, 10, 23, 50, | 55]
+</code></pre></div></div>
+
+<p>However, <script type="math/tex">50</script> doesn’t move because <script type="math/tex">% <![CDATA[
+23 < 50 %]]></script>.
+We just need to append <script type="math/tex">50</script> to the end of the former list <script type="math/tex">A</script>.
+After this round, <script type="math/tex">A = [2, 3, 6, 7, 10, 23, 50]</script> and <script type="math/tex">B = [55]</script>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>() &lt;- element who will be moved
+L = [2, 3, 6,  7, 10, 23, 50, | (55)]
+
+L = [2, 3, 6,  7, 10, 23, 50, 55]
+</code></pre></div></div>
+
+<p>It’s same to <script type="math/tex">55</script>.
+It doesn’t need to be moved since <script type="math/tex">% <![CDATA[
+50 < 55 %]]></script>,
+so just append it to the <script type="math/tex">A</script>.
+Finally, <script type="math/tex">A = [2, 3, 6, 7, 10, 23, 50, 55]</script> and <script type="math/tex">B = []</script> is empty now.
+Now we have a sorted list <script type="math/tex">L = A \cup B = A</script>!</p>
+
+<h4 id="which-merge-method-is-better">Which merge method is better</h4>
+
+<p>The first method use <strong>extra space</strong> to store the sorted results,
+rather than the second in-place solution.
+On the other hand, the second method needs <strong>more swapping executions</strong>
+and its a linear operation.
+For better performance, we take the first method as our approach here.</p>
+
+<p>Actually, there is a way to save the extra space
+and it works as fast as the first method above.
+However, it’s complicated.
+I will write another post for illustrating it.
+Please refer <em>In-place merge sort</em> in <a href="https://github.com/liuxinyu95/AlgoXY/releases/download/v0.618033/elementary-algorithms.pdf" title="Elementary Algorithms">Elementary Algorithms</a>
+to read it.</p>
+
+<h2 id="algorithm">Algorithm</h2>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+& \text{MergeSort($L$):} \\
+& \space \space \space \space \text{mergeSort($L, 1, \vert L \vert$)}
+\end{align} %]]></script>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+& \text{mergeSort($L, l, r$):} \\
+& \space \space \space \space \text{if $l < r$:} \\
+& \space \space \space \space \space \space \space \space m \leftarrow \lfloor \frac{l+r}{2} \rfloor \\
+& \space \space \space \space \space \space \space \space \text{mergeSort($L, l, m$)} \\
+& \space \space \space \space \space \space \space \space \text{mergeSort($L, m+1, r$)} \\
+& \space \space \space \space \space \space \space \space \text{merge($L, l, m, r$)} \\
+\end{align} %]]></script>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+& \text{merge($L, l, m, r$):} \\
+& \space \space \space \space L^\prime \leftarrow [] \\
+& \space \space \space \space i \leftarrow l, j \leftarrow m+1, k \leftarrow l \\
+& \space \space \space \space \text{while $i \leq m$ and $j \leq r$:} \\
+& \space \space \space \space \space \space \space \space \text{if $L[i] < L[j]$}: \\
+& \space \space \space \space \space \space \space \space \space \space \space \space L^\prime[k] \leftarrow L[i] \\
+& \space \space \space \space \space \space \space \space \space \space \space \space i \leftarrow i + 1 \\
+& \space \space \space \space \space \space \space \space \text{else}: \\
+& \space \space \space \space \space \space \space \space \space \space \space \space L^\prime[k] \leftarrow L[j] \\
+& \space \space \space \space \space \space \space \space \space \space \space \space j \leftarrow j + 1 \\
+& \space \space \space \space \space \space \space \space k \leftarrow k + 1 \\
+& \space \space \space \space \text{while $i \leq m$:} \\
+& \space \space \space \space \space \space \space \space L^\prime[k] \leftarrow L[i] \\
+& \space \space \space \space \space \space \space \space i \leftarrow i + 1 \\
+& \space \space \space \space \space \space \space \space k \leftarrow k + 1 \\
+& \space \space \space \space \text{while $j \leq r$:} \\
+& \space \space \space \space \space \space \space \space L^\prime[k] \leftarrow L[j] \\
+& \space \space \space \space \space \space \space \space j \leftarrow j + 1 \\
+& \space \space \space \space \space \space \space \space k \leftarrow k + 1 \\
+& \space \space \space \space \text{for $i \leftarrow l$ to $r$:} \\
+& \space \space \space \space \space \space \space \space L[i] \leftarrow L^\prime[i] \\
+\end{align} %]]></script>
+
+<h3 id="proof">Proof</h3>
+
+<h4 id="correctness-of-merge">Correctness of <em>Merge</em></h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  List L
+
+        &lt;------   sorted   ------&gt; &lt;------   sorted  -------&gt;
+        &lt;- merged -&gt; &lt;---  A  ---&gt; &lt;- merged -&gt; &lt;---  B  ---&gt;
+  -----+---+--------+---+-----+---+-----+------+---+-----+---+-----
+   ... | l | ...... | i | ... | m | m+1 | .... | j | ... | r | ...
+  -----+---+--------+---+-----+---+-----+------+---+-----+---+-----
+                      ^                          ^
+                head of sublist A          head of sublist B
+
+  List L'
+
+   &lt;--   merged  --&gt; &lt;---   empty   ---&gt;
+  +---+-------+-----+---+-------+-------+
+  | 1 |  ...  | k-1 | k | ..... | r-l+1 |
+  +---+-------+-----+---+-------+-------+
+                      ^
+                head of empty area of list L'
+
+  L[l...m]    : the sorted sublists for merging with L[m+1...r]
+  L[m+1...r]  : the sorted sublists for merging with L[l...m]
+  A, B        : the sublists containing elements that have NOT been merged yet
+  L'[1...k-1] : the merged list from L[l...i-1] and L[m+1...j-1]
+
+  i: The index of the first element in L[l...m] that has NOT been merged yet
+  j: The index of the first element in L[m+1...r] that has NOT been merged yet
+  k: The index of next merged element copied from L[i] or L[j]
+</code></pre></div></div>
+
+<p><strong>Loop Invariant</strong>:
+At the beginning of the while-loop, the following conditions hold:</p>
+
+<ol>
+  <li>Sublists <script type="math/tex">L[i...m]</script> and <script type="math/tex">L[j...r]</script> are sorted</li>
+  <li><script type="math/tex">L^\prime</script> holds the elements from sublists <script type="math/tex">L[l...i-1]</script> and <script type="math/tex">L[m+1...j-1]</script></li>
+  <li>All elements in <script type="math/tex">L^\prime[1...k-1]</script> is less or equal than
+sublists <script type="math/tex">L[i...m]</script> and <script type="math/tex">L[j...r]</script></li>
+  <li><script type="math/tex">L^\prime</script> are sorted.
+Formally, <script type="math/tex">\forall i \in [l + 1, r], L^\prime[i - 1] \leq L^\prime[i]</script></li>
+</ol>
+
+<p>Then we use loop-invariants to prove:</p>
+
+<ul>
+  <li>Initialization: At the very beginning when <script type="math/tex">k = 1, i = l, j = m+1</script>
+    <ul>
+      <li>the input <script type="math/tex">L[l...m], L[m+1...r]</script> are sorted so <em>1</em> holds</li>
+      <li>the list <script type="math/tex">L^\prime</script> is empty so <em>2, 3, 4</em> hold</li>
+    </ul>
+  </li>
+  <li>Maintenance: Consider the iteration <script type="math/tex">k = x</script>
+    <ul>
+      <li><em>1</em> is preserved since there is no change in <script type="math/tex">L</script></li>
+      <li><em>2</em> is preserved because
+        <ul>
+          <li>If <script type="math/tex">% <![CDATA[
+j > r \lor (i \leq m \land L[i] < L[j]) %]]></script>, <script type="math/tex">L^\prime[k] \leftarrow L[i]</script>
+            <ul>
+              <li>then <script type="math/tex">k \leftarrow k+1, i \leftarrow i+1</script></li>
+              <li><em>3</em> is preserved because <script type="math/tex">% <![CDATA[
+L[k-1] = L[i-1] < L[j] \leq L[j+1] \leq ... \leq L[r] %]]></script>
+and <script type="math/tex">L[k-1] = L[i-1] \leq L[i] \leq ... \leq L[m]</script></li>
+            </ul>
+          </li>
+          <li>Otherwise, <script type="math/tex">L^\prime[k] \leftarrow L[j]</script>
+            <ul>
+              <li>then <script type="math/tex">k \leftarrow k+1, j \leftarrow j+1</script></li>
+              <li><em>3</em> is preserved because <script type="math/tex">% <![CDATA[
+L[k-1] = L[j-1] < L[j] \leq L[j+1] \leq ... \leq L[r] %]]></script>
+and <script type="math/tex">L[k-1] = L[j-1] \leq L[i] \leq L[i+1] \leq ... \leq L[m]</script></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>The previous appended element must be smaller than
+the current selected minimal element or <em>1</em> is false</li>
+      <li>By <em>3</em>, the next selected minimal element will be larger than current one</li>
+      <li>So <em>4</em> is also preserved</li>
+    </ul>
+  </li>
+  <li>Termination
+    <ul>
+      <li>By <strong>2</strong>, <script type="math/tex">L^\prime</script> consists of the elements in <script type="math/tex">L[l...r]</script></li>
+      <li>By <strong>4</strong>, <script type="math/tex">L[l...r] = L^\prime[l...r]</script> are sorted</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="correctness-of-merge-sort">Correctness of <em>Merge Sort</em></h4>
+
+<blockquote>
+  <p>Given a list <script type="math/tex">L</script> with <script type="math/tex">N</script> elements,
+the <script type="math/tex">L</script> can be sorted
+by applying the above the <em>MergeSort</em> with <script type="math/tex">l = 1, r = N</script>.</p>
+</blockquote>
+
+<ul>
+  <li>Base step: When <script type="math/tex">N = 1</script>, it’s trivial.</li>
+  <li>Induction Hypothesis:
+Suppose this assumption holds when list has <script type="math/tex">N = 1, 2, ..., k</script> elements</li>
+  <li>Induction Step: When <script type="math/tex">N = k + 1</script>
+    <ul>
+      <li>the list <script type="math/tex">L</script> is divide to <script type="math/tex">L[1...m]</script>(<script type="math/tex">m</script> elements)
+and <script type="math/tex">L[m+1...N]</script>(<script type="math/tex">N - m</script> elements)</li>
+      <li>so <script type="math/tex">m = \lfloor \frac{1+(k+1)}{2} \rfloor = \lfloor \frac{k}{2} \rfloor + 1 \leq k</script></li>
+      <li>and <script type="math/tex">1 \leq m \implies 0 \leq m-1 \implies k \leq k-1+m \implies \\
+  k+1 \leq k+m \implies (k+1)-m \leq k \implies N-m \leq k</script></li>
+      <li>By our hypothesis, <script type="math/tex">L[1...m]</script> and <script type="math/tex">L[m+1...N]</script> can be sorted</li>
+      <li>By the proved correctness of <em>merge</em> above,
+the merged <script type="math/tex">L[1...m]</script> and <script type="math/tex">L[m+1...N]</script> is also sorted,
+so the proof is done</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="complexity">Complexity</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ^    +------------------------------------------------------+   Merge
+  |    |                           N                          |   Complexity
+  |    +------------------------------------------------------+
+  |                 |                              |
+  |                 v                              v
+  |    +------------------------+    +------------------------+
+  |    |           N/2          |    |           N/2          |   2 * O(N/2)
+  |    +------------------------+    +------------------------+
+  |         |              |              |              |
+            v              v              v              v
+  K    +---------+    +---------+    +---------+    +---------+
+       |   N/4   |    |   N/4   |    |   N/4   |    |   N/4   |   4 * O(N/4)
+  |    +---------+    +---------+    +---------+    +---------+
+  |      |     |        |     |        |     |        |     |
+  |      v     v        v     v        v     v        v     v
+  |
+  |                        .  .  .  .  .  .                       2^i * O(N/(2^i))
+  |
+  |    +---+  +---+  +---+                                +---+
+  |    | 1 |  | 1 |  | 1 |  .  .  .  .  .  .  .  .  .  .  | 1 |   N * O(1)
+  v    +---+  +---+  +---+                                +---+
+
+  N: the number of list elements.
+  K: K layers from N to 1.
+     N/2^k = 1 =&gt; N = 2^K =&gt; K = log_2(N)
+</code></pre></div></div>
+
+<p>The above figure is the <strong>recursion tree</strong> of <em>merge sort</em>.
+The list containing <script type="math/tex">N</script> elements is recursively divided to sort
+until there is only one elements.
+Suppose that there is <script type="math/tex">K</script> times of division, therefore,</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{ N }{ 2^K }   &= 1 \\
+\implies          N &= 2^K \\
+\implies          K &= \log_{ 2 }N
+\end{align} %]]></script>
+
+<p>On the other hand, the time complexity
+depends on the performance of <em>merge</em> <script type="math/tex">T_{merge}(N)</script>.
+The used <em>merge</em> here is the basic version.
+It iteratively picks the minimal elements from both sublists
+then copied to another list <script type="math/tex">L^\prime</script>.
+After all the elements in one sublist are all selected,
+we move the rest elements in the other sublist to list <script type="math/tex">L^\prime</script>.
+Finally, we assigned <script type="math/tex">L[i] \leftarrow L^\prime[i]</script>, <script type="math/tex">\forall i \in [1, N]</script>.
+Thus, <script type="math/tex">T_{merge}(N)</script> can be defined as</p>
+
+<script type="math/tex; mode=display">T_{merge}(N) = c \cdot N</script>
+
+<p>where <script type="math/tex">c</script> is a constant reflecting the basic operations
+like comparisons or assignments for merging routine.</p>
+
+<h3 id="by-the-recursion-tree">By the recursion tree</h3>
+
+<p>From the above figure, the total time for the <em>merge sort</em> is
+<script type="math/tex">% <![CDATA[
+\begin{align}
+\overbrace{
+2 \cdot c \cdot \frac{N}{2} +
+4 \cdot c \cdot \frac{N}{4} +
+8 \cdot c \cdot \frac{N}{8} +
+... +
+N \cdot c \cdot 1
+}^{K}
+&= K \cdot c \cdot N \\
+&= c \cdot N \cdot \log_{ 2 }N
+\end{align} %]]></script></p>
+
+<p>Thus, the time complexity is <script type="math/tex">\mathcal{O}(N \log N)</script>.</p>
+
+<h3 id="by-telescoping">By telescoping</h3>
+
+<p>Formally, since the <em>merge sort</em> repeatedly breaks down the <script type="math/tex">N</script>-elements list
+into two <script type="math/tex">\frac{N}{2}</script>-elements sublists,
+the amount of time that <em>merge sort</em>, <script type="math/tex">T_{sort}(N)</script>,
+can be written as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+T_{sort}(N)
+&= T_{sort}(\frac{N}{2}) + T_{sort}(\frac{N}{2}) + T_{merge}(N) \\
+&= 2 \cdot T_{sort}(\frac{N}{2}) + T_{merge}(N) \\
+&= 2 \cdot T_{sort}(\frac{N}{2}) + c \cdot N
+\end{align} %]]></script>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+T_{sort}(N)
+&= 2 \cdot T_{sort}(\frac{N}{2}) + c \cdot N \\
+&= 2 \cdot (2 \cdot T_{sort}(\frac{N}{4}) + c \cdot \frac{N}{2}) + c \cdot N \\
+&= 2^2 \cdot T_{sort}(\frac{N}{4}) + 2 \cdot c \cdot N \\
+&= 2^2 \cdot (2 \cdot T_{sort}(\frac{N}{8}) + c \cdot \frac{N}{4}) + 2 \cdot c \cdot N \\
+&= 2^3 \cdot T_{sort}(\frac{N}{4}) + 3 \cdot c \cdot N \\
+&= ... \\
+&= 2^K \cdot T_{sort}(\frac{N}{2^K}) + K \cdot c \cdot N \\
+&= N \cdot T_{sort}(1) + K \cdot c \cdot N \\
+&= N \cdot 1 + K \cdot c \cdot N \\
+&= N + c \cdot N \cdot \log_{ 2 }N
+\end{align} %]]></script>
+
+<p>Thus, the time complexity is <script type="math/tex">\mathcal{O}(N \log N)</script>.</p>
+
+<h2 id="implementation">Implementation</h2>
+
+<p>See the files on <a href="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb" title="Sorting">gist here</a>.</p>
+
+<noscript><pre>#include &lt;algorithm&gt;  // for std::min, std::swap
+#include &lt;cassert&gt;
+#include &lt;cstring&gt;    // for memcpy
+#include &quot;sorting.h&quot;
+
+/*
+ * Merge sort: O(n * log(n))
+ */
+// Basic merge: O(n)
+// The following is the most straightforward way to merge two sorted array.
+// However, it allocates extra memory for sorted results in every recursion.
+void merge(int list[],
+           unsigned int left,
+           unsigned int division,
+           unsigned int right)
+{
+  assert(left &lt;= right);
+  //      |&lt;-- sorted --&gt;|&lt;-- sorted --&gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  unsigned int i = left;
+  unsigned int j = division + 1;
+  const unsigned int size = right - left + 1;
+  int array[size];
+
+  // When left &lt;= i &lt;= div and div + 1 &lt;= j &lt;= right:
+  // Compare list[i] and list[j], if list[i] &lt; list[j], then copy list[i] into
+  // the new array and let i = i + 1. Otherwise, copy list[j] into the new array
+  // and let j = j + 1. If i &gt; div, it means list[left...div] is all compared
+  // and already copied, so we just need to put the rest list[j...right] into
+  // the array. In the same way, if j &gt; right, then put the rest list[i...div]
+  // into the array.
+  unsigned int k = 0;
+  for (k = 0 ; k &lt; size; ++k) {
+    array[k] = (j &gt; right || (i &lt;= division &amp;&amp; list[i] &lt; list[j])) ? list[i++] : list[j++];
+  }
+
+  // while (i &lt;= division &amp;&amp; j &lt;= right) {
+  //   array[k++] = (list[i] &lt; list[j]) ? list[i++] : list[j++];
+  //   // if (list[i] &lt; list[j]) {
+  //   //   array[k] = list[i];
+  //   //   ++i;
+  //   // } else {
+  //   //   array[k] = list[j];
+  //   //   ++j;
+  //   // }
+  //   // ++k;
+  // }
+  //
+  // // In this case, j &gt; right, so we put the rest list[i...div] into the array.
+  // while (i &lt;= division) {
+  //   array[k++] = list[i++];
+  //   // array[k] = list[i];
+  //   // ++i;
+  //   // ++k;
+  // }
+  //
+  // // in this case, i &gt; div, so we put the rest list[j...right] into the array.
+  // while (j &lt;= right) {
+  //   array[k++] = list[j++];
+  //   // array[k] = list[j];
+  //   // ++j;
+  //   // ++k;
+  // }
+
+  assert(k == size);
+  assert(i == division + 1);
+  assert(j == right + 1);
+
+  // Overwrite list[left...right] by the new sorted array.
+  for (k = 0 ; k &lt; size ; ++k) {
+    list[left + k] = array[k];
+  }
+  assert(left + k == right + 1);
+}
+
+// Append ∞ as the last sentinel element to the both ordered arrays for merging.
+void mergeWithSentinel(int list[], unsigned int left, unsigned int division, unsigned int right)
+{
+  assert(left &lt;= right);
+  //      |&lt;-- sorted --&gt;|&lt;-- sorted --&gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  //      |&lt;---  A&#39;  ---&gt;|&lt;---  B&#39;  ---&gt;|
+
+  // Allocate list A = A&#39; ∪ [INFINITY] and list B = B&#39; ∪ [INFINITY]
+  const static int INFINITY = ((unsigned int)(-1) &gt;&gt; 1);
+  const unsigned int sizeA = division - left + 2; // (division - left + 1) + 1
+  const unsigned int sizeB = right - division + 1; // (right - (division + 1) + 1) + 1
+  int *A = new int[sizeA]; // 1 is for [ INFINITY ]
+  int *B = new int[sizeB];
+  // Copy elements from list[left...division] to A&#39;[0...(sizeA - 2)].
+  memcpy((void*)A, (void*)(list + left), sizeof(int) * (sizeA - 1));
+  // Copy elements from list[(division + 1)...right] to B&#39;[0...(sizeB - 2)].
+  memcpy((void*)B, (void*)(list + division + 1), sizeof(int) * (sizeB - 1));
+  // Set the last elements of A and B to INFINITY.
+  A[sizeA - 1] = B[sizeB - 1] = INFINITY;
+  // Move the sorted elements of A and B to list[left...right].
+  unsigned int i, j;
+  for (i = j = 0 ; left &lt;= right ; ++left) {
+    list[left] = A[i] &lt; B[j] ? A[i++] : B[j++];
+  }
+  free(A);
+  free(B);
+}
+
+// The following method demonstrates a in-place version of merge method.
+// However, it downgrades mergesort overall performance to quadratic O(n^2)!
+// Naive in-place merge: O(n^2)
+void naiveInplaceMerge(int list[],
+                       unsigned int left,
+                       unsigned int division,
+                       unsigned int right)
+{
+  assert(left &lt;= right);
+  //      |&lt;-- sorted --&gt;|&lt;-- sorted --&gt;|
+  // -----+---+------+---+---+------+---+-----
+  //  ... | l | .... | m | n | .... | r | ...
+  // -----+---+------+---+---+------+---+-----
+  //        ^          ^   ^          ^
+  //      left       div  div+1    right
+  unsigned int anchor = left;
+  for (unsigned int i = division + 1 ; i &lt;= right ; ++i) {
+    for (unsigned int j = i ; j &gt; anchor ; --j) { // Replace anchor with left is fine.
+      // The following condition is definitely true and will be triggered.
+      // list[division + k + 1] &gt;= list[division + k] where k &gt;= 1
+      // is assertive because list[division + 1 .... right] is a sorted from
+      // minimal item to maximal one.
+      if (list[j] &gt;= list[j-1]) {
+        anchor = j;
+        break;
+      }
+      std::swap(list[j], list[j-1]);
+    }
+  }
+}
+
+void topDownMergeSort(int list[], unsigned int left, unsigned int right)
+{
+  if (left &gt;= right) {
+    return;
+  }
+
+  const unsigned int middle = (left + right) / 2;
+  topDownMergeSort(list, left, middle);
+  topDownMergeSort(list, middle + 1, right);
+  merge(list, left, middle, right);
+  // mergeWithSentinel(list, left, middle, right);
+  // naiveInplaceMerge(list, left, middle, right); // Slower!
+}
+
+void bottomUpMergeSort(int list[], unsigned int length)
+{
+  // &lt;----------  l = 2^k + r  ----------&gt;  where k, r are integers, k &gt;= 0,
+  // &lt;-----  2^k  -----&gt;|&lt;-----  r  -----&gt;  and 0 &lt;= r &lt; 2^k.
+  // +---+---+---------+---+---------+---+
+  // | 0 | 1 | ....... | n | ....... | m |
+  // +---+---+---------+---+---------+---+
+  //
+  // l            k  r
+  // 1 : 2^0 + 0  0  0
+  // 2 : 2^1 + 0  1  0
+  // 3 : 2^1 + 1  1  1
+  // 4 : 2^2 + 0  2  0
+  // 5 : 2^2 + 1  2  1
+  // 6 : 2^2 + 2  2  2
+  // 7 : 2^2 + 3  2  3
+  // 8 : 2^3 + 0  3  0
+  // 9 : 2^3 + 1  3  1
+  // ...
+  // ...
+  //
+  // When r = 0:  The length of list is powers of 2, denoted 2^k, so all the
+  //              size of blocks for merging must be same. At the round (k+1),
+  //              the size is 2^k, where k &gt;= 0 is a integer.
+  // When r != 0: We can consider there are extra &#39;r&#39; elements added into the
+  //              above list whose length is powers of 2.
+  //              The extra &#39;r&#39; elements will be merged when the block size is
+  //              grown to 2^k, where k &gt;= 0 and 0 &lt; r &lt; 2^k.
+  //
+  // Each round, the list is divided into blocks and then merged
+  // from size 1, 2, 4, ... to lenght/2.
+  for (unsigned int size = 1 ; size &lt; length ; size *= 2) {
+    // If i &gt;= length - size, then the rest elements list[i .. length - 1]
+    // is smaller than or equal to one block size, so there is nothing to be
+    // merged. These rest elements will be merged when size = 2^k
+    // and 2^(k-1) &lt; length - 2^k &lt; 2^k,.
+    for (unsigned int i = 0 ; i &lt; length - size ; i += 2 * size) {
+      // Merge the adjacent two blocks.
+      merge(list, i, i + size - 1, std::min(i + 2 * size - 1, length - 1));
+      // mergeWithSentinel(list, i, i + size - 1, min(i + 2 * size - 1, length - 1));
+      // naiveInplaceMerge(list, i, i + size - 1, min(i + 2 * size - 1, length - 1)); // Slower!
+
+      // Uncomment below to check when the rest items will be merged.
+      // if ((size/2 &lt; length - size/2) &amp;&amp; (length - size &lt; size)) {
+      //   std::cout &lt;&lt; &quot;List length: &quot; &lt;&lt; length &lt;&lt; std::endl;
+      //   std::cout &lt;&lt; &quot;Merge the last &quot; &lt;&lt; length - size &lt;&lt;
+      //                &quot; items when size is &quot; &lt;&lt; size &lt;&lt; std::endl;
+      //   assert(min(i + 2 * size - 1, length - 1) == length - 1);
+      // }
+    }
+  }
+}
+
+void mergeSort(int list[], unsigned int length)
+{
+  assert(length);
+
+  // topDownMergeSort(list, 0, length - 1);
+  bottomUpMergeSort(list, length);
+}
+</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/dee9f3bd2ceab69726373ae006016edb.js?file=merge_sort.cpp"> </script>
+
+<h2 id="appendix">Appendix</h2>
+
+<h3 id="correctness-of-naive-in-place-merge">Correctness of <em>naive in-place merge</em></h3>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+& \text{naiveInplaceMerge($L, l, m, r$):} \\
+& \space \space \space \space \text{for $i \leftarrow m+1$ to $r$:} \\
+& \space \space \space \space \space \space \space \space \text{for $j \leftarrow i$ down to $l+1$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \text{if $L[j-1] \leq L[j]$:} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \space \text{break} \\
+& \space \space \space \space \space \space \space \space \space \space \space \space \text{swap $L[j-1]$ and $L[j]$} \\
+\end{align} %]]></script>
+
+<h4 id="proof-by-mathematical-induction">Proof by mathematical induction</h4>
+
+<h5 id="lemma-1">Lemma 1</h5>
+
+<blockquote>
+  <p>Given a sorted list <script type="math/tex">A = [a_1, a_2, ..., a_N]</script> with <script type="math/tex">N</script> elements,
+where <script type="math/tex">a_1 \leq a_2 \leq ... \leq a_N</script>,
+and one value <script type="math/tex">x</script>,
+the list <script type="math/tex">L = A \cup [x] = [a_1, a_2, ..., a_N, x]</script>
+(<script type="math/tex">x</script> is appended to the end of list <script type="math/tex">A</script>),
+can be sorted by the <em>naive in-place merge</em> method with <script type="math/tex">l = 1, m = N, r = N + 1</script>.</p>
+</blockquote>
+
+<ul>
+  <li>Base step: When <script type="math/tex">N = 0</script>, list <script type="math/tex">L = [x]</script> is trivially true</li>
+  <li>Induction Hypothesis: Suppose this assumption holds when <script type="math/tex">N = k</script></li>
+  <li>Induction Step: When <script type="math/tex">N = k + 1</script>
+    <ul>
+      <li>If <script type="math/tex">x \geq L[k]</script>, then the <script type="math/tex">L = a_1 \leq a_2 \leq ... \leq a_k \leq x</script> is naturally sorted</li>
+      <li>Otherwise, <script type="math/tex">% <![CDATA[
+x < L[k] %]]></script> and the <script type="math/tex">x</script> and <script type="math/tex">L[k]</script> are swapped.
+        <ul>
+          <li>Now <script type="math/tex">L[1...k] = [a_1, a_2, ... , a_{k-1}, x]</script></li>
+          <li>By the hypothesis, the <em>naive in-place merge</em> works when <script type="math/tex">N = k</script>, so we can a sorted <script type="math/tex">L[1...k]</script></li>
+          <li>Thus, the list <script type="math/tex">L</script> now is sorted since <script type="math/tex">L[1...k]</script> is sorted
+and all its elements are smaller than the current <script type="math/tex">(k+1)</script>th element <script type="math/tex">L[k]</script></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="lemma-2">Lemma 2</h5>
+
+<blockquote>
+  <p>Given a sorted list <script type="math/tex">A = [a_1, a_2, ..., a_N]</script> with <script type="math/tex">N</script> elements
+where <script type="math/tex">a_1 \leq a_2 \leq ... \leq a_N</script>,
+and <script type="math/tex">B = [b_1, b_2, ..., b_M]</script> with <script type="math/tex">M</script> elements
+where <script type="math/tex">b_1 \leq b_2 \leq ... \leq b_M</script>,
+the list <script type="math/tex">L = A \cup B = [a_1, a_2, ..., a_N, b_1, b_2, ..., b_M]</script>
+can be sorted by the above <em>naive in-place merge</em> method with <script type="math/tex">l = 1, m = N, r = M+N</script>.</p>
+</blockquote>
+
+<ul>
+  <li>Base step: When <script type="math/tex">M = 1</script>, the condition is same as <em>Lemma 1</em>, so it’s true</li>
+  <li>Induction Hypothesis: Suppose this assumption holds when <script type="math/tex">M = k</script></li>
+  <li>Induction Step: When <script type="math/tex">M = k + 1</script>
+    <ul>
+      <li>When <script type="math/tex">i = N + 1</script>
+        <ul>
+          <li>the element <script type="math/tex">L[N+1]</script> will be merged with <script type="math/tex">L[1...N] = A</script></li>
+          <li>then the list <script type="math/tex">L[1...N+1]</script> is sorted by <em>Lemma 1</em></li>
+        </ul>
+      </li>
+      <li>When <script type="math/tex">i = N + 2</script>
+        <ul>
+          <li>the list is composed by sorted sublists <script type="math/tex">A^\prime = L[1...N+1]</script>
+and <script type="math/tex">B^\prime = L[N+2...N+k+1]</script> with <script type="math/tex">k</script> elements</li>
+          <li>By the hypothesis, the <em>naive in-place merge</em> works when <script type="math/tex">\vert B^\prime \vert = k</script></li>
+          <li>Thus, the list <script type="math/tex">L = A^\prime \cup B^\prime = A \cup B</script> is sorted</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="reference">Reference</h2>
+<ul>
+  <li><a href="http://www-bcf.usc.edu/~dkempe/CS104/11-07.pdf" title="2013 CS104: Recursive Sorting Algorithms and their Analysis">CS104</a></li>
+  <li><a href="http://www.cs.princeton.edu/courses/archive/spr07/cos226/lectures/04MergeQuick.pdf" title="Mergesort and Quicksort">COS226</a></li>
+  <li><a href="http://www.cs.mcgill.ca/~dprecup/courses/IntroCS/Lectures/comp250-lecture16.pdf" title="Lecture 16: MergeSort proof of correctness, and running time">COMP250</a></li>
+  <li><a href="http://www.inf.unibz.it/~nutt/DSA1112/DSALabs/sols2.pdf" title="Data Structures and Algorithms">DSA1112</a></li>
+  <li><a href="https://www.cs.rochester.edu/~gildea/csc282/slides/C02-start.pdf" title="Getting Started">CSC282</a></li>
+</ul>
+
+:ET

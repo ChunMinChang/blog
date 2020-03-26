@@ -1,0 +1,387 @@
+I"�1<p>When I tried to replace Mozilla’s <a href="http://searchfox.org/mozilla-central/source/mfbt/RefPtr.h" title="RefPtr">RefPtr</a> with standard C++
+smart-pointer to note one of my misusage of it,
+I used <em>std::shard_ptr</em> to do it.
+However, it didn’t work since there is a huge difference between
+Mozilla’s <a href="http://searchfox.org/mozilla-central/source/mfbt/RefPtr.h" title="RefPtr">RefPtr</a> and the <em>std::shard_ptr</em></p>
+
+<p>I’ve never noticed that because I never use smart-pointer
+before I worked for Mozilla.
+So it’s a perfect chance for me to get closer to look at their difference.</p>
+
+<h2 id="reference-count">Reference count</h2>
+<p>Although they’re both using reference-count to track object
+and manage objects’ life-time by the count,
+they are counting on different things.</p>
+
+<p>Suppose we have reference-counted pointers <code class="highlighter-rouge">RefPtr&lt;T&gt;</code>
+and <code class="highlighter-rouge">std::shard_ptr&lt;T&gt;</code>,
+we will call it like <code class="highlighter-rouge">RefPtr&lt;Foo&gt; p(new Foo(...))</code>
+and <code class="highlighter-rouge">std::shard_ptr&lt;Bar&gt; q(new Bar(...))</code></p>
+
+<h3 id="refptr"><em>RefPtr</em></h3>
+<p>When using <code class="highlighter-rouge">RefPtr&lt;T&gt;</code>,
+the total reference is counted on the <code class="highlighter-rouge">Foo</code> objects.
+That’s see an example below.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Foo must provide reference-counted interface.</span>
+<span class="n">Foo</span><span class="o">*</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Foo</span><span class="p">(...)</span> <span class="c1">// The total references will be counted on Foo object f.</span>
+<span class="n">RefPtr</span><span class="o">&lt;</span><span class="n">Foo</span><span class="o">&gt;</span> <span class="n">p1</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="c1">// the reference count of f is 1 now.</span>
+<span class="p">{</span>
+  <span class="n">RefPtr</span><span class="o">&lt;</span><span class="n">Foo</span><span class="o">&gt;</span> <span class="n">p2</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="c1">// the reference count of f is 2 now.  </span>
+<span class="p">}</span>
+<span class="c1">// the reference count of f is back to 1 now since p2 is destroyed.</span>
+</code></pre></div></div>
+
+<h3 id="stdshard_ptr"><em>std::shard_ptr</em></h3>
+<p>When using <code class="highlighter-rouge">std::shard_ptr&lt;T&gt;</code>,
+the total reference is counted on the <code class="highlighter-rouge">std::shard_ptr</code> itself.
+That’s see an example below.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Bar does NOT need to provide reference-counted interface.</span>
+<span class="n">Bar</span><span class="o">*</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Bar</span><span class="p">(...)</span>
+<span class="n">std</span><span class="o">::</span><span class="n">shard_ptr</span><span class="o">&lt;</span><span class="n">Bar</span><span class="o">&gt;</span> <span class="n">p1</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="c1">// the reference count of p1 is 1 now.</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shard_ptr</span><span class="o">&lt;</span><span class="n">Bar</span><span class="o">&gt;</span> <span class="n">p2</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="c1">// the reference count of p1 and p2 is 2 now.</span>
+<span class="p">}</span>
+<span class="c1">// the reference count of p1 is back to 1 now since p2 is destroyed.</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">shard_ptr</span><span class="o">&lt;</span><span class="n">Bar</span><span class="o">&gt;</span> <span class="n">p3</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="c1">// the reference count of p3 is 1 now.</span>
+</code></pre></div></div>
+<p>Even worse, the above program will cause an error:
+<strong>pointer being freed was not allocated</strong>.
+The <code class="highlighter-rouge">p1</code> and <code class="highlighter-rouge">p3</code> both control the life-time of <code class="highlighter-rouge">b</code>.
+When <code class="highlighter-rouge">p1</code> is destroyed, its reference-count is down to <code class="highlighter-rouge">0</code>,
+so it will deallocate <code class="highlighter-rouge">b</code>.
+Nevertheless, When <code class="highlighter-rouge">p3</code> is destroyed,
+its reference-count is also down to <code class="highlighter-rouge">0</code>,
+so it will deallocate <code class="highlighter-rouge">b</code> <strong>again</strong> and cause an error:
+<strong>Freeing an already-freed object</strong></p>
+
+<p>Thus, using</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">shard_ptr</span><span class="o">&lt;</span><span class="n">Bar</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">(</span><span class="k">new</span> <span class="n">Bar</span><span class="p">(...))</span>
+</code></pre></div></div>
+<p>to replace the following pattern should save your life.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// This is a bad pattern!</span>
+<span class="n">Bar</span><span class="o">*</span> <span class="n">b</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Bar</span><span class="p">(...)</span>
+<span class="n">std</span><span class="o">::</span><span class="n">shard_ptr</span><span class="o">&lt;</span><span class="n">Bar</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="sample-code">Sample code</h2>
+<p>That’s see the example-implementation of these two smart-pointers.
+Again, the key difference between <em>RefPtr</em> and <em>std::shard_ptr</em> is</p>
+<ul>
+  <li><code class="highlighter-rouge">RefPtr&lt;T&gt; p(new T(...))</code>:
+the reference is counted on the newed <code class="highlighter-rouge">T</code> object
+so the <code class="highlighter-rouge">class T</code> must provide <em>reference-counted</em> interface.</li>
+  <li><code class="highlighter-rouge">std::shard_ptr&lt;Bar&gt; q(new Bar(...))</code>:
+the reference is counted on the <code class="highlighter-rouge">q</code> itself.</li>
+</ul>
+
+<noscript><pre>#ifndef REFPTR_H
+#define REFPTR_H
+
+#include &lt;cassert&gt;
+
+#define DEBUG
+#ifdef DEBUG
+#ifdef NDEBUG
+#undef NDEBUG
+#endif // NDEBUG
+#include &lt;iostream&gt;
+#endif // DEBUG
+
+///////////////////////////////////////////////////////////////////////////////
+// ReferenceCount Interface
+class ReferenceCount
+{
+public:
+  void AddRef();
+  void Release();
+  unsigned int GetCount();
+  bool IsShared();
+
+protected:
+  ReferenceCount();
+  // Disallow copy constructor
+  ReferenceCount(const ReferenceCount&amp; rhs) = delete;
+  // ReferenceCount&amp; operator=(const ReferenceCount&amp; rhs);
+  virtual ~ReferenceCount();
+
+private:
+  unsigned int count;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// ReferenceCount Implementation
+ReferenceCount::ReferenceCount()
+  : count(0)
+{
+}
+
+// ReferenceCount::ReferenceCount(const ReferenceCount&amp; rhs)
+//   : count(0)
+// {
+// }
+
+ReferenceCount::~ReferenceCount()
+{
+}
+
+// ReferenceCount&amp;
+// ReferenceCount::&amp; operator=(const ReferenceCount&amp; rhs)
+// {
+//   return this;
+// }
+
+void
+ReferenceCount::AddRef()
+{
+  ++count;
+}
+
+void
+ReferenceCount::Release()
+{
+  if (!--count) {
+#ifdef DEBUG
+    fprintf(stderr, &quot;Release %s @ %p\n&quot;, typeid(*this).name() + 1,this);
+#endif
+    delete this;
+  }
+}
+
+unsigned int
+ReferenceCount::GetCount()
+{
+  return count;
+}
+
+bool
+ReferenceCount::IsShared()
+{
+  return count &gt; 1;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// RefPtr Interface
+//   pointee must support the ReferenceCount interface
+template&lt;typename T&gt;
+class RefPtr
+{
+public:
+  // Default constructor
+  RefPtr(T* realPtr = nullptr);
+
+  // Copy constructor
+  RefPtr(const RefPtr&amp; rhs);
+
+  ~RefPtr();
+
+  RefPtr&amp; operator=(const RefPtr&amp; rhs);
+
+  T* operator-&gt;() const;
+
+  T&amp; operator*() const;
+
+  bool operator==(const RefPtr&amp; rhs);
+
+  bool operator==(const T* rawPtr);
+
+private:
+  T *pointee;
+  void Init();
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// RefPtr Implementation
+template&lt;class T&gt;
+void
+RefPtr&lt;T&gt;::Init()
+{
+  if (!pointee) {
+    return;
+  }
+#ifdef DEBUG
+  fprintf(stderr, &quot;Reference counting for %s @ %p\n&quot;, typeid(T).name() + 1, pointee);
+#endif
+  pointee-&gt;AddRef();
+}
+
+template&lt;class T&gt;
+RefPtr&lt;T&gt;::RefPtr(T* realPtr)
+  : pointee(realPtr)
+{
+  Init();
+}
+
+template&lt;class T&gt;
+RefPtr&lt;T&gt;::RefPtr(const RefPtr&amp; rhs)
+  : pointee(rhs.pointee)
+{
+  Init();
+}
+
+template&lt;class T&gt;
+RefPtr&lt;T&gt;::~RefPtr()
+{
+  if (!pointee) {
+    return;
+  }
+  pointee-&gt;Release();
+}
+
+template&lt;class T&gt;
+RefPtr&lt;T&gt;&amp;
+RefPtr&lt;T&gt;::operator=(const RefPtr&amp; rhs)
+{
+  if (pointee != rhs.pointee) {
+    if (pointee) {
+      pointee-&gt;Release();
+    }
+    pointee = rhs.pointee;
+    Init();
+  }
+
+  return *this;
+}
+
+template&lt;class T&gt;
+T*
+RefPtr&lt;T&gt;::operator-&gt;() const
+{
+  assert(pointee);
+  return pointee;
+}
+
+template&lt;class T&gt;
+T&amp;
+RefPtr&lt;T&gt;::operator*() const
+{
+  assert(pointee);
+  return *pointee;
+}
+
+template&lt;class T&gt;
+bool
+RefPtr&lt;T&gt;::operator==(const RefPtr&amp; rhs)
+{
+  return pointee == rhs.pointee;
+}
+
+template&lt;class T&gt;
+bool
+RefPtr&lt;T&gt;::operator==(const T* rawPtr)
+{
+  return pointee == rawPtr;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// SharedPtr Interface
+//   pointee doesn&#39;t need to support the ReferenceCount interface
+template&lt;typename T&gt;
+class SharedPtr
+{
+public:
+  // Default constructor
+  SharedPtr(T* realPtr = nullptr);
+
+  // Copy constructor
+  SharedPtr(const SharedPtr&amp; rhs);
+
+  ~SharedPtr();
+
+  SharedPtr&amp; operator=(const SharedPtr&amp; rhs);
+
+  T* operator-&gt;() const;
+
+  T&amp; operator*() const;
+
+  // Gives clients access to IsShared() and GetCount()
+  ReferenceCount&amp; GetCounter()
+  {
+    return *counter;
+  }
+
+private:
+  ///////////////////////////////
+  // The references are counted inside SharedPtr instead of in the pointee!
+  struct Counter: public ReferenceCount {
+    Counter(T* realPtr = nullptr)
+      : pointee(realPtr) {}
+    ~Counter() { delete pointee; }
+    T *pointee;
+  };
+
+  Counter *counter;
+  ///////////////////////////////
+  void Init();
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// SharedPtr Implementation
+template&lt;class T&gt;
+void
+SharedPtr&lt;T&gt;::Init()
+{
+  if (!counter) {
+    return;
+  }
+#ifdef DEBUG
+  fprintf(stderr, &quot;Reference counting for %s @ %p\n&quot;, typeid(counter).name() + 1, counter);
+#endif
+  counter-&gt;AddRef();
+}
+
+template&lt;class T&gt;
+SharedPtr&lt;T&gt;::SharedPtr(T* realPtr)
+  : counter(new Counter(realPtr))
+{
+  Init();
+}
+
+template&lt;class T&gt;
+SharedPtr&lt;T&gt;::SharedPtr(const SharedPtr&amp; rhs)
+  : counter(rhs.counter)
+{
+  Init();
+}
+
+template&lt;class T&gt;
+SharedPtr&lt;T&gt;::~SharedPtr()
+{
+  counter-&gt;Release();
+}
+
+template&lt;class T&gt;
+SharedPtr&lt;T&gt;&amp;
+SharedPtr&lt;T&gt;::operator=(const SharedPtr&amp; rhs)
+{
+  if (counter != rhs.counter) {
+    counter-&gt;Release();
+    counter = rhs.counter;
+    Init();
+  }
+  return *this;
+}
+template&lt;class T&gt;
+T*
+SharedPtr&lt;T&gt;::operator-&gt;() const
+{
+  assert(counter-&gt;pointee);
+  return counter-&gt;pointee;
+}
+
+template&lt;class T&gt;
+T&amp;
+SharedPtr&lt;T&gt;::operator*() const
+{
+  assert(counter-&gt;pointee);
+  return *(counter-&gt;pointee);
+}
+
+#endif // REFPTR_H</pre></noscript>
+<script src="https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1.js?file=RefPtr.h"> </script>
+
+<p>You can look <a href="https://gist.github.com/ChunMinChang/e783052c7da8b4bd5678dbc26de84ab1" title="RefPtr and SharedPtr">here</a> to see how to use it.</p>
+
+<p>The above code is referenced from <a href="http://www.aristeia.com/BookErrata/M29Source.html">here</a></p>
+
+:ET

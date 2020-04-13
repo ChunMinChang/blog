@@ -1,4 +1,202 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-03-27T00:48:32+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">LRU Table</title><link href="http://localhost:4000/post/lru-table" rel="alternate" type="text/html" title="LRU Table" /><published>2020-03-20T00:00:00+08:00</published><updated>2020-03-20T00:00:00+08:00</updated><id>http://localhost:4000/post/lru-table</id><content type="html" xml:base="http://localhost:4000/post/lru-table">&lt;p&gt;&lt;em&gt;LRU(Least Recently Used)&lt;/em&gt; table is a simple data structure
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-13T23:49:01+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Cubeb Oxidation on MacOS</title><link href="http://localhost:4000/post/cubeb-oxidation-on-macos" rel="alternate" type="text/html" title="Cubeb Oxidation on MacOS" /><published>2020-04-13T00:00:00+08:00</published><updated>2020-04-13T00:00:00+08:00</updated><id>http://localhost:4000/post/cubeb-oxidation-on-macos</id><content type="html" xml:base="http://localhost:4000/post/cubeb-oxidation-on-macos">&lt;p&gt;A summary of the &lt;em&gt;C-to-Rust&lt;/em&gt; rewriting work for Firefox’s audio library on Mac OS.&lt;/p&gt;
+
+&lt;!--read more--&gt;
+
+&lt;p&gt;This post aims to share some experience of rewriting a library from &lt;em&gt;C/C++&lt;/em&gt; into &lt;em&gt;Rust&lt;/em&gt;.
+In this post, I am going to summarize the achievements
+of rewriting the Firefox’s audio library, named &lt;a href=&quot;https://github.com/kinetiknz/cubeb&quot;&gt;&lt;em&gt;Cubeb&lt;/em&gt;&lt;/a&gt;,
+from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp&quot;&gt;&lt;em&gt;C&lt;/em&gt;&lt;/a&gt; into &lt;a href=&quot;https://github.com/ChunMinChang/cubeb-coreaudio-rs&quot;&gt;&lt;em&gt;Rust&lt;/em&gt;&lt;/a&gt;.
+More story will be shared in the following posts.&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Solve &lt;em&gt;6&lt;/em&gt; data racing issues discovered by enlarging the test coverage
+    &lt;ul&gt;
+      &lt;li&gt;Some issues exist for ages but their causes are not easy to be identified&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Boost the performance to &lt;em&gt;35x&lt;/em&gt; faster when starting multiple streams simultaneously
+    &lt;ul&gt;
+      &lt;li&gt;A happy side effect when fixing data racing issues&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Hunt and fix &lt;em&gt;3&lt;/em&gt; memory leaks&lt;/li&gt;
+  &lt;li&gt;The test coverage is enlarged to almost 80%
+    &lt;ul&gt;
+      &lt;li&gt;The left 20% are mostly logs&lt;/li&gt;
+      &lt;li&gt;The amount of the regression bugs is pretty low:
+        &lt;ul&gt;
+          &lt;li&gt;For now, only &lt;em&gt;5&lt;/em&gt; bugs are introduced by using the new &lt;em&gt;Rust&lt;/em&gt; API&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;data-racing-issues&quot;&gt;Data-racing issues&lt;/h3&gt;
+
+&lt;p&gt;The data-racing issues could be naturally detected
+since all the tests within &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt; are run in parallel by default.&lt;/p&gt;
+
+&lt;p&gt;The audio library is heavily threaded code.
+It is based on various system APIs that may use &lt;em&gt;mutex&lt;/em&gt; internally
+to query or update the device-related settings.
+In addition, the library API can be called on different threads anytime.&lt;/p&gt;
+
+&lt;p&gt;In the past, most of the data-racing issues are found
+by investigating the bug reported by Firefox users
+at the time when the code is already shipped to the wild.&lt;/p&gt;
+
+&lt;p&gt;Detecting data-racing issues effectively is a hard topic.
+However, &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt; framework lowers the barriers.&lt;/p&gt;
+
+&lt;p&gt;All the tests within &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt; are run in parallel by default,
+which means there is no need to write the custom code to run the tests
+on different threads. The tests will be executed on the different threads automatically.
+As a result, the problems caused by data-racing emerge much more frequently,
+even when just running the unit tests.
+It can show a surprising fact
+that some of the APIs cannot be run at the same time.&lt;/p&gt;
+
+&lt;h3 id=&quot;performance&quot;&gt;Performance&lt;/h3&gt;
+
+&lt;p&gt;The performance for starting multiple streams is boosted to &lt;em&gt;35x&lt;/em&gt; faster
+after fixing the data-racing issues.&lt;/p&gt;
+
+&lt;p&gt;Actually, this achievement is unexpected.
+Performance improvement is not included in the goals for this rewriting project
+but it natually happens.
+(The goal is simply set to &lt;em&gt;do-not-cause-performance-regression&lt;/em&gt;.)&lt;/p&gt;
+
+&lt;p&gt;The following figure list the performance measurements when starting multiple streams
+at the same time on my &lt;em&gt;MacBook Pro 2017&lt;/em&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../images/posts/cubeb-oxidation-performance-output.svg&quot; alt=&quot;Performance (ms)&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;(see all the measurement data &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1rEKN0njYeSxyIqXsw3S2qUJwj5i-DlAA3cBvVKOT5J4/edit?usp=sharing&quot;&gt;here&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;There are 4 different backends in the test:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;span style=&quot;color:#4285f4&quot;&gt;Blue&lt;/span&gt;: The original &lt;em&gt;C&lt;/em&gt; backend&lt;/li&gt;
+  &lt;li&gt;&lt;span style=&quot;color:#db4437&quot;&gt;Red&lt;/span&gt;: The first workable &lt;em&gt;Rust&lt;/em&gt; backend rewritten from &lt;em&gt;C&lt;/em&gt; code on a &lt;em&gt;line-by-line&lt;/em&gt; basis
+    &lt;ul&gt;
+      &lt;li&gt;It rewrites all the lines in a as-same-as-possible way&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;span style=&quot;color:#f4b400&quot;&gt;Yellow&lt;/span&gt;: The version honors &lt;em&gt;Rust&lt;/em&gt; style first
+    &lt;ul&gt;
+      &lt;li&gt;It rewrites many abnormal &lt;em&gt;Rust&lt;/em&gt; code translated plainly from &lt;em&gt;C&lt;/em&gt; code&lt;/li&gt;
+      &lt;li&gt;To replace a custom mutex translated from &lt;em&gt;C&lt;/em&gt; code,
+ some APIs are reimplemented with a gloabl task queue or &lt;code class=&quot;highlighter-rouge&quot;&gt;Mutex&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;span style=&quot;color:#0f9d58&quot;&gt;Green&lt;/span&gt;: The version using stream-local task queues instead of a global task queue&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There are some fun findings on the above figure.&lt;/p&gt;
+
+&lt;h4 id=&quot;rewriting-the-code-from-c-to-rust-wont-improve-the-performance&quot;&gt;Rewriting the code from &lt;em&gt;C&lt;/em&gt; to &lt;em&gt;Rust&lt;/em&gt; won’t improve the performance&lt;/h4&gt;
+
+&lt;p&gt;There is no much performance differences between &lt;em&gt;1&lt;/em&gt; and &lt;em&gt;2&lt;/em&gt;.
+If the &lt;em&gt;Rust&lt;/em&gt; code is implemented in a similar way as what &lt;em&gt;C&lt;/em&gt; code does,
+then their performances are roughly equal.&lt;/p&gt;
+
+&lt;p&gt;This is understandable.
+The perofrmance won’t be soared if the code are run in the same or similar way.&lt;/p&gt;
+
+&lt;h4 id=&quot;but-if-every-line-honors-the-rust-rule-the-performance-improve&quot;&gt;But if every line honors the &lt;em&gt;Rust&lt;/em&gt; rule, the performance improve&lt;/h4&gt;
+
+&lt;p&gt;The figure shows the performance improve a bit when the implementation
+goes from &lt;em&gt;2&lt;/em&gt; to &lt;em&gt;3&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;If the &lt;em&gt;Rust&lt;/em&gt; code and the &lt;em&gt;C&lt;/em&gt; code implement an idea in the same way,
+their performances won’t get much differences since the machine code generated
+from both languages might be similar.&lt;/p&gt;
+
+&lt;p&gt;However, when applying the &lt;em&gt;Rust&lt;/em&gt;’s &lt;em&gt;stricter-than-C&lt;/em&gt; rules,
+the performance may be improved.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Rust&lt;/em&gt; has strict rules for the &lt;em&gt;ownership&lt;/em&gt;, &lt;em&gt;borrowing&lt;/em&gt;,…etc
+to force the developers to think their code carefully
+and provide well-designed system libraries
+that lead to writing code in a good style.
+In this project, it turns out those strict rules also lead to better performances.&lt;/p&gt;
+
+&lt;p&gt;Those limits ends up helping us to find a better way to implement the library APIs.
+The code translated from &lt;em&gt;C&lt;/em&gt; plainly against the &lt;em&gt;Rust&lt;/em&gt;’s rules
+is implemented in another way to make the &lt;em&gt;Rust&lt;/em&gt; compiler happy.
+The story is around removing the custom &lt;em&gt;mutex&lt;/em&gt; translated from &lt;em&gt;C&lt;/em&gt;.
+At the end, in the version &lt;em&gt;3&lt;/em&gt;, some APIs replace that custom &lt;em&gt;mutex&lt;/em&gt;
+by &lt;em&gt;Rust&lt;/em&gt;’s standard &lt;code class=&quot;highlighter-rouge&quot;&gt;Mutex&amp;lt;T&amp;gt;&lt;/code&gt;; some APIs are re-designed
+to use a global task queue instead of using the custom &lt;em&gt;mutex&lt;/em&gt;
+and so the performance is prompted a bit then.&lt;/p&gt;
+
+&lt;p&gt;After replacing using custom &lt;em&gt;mutex&lt;/em&gt; by using a gloabl task queue,
+it’s clear to see the task queue can become stream-local instead of &lt;em&gt;gloabl&lt;/em&gt;
+so here comes version &lt;em&gt;4&lt;/em&gt;.
+By doing so, some data-racing issues can be avoided at the same time.
+Thus, the speed for starting multiple streams simultaneously is much faster.&lt;/p&gt;
+
+&lt;p&gt;To be fair, starting multiple streams simultaneously is not really a common case,
+so our developers didn’t pay too much attention on it before.&lt;/p&gt;
+
+&lt;p&gt;But the point needs to be highlighted is:
+Even I didn’t pay attention on prompting the performance,
+it naturally happens! This is amazing!&lt;/p&gt;
+
+&lt;h3 id=&quot;memory-leaks&quot;&gt;Memory leaks&lt;/h3&gt;
+
+&lt;p&gt;Rewriting the code in a different language gives developer a chance to review:
+How we manage the memory across API calls?
+The memory created and lent outside via one API needs to be
+retrieved and destroyed properly in another API
+since the memory allocator used in the library
+may be different from the call sites.&lt;/p&gt;
+
+&lt;p&gt;Pairing the memory allocation and deallocation in the APIs counts on the human eyes
+so there is always a chance to miss some spots.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, the &lt;em&gt;LeakSanitizer&lt;/em&gt; can be enabled easily in &lt;em&gt;Rust Nightly&lt;/em&gt; by
+&lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=leak&quot;&lt;/code&gt; (e.g., &lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=leak&quot; cargo test&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;Memory leaks can also be hunted by running tests within &lt;em&gt;Xcode’s Instruments&lt;/em&gt;.
+It’s a very powerful tool that can help identifying where the memory leaks are.
+&lt;em&gt;Xcode’s Instruments&lt;/em&gt; would need a &lt;em&gt;executable&lt;/em&gt; to run tests.
+The good news is the &lt;em&gt;executable&lt;/em&gt; generated by &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt;
+can be loaded to &lt;em&gt;Xcode’s Instruments&lt;/em&gt; easily.&lt;/p&gt;
+
+&lt;h3 id=&quot;test-coverage&quot;&gt;Test coverage&lt;/h3&gt;
+
+&lt;p&gt;The test cases are the founding blocks to build the above achievements.
+The data-racing issues can be detected by running tests
+on different threads at the same time by simply calling &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt;.
+Performance can be watched by running benchmark test within &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo bench&lt;/code&gt;.
+Memory leaks and other memory issues can be hunted by running tests with
+the &lt;a href=&quot;https://github.com/google/sanitizers&quot;&gt;sanitizers&lt;/a&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=&amp;lt;SAN_NAME&amp;gt;&quot; cargo test&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;As long as the test cases are written properly,
+&lt;em&gt;cargo&lt;/em&gt; frameworks provide enough supports for what developers need.&lt;/p&gt;
+
+&lt;p&gt;Enlarging the test-coverage to discover the problems earlier
+is one of the goal of the &lt;em&gt;C-to-Rust&lt;/em&gt; rewriting project.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/mozilla/grcov&quot;&gt;grcov&lt;/a&gt; is a convenient tool that help monitoring the test coverage in our code.
+It can show the test-coverage status of the &lt;em&gt;Rust&lt;/em&gt; project in a less-than-10-line &lt;a href=&quot;https://github.com/ChunMinChang/cubeb-coreaudio-rs/commit/2e2266ec4106141d4b0d95fd1b3f77ecef27d00d&quot;&gt;script&lt;/a&gt;.
+In this project, the 79.2% lines (in &lt;a href=&quot;https://github.com/ChunMinChang/cubeb-coreaudio-rs/tree/2e2266ec4106141d4b0d95fd1b3f77ecef27d00d/src/backend&quot;&gt;src/backend&lt;/a&gt;) are covered within the tests.
+The left 20.8% code are mostly logs printed when turning on a preference
+so most of the product-level code are covered.&lt;/p&gt;
+
+&lt;p&gt;For now, only &lt;em&gt;5&lt;/em&gt; bugs are intorduced by the new &lt;em&gt;Rust&lt;/em&gt; backend itself.
+Most of the problem in the audio library occur in the original C backend as well.
+By enlarging the test coverage, many bugs are found before the code is shipped to the wild.&lt;/p&gt;
+
+&lt;h3 id=&quot;conculsion&quot;&gt;Conculsion&lt;/h3&gt;
+
+&lt;p&gt;The experience I learned can be summarized in just one sentence:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Life is short, use &lt;em&gt;Rust&lt;/em&gt;!&lt;/strong&gt;&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">A summary of the C-to-Rust rewriting work for Firefox’s audio library on Mac OS.</summary></entry><entry><title type="html">LRU Table</title><link href="http://localhost:4000/post/lru-table" rel="alternate" type="text/html" title="LRU Table" /><published>2020-03-20T00:00:00+08:00</published><updated>2020-03-20T00:00:00+08:00</updated><id>http://localhost:4000/post/lru-table</id><content type="html" xml:base="http://localhost:4000/post/lru-table">&lt;p&gt;&lt;em&gt;LRU(Least Recently Used)&lt;/em&gt; table is a simple data structure
 that is composed of &lt;em&gt;hash table&lt;/em&gt; and &lt;em&gt;linked list&lt;/em&gt;.
 The &lt;em&gt;insert&lt;/em&gt;, &lt;em&gt;erase&lt;/em&gt;, &lt;em&gt;lookup/search&lt;/em&gt; can be done naturally in &lt;em&gt;O(1)&lt;/em&gt;
 by its &lt;em&gt;hash-table&lt;/em&gt; part. But the best thing is,
@@ -2629,123 +2827,4 @@ or the APIs’ implementation directly if it’s possible.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://blow.streetvoice.com/37778-%E6%B7%B7%E5%90%88%E5%8F%B0%E8%AA%9E%E3%80%81%E8%8B%B1%E6%96%87%E9%9B%99%E8%81%B2%E9%81%93-tzchien%E6%85%88%E8%AC%99%E6%BA%AB%E6%9F%94%E9%87%8B%E5%87%BA%E5%85%A8%E6%96%B0%E5%96%AE%E6%9B%B2%E3%80%88/&quot;&gt;Blow吹音樂：混合台語、英文雙聲道 TzChien慈謙溫柔釋出全新單曲〈無窗的房間〉&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://tw.news.yahoo.com/%E5%A4%96%E5%9C%A8%E8%88%87%E5%85%A7%E5%9C%A8%E4%BA%A4%E8%9E%8D-tzchien%E6%85%88%E8%AC%99%E7%82%BA%E7%84%A1%E7%AA%97%E6%88%BF%E9%96%93%E5%90%B6%E5%96%8A-070703108.html&quot;&gt;Yahoo!奇摩新聞：外在與內在交融 TzChien慈謙為無窗房間吶喊&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Life&quot;]" /><category term="Memory" /><category term="Music" /><category term="TzChien慈謙" /><summary type="html">無窗的房間 〈無窗的房間〉在冬至那天的耳機裡迴盪， 而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。 剛出社會的那一年，大概是我目前人生體悟最多的一年。</summary></entry><entry><title type="html">Poor Students Are Missing at Top Universities</title><link href="http://localhost:4000/post/poor-students-are-missing-at-top-universities" rel="alternate" type="text/html" title="Poor Students Are Missing at Top Universities" /><published>2017-12-27T00:00:00+08:00</published><updated>2017-12-27T00:00:00+08:00</updated><id>http://localhost:4000/post/poor-students-are-missing-at-top-universities</id><content type="html" xml:base="http://localhost:4000/post/poor-students-are-missing-at-top-universities">&lt;h1 id=&quot;台大真不是窮人可以來讀的學校&quot;&gt;台大真不是窮人可以來讀的學校?&lt;/h1&gt;
-&lt;p&gt;雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。
-雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。&lt;/p&gt;
-
-&lt;!--read more--&gt;
-
-&lt;p&gt;&lt;a href=&quot;(http://www.books.com.tw/products/0010765505)&quot;&gt;《咬一口馬克思的水煎包》&lt;/a&gt;的作者出生清寒家庭，
-一路讀清大台大後驚覺很多同學都是有錢人，
-所以寫了一本書在講述「&lt;strong&gt;人生起跑點的不公平，並不是靠努力便能克服的。&lt;/strong&gt;」&lt;/p&gt;
-
-&lt;p&gt;這本書的新聞資訊被拿到ptt上後造成熱烈迴響，
-但很多人都把重點放在台大的「學費＋生活費」是不是真的高到窮人讀不起。
-我認為這本書要講的重點應該是「窮人比較難進台大」，而不是讀台大要花多少錢，
-畢竟真的讀不起作者早休學了。&lt;/p&gt;
-
-&lt;p&gt;要知道這件事是不是正確的，要看是&lt;strong&gt;統計上的整體表現&lt;/strong&gt;，而不是一堆個案討論。
-這些資料早就已經有人收集好了，統計結果就是：頂大(台清交成政)中的低收入學生比例，&lt;strong&gt;真 的 很 低&lt;/strong&gt;！
-窮人很少來念頂大，但箇中原因就不是從統計上可以得知的了。&lt;/p&gt;
-
-&lt;p&gt;這串討論中，比較有趣的點是居然有人在戰科系：「自己要讀人社沒錢怪誰？」
-……這位先生這位太太，你難道是知道她當初有什麼選擇嗎？
-如果她只有上一間清大人社，你覺得她要不要讀？
-說這話前要不要先問作者有沒有台大法律或台大電機還是有台大醫科可以選？
-很多回應和討論都立基在不知道哪裡來的假設上，
-假設這位出身窮苦的作者讀書的目的是要賺錢，如果人家不是這樣想的呢？
-18歲的孩子為了興趣選擇不賺錢的科系也不是不常見吧？(年輕人血氣方剛啊)&lt;/p&gt;
-
-&lt;h2 id=&quot;有能力承擔風險的人才能投資&quot;&gt;有能力承擔風險的人才能投資&lt;/h2&gt;
-
-&lt;p&gt;我們可以簡單的先想一個情況：
-村子裡有A和B兩個人，A每天都只能吃蕃薯，B每天都可以吃到牛排。
-他們長大後有兩個選擇，一個是加入狩獵大隊，另一個是去挖鑽石。
-雖然加入狩獵隊可以學習狩獵技能還每天都有肉吃，
-但如果挖到鑽石不僅可以每餐鮑魚龍蝦吃到飽，
-還可以上鑽石名人堂，只是平均要二十年才能挖到一顆。
-你覺得A跟B會怎麼選擇？&lt;/p&gt;
-
-&lt;p&gt;對B來說，吃肉根本沒有誘惑，傻了才不去挖鑽石。
-對A來說，選擇挖鑽石有很高的風險，因為沒挖到鑽石整戶人家要吃二十年的番薯，
-但選擇加入狩獵大隊這二十年都有肉吃欸。
-就算A很敢賭，他可以忍受二十年都吃蕃薯來挑戰一夕致富，但如果A是全家每天都只能吃蕃薯，
-而且家中只有A有機會加入狩獵大隊，你覺得A會怎麼選擇？&lt;/p&gt;
-
-&lt;p&gt;對基本生理需求無法被滿足的情況下，
-根本難以追求更高風險的事業(挖到鑽石吃爽爽)
-或更高層次的自我實現(鑽石名人堂)。
-現實中，一般家庭也常為了多賺點薪水(奶粉錢)，
-選擇前景較差的但目前薪水較好的工作，而不是高風險但有可能身價跳級的工作。&lt;/p&gt;
-
-&lt;p&gt;對真的窮苦人家來說，教育算是某種高風險投資，
-因為家中不僅會缺二到四年的勞動力，還要多付二到四年的學費和生活費，
-更別說如果要出國唸書要準備多少錢了。
-我身邊真的有同學的父母希望她趕快去賺錢拿錢回家別念書了，
-也有朋友書讀到一半因為家中負債休學去工作賺錢了。&lt;/p&gt;
-
-&lt;h2 id=&quot;以馬斯洛金字塔來解釋&quot;&gt;以馬斯洛金字塔來解釋&lt;/h2&gt;
-
-&lt;p&gt;若假設「提高考試成績」是一種追求「自我實現」的具體表現的話，
-就能以&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E9%9C%80%E6%B1%82%E5%B1%82%E6%AC%A1%E7%90%86%E8%AE%BA&quot;&gt;馬斯洛金字塔&lt;/a&gt;的角度來解釋「台大(或其他頂尖大學)學生中清寒家庭比例很低」這件事。&lt;/p&gt;
-
-&lt;p&gt;人類在追求「自我實現」之前，應該會需要先滿足「生理、安全、社交、尊重」的需求。
-但窮苦人家的時間連花在養活家庭都不夠用了，根本沒有其他時間來好好經營一個家庭。
-沒有穩定的收入，就代表不能提供基本的「生理、安全」需求。
-沒有時間照顧、關心孩童的身心發展，就不能滿足孩子需要的「社交」需求。
-沒有多餘心力去發掘和了解孩子的天份，也導致相對比較少有機會去肯定孩子的成就，
-使孩子沒有感受到「尊重」。
-在這些需求都沒有滿足的情況下，要孩子去追求「自我實現」是很困難的，
-除非是這孩子天生比較會考試，或這孩子天性樂觀。
-所以成長在家庭情況穩定良好(有錢人家或收入穩定的軍公教家庭)，
-有父母關心的孩子比較有機會可以向上發展，
-追求卓越。&lt;/p&gt;
-
-&lt;h2 id=&quot;受高等教育的清寒學生可以脫貧嗎&quot;&gt;受高等教育的清寒學生可以脫貧嗎？&lt;/h2&gt;
-
-&lt;p&gt;這議題背後我最好奇的問題是「&lt;strong&gt;清寒學生受頂大高等教育後能否脫貧&lt;/strong&gt;」，
-但我無法查到這項數據，所以只好退而求其次查詢「教育是否能解決貧窮」，答案是不行。
-收入太少導致貧窮的原因不只和教育程度相關，
-有很多是因為身體殘疾、年齡太老(或太年輕)而無法找到適當的工作。
-這些族群不是依靠受教育就能解決的，所以單靠教育無法解決全部的貧窮問題。&lt;/p&gt;
-
-&lt;p&gt;雖然這問題仍需要更多調查和數據才能知道答案，
-不過直覺上我覺得那些受頂大高等教育的清寒學生應該是可以脫貧，
-因為有數據顯示：&lt;a href=&quot;https://www.bls.gov/emp/ep_chart_001.htm&quot;&gt;教育程度越高失業率越低且薪水越高&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;解決貧窮問題比較重要&quot;&gt;解決貧窮問題比較重要&lt;/h2&gt;
-
-&lt;p&gt;板上很多討論會追究窮是誰的責任，討論窮是誰的錯。
-這些在我看來都不重要，因為這都不能改變什麼，
-真正重要的是要找到方法解決貧窮造成的問題，釐清貧窮的原因，阻止更多人陷入貧窮。
-站在國家財政的角度，這是絕對是個划算的考量。
-&lt;a href=&quot;https://www.youtube.com/watch?v=aIL_Y9g7Tg0&quot;&gt;消滅貧窮說到底是一項投資&lt;/a&gt;，
-因為貧窮造成的社會問題往往耗費更多社會資源。&lt;/p&gt;
-
-&lt;p&gt;大家都在這片土地上努力著，也算同舟共濟了。
-出問題時與其歸咎是誰的錯，不如尋找解決辦法吧。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://disp.cc/b/163-anFU&quot;&gt;[新聞] 「台大真不是窮人可以來讀的學校！」&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://disp.cc/b/163-anLD&quot;&gt;JIMJIM &amp;gt; Re: [新聞] 「台大真不是窮人可以來讀的學校！」&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://www.ptt.cc/bbs/Gossiping/M.1513770984.A.0AE.html&quot;&gt;drung1110 &amp;gt; Re: [新聞] 「台大真不是窮人可以來讀的學校！」&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://www.ptt.cc/bbs/Gossiping/M.1513701675.A.7E7.html&quot;&gt;Taoyuan5566 &amp;gt; Re: [新聞] 「台大真不是窮人可以來讀的學校！」&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://womany.net/read/article/15109&quot;&gt;「台大不是窮人讀的地方」文章為何惹議？思考特權其實很痛苦&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://homepage.ntu.edu.tw/~luohm/NTU.pdf&quot;&gt;誰是台大學生？— 性別、省籍、與城鄉差距&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.econ.ntu.edu.tw/ter/new/data/new/forthcoming/104-014.pdf&quot;&gt;誰是台大學生？(2001-2014)──多元入學的影響&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://talkecon.com/ntu_admission/&quot;&gt;台大怎麼上：誰是台大學生 2.0&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://sm1215blog.wordpress.com/2014/07/31/%E9%99%B3%E6%AD%A3%E6%98%8C/&quot;&gt;高等教育不利於低所得家庭學生&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.ettoday.net/news/20131118/297374.htm&quot;&gt;頂尖國立大學「弱勢生」僅0.4％&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.thenewslens.com/article/16598&quot;&gt;念不起台清交！高等教育成弱勢生得不到的「奢侈品」&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://buzzorange.com/2017/07/25/why-the-poor-is-poor/&quot;&gt;發錢給窮人，會讓他們墮落嗎？這位學者在 TED 上用一個實驗翻轉「貧窮」定義&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.researchgate.net/post/Is_Education_really_the_way_of_the_poor_to_escape_poverty&quot;&gt;Is Education really the way of the poor to escape poverty?&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.dosomething.org/us/facts/11-facts-about-education-and-poverty-america&quot;&gt;11 Facts About Education and Poverty in America&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.huffingtonpost.com/gloria-bonilla-santiago/education-key-to-breaking_b_14369716.html&quot;&gt;Education: Key to Breaking Cycle of Poverty&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://borgenproject.org/education-prevents-poverty/&quot;&gt;How Education Prevents Poverty&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://prospect.org/article/education-cure-poverty&quot;&gt;Is Education the Cure for Poverty?&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.demos.org/blog/12/2/15/why-education-does-not-fix-poverty&quot;&gt;Why Education Does Not Fix Poverty&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://paul-bruno.com/2014/04/why-education-reform-is-probably-not-the-best-way-to-fight-poverty/&quot;&gt;Why Education Reform is Probably Not The Best Way to Fight Poverty&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Social Issues&quot;]" /><category term="Education" /><summary type="html">台大真不是窮人可以來讀的學校? 雖然沒念過台大，但看到ptt上熱烈討論的「台大是不是窮人可以來唸的學校」也別有感觸。 雖然自己原生家庭並非清寒，但我也體會過跟其他出生在高級家庭的人(家裡有錢父母至少有大學學歷)的差距。</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Life&quot;]" /><category term="Memory" /><category term="Music" /><category term="TzChien慈謙" /><summary type="html">無窗的房間 〈無窗的房間〉在冬至那天的耳機裡迴盪， 而那個陰暗小房間裡的回憶，也隨著歌聲浮上心頭。 剛出社會的那一年，大概是我目前人生體悟最多的一年。</summary></entry></feed>

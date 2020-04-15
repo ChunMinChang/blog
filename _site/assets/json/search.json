@@ -1,10 +1,19 @@
 [
   
     {
-      "title"    : "Cubeb Oxidation on MacOS",
+      "title"    : "Shape your code as how you shape your body",
       "category" : "Media",
       "tags"     : "Firefox",
-      "url"      : "/post/cubeb-oxidation-on-macos",
+      "url"      : "/post/shape-your-code-as-how-you-shape-your-body",
+      "date"     : "2020-04-15 00:00:00 +0800",
+			"shortdate": "April 15, 2020"
+    } ,
+  
+    {
+      "title"    : "Summary of Cubeb Oxidation on Mac OS",
+      "category" : "Media",
+      "tags"     : "Firefox",
+      "url"      : "/post/summary-of-cubeb-oxidation-on-mac-os",
       "date"     : "2020-04-13 00:00:00 +0800",
 			"shortdate": "April 13, 2020"
     } ,

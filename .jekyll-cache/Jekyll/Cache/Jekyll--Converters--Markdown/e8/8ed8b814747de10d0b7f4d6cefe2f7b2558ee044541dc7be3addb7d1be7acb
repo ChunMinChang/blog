@@ -1,8 +1,0 @@
-I"Ï<p><em>LRU(Least Recently Used)</em> table is a simple data structure
-that is composed of <em>hash table</em> and <em>linked list</em>.
-The <em>insert</em>, <em>erase</em>, <em>lookup/search</em> can be done naturally in <em>O(1)</em>
-by its <em>hash-table</em> part. But the best thing is,
-it can return the <em>least</em> or <em>most</em> recently used data in <em>O(1)</em>
-by the its <em>linked-list</em> in a <em>least-to-most</em> recently used order.</p>
-
-:ET

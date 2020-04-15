@@ -9,20 +9,20 @@
 
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Shape your code as how you shape your body | Peak Up</title>
+<title>The effect of practicing what you already know | Peak Up</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Shape your code as how you shape your body" />
+<meta property="og:title" content="The effect of practicing what you already know" />
 <meta name="author" content="Chun-Min Chang" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="The approach to refactor the code is same as how you shape the body. You can apply what you’ve learned from workout to writing code." />
-<meta property="og:description" content="The approach to refactor the code is same as how you shape the body. You can apply what you’ve learned from workout to writing code." />
-<link rel="canonical" href="http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body" />
-<meta property="og:url" content="http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body" />
+<meta name="description" content="This post presents the results of applying a few tricks every Rust developer may already know but haven’t got a chance to try them." />
+<meta property="og:description" content="This post presents the results of applying a few tricks every Rust developer may already know but haven’t got a chance to try them." />
+<link rel="canonical" href="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" />
+<meta property="og:url" content="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" />
 <meta property="og:site_name" content="Peak Up" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-04-15T00:00:00+08:00" />
 <script type="application/ld+json">
-{"headline":"Shape your code as how you shape your body","dateModified":"2020-04-15T00:00:00+08:00","url":"http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body","datePublished":"2020-04-15T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/mountain.png"},"name":"Chun-Min Chang"},"author":{"@type":"Person","name":"Chun-Min Chang"},"description":"The approach to refactor the code is same as how you shape the body. You can apply what you’ve learned from workout to writing code.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"headline":"The effect of practicing what you already know","dateModified":"2020-04-15T00:00:00+08:00","url":"http://localhost:4000/post/the-effect-of-practicing-what-you-already-know","datePublished":"2020-04-15T00:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/post/the-effect-of-practicing-what-you-already-know"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/mountain.png"},"name":"Chun-Min Chang"},"author":{"@type":"Person","name":"Chun-Min Chang"},"description":"This post presents the results of applying a few tricks every Rust developer may already know but haven’t got a chance to try them.","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -163,7 +163,7 @@
                         
 
                         
-                            Shape your code as how you shape your body
+                            The effect of practicing what you already know
                         </h1>
                     
 
@@ -192,7 +192,7 @@
                             
 
                             
-                                    <span class="time">8.666666666666666</span> minutes read
+                                    <span class="time">5.705555555555556</span> minutes read
                             
                                 
                             
@@ -206,153 +206,30 @@
                     <div class="post-body bordered-bottom" itemprop="description">
                     
 
-                        <p>The approach to refactor the code is same as how you shape the body.
-You can apply what you’ve learned from workout to writing code.</p>
+                        <p>This post presents the results of applying a few tricks every <em>Rust</em> developer may already know
+but haven’t got a chance to try them.</p>
 
 <!--read more-->
 
-<p>This post introduce how I make the plan for rewriting the Firefox’s audio library,
-named <a href="https://github.com/kinetiknz/cubeb"><em>Cubeb</em></a>, from <a href="https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp"><em>C++</em></a> into <a href="https://github.com/ChunMinChang/cubeb-coreaudio-rs"><em>Rust</em></a>.</p>
+<p>I am going to share some actions and results I find useful when
+rewriting the Firefox’s audio library, named <a href="https://github.com/kinetiknz/cubeb"><em>Cubeb</em></a>,
+from <a href="https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp"><em>C++</em></a> into <a href="https://github.com/ChunMinChang/cubeb-coreaudio-"><em>Rust</em></a>.</p>
 
-<p>The story is nothing more than a workout-training post that you’ve probably read before:
-it lists all the tips a trainee needs and shows a perfect body shape demonstrating
-the results for applying those tips.</p>
+<h2 id="what-the-problem-we-have">What the problem we have</h2>
 
-<p>Everyone probably knows a few tricks for making the body in a good shape
-but not everyone can achieve that.
-Even the shape is made, it’s hard to keep the shape.</p>
+<p>The problem needs to be solved in the rewriting project can be found in <a href="shape-your-code-as-how-you-shape-your-body">the post here</a>.</p>
 
-<p>The quickest way to shape the body is hiring a mean coach!
-They make sure you’ve done everything right and push you to do your best.</p>
-
-<p>Human is lazy. We only move forward when something push us.</p>
-
-<h2 id="we-need-a-mean-coach-and-rust-compiler-is-the-one">We Need A Mean Coach, and <em>Rust Compiler</em> Is the One</h2>
-
-<p>When this habit comes to programming,
-I admit that sometimes I don’t stick on the coding disciplines the code should follow,
-as long as the code pass the tests.
-That’s why I need a code reviewer.</p>
-
-<p>However, code reviewer aren’t always there.
-The code can become out of shape a bit and a bit if no one constantly watches it.
-This fits the well-known <a href="https://en.wikipedia.org/wiki/Broken_windows_theory">broken windows theory</a>.</p>
-
-<p>To keep the code in a good style, we need a robot-reviewer that is always accountable and trustworthy.
-The <strong>Rust compiler</strong> is definitely one of them.</p>
-
-<p>If you google <em>Rust</em>, you will see comments largely divided into two groups:
-Some complain the <em>Rust compiler</em> is too stupid to allow them doing things they want;
-Some love the <em>Rust compiler</em> since it makes the code well-structured.
-This is same as the comments for a strict teacher or professor.</p>
-
-<p>Gladly I am an Asian. I am totally fine with a mean coach.
-I bet I’ve seen meaner one in my school life.
-The <em>Rust compiler</em> is the robot-reviewer I need.</p>
-
-<h2 id="motive-to-have-a-good-shape">Motive to Have A Good Shape</h2>
-
-<p>There are some reasons for supporting the decision
-to shape the audio library in <em>Rust</em>:</p>
-
-<ol>
-  <li>This could reduce the developping and debugging efforts in the long run</li>
-  <li>Some mysterious problem may be addressed by this deeply cleaning process</li>
-  <li>It’s time to refactor the library after putting hot-fix and hot-fix</li>
-</ol>
-
-<p>Before this project, our team have successfully translated
-the <em>PulseAudio</em> backend on <em>Linux</em> from <em>C</em> to <em>Rust</em> so
-we believe the plan is feasible.</p>
-
-<p>By rewriting all the code in <em>Rust</em>, which was born with good coding principals,
-the human effor to review or check the code would be lower.
-In addition, the <em>Rust</em>’s eco-system and community is thriving and robust.
-The library can leverage many useful third-party <em>crate</em>s to fulfil our needs.
-Using the third-party library can not only reduces the maintaining effort
-but also <strong>embody the spirit of <em>open-source</em></strong>.</p>
-
-<p>When translating the <em>C</em> code to the <em>Rust</em> code that follows the <em>Rust</em>’s programming rules,
-Some mysterious issues may be addressed silently
-with transforming the code structure in a stricter style.
-The code would need to be refactored at some point anyway.
-<em>Rust</em> seems to be the best choice for refactoring the library at this time.</p>
-
-<h2 id="define-the-desired-shape">Define the Desired Shape</h2>
-
-<p>The goal is straightforward enough:
-translate the library into <em>Rust</em> and don’t introduce regressions.</p>
-
-<p>In the product-level view, this is pretty similar to:
-create a new flight engine in a state-of-the-art techniques,
-put it in our current flights and make our flights soar!</p>
-
-<p>The goal is simple in high-level view, but the detailed process is hard.</p>
-
-<p>After thinking this carefully,
-there are some difficulties to make the library into a perfect <em>Rust</em> shape:</p>
+<p>In short, the following problems motivate us:</p>
 
 <ul>
-  <li>It’s hard to follow all the <em>Rust</em> rules when writing <em>Rust</em> itself.
-It would be harder to write code in a certain way we used to do in <em>C</em> code
-(especially I didn’t have much <em>Rust</em> experience at that time)</li>
-  <li>It’s hard to prevent regressions.
-The library code is appended patch by patch and not every patch comes with a test.
-Without the check to prevent breaking each fix, it’s hard to tell
-if one fix for a certain problem would be missing or not
-during translating the code</li>
-</ul>
-
-<p>Instead of worrying about shaping the code body in a certain way
-and the side-effects may be introduced,
-it’s best to make a plan to address or prevent them as best as we can.</p>
-
-<p>The first step is to review the problems we have.</p>
-
-<h2 id="review-what-the-problems-are">Review What the Problems Are</h2>
-
-<blockquote>
-  <p>“If I had an hour to solve a problem
-I’d spend 55 minutes thinking about the problem
-and 5 minutes thinking about solutions.”
-― Albert Einstein</p>
-</blockquote>
-
-<p>I believe how well we define a problem determines how well we solve it.</p>
-
-<p>To bring value of the rewriting project as much as possible,
-the following problems need to be addressed:</p>
-
-<ol>
-  <li>Some assertions will be hit unexpectedly</li>
-  <li>Some code are suspected to be executed in a wrong time</li>
+  <li>The library code becomes less-structured after putting hot-fix and hot-fix</li>
   <li>A fix for one problem may cause another problem or regression</li>
   <li>We have platform-dependent problem but we only have high-level cross-platform intergretion tests</li>
   <li>Some issues are device-related and we don’t have any way to simulate those device operations</li>
-</ol>
+  <li>There must be some data racing issues but the causes are not easy to be identified</li>
+</ul>
 
-<p>Apparently, the test coverage needs to be enlarged.
-The <em>3</em> can be addressed if test case can be written more often in a easier way.
-After separating the <em>Mac OS</em>’s platform-dependent code to a standalone crate,
-the platform-dependent tests can be easily implemented without considering other platforms
-so <em>4</em> can be solved.
-To address <em>5</em>, it needs to find a way to simulate the device operations.
-The <em>2</em> might indicate some data-racing issues.
-Our library manages threads inside itself.
-The output and input I/O threads will be created when the audio starts playing.
-The task threads would be created when the device is switching, plugging, and unplugging.
-Writing multi-thread tests is helpful to hunt the potential data-racing issues
-and again the APIs to simulate device operations are really necessary.
-The <em>1</em> may be caused by calling APIs in a wrong time
-or those problems only happen on specific hardwares.
-By separating a large library API into several smaller APIs
-with propery unit tests and logs can help us narrow down the scope of the causes.
-It’s easier to identify a problem by testing several small APIs independently
-than testing a large API at once.</p>
-
-<h2 id="define-the-goals">Define the Goals</h2>
-
-<p>The requirements can be organized to:</p>
+<p>The goals are set as follow:</p>
 
 <ul>
   <li>Enlarge test coverage
@@ -367,74 +244,148 @@ than testing a large API at once.</p>
   <li>Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning</li>
 </ul>
 
-<h2 id="make-a-feasible-plan">Make A Feasible Plan</h2>
+<h2 id="summary-of-the-results">Summary of the Results</h2>
 
-<p>There are two big problems left:</p>
+<p>The results we have can be found in <a href="summary-of-cubeb-oxidation-on-mac-os">the post here</a>.</p>
 
-<ol>
-  <li>How to prevent the regression from being introduced by rewriting the whole library, without having enough tests?</li>
-  <li>I don’t have much <em>Rust</em> experience</li>
-</ol>
-
-<p>For the problem <em>1</em>, the safest approach is: 
-translating all the code on a line-by-line basis at first.
-All the <em>C/C++</em> code should be translated to <em>Rust</em> plainly even they break <em>Rust</em>’s rule.
-<em>Rust</em> has <code class="highlighter-rouge">unsafe</code> block that allows developers to do what they used to do in <em>C</em>.
-This could move all the workarounds for some special situations or devices
-the library used to have at the same time when all the <em>C</em> code is rewritten in <em>Rust</em>.</p>
-
-<p>One the other hand, the answer of the problem <em>2</em> can be found
-on any advertisement flyer in your mailbox:
-“We provide a month-free trial-run for you to experience our class!”.</p>
-
-<p>Same manner can be applied here.
-Writing a minimum-viable audio library in pure <em>Rust</em> first as a trial-run
-can address problem <em>2</em> effectively. This process also brings many benefits:</p>
+<p>In short, the following results are made:</p>
 
 <ul>
-  <li>It’s able to see what the problems the rewriting will face are and how to solve them,
-in a way smaller scope</li>
-  <li>It shows a rough outline about what the audio APIs should look like at the end,
-since it’s rewritten in pure <em>Rust</em></li>
-  <li>Some APIs is reusable in the future and they’ve been tested in a way smaller scope</li>
+  <li>Solve <em>6</em> data racing issues discovered by enlarging the test coverage
+    <ul>
+      <li>Some issues exist for ages but their causes are not easy to be identified</li>
+    </ul>
+  </li>
+  <li>Boost the performance to <em>35x</em> faster when starting multiple streams simultaneously
+    <ul>
+      <li>A happy side effect when fixing data racing issues</li>
+    </ul>
+  </li>
+  <li>Hunt and fix <em>3</em> memory leaks</li>
+  <li>The test coverage is enlarged to almost 80%
+    <ul>
+      <li>The left 20% are mostly logs</li>
+      <li>The amount of the regression bugs is pretty low:
+        <ul>
+          <li>For now, only <em>5</em> bugs are introduced by using the new <em>Rust</em> API</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
 
-<p>As a result, the plan is divided into 4 phases:</p>
+<h2 id="the-effect-of-practicing-what-you-already-know">The Effect of Practicing What You Already Know</h2>
 
-<ol>
-  <li>Write a minimum-viable version of the audio library as a trial-run</li>
-  <li>Translate all the lines plainly
-    <ul>
-      <li>Add the proper unit or intergretion tests at the same time</li>
-    </ul>
-  </li>
-  <li>Remove the <code class="highlighter-rouge">unsafe</code> code introduced in previous stage
-    <ul>
-      <li>Now tests are created to support the refactoring</li>
-      <li>Shipping this version in the <em>Firefox Nightly</em> to test this in the wild</li>
-    </ul>
-  </li>
-  <li>Keeping refactoring the abnormal <em>Rust</em> code
-    <ul>
-      <li>Leverage with third-party crates to reduce the maintain efforts</li>
-      <li>Split some code into sub crates to attract some contributors</li>
-    </ul>
-  </li>
-</ol>
+<p>Everyone probably knows a few tricks for making the body in a good shape
+but not everyone can achieve that.
+Sticking with the appropriate plan is the key to meet the goals for having a good shape.</p>
 
-<h2 id="start-the-journey">Start the Journey</h2>
+<p>I find I can apply what I’ve learned from workout to writing code.
+The approach to refactor the code is same as how we shape the body.</p>
 
-<p>Now, the only things I need is patience, just what I need when doing workout.
-I know everything I should do but the plan is not easy to stick with.
-Translating code on a line-by-line basis is dull as doing workout set.
-Writing test to prevent regression is uninteresting as
-calculating <em>TDEE (Total Daily Energy Expenditure)</em> to prevent my body from getting fat.</p>
+<p>It’s is a long and lonely process and the plan is not easy to stick with.
+But I find everything worth doing when the shape of code is finally made!</p>
 
-<p>It’s is a long, hard, and lonely process.
-But I find everything worth doing when the shape is finally made!
-(To be clear, only the shape of code is made.)
-I am happy to have the result I have at the end.
-The summay is listed in <a href="summary-of-cubeb-oxidation-on-mac-os">previous post</a>.</p>
+<p>The followings introduce some useful tips I learned from this rewriting project.</p>
+
+<p>To read more story of how the rewriting plan is made,
+please read <a href="shape-your-code-as-how-you-shape-your-body">the post here</a>.</p>
+
+<h3 id="always-write-tests">Always Write Tests</h3>
+
+<p>Every programmer knows it’s better to write tests
+but not every allocates time to do that.</p>
+
+<p>The experience I learned from this rewriting project makes me
+believe that the test cases are the founding blocks to
+build the above achievements.</p>
+
+<p><code class="highlighter-rouge">cargo test</code> run tests in parallel by default.
+As a result, some data-racing issues could be naturally detected.</p>
+
+<p>Writing tests can also provide a different view to review the API.
+In my case, the idea about how to implement APIs to simulate the device plugging and unplugging
+was inspired when running these new added tests.</p>
+
+<p>There is an API used in the library creates an hidden device silently
+and fire the device-changed operations.
+Therefore that API can be reused to simulate the device plugging and unplugging.
+I didn’t get this idea before
+until I find this API interferes the tests for device-changed operations.</p>
+
+<p>We didn’t have any way to simulate the device operations.
+Now we have one!</p>
+
+<h3 id="turn-on-sanitizers">Turn on Sanitizers</h3>
+
+<p>Probably every developer knows the <a href="https://github.com/google/sanitizers">sanitizers</a> is useful for system programming.</p>
+
+<p>Enabling the <em>sanitizer</em> in a large project is not an easy task
+since it needs to tune the compiler settings correctly.</p>
+
+<p>Gladly, <em>sanitizer</em> can be enabled easily in <em>Rust</em> by <code class="highlighter-rouge">RUSTFLAGS="-Z sanitizer=&lt;SAN_NAME&gt;"</code> flag.</p>
+
+<p><code class="highlighter-rouge">RUSTFLAGS="-Z sanitizer=thread" cargo test</code> helps us to hunt one data-racing issue
+and <code class="highlighter-rouge">RUSTFLAGS="-Z sanitizer=leak" cargo test</code> helps us to fix one memory leak.</p>
+
+<p>It’s better to enable <em>sanitizer</em> when the Rust <em>crate</em> is small
+so the compiler setting error for <em>sanitizer</em>
+introduced by the (newly added) dependent crates can be found earlier.</p>
+
+<h3 id="run-xcodes-instruments-with-the-test-executable">Run <em>XCode</em>’s <em>Instruments</em> with the Test Executable</h3>
+
+<p>The test executable generated by <code class="highlighter-rouge">cargo test</code> can be loaded to <em>XCode</em>’s <em>Instruments</em> easily.</p>
+
+<p>Running the test executable with <em>Leaks</em> check help us to hunt two memory leaks.</p>
+
+<h3 id="monitor-the-test-coverage">Monitor the test coverage</h3>
+
+<p>The <a href="https://github.com/mozilla/grcov">grcov</a> is a convenient tool that help monitoring the test coverage in our code.
+It can show the test-coverage status of the <em>Rust</em> project in just a few line sciprts.</p>
+
+<p>It’s useful to know which part has not been tested
+since it indicates where we should focus next.</p>
+
+<h3 id="use-benchmark-to-evaluate-the-tradeoff">Use Benchmark to Evaluate the Tradeoff</h3>
+
+<p>One problem usually can be solved in many different ways.
+Sometime it’s hard to tell which approach is most appropriate for the needs.</p>
+
+<p>When performance is one of key factor to make the decision,
+<code class="highlighter-rouge">cargo bench</code> can provide the data to evaluate the approachs.</p>
+
+<p>In this project, <code class="highlighter-rouge">cargo bench</code> helps us to recognize
+one improvement is <em>4x</em> faster than the original code.
+It also helps us to choose a slightly slower approach with better code readability
+over a slightly faster approach with poor code readability
+since the perofrmance difference is confirmed to be negligible.</p>
+
+<h3 id="ask-help-when-you-need">Ask help when you need</h3>
+
+<p>Asking help may be the important facotr I find.</p>
+
+<p>This <a href="https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html">post</a> reveals a fact:
+The team will be more productive if the team provide enough <em>psychological safety</em>
+that makes teammate feel comfortable to ask things freely.</p>
+
+<p>Fortunately, the coworkers I encountered are super supportive.</p>
+
+<p>In my experience, the outcome from a discussion
+that starts with an immature idea
+is usually better or at least equivalent
+than an idea formed by someone alone.
+And the process is usually shorter.</p>
+
+<h3 id="concolusion">Concolusion</h3>
+
+<p>Trying hard to stick with the appropriate plan is the key to shape the code.</p>
+
+<p>It’s not necessary to do the plan <em>100%</em> correctely.
+If you have experience on calculating <em>TDEE (Total Daily Energy Expenditure)</em>,
+you probably know the goal of fat loss is still reachable
+if the achievement rate is only <em>80~90%</em>.</p>
+
+<p>Good luck!</p>
 
 
 
@@ -462,20 +413,20 @@ The summay is listed in <a href="summary-of-cubeb-oxidation-on-mac-os">previous 
     </p>
     <ul class="social-mini">
         <li>
-            <a href="https://twitter.com/intent/tweet?text=Shape+your+code+as+how+you+shape+your+body%20http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body%20via%20&#64;"
+            <a href="https://twitter.com/intent/tweet?text=The+effect+of+practicing+what+you+already+know%20http://localhost:4000/post/the-effect-of-practicing-what-you-already-know%20via%20&#64;"
                 onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" data-toggle="tooltip"
                 title="Share on Twitter" itemprop="Twitter">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
         <li>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"
                 data-toggle="tooltip" title="Share on Facebook" itemprop="Facebook">
                 <i class="fa fa-facebook"></i>
             </a>
         </li>
         <li>
-            <a href="https://plus.google.com/share?url=http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
+            <a href="https://plus.google.com/share?url=http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"
                 data-toggle="tooltip" title="Share on Google plus" itemprop="GooglePlus">
                 <i class="fa fa-google-plus"></i>
             </a>

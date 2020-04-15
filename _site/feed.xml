@@ -1,4 +1,183 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-15T12:59:10+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">Shape your code as how you shape your body</title><link href="http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body" rel="alternate" type="text/html" title="Shape your code as how you shape your body" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body</id><content type="html" xml:base="http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body">&lt;p&gt;The approach to refactor the code is same as how you shape the body.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-16T01:21:28+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The effect of practicing what you already know</title><link href="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" rel="alternate" type="text/html" title="The effect of practicing what you already know" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/the-effect-of-practicing-what-you-already-know</id><content type="html" xml:base="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know">&lt;p&gt;This post presents the results of applying a few tricks every &lt;em&gt;Rust&lt;/em&gt; developer may already know
+but haven’t got a chance to try them.&lt;/p&gt;
+
+&lt;!--read more--&gt;
+
+&lt;p&gt;I am going to share some actions and results I find useful when
+rewriting the Firefox’s audio library, named &lt;a href=&quot;https://github.com/kinetiknz/cubeb&quot;&gt;&lt;em&gt;Cubeb&lt;/em&gt;&lt;/a&gt;,
+from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp&quot;&gt;&lt;em&gt;C++&lt;/em&gt;&lt;/a&gt; into &lt;a href=&quot;https://github.com/ChunMinChang/cubeb-coreaudio-&quot;&gt;&lt;em&gt;Rust&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-the-problem-we-have&quot;&gt;What the problem we have&lt;/h2&gt;
+
+&lt;p&gt;The problem needs to be solved in the rewriting project can be found in &lt;a href=&quot;shape-your-code-as-how-you-shape-your-body&quot;&gt;the post here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In short, the following problems motivate us:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The library code becomes less-structured after putting hot-fix and hot-fix&lt;/li&gt;
+  &lt;li&gt;A fix for one problem may cause another problem or regression&lt;/li&gt;
+  &lt;li&gt;We have platform-dependent problem but we only have high-level cross-platform intergretion tests&lt;/li&gt;
+  &lt;li&gt;Some issues are device-related and we don’t have any way to simulate those device operations&lt;/li&gt;
+  &lt;li&gt;There must be some data racing issues but the causes are not easy to be identified&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The goals are set as follow:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Enlarge test coverage
+    &lt;ul&gt;
+      &lt;li&gt;Find a way to simulate device switching, plugging, and unplugging&lt;/li&gt;
+      &lt;li&gt;Create device-related test&lt;/li&gt;
+      &lt;li&gt;Create multi-thread test to hunt the potential data-racing issues&lt;/li&gt;
+      &lt;li&gt;Create unit tests for each API&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Deconstruct a large API into several smaller one with error messages&lt;/li&gt;
+  &lt;li&gt;Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;summary-of-the-results&quot;&gt;Summary of the Results&lt;/h2&gt;
+
+&lt;p&gt;The results we have can be found in &lt;a href=&quot;summary-of-cubeb-oxidation-on-mac-os&quot;&gt;the post here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In short, the following results are made:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Solve &lt;em&gt;6&lt;/em&gt; data racing issues discovered by enlarging the test coverage
+    &lt;ul&gt;
+      &lt;li&gt;Some issues exist for ages but their causes are not easy to be identified&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Boost the performance to &lt;em&gt;35x&lt;/em&gt; faster when starting multiple streams simultaneously
+    &lt;ul&gt;
+      &lt;li&gt;A happy side effect when fixing data racing issues&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Hunt and fix &lt;em&gt;3&lt;/em&gt; memory leaks&lt;/li&gt;
+  &lt;li&gt;The test coverage is enlarged to almost 80%
+    &lt;ul&gt;
+      &lt;li&gt;The left 20% are mostly logs&lt;/li&gt;
+      &lt;li&gt;The amount of the regression bugs is pretty low:
+        &lt;ul&gt;
+          &lt;li&gt;For now, only &lt;em&gt;5&lt;/em&gt; bugs are introduced by using the new &lt;em&gt;Rust&lt;/em&gt; API&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;the-effect-of-practicing-what-you-already-know&quot;&gt;The Effect of Practicing What You Already Know&lt;/h2&gt;
+
+&lt;p&gt;Everyone probably knows a few tricks for making the body in a good shape
+but not everyone can achieve that.
+Sticking with the appropriate plan is the key to meet the goals for having a good shape.&lt;/p&gt;
+
+&lt;p&gt;I find I can apply what I’ve learned from workout to writing code.
+The approach to refactor the code is same as how we shape the body.&lt;/p&gt;
+
+&lt;p&gt;It’s is a long and lonely process and the plan is not easy to stick with.
+But I find everything worth doing when the shape of code is finally made!&lt;/p&gt;
+
+&lt;p&gt;The followings introduce some useful tips I learned from this rewriting project.&lt;/p&gt;
+
+&lt;p&gt;To read more story of how the rewriting plan is made,
+please read &lt;a href=&quot;shape-your-code-as-how-you-shape-your-body&quot;&gt;the post here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;always-write-tests&quot;&gt;Always Write Tests&lt;/h3&gt;
+
+&lt;p&gt;Every programmer knows it’s better to write tests
+but not every allocates time to do that.&lt;/p&gt;
+
+&lt;p&gt;The experience I learned from this rewriting project makes me
+believe that the test cases are the founding blocks to
+build the above achievements.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt; run tests in parallel by default.
+As a result, some data-racing issues could be naturally detected.&lt;/p&gt;
+
+&lt;p&gt;Writing tests can also provide a different view to review the API.
+In my case, the idea about how to implement APIs to simulate the device plugging and unplugging
+was inspired when running these new added tests.&lt;/p&gt;
+
+&lt;p&gt;There is an API used in the library creates an hidden device silently
+and fire the device-changed operations.
+Therefore that API can be reused to simulate the device plugging and unplugging.
+I didn’t get this idea before
+until I find this API interferes the tests for device-changed operations.&lt;/p&gt;
+
+&lt;p&gt;We didn’t have any way to simulate the device operations.
+Now we have one!&lt;/p&gt;
+
+&lt;h3 id=&quot;turn-on-sanitizers&quot;&gt;Turn on Sanitizers&lt;/h3&gt;
+
+&lt;p&gt;Probably every developer knows the &lt;a href=&quot;https://github.com/google/sanitizers&quot;&gt;sanitizers&lt;/a&gt; is useful for system programming.&lt;/p&gt;
+
+&lt;p&gt;Enabling the &lt;em&gt;sanitizer&lt;/em&gt; in a large project is not an easy task
+since it needs to tune the compiler settings correctly.&lt;/p&gt;
+
+&lt;p&gt;Gladly, &lt;em&gt;sanitizer&lt;/em&gt; can be enabled easily in &lt;em&gt;Rust&lt;/em&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=&amp;lt;SAN_NAME&amp;gt;&quot;&lt;/code&gt; flag.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=thread&quot; cargo test&lt;/code&gt; helps us to hunt one data-racing issue
+and &lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=leak&quot; cargo test&lt;/code&gt; helps us to fix one memory leak.&lt;/p&gt;
+
+&lt;p&gt;It’s better to enable &lt;em&gt;sanitizer&lt;/em&gt; when the Rust &lt;em&gt;crate&lt;/em&gt; is small
+so the compiler setting error for &lt;em&gt;sanitizer&lt;/em&gt;
+introduced by the (newly added) dependent crates can be found earlier.&lt;/p&gt;
+
+&lt;h3 id=&quot;run-xcodes-instruments-with-the-test-executable&quot;&gt;Run &lt;em&gt;XCode&lt;/em&gt;’s &lt;em&gt;Instruments&lt;/em&gt; with the Test Executable&lt;/h3&gt;
+
+&lt;p&gt;The test executable generated by &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt; can be loaded to &lt;em&gt;XCode&lt;/em&gt;’s &lt;em&gt;Instruments&lt;/em&gt; easily.&lt;/p&gt;
+
+&lt;p&gt;Running the test executable with &lt;em&gt;Leaks&lt;/em&gt; check help us to hunt two memory leaks.&lt;/p&gt;
+
+&lt;h3 id=&quot;monitor-the-test-coverage&quot;&gt;Monitor the test coverage&lt;/h3&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/mozilla/grcov&quot;&gt;grcov&lt;/a&gt; is a convenient tool that help monitoring the test coverage in our code.
+It can show the test-coverage status of the &lt;em&gt;Rust&lt;/em&gt; project in just a few line sciprts.&lt;/p&gt;
+
+&lt;p&gt;It’s useful to know which part has not been tested
+since it indicates where we should focus next.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-benchmark-to-evaluate-the-tradeoff&quot;&gt;Use Benchmark to Evaluate the Tradeoff&lt;/h3&gt;
+
+&lt;p&gt;One problem usually can be solved in many different ways.
+Sometime it’s hard to tell which approach is most appropriate for the needs.&lt;/p&gt;
+
+&lt;p&gt;When performance is one of key factor to make the decision,
+&lt;code class=&quot;highlighter-rouge&quot;&gt;cargo bench&lt;/code&gt; can provide the data to evaluate the approachs.&lt;/p&gt;
+
+&lt;p&gt;In this project, &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo bench&lt;/code&gt; helps us to recognize
+one improvement is &lt;em&gt;4x&lt;/em&gt; faster than the original code.
+It also helps us to choose a slightly slower approach with better code readability
+over a slightly faster approach with poor code readability
+since the perofrmance difference is confirmed to be negligible.&lt;/p&gt;
+
+&lt;h3 id=&quot;ask-help-when-you-need&quot;&gt;Ask help when you need&lt;/h3&gt;
+
+&lt;p&gt;Asking help may be the important facotr I find.&lt;/p&gt;
+
+&lt;p&gt;This &lt;a href=&quot;https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html&quot;&gt;post&lt;/a&gt; reveals a fact:
+The team will be more productive if the team provide enough &lt;em&gt;psychological safety&lt;/em&gt;
+that makes teammate feel comfortable to ask things freely.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, the coworkers I encountered are super supportive.&lt;/p&gt;
+
+&lt;p&gt;In my experience, the outcome from a discussion
+that starts with an immature idea
+is usually better or at least equivalent
+than an idea formed by someone alone.
+And the process is usually shorter.&lt;/p&gt;
+
+&lt;h3 id=&quot;concolusion&quot;&gt;Concolusion&lt;/h3&gt;
+
+&lt;p&gt;Trying hard to stick with the appropriate plan is the key to shape the code.&lt;/p&gt;
+
+&lt;p&gt;It’s not necessary to do the plan &lt;em&gt;100%&lt;/em&gt; correctely.
+If you have experience on calculating &lt;em&gt;TDEE (Total Daily Energy Expenditure)&lt;/em&gt;,
+you probably know the goal of fat loss is still reachable
+if the achievement rate is only &lt;em&gt;80~90%&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Good luck!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">This post presents the results of applying a few tricks every Rust developer may already know but haven’t got a chance to try them.</summary></entry><entry><title type="html">Shape your code as how you shape your body</title><link href="http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body" rel="alternate" type="text/html" title="Shape your code as how you shape your body" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body</id><content type="html" xml:base="http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body">&lt;p&gt;The approach to refactor the code is same as how you shape the body.
 You can apply what you’ve learned from workout to writing code.&lt;/p&gt;
 
 &lt;!--read more--&gt;
@@ -156,6 +335,7 @@ than testing a large API at once.&lt;/p&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;Deconstruct a large API into several smaller one with error messages&lt;/li&gt;
+  &lt;li&gt;Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;make-a-feasible-plan&quot;&gt;Make A Feasible Plan&lt;/h2&gt;
@@ -2271,552 +2451,4 @@ clean:
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;]" /><category term="Rust" /><summary type="html">My personal Rust notes.</summary></entry><entry><title type="html">Audio 5.1</title><link href="http://localhost:4000/post/audio-5-1" rel="alternate" type="text/html" title="Audio 5.1" /><published>2018-01-23T00:00:00+08:00</published><updated>2018-01-23T00:00:00+08:00</updated><id>http://localhost:4000/post/audio-5-1</id><content type="html" xml:base="http://localhost:4000/post/audio-5-1">&lt;h2 id=&quot;introduction-for-audio-51&quot;&gt;Introduction for Audio 5.1&lt;/h2&gt;
-
-&lt;p&gt;Audio &lt;em&gt;five-point one&lt;/em&gt; is a common surround sound 
-layouted in home theater.
-It has totally six channels: five speakers and a subwoofer
-and this is where the term &lt;em&gt;five-point one&lt;/em&gt; comes from.&lt;/p&gt;
-
-&lt;h2 id=&quot;channel-layout&quot;&gt;Channel Layout&lt;/h2&gt;
-
-&lt;p&gt;Since we have more than one channel,
-we need to define an explicit channel ordering
-to know which channel the sent/received data is matched to.&lt;/p&gt;
-
-&lt;p&gt;Channel layout specifies the order 
-of input/output channel data in audio buffer. 
-For example, if the layout is stereo, then we have two channel data.
-The first data is for left channel, the second one is right channel.&lt;/p&gt;
-
-&lt;p&gt;The arrangement for the channels is different from format to format.
-The most common formats are defined in &lt;em&gt;Wave Format Extensible&lt;/em&gt;(or &lt;em&gt;WaveEx&lt;/em&gt;)
-or by &lt;em&gt;Society of Motion Picture &amp;amp; Television Engineers&lt;/em&gt;(or &lt;em&gt;SMPTE&lt;/em&gt;).
-They defines what channels are provided and
-the ordering of them in different layouts.&lt;/p&gt;
-
-&lt;p&gt;In this post, we follow the &lt;em&gt;SMPTE&lt;/em&gt; format.
-An advantage of taking this standard is that
-it specifies the &lt;em&gt;up/downmixing&lt;/em&gt; behaviours
-between different layouts.
-(The SMPTE’s standard for multichannel can be founded in
-&lt;a href=&quot;https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.775-3-201208-I!!PDF-E.pdf&quot; title=&quot;ITU-R BS.775-3&quot;&gt;ITU-R BS.775&lt;/a&gt; and &lt;a href=&quot;https://www.itu.int/dms_pub/itu-r/opb/rep/R-REP-BS.2159-7-2015-PDF-E.pdf&quot; title=&quot;ITU-R BS.2159&quot;&gt;ITU-R BS.2159-7&lt;/a&gt;.)&lt;/p&gt;
-
-&lt;h3 id=&quot;channels&quot;&gt;Channels&lt;/h3&gt;
-
-&lt;p&gt;Before knowing how the channels are sorted,
-we should know what channel is provided.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Code&lt;/th&gt;
-      &lt;th&gt;Channel Name&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;M&lt;/td&gt;
-      &lt;td&gt;Mono&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;Left (Front Left)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;Right (Front Right)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;Center (Front Center)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;LS&lt;/td&gt;
-      &lt;td&gt;Left Surround (Side Left)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;RS&lt;/td&gt;
-      &lt;td&gt;Right Surround (Side Right)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;RLS&lt;/td&gt;
-      &lt;td&gt;Rear Left Surround (Back Left)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;RC&lt;/td&gt;
-      &lt;td&gt;Rear Center (Back Center)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;RRS&lt;/td&gt;
-      &lt;td&gt;Rear Right Surround (Back Right)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt;Low Frequency Effects&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;layouts&quot;&gt;Layouts&lt;/h3&gt;
-
-&lt;p&gt;The layout in &lt;em&gt;SMPTE&lt;/em&gt;’s format is as follows.
-Each layout is defined by a particular permutation
-of the above channels.&lt;/p&gt;
-
-&lt;p&gt;(The sample code to set channel layout on OSX is &lt;a href=&quot;https://gist.github.com/ChunMinChang/ea74c8228745449873716e1d98ba956e&quot; title=&quot;sample code for setting channel layout on OSX&quot;&gt;here&lt;/a&gt;.)&lt;/p&gt;
-
-&lt;!--
-| Layout        | channel ||||||||
-| ------------- | ----------------------------- |
-| DUAL-MONO     | L | R |
-| DUAL-MONO-LFE | L | R | LFE |
-| MONO          | M |
-| MONO-LFE      | M | LFE |
-| STEREO        | L | R |
-| STEREO-LFE    | L | R | LFE |
-| 3F            | L | R | C |
-| 3F-LFE        | L | R | C | LFE |
-| 2F1           | L | R | RC |
-| 2F1-LFE       | L | R | LFE | RC |
-| 3F1           | L | R | C | RC |
-| 3F1-LFE       | L | R | C | LFE | RC |
-| 2F2           | L | R | LS | RS |
-| 2F2-LFE       | L | R | LFE | LS | RS |
-| 3F2           | L | R | C | LS | RS |
-| 3F2-LFE       | L | R | C | LFE | LS | RS |
-| 3F3R-LFE      | L | R | C | LFE | RC | LS | RS |
-| 3F4-LFE       | L | R | C | LFE | RLS | RRS | LS | RS |
---&gt;
-
-&lt;!--
-The following table is made by
-1. copying the generated table syntax by the above markdown
-2. adding `colspan` to the &lt;th&gt; tag
---&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Layout&lt;/th&gt;
-      &lt;th colspan=&quot;8&quot;&gt;channel order&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DUAL-MONO&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DUAL-MONO-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;MONO&lt;/td&gt;
-      &lt;td&gt;M&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;MONO-LFE&lt;/td&gt;
-      &lt;td&gt;M&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;STEREO&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;STEREO-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3F&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3F-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2F1&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;RC&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2F1-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt;RC&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3F1&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;RC&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3F1-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt;RC&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2F2&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;LS&lt;/td&gt;
-      &lt;td&gt;RS&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2F2-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt;LS&lt;/td&gt;
-      &lt;td&gt;RS&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3F2&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;LS&lt;/td&gt;
-      &lt;td&gt;RS&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3F2-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt;LS&lt;/td&gt;
-      &lt;td&gt;RS&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3F3R-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt;RC&lt;/td&gt;
-      &lt;td&gt;LS&lt;/td&gt;
-      &lt;td&gt;RS&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3F4-LFE&lt;/td&gt;
-      &lt;td&gt;L&lt;/td&gt;
-      &lt;td&gt;R&lt;/td&gt;
-      &lt;td&gt;C&lt;/td&gt;
-      &lt;td&gt;LFE&lt;/td&gt;
-      &lt;td&gt;RLS&lt;/td&gt;
-      &lt;td&gt;RRS&lt;/td&gt;
-      &lt;td&gt;LS&lt;/td&gt;
-      &lt;td&gt;RS&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;mixing&quot;&gt;Mixing&lt;/h2&gt;
-
-&lt;p&gt;We already know that the audio layout can be configured into different types
-based on the number of the channels.
-The question is: what should we do when the input layout from the audio source 
-doesn’t match the user’s output layout?&lt;/p&gt;
-
-&lt;p&gt;If the two channel layouts are equal, 
-then they must have same numbers of channels and same channel order.
-Conversely, if two audio settings have different numbers of channels
-(e.g., {L, R} and {M, LFE}),
-or they have same numbers of channels but different orders
-(e.g., {L, R} and {R, L}),
-then they must have different channel layouts.&lt;/p&gt;
-
-&lt;p&gt;When the &lt;strong&gt;input layout is different from the output layout&lt;/strong&gt;, 
-we need to convert the audio input data to fit the audio output’s configuration.
-We call it &lt;strong&gt;mixing&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;(The sample code to mix audio data on OSX is &lt;a href=&quot;https://gist.github.com/ChunMinChang/0de31bd5b3213409544ef89db91b696b&quot; title=&quot;sample code for audio mixing on OSX&quot;&gt;here&lt;/a&gt;.)&lt;/p&gt;
-
-&lt;h3 id=&quot;mixing-matrix&quot;&gt;Mixing matrix&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;../images/posts/multichannel/mixing-matrix.png&quot; alt=&quot;Mixing matrix&quot; title=&quot;Mixing matrix&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Although it may have different definitions
-to convert the audio data from input into output,
-they can be summarized into the following equations.
-The above figure illustrates their relationships,
-and the value of &lt;script type=&quot;math/tex&quot;&gt;m_{ij}&lt;/script&gt; varies from definition to definition.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-L_{out} &amp;= m_{11} \cdot L_{in} +
-           m_{12} \cdot R_{in} +
-           m_{13} \cdot C_{in} +
-           m_{14} \cdot LFE_{in} +
-           m_{15} \cdot LS_{in} +
-           m_{16} \cdot RS_{in}
-\\
-R_{out} &amp;= m_{21} \cdot L_{in} +
-           m_{22} \cdot R_{in} +
-           m_{23} \cdot C_{in} +
-           m_{24} \cdot LFE_{in} +
-           m_{25} \cdot LS_{in} +
-           m_{26} \cdot RS_{in}
-\\
-C_{out} &amp;= m_{31} \cdot L_{in} +
-           m_{32} \cdot R_{in} +
-           m_{33} \cdot C_{in} +
-           m_{34} \cdot LFE_{in} +
-           m_{35} \cdot LS_{in} +
-           m_{36} \cdot RS_{in}
-\\
-LFE_{out} &amp;= m_{41} \cdot L_{in} +
-             m_{42} \cdot R_{in} +
-             m_{43} \cdot C_{in} +
-             m_{44} \cdot LFE_{in} +
-             m_{45} \cdot LS_{in} +
-             m_{46} \cdot RS_{in}
-\\
-LS_{out} &amp;= m_{51} \cdot L_{in} +
-            m_{52} \cdot R_{in} +
-            m_{53} \cdot C_{in} +
-            m_{54} \cdot LFE_{in} +
-            m_{55} \cdot LS_{in} +
-            m_{56} \cdot RS_{in}
-\\
-RS_{out} &amp;= m_{61} \cdot L_{in} +
-            m_{62} \cdot R_{in} +
-            m_{63} \cdot C_{in} +
-            m_{64} \cdot LFE_{in} +
-            m_{65} \cdot LS_{in} +
-            m_{66} \cdot RS_{in}
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;To simplify them, we can rewite these equations into a matrix form:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-\vec{Audio_{out}} =
-\begin{bmatrix}
-  L_{out} \\ 
-  R_{out} \\ 
-  C_{out} \\ 
-  LFE_{out} \\ 
-  LS_{out} \\ 
-  RS_{out}
-\end{bmatrix}
-&amp;=
-\begin{bmatrix}
-  m_{11} &amp; m_{12} &amp; m_{13} &amp; m_{14} &amp; m_{15} &amp; m_{16} \\
-  m_{21} &amp; m_{22} &amp; m_{23} &amp; m_{24} &amp; m_{25} &amp; m_{26} \\
-  m_{31} &amp; m_{32} &amp; m_{33} &amp; m_{34} &amp; m_{35} &amp; m_{36} \\
-  m_{41} &amp; m_{42} &amp; m_{43} &amp; m_{44} &amp; m_{45} &amp; m_{46} \\
-  m_{51} &amp; m_{52} &amp; m_{53} &amp; m_{54} &amp; m_{55} &amp; m_{56} \\
-  m_{61} &amp; m_{62} &amp; m_{63} &amp; m_{64} &amp; m_{65} &amp; m_{66} \\
-\end{bmatrix}
-\cdot
-\begin{bmatrix}
-  L_{in} \\ 
-  R_{in} \\
-  C_{in} \\
-  LFE_{in} \\
-  LS_{in} \\
-  RS_{in}
-\end{bmatrix}
-\\
-&amp;=
-\vec{Matrix_{mixing}} \cdot \vec{Audio_{in}}
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h3 id=&quot;downmixing&quot;&gt;Downmixing&lt;/h3&gt;
-
-&lt;p&gt;When &lt;strong&gt;numbers of input channels &amp;gt; numbers of output channels&lt;/strong&gt;,
-we call it &lt;strong&gt;downmixing&lt;/strong&gt;.
-(In this case, the input channel layout is definitiely
-different from the output one.)
-The most common case for downmixing is to
-downmix different audio layouts into &lt;em&gt;stereo&lt;/em&gt;.
-The audio sources on the internet have various layouts
-while most users only have two speakers.&lt;/p&gt;
-
-&lt;p&gt;(The downward mixing mechanism of SMPTE for audio 5.1
-is defined in &lt;a href=&quot;https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.775-3-201208-I!!PDF-E.pdf&quot; title=&quot;ITU-R BS.775-3&quot;&gt;Table 2 of ITU-R BS.775-3&lt;/a&gt;.)&lt;/p&gt;
-
-&lt;h5 id=&quot;downmix-audio-51-to-stereostereophonic-sound&quot;&gt;Downmix audio 5.1 to stereo(stereophonic sound)&lt;/h5&gt;
-&lt;p&gt;&lt;img src=&quot;../images/posts/multichannel/dowmix-5point1-to-stereo.png&quot; alt=&quot;Downmix 5.1 to stereo&quot; title=&quot;Downmix 5.1 to stereo&quot; /&gt;&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-L_{out} &amp;= L_{in} +
-           \frac{1}{\sqrt{2}} \cdot C_{in} +
-           \frac{1}{\sqrt{2}} \cdot LS_{in}
-\\
-R_{out} &amp;= R_{in} +
-           \frac{1}{\sqrt{2}} \cdot C_{in} +
-           \frac{1}{\sqrt{2}} \cdot RS_{in} +
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h5 id=&quot;downmix-audio-51-to-quadquadraphonic-sound40-surround-sound&quot;&gt;Downmix audio 5.1 to quad(quadraphonic sound/4.0 surround sound)&lt;/h5&gt;
-&lt;p&gt;&lt;img src=&quot;../images/posts/multichannel/dowmix-5point1-to-quad.png&quot; alt=&quot;Downmix 5.1 to quad&quot; title=&quot;Downmix 5.1 to quad&quot; /&gt;&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-L_{out} &amp;= L_{in} + \frac{1}{\sqrt{2}} \cdot C_{in}
-\\
-R_{out} &amp;= R_{in} + \frac{1}{\sqrt{2}} \cdot C_{in} 
-\\
-LS_{out} &amp;= LS_{in}
-\\
-RS_{out} &amp;= RS_{in}
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h3 id=&quot;upmixing&quot;&gt;Upmixing&lt;/h3&gt;
-
-&lt;p&gt;When &lt;strong&gt;numbers of input channels &amp;lt; numbers of output channels&lt;/strong&gt;,
-we call it &lt;strong&gt;upmixing&lt;/strong&gt;.
-(In this case, the input channel layout is definitiely
-different from the output one.)&lt;/p&gt;
-
-&lt;p&gt;The most common case for this is to upmix &lt;em&gt;stereo&lt;/em&gt; data(2 channels)
-into &lt;em&gt;3F2-LFE/audio 5.1&lt;/em&gt;(6 channels).
-There are several papers discussing how to achieve that.&lt;/p&gt;
-
-&lt;h3 id=&quot;other-case&quot;&gt;Other case&lt;/h3&gt;
-
-&lt;p&gt;The other case happens
-when &lt;strong&gt;numbers of input channels = numbers of output channels&lt;/strong&gt;,
-but their channel layouts are different.&lt;/p&gt;
-
-&lt;p&gt;The conversion is easy as converting 
-from &lt;em&gt;STEREO-LFE&lt;/em&gt;: {L, R, LFE} to &lt;em&gt;3F&lt;/em&gt;: {L, R, C} (simply passing data):&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-L_{out} &amp;= L_{in}
-\\
-R_{out} &amp;= R_{in}
-\\
-C_{out} &amp;= 0
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;;it’s also as complicated as converting
-from &lt;em&gt;3F1&lt;/em&gt;: {L, R, C, RC} to &lt;em&gt;2F2(or quad)&lt;/em&gt;: {L, R, LS, RS}:&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\begin{align}
-L_{out} &amp;= L_{in} + p \cdot C_{in}
-\\
-R_{out} &amp;= R_{in} + p \cdot C_{in} 
-\\
-LS_{out} &amp;= q \cdot RC_{in}
-\\
-RS_{out} &amp;= q \cdot RC_{in}
-\end{align} %]]&gt;&lt;/script&gt;
-, where &lt;script type=&quot;math/tex&quot;&gt;p, q&lt;/script&gt; are specific values.&lt;/p&gt;
-
-&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
-&lt;p&gt;Many open source cross-platform audio libraries are good refereces
-to learn how to implement multi-channel on different platforms, such as&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/kinetiknz/cubeb&quot; title=&quot;cubeb&quot;&gt;cubeb&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.portaudio.com/&quot; title=&quot;portaudio&quot;&gt;portaudio&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://libsound.io/&quot; title=&quot;libsoundio&quot;&gt;libsoundio&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;My experience for developling multi-channel is limited on &lt;em&gt;cubeb&lt;/em&gt;.
-The development project page is hosted &lt;a href=&quot;https://wiki.mozilla.org/Media/multichannel&quot;&gt;here&lt;/a&gt;.
-From my experience, most documents for audio development are vague
-and sometimes you even cannot find the official manuals
-about how to use the APIs(especially on OSX).
-The best way to learn that is to read the source code on github.
-Read the how other people use the APIs
-or the APIs’ implementation directly if it’s possible.&lt;/p&gt;
-
-&lt;p&gt;It’s time to rock on the code!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">Introduction for Audio 5.1 Audio five-point one is a common surround sound layouted in home theater. It has totally six channels: five speakers and a subwoofer and this is where the term five-point one comes from. Channel Layout Since we have more than one channel, we need to define an explicit channel ordering to know which channel the sent/received data is matched to. Channel layout specifies the order of input/output channel data in audio buffer. For example, if the layout is stereo, then we have two channel data. The first data is for left channel, the second one is right channel. The arrangement for the channels is different from format to format. The most common formats are defined in Wave Format Extensible(or WaveEx) or by Society of Motion Picture &amp;amp; Television Engineers(or SMPTE). They defines what channels are provided and the ordering of them in different layouts. In this post, we follow the SMPTE format. An advantage of taking this standard is that it specifies the up/downmixing behaviours between different layouts. (The SMPTE’s standard for multichannel can be founded in ITU-R BS.775 and ITU-R BS.2159-7.) Channels Before knowing how the channels are sorted, we should know what channel is provided. Code Channel Name M Mono L Left (Front Left) R Right (Front Right) C Center (Front Center) LS Left Surround (Side Left) RS Right Surround (Side Right) RLS Rear Left Surround (Back Left) RC Rear Center (Back Center) RRS Rear Right Surround (Back Right) LFE Low Frequency Effects Layouts The layout in SMPTE’s format is as follows. Each layout is defined by a particular permutation of the above channels. (The sample code to set channel layout on OSX is here.) Layout channel order DUAL-MONO L R DUAL-MONO-LFE L R LFE MONO M MONO-LFE M LFE STEREO L R STEREO-LFE L R LFE 3F L R C 3F-LFE L R C LFE 2F1 L R RC 2F1-LFE L R LFE RC 3F1 L R C RC 3F1-LFE L R C LFE RC 2F2 L R LS RS 2F2-LFE L R LFE LS RS 3F2 L R C LS RS 3F2-LFE L R C LFE LS RS 3F3R-LFE L R C LFE RC LS RS 3F4-LFE L R C LFE RLS RRS LS RS Mixing We already know that the audio layout can be configured into different types based on the number of the channels. The question is: what should we do when the input layout from the audio source doesn’t match the user’s output layout? If the two channel layouts are equal, then they must have same numbers of channels and same channel order. Conversely, if two audio settings have different numbers of channels (e.g., {L, R} and {M, LFE}), or they have same numbers of channels but different orders (e.g., {L, R} and {R, L}), then they must have different channel layouts. When the input layout is different from the output layout, we need to convert the audio input data to fit the audio output’s configuration. We call it mixing. (The sample code to mix audio data on OSX is here.) Mixing matrix Although it may have different definitions to convert the audio data from input into output, they can be summarized into the following equations. The above figure illustrates their relationships, and the value of varies from definition to definition. To simplify them, we can rewite these equations into a matrix form: Downmixing When numbers of input channels &amp;gt; numbers of output channels, we call it downmixing. (In this case, the input channel layout is definitiely different from the output one.) The most common case for downmixing is to downmix different audio layouts into stereo. The audio sources on the internet have various layouts while most users only have two speakers. (The downward mixing mechanism of SMPTE for audio 5.1 is defined in Table 2 of ITU-R BS.775-3.) Downmix audio 5.1 to stereo(stereophonic sound) Downmix audio 5.1 to quad(quadraphonic sound/4.0 surround sound) Upmixing When numbers of input channels &amp;lt; numbers of output channels, we call it upmixing. (In this case, the input channel layout is definitiely different from the output one.) The most common case for this is to upmix stereo data(2 channels) into 3F2-LFE/audio 5.1(6 channels). There are several papers discussing how to achieve that. Other case The other case happens when numbers of input channels = numbers of output channels, but their channel layouts are different. The conversion is easy as converting from STEREO-LFE: {L, R, LFE} to 3F: {L, R, C} (simply passing data): ;it’s also as complicated as converting from 3F1: {L, R, C, RC} to 2F2(or quad): {L, R, LS, RS}: , where are specific values. Implementation Many open source cross-platform audio libraries are good refereces to learn how to implement multi-channel on different platforms, such as cubeb portaudio libsoundio My experience for developling multi-channel is limited on cubeb. The development project page is hosted here. From my experience, most documents for audio development are vague and sometimes you even cannot find the official manuals about how to use the APIs(especially on OSX). The best way to learn that is to read the source code on github. Read the how other people use the APIs or the APIs’ implementation directly if it’s possible. It’s time to rock on the code!</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Common&quot;]" /><category term="Rust" /><summary type="html">My personal Rust notes.</summary></entry></feed>

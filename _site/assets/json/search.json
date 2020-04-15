@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "The effect of practicing what you already know",
+      "category" : "Media",
+      "tags"     : "Firefox",
+      "url"      : "/post/the-effect-of-practicing-what-you-already-know",
+      "date"     : "2020-04-15 00:00:00 +0800",
+			"shortdate": "April 15, 2020"
+    } ,
+  
+    {
       "title"    : "Shape your code as how you shape your body",
       "category" : "Media",
       "tags"     : "Firefox",

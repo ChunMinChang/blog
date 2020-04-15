@@ -60,7 +60,7 @@ but not everyone can achieve that.
 Sticking with the appropriate plan is the key to meet the goals for having a good shape.
 
 I find I can apply what I've learned from workout to writing code.
-The approach to refactor the code is same as how we shape the body.
+The [approach][plan] to refactor the code is same as how we shape the body.
 
 It's is a long and lonely process and the plan is not easy to stick with.
 But I find everything worth doing when the shape of code is finally made!

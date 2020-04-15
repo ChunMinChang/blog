@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-16T01:27:36+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The effect of practicing what you already know</title><link href="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" rel="alternate" type="text/html" title="The effect of practicing what you already know" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/the-effect-of-practicing-what-you-already-know</id><content type="html" xml:base="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know">&lt;p&gt;This post presents the results of applying a few tricks every &lt;em&gt;Rust&lt;/em&gt; developer may already know
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-16T05:40:31+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The effect of practicing what you already know</title><link href="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" rel="alternate" type="text/html" title="The effect of practicing what you already know" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/the-effect-of-practicing-what-you-already-know</id><content type="html" xml:base="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know">&lt;p&gt;This post presents the results of applying a few tricks every &lt;em&gt;Rust&lt;/em&gt; developer may already know
 but haven’t got a chance to try them.&lt;/p&gt;
 
 &lt;!--read more--&gt;
@@ -73,7 +73,7 @@ but not everyone can achieve that.
 Sticking with the appropriate plan is the key to meet the goals for having a good shape.&lt;/p&gt;
 
 &lt;p&gt;I find I can apply what I’ve learned from workout to writing code.
-The approach to refactor the code is same as how we shape the body.&lt;/p&gt;
+The &lt;a href=&quot;shape-your-code-as-how-you-shape-your-body&quot;&gt;approach&lt;/a&gt; to refactor the code is same as how we shape the body.&lt;/p&gt;
 
 &lt;p&gt;It’s is a long and lonely process and the plan is not easy to stick with.
 But I find everything worth doing when the shape of code is finally made!&lt;/p&gt;
@@ -409,11 +409,15 @@ The summay is listed in &lt;a href=&quot;summary-of-cubeb-oxidation-on-mac-os&qu
 
 &lt;!--read more--&gt;
 
-&lt;p&gt;This post aims to share some experience of rewriting a library from &lt;em&gt;C/C++&lt;/em&gt; into &lt;em&gt;Rust&lt;/em&gt;.
-In this post, I am going to summarize the achievements
+&lt;p&gt;I have written several posts to
+share some experience of rewriting a library from &lt;em&gt;C/C++&lt;/em&gt; into &lt;em&gt;Rust&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this post, I am going to summarize the achievements
 of rewriting the Firefox’s audio library, named &lt;a href=&quot;https://github.com/kinetiknz/cubeb&quot;&gt;&lt;em&gt;Cubeb&lt;/em&gt;&lt;/a&gt;,
-from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp&quot;&gt;&lt;em&gt;C++&lt;/em&gt;&lt;/a&gt; into &lt;a href=&quot;https://github.com/ChunMinChang/cubeb-coreaudio-rs&quot;&gt;&lt;em&gt;Rust&lt;/em&gt;&lt;/a&gt;.
-More story will be shared in the following posts.&lt;/p&gt;
+from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp&quot;&gt;&lt;em&gt;C++&lt;/em&gt;&lt;/a&gt; into &lt;a href=&quot;https://github.com/ChunMinChang/cubeb-coreaudio-rs&quot;&gt;&lt;em&gt;Rust&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The story about how the plan is made is in this &lt;a href=&quot;shape-your-code-as-how-you-shape-your-body&quot;&gt;post&lt;/a&gt;.
+The tips-and-effects can be summarized in this &lt;a href=&quot;the-effect-of-practicing-what-you-already-know&quot;&gt;post&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;summary-of-cubeb-oxidation-on-mac-os&quot;&gt;Summary of Cubeb Oxidation on Mac OS&lt;/h2&gt;
 

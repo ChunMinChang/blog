@@ -10,11 +10,15 @@ A summary of the *C-to-Rust* rewriting work for Firefox's audio library on Mac O
 
 <!--read more-->
 
-This post aims to share some experience of rewriting a library from *C/C++* into *Rust*.
+I have written several posts to
+share some experience of rewriting a library from *C/C++* into *Rust*.
+
 In this post, I am going to summarize the achievements
 of rewriting the Firefox's audio library, named [*Cubeb*][cubeb],
 from [*C++*][cubeb-audiounit] into [*Rust*][cubeb-coreaudio-rs].
-More story will be shared in the following posts.
+
+The story about how the plan is made is in this [post][shape].
+The tips-and-effects can be summarized in this [post][effect].
 
 ## Summary of Cubeb Oxidation on Mac OS
 
@@ -195,3 +199,6 @@ The experience I learned can be summarized in just one sentence:
 [grcov]: https://github.com/mozilla/grcov
 [grcov-src-backend]: https://github.com/ChunMinChang/cubeb-coreaudio-rs/tree/2e2266ec4106141d4b0d95fd1b3f77ecef27d00d/src/backend
 [grcov-script]: https://github.com/ChunMinChang/cubeb-coreaudio-rs/commit/2e2266ec4106141d4b0d95fd1b3f77ecef27d00d
+
+[shape]: shape-your-code-as-how-you-shape-your-body
+[effect]: the-effect-of-practicing-what-you-already-know

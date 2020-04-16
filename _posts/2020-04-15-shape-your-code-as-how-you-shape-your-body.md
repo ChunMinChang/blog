@@ -151,7 +151,9 @@ The requirements can be organized to:
   - Create device-related test
   - Create multi-thread test to hunt the potential data-racing issues
   - Create unit tests for each API
-- Deconstruct a large API into several smaller one with error messages
+- Restructure the library APIs
+  - Follow the Rust *rules*
+  - Deconstruct a large API into several smaller one with error messages
 - Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning
 
 ## Make A Feasible Plan

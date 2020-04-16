@@ -192,7 +192,7 @@
                             
 
                             
-                                    <span class="time">5.705555555555556</span> minutes read
+                                    <span class="time">5.95</span> minutes read
                             
                                 
                             
@@ -240,7 +240,12 @@ from <a href="https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit
       <li>Create unit tests for each API</li>
     </ul>
   </li>
-  <li>Deconstruct a large API into several smaller one with error messages</li>
+  <li>Restructure the library APIs
+    <ul>
+      <li>Follow the Rust <em>rules</em></li>
+      <li>Deconstruct a large API into several smaller one with error messages</li>
+    </ul>
+  </li>
   <li>Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning</li>
 </ul>
 
@@ -251,11 +256,7 @@ from <a href="https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit
 <p>In short, the following results are made:</p>
 
 <ul>
-  <li>Solve <em>6</em> data racing issues discovered by enlarging the test coverage
-    <ul>
-      <li>Some issues exist for ages but their causes are not easy to be identified</li>
-    </ul>
-  </li>
+  <li>Solve <em>6</em> data racing issues discovered by enlarging the test coverage</li>
   <li>Boost the performance to <em>35x</em> faster when starting multiple streams simultaneously
     <ul>
       <li>A happy side effect when fixing data racing issues</li>
@@ -294,11 +295,11 @@ please read <a href="shape-your-code-as-how-you-shape-your-body">the post here</
 <h3 id="always-write-tests">Always Write Tests</h3>
 
 <p>Every programmer knows it’s better to write tests
-but not every allocates time to do that.</p>
+but not everyone allocates time to do that.</p>
 
 <p>The experience I learned from this rewriting project makes me
 believe that the test cases are the founding blocks to
-build the above achievements.</p>
+a successful refacotring.</p>
 
 <p><code class="highlighter-rouge">cargo test</code> run tests in parallel by default.
 As a result, some data-racing issues could be naturally detected.</p>
@@ -359,6 +360,18 @@ one improvement is <em>4x</em> faster than the original code.
 It also helps us to choose a slightly slower approach with better code readability
 over a slightly faster approach with poor code readability
 since the perofrmance difference is confirmed to be negligible.</p>
+
+<h3 id="run-cargo-clippy">Run <code class="highlighter-rouge">cargo clippy</code></h3>
+
+<p>There are lots of useful <em>lint</em> to catch common mistakes
+by running <code class="highlighter-rouge">cargo clippy</code>.</p>
+
+<p>In this project,
+<a href="https://rust-lang.github.io/rust-clippy/master/#temporary_cstring_as_ptr"><code class="highlighter-rouge">temporary_cstring_as_ptr</code></a>
+help us to catch a <em>used-after-free (UAF)</em> error
+and <a href="https://rust-lang.github.io/rust-clippy/master/#cognitive_complexity"><code class="highlighter-rouge">cognitive_complexity</code></a> helps us
+to keep the function in a small, readable size,
+which lower the maintaining effort in the long run.</p>
 
 <h3 id="ask-help-when-you-need">Ask help when you need</h3>
 

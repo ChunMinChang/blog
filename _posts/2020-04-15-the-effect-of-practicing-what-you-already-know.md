@@ -34,7 +34,9 @@ The goals are set as follow:
   - Create device-related test
   - Create multi-thread test to hunt the potential data-racing issues
   - Create unit tests for each API
-- Deconstruct a large API into several smaller one with error messages
+- Restructure the library APIs
+  - Follow the Rust *rules*
+  - Deconstruct a large API into several smaller one with error messages
 - Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning
 
 ## Summary of the Results
@@ -44,7 +46,6 @@ The results we have can be found in [the post here][summary].
 In short, the following results are made:
 
 - Solve *6* data racing issues discovered by enlarging the test coverage
-  - Some issues exist for ages but their causes are not easy to be identified
 - Boost the performance to *35x* faster when starting multiple streams simultaneously
   - A happy side effect when fixing data racing issues
 - Hunt and fix *3* memory leaks
@@ -73,11 +74,11 @@ please read [the post here][plan].
 ### Always Write Tests
 
 Every programmer knows it's better to write tests
-but not every allocates time to do that.
+but not everyone allocates time to do that.
 
 The experience I learned from this rewriting project makes me
 believe that the test cases are the founding blocks to
-build the above achievements.
+a successful refacotring.
 
 `cargo test` run tests in parallel by default.
 As a result, some data-racing issues could be naturally detected.
@@ -139,6 +140,18 @@ It also helps us to choose a slightly slower approach with better code readabili
 over a slightly faster approach with poor code readability
 since the perofrmance difference is confirmed to be negligible.
 
+### Run `cargo clippy`
+
+There are lots of useful *lint* to catch common mistakes
+by running `cargo clippy`.
+
+In this project,
+[`temporary_cstring_as_ptr`][tmp_cstring_as_ptr]
+help us to catch a *used-after-free (UAF)* error
+and [`cognitive_complexity`][cogn-cxty] helps us
+to keep the function in a small, readable size,
+which lower the maintaining effort in the long run.
+
 ### Ask help when you need
 
 Asking help may be the important facotr I find.
@@ -178,3 +191,6 @@ Good luck!
 [grcov]: https://github.com/mozilla/grcov
 
 [perfect-team]: https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html
+
+[tmp_cstring_as_ptr]: https://rust-lang.github.io/rust-clippy/master/#temporary_cstring_as_ptr
+[cogn-cxty]: https://rust-lang.github.io/rust-clippy/master/#cognitive_complexity

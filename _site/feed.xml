@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-16T05:40:31+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The effect of practicing what you already know</title><link href="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" rel="alternate" type="text/html" title="The effect of practicing what you already know" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/the-effect-of-practicing-what-you-already-know</id><content type="html" xml:base="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know">&lt;p&gt;This post presents the results of applying a few tricks every &lt;em&gt;Rust&lt;/em&gt; developer may already know
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-16T07:59:20+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The effect of practicing what you already know</title><link href="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" rel="alternate" type="text/html" title="The effect of practicing what you already know" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/the-effect-of-practicing-what-you-already-know</id><content type="html" xml:base="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know">&lt;p&gt;This post presents the results of applying a few tricks every &lt;em&gt;Rust&lt;/em&gt; developer may already know
 but haven’t got a chance to try them.&lt;/p&gt;
 
 &lt;!--read more--&gt;
@@ -32,7 +32,12 @@ from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_a
       &lt;li&gt;Create unit tests for each API&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Deconstruct a large API into several smaller one with error messages&lt;/li&gt;
+  &lt;li&gt;Restructure the library APIs
+    &lt;ul&gt;
+      &lt;li&gt;Follow the Rust &lt;em&gt;rules&lt;/em&gt;&lt;/li&gt;
+      &lt;li&gt;Deconstruct a large API into several smaller one with error messages&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
   &lt;li&gt;Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -43,11 +48,7 @@ from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_a
 &lt;p&gt;In short, the following results are made:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Solve &lt;em&gt;6&lt;/em&gt; data racing issues discovered by enlarging the test coverage
-    &lt;ul&gt;
-      &lt;li&gt;Some issues exist for ages but their causes are not easy to be identified&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;Solve &lt;em&gt;6&lt;/em&gt; data racing issues discovered by enlarging the test coverage&lt;/li&gt;
   &lt;li&gt;Boost the performance to &lt;em&gt;35x&lt;/em&gt; faster when starting multiple streams simultaneously
     &lt;ul&gt;
       &lt;li&gt;A happy side effect when fixing data racing issues&lt;/li&gt;
@@ -86,11 +87,11 @@ please read &lt;a href=&quot;shape-your-code-as-how-you-shape-your-body&quot;&gt
 &lt;h3 id=&quot;always-write-tests&quot;&gt;Always Write Tests&lt;/h3&gt;
 
 &lt;p&gt;Every programmer knows it’s better to write tests
-but not every allocates time to do that.&lt;/p&gt;
+but not everyone allocates time to do that.&lt;/p&gt;
 
 &lt;p&gt;The experience I learned from this rewriting project makes me
 believe that the test cases are the founding blocks to
-build the above achievements.&lt;/p&gt;
+a successful refacotring.&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt; run tests in parallel by default.
 As a result, some data-racing issues could be naturally detected.&lt;/p&gt;
@@ -151,6 +152,18 @@ one improvement is &lt;em&gt;4x&lt;/em&gt; faster than the original code.
 It also helps us to choose a slightly slower approach with better code readability
 over a slightly faster approach with poor code readability
 since the perofrmance difference is confirmed to be negligible.&lt;/p&gt;
+
+&lt;h3 id=&quot;run-cargo-clippy&quot;&gt;Run &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo clippy&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;There are lots of useful &lt;em&gt;lint&lt;/em&gt; to catch common mistakes
+by running &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo clippy&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this project,
+&lt;a href=&quot;https://rust-lang.github.io/rust-clippy/master/#temporary_cstring_as_ptr&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;temporary_cstring_as_ptr&lt;/code&gt;&lt;/a&gt;
+help us to catch a &lt;em&gt;used-after-free (UAF)&lt;/em&gt; error
+and &lt;a href=&quot;https://rust-lang.github.io/rust-clippy/master/#cognitive_complexity&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cognitive_complexity&lt;/code&gt;&lt;/a&gt; helps us
+to keep the function in a small, readable size,
+which lower the maintaining effort in the long run.&lt;/p&gt;
 
 &lt;h3 id=&quot;ask-help-when-you-need&quot;&gt;Ask help when you need&lt;/h3&gt;
 
@@ -334,7 +347,12 @@ than testing a large API at once.&lt;/p&gt;
       &lt;li&gt;Create unit tests for each API&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Deconstruct a large API into several smaller one with error messages&lt;/li&gt;
+  &lt;li&gt;Restructure the library APIs
+    &lt;ul&gt;
+      &lt;li&gt;Follow the Rust &lt;em&gt;rules&lt;/em&gt;&lt;/li&gt;
+      &lt;li&gt;Deconstruct a large API into several smaller one with error messages&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
   &lt;li&gt;Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning&lt;/li&gt;
 &lt;/ul&gt;
 

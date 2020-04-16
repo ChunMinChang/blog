@@ -25,7 +25,7 @@ Even the shape is made, it's hard to keep the shape.
 The quickest way to shape the body is hiring a mean coach!
 They make sure you've done everything right and push you to do your best.
 
-Human is lazy. We only move forward when something push us.
+Human is lazy. We only move forward when something pushes us.
 
 ## We Need A Mean Coach, and *Rust Compiler* Is the One
 
@@ -34,16 +34,18 @@ I admit that sometimes I don't stick on the coding disciplines the code should f
 as long as the code pass the tests.
 That's why I need a code reviewer.
 
-However, code reviewer aren't always there.
+However, code reviewers aren't always there.
 The code can become out of shape a bit and a bit if no one constantly watches it.
-This fits the well-known [broken windows theory](https://en.wikipedia.org/wiki/Broken_windows_theory).
+This phenomenon reflects
+the [broken windows theory](https://en.wikipedia.org/wiki/Broken_windows_theory) I've read.
 
 To keep the code in a good style, we need a robot-reviewer that is always accountable and trustworthy.
 The **Rust compiler** is definitely one of them.
 
 If you google *Rust*, you will see comments largely divided into two groups:
 Some complain the *Rust compiler* is too stupid to allow them doing things they want;
-Some love the *Rust compiler* since it makes the code well-structured.
+Some love the *Rust compiler* since it makes the code well-structured
+and prevent them from doing stupid things.
 This is same as the comments for a strict teacher or professor.
 
 Gladly I am an Asian. I am totally fine with a mean coach.
@@ -70,8 +72,8 @@ The library can leverage many useful third-party *crate*s to fulfil our needs.
 Using the third-party library can not only reduces the maintaining effort
 but also __embody the spirit of *open-source*__.
 
-When translating the *C* code to the *Rust* code that follows the *Rust*'s programming rules,
-Some mysterious issues may be addressed silently
+When translating the *C* code to the *Rust* code that follows those strict *Rust* rules,
+(we pray) some mysterious issues might be addressed silently
 with transforming the code structure in a stricter style.
 The code would need to be refactored at some point anyway.
 *Rust* seems to be the best choice for refactoring the library at this time.
@@ -82,8 +84,8 @@ The goal is straightforward enough:
 translate the library into *Rust* and don't introduce regressions.
 
 In the product-level view, this is pretty similar to:
-create a new flight engine in a state-of-the-art techniques,
-put it in our current flights and make our flights soar!
+create a new flight engine by the state-of-the-art techniques,
+put it in our current flights, and make our flights soar!
 
 The goal is simple in high-level view, but the detailed process is hard.
 
@@ -110,6 +112,7 @@ The first step is to review the problems we have.
 > “If I had an hour to solve a problem
 > I'd spend 55 minutes thinking about the problem
 > and 5 minutes thinking about solutions.”
+>
 > ― Albert Einstein
 
 I believe how well we define a problem determines how well we solve it.
@@ -124,21 +127,26 @@ the following problems need to be addressed:
 5. Some issues are device-related and we don't have any way to simulate those device operations
 
 Apparently, the test coverage needs to be enlarged.
+
 The _3_ can be addressed if test case can be written more often in a easier way.
-After separating the *Mac OS*'s platform-dependent code to a standalone crate,
+
+After separating the *Mac OS*'s platform-dependent code into a standalone crate,
 the platform-dependent tests can be easily implemented without considering other platforms
 so _4_ can be solved.
+
 To address _5_, it needs to find a way to simulate the device operations.
+
 The _2_ might indicate some data-racing issues.
 Our library manages threads inside itself.
 The output and input I/O threads will be created when the audio starts playing.
 The task threads would be created when the device is switching, plugging, and unplugging.
 Writing multi-thread tests is helpful to hunt the potential data-racing issues
 and again the APIs to simulate device operations are really necessary.
+
 The _1_ may be caused by calling APIs in a wrong time
 or those problems only happen on specific hardwares.
-By separating a large library API into several smaller APIs
-with propery unit tests and logs can help us narrow down the scope of the causes.
+By separating a large library API into several smaller APIs,
+with propery unit tests and logs, can help us narrow down the scope of the causes.
 It's easier to identify a problem by testing several small APIs independently
 than testing a large API at once.
 
@@ -153,8 +161,8 @@ The requirements can be organized to:
   - Create unit tests for each API
 - Restructure the library APIs
   - Follow the Rust *rules*
-  - Deconstruct a large API into several smaller one with error messages
-- Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning
+  - Deconstruct a large API into several smaller one
+- Solve the issues we hunt during this deep-cleaning
 
 ## Make A Feasible Plan
 
@@ -171,18 +179,18 @@ This could move all the workarounds for some special situations or devices
 the library used to have at the same time when all the *C* code is rewritten in *Rust*.
 
 One the other hand, the answer of the problem _2_ can be found
-on any advertisement flyer in your mailbox:
-"We provide a month-free trial-run for you to experience our class!".
+on any advertisement flyer in the mailbox:
+"We provide a month-free trial class for you to explore and experience!".
 
 Same manner can be applied here.
 Writing a minimum-viable audio library in pure *Rust* first as a trial-run
 can address problem _2_ effectively. This process also brings many benefits:
 
 - It's able to see what the problems the rewriting will face are and how to solve them,
-  in a way smaller scope
+  in advance, in a way smaller scope
 - It shows a rough outline about what the audio APIs should look like at the end,
   since it's rewritten in pure *Rust*
-- Some APIs is reusable in the future and they've been tested in a way smaller scope
+- Some APIs are reusable in the future and they've been tested in a way smaller scope
 
 As a result, the plan is divided into 4 phases:
 
@@ -191,7 +199,7 @@ As a result, the plan is divided into 4 phases:
    - Add the proper unit or intergretion tests at the same time
 3. Remove the `unsafe` code introduced in previous stage
    - Now tests are created to support the refactoring
-   - Shipping this version in the *Firefox Nightly* to test this in the wild
+   - Shipping this version in the *Firefox Nightly* to test the new APIs in the wild
 4. Keeping refactoring the abnormal *Rust* code
    - Leverage with third-party crates to reduce the maintain efforts
    - Split some code into sub crates to attract some contributors
@@ -208,9 +216,17 @@ It's is a long, hard, and lonely process.
 But I find everything worth doing when the shape is finally made!
 (To be clear, only the shape of code is made.)
 I am happy to have the result I have at the end.
-The summay is listed in [previous post][prev].
 
-[prev]: summary-of-cubeb-oxidation-on-mac-os
+### Results
+
+The result summay is listed in [this post][summary].
+
+### Tips
+
+Some tips I find useful is listed in [this post][tips].
+
+[summary]: summary-of-cubeb-oxidation-on-mac-os
+[tips]: the-effect-of-practicing-what-you-already-know
 
 [cubeb]: https://github.com/kinetiknz/cubeb
 [cubeb-audiounit]: https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp

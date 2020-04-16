@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-16T07:59:20+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The effect of practicing what you already know</title><link href="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" rel="alternate" type="text/html" title="The effect of practicing what you already know" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/the-effect-of-practicing-what-you-already-know</id><content type="html" xml:base="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know">&lt;p&gt;This post presents the results of applying a few tricks every &lt;em&gt;Rust&lt;/em&gt; developer may already know
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-16T23:40:55+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Peak Up</title><subtitle>keep advancing</subtitle><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><entry><title type="html">The effect of practicing what you already know</title><link href="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know" rel="alternate" type="text/html" title="The effect of practicing what you already know" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/the-effect-of-practicing-what-you-already-know</id><content type="html" xml:base="http://localhost:4000/post/the-effect-of-practicing-what-you-already-know">&lt;p&gt;This post presents the results of applying a few tricks every &lt;em&gt;Rust&lt;/em&gt; developer may already know
 but haven’t got a chance to try them.&lt;/p&gt;
 
 &lt;!--read more--&gt;
 
 &lt;p&gt;I am going to share some actions and results I find useful when
 rewriting the Firefox’s audio library, named &lt;a href=&quot;https://github.com/kinetiknz/cubeb&quot;&gt;&lt;em&gt;Cubeb&lt;/em&gt;&lt;/a&gt;,
-from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp&quot;&gt;&lt;em&gt;C++&lt;/em&gt;&lt;/a&gt; into &lt;a href=&quot;https://github.com/ChunMinChang/cubeb-coreaudio-&quot;&gt;&lt;em&gt;Rust&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp&quot;&gt;&lt;em&gt;C++&lt;/em&gt;&lt;/a&gt; into &lt;a href=&quot;https://github.com/ChunMinChang/cubeb-coreaudio-rs&quot;&gt;&lt;em&gt;Rust&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;what-the-problem-we-have&quot;&gt;What the problem we have&lt;/h2&gt;
 
@@ -35,10 +35,10 @@ from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_a
   &lt;li&gt;Restructure the library APIs
     &lt;ul&gt;
       &lt;li&gt;Follow the Rust &lt;em&gt;rules&lt;/em&gt;&lt;/li&gt;
-      &lt;li&gt;Deconstruct a large API into several smaller one with error messages&lt;/li&gt;
+      &lt;li&gt;Deconstruct a large API into several smaller one&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning&lt;/li&gt;
+  &lt;li&gt;Solve the issues we hunt during this deep-cleaning&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;summary-of-the-results&quot;&gt;Summary of the Results&lt;/h2&gt;
@@ -58,9 +58,9 @@ from &lt;a href=&quot;https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_a
   &lt;li&gt;The test coverage is enlarged to almost 80%
     &lt;ul&gt;
       &lt;li&gt;The left 20% are mostly logs&lt;/li&gt;
-      &lt;li&gt;The amount of the regression bugs is pretty low:
+      &lt;li&gt;The amount of the regression bugs is pretty low
         &lt;ul&gt;
-          &lt;li&gt;For now, only &lt;em&gt;5&lt;/em&gt; bugs are introduced by using the new &lt;em&gt;Rust&lt;/em&gt; API&lt;/li&gt;
+          &lt;li&gt;The number of bugs are introduced by new &lt;em&gt;Rust&lt;/em&gt; API is kept in single digits&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
@@ -90,14 +90,13 @@ please read &lt;a href=&quot;shape-your-code-as-how-you-shape-your-body&quot;&gt
 but not everyone allocates time to do that.&lt;/p&gt;
 
 &lt;p&gt;The experience I learned from this rewriting project makes me
-believe that the test cases are the founding blocks to
-a successful refacotring.&lt;/p&gt;
+believe that the test cases are the founding blocks to refacotring.&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt; run tests in parallel by default.
 As a result, some data-racing issues could be naturally detected.&lt;/p&gt;
 
 &lt;p&gt;Writing tests can also provide a different view to review the API.
-In my case, the idea about how to implement APIs to simulate the device plugging and unplugging
+In this project, the idea about how to implement APIs to simulate the device plugging and unplugging
 was inspired when running these new added tests.&lt;/p&gt;
 
 &lt;p&gt;There is an API used in the library creates an hidden device silently
@@ -105,9 +104,6 @@ and fire the device-changed operations.
 Therefore that API can be reused to simulate the device plugging and unplugging.
 I didn’t get this idea before
 until I find this API interferes the tests for device-changed operations.&lt;/p&gt;
-
-&lt;p&gt;We didn’t have any way to simulate the device operations.
-Now we have one!&lt;/p&gt;
 
 &lt;h3 id=&quot;turn-on-sanitizers&quot;&gt;Turn on Sanitizers&lt;/h3&gt;
 
@@ -118,8 +114,9 @@ since it needs to tune the compiler settings correctly.&lt;/p&gt;
 
 &lt;p&gt;Gladly, &lt;em&gt;sanitizer&lt;/em&gt; can be enabled easily in &lt;em&gt;Rust&lt;/em&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=&amp;lt;SAN_NAME&amp;gt;&quot;&lt;/code&gt; flag.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=thread&quot; cargo test&lt;/code&gt; helps us to hunt one data-racing issue
-and &lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=leak&quot; cargo test&lt;/code&gt; helps us to fix one memory leak.&lt;/p&gt;
+&lt;p&gt;In this project,
+&lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=thread&quot; cargo test&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;RUSTFLAGS=&quot;-Z sanitizer=leak&quot; cargo test&lt;/code&gt;
+helps us to hunt the data racing and memory leak issues.&lt;/p&gt;
 
 &lt;p&gt;It’s better to enable &lt;em&gt;sanitizer&lt;/em&gt; when the Rust &lt;em&gt;crate&lt;/em&gt; is small
 so the compiler setting error for &lt;em&gt;sanitizer&lt;/em&gt;
@@ -129,7 +126,7 @@ introduced by the (newly added) dependent crates can be found earlier.&lt;/p&gt;
 
 &lt;p&gt;The test executable generated by &lt;code class=&quot;highlighter-rouge&quot;&gt;cargo test&lt;/code&gt; can be loaded to &lt;em&gt;XCode&lt;/em&gt;’s &lt;em&gt;Instruments&lt;/em&gt; easily.&lt;/p&gt;
 
-&lt;p&gt;Running the test executable with &lt;em&gt;Leaks&lt;/em&gt; check help us to hunt two memory leaks.&lt;/p&gt;
+&lt;p&gt;Running the test executable with &lt;em&gt;Leaks&lt;/em&gt; check help us to find memory leaks.&lt;/p&gt;
 
 &lt;h3 id=&quot;monitor-the-test-coverage&quot;&gt;Monitor the test coverage&lt;/h3&gt;
 
@@ -165,12 +162,12 @@ and &lt;a href=&quot;https://rust-lang.github.io/rust-clippy/master/#cognitive_c
 to keep the function in a small, readable size,
 which lower the maintaining effort in the long run.&lt;/p&gt;
 
-&lt;h3 id=&quot;ask-help-when-you-need&quot;&gt;Ask help when you need&lt;/h3&gt;
+&lt;h3 id=&quot;ask-help-when-you-need&quot;&gt;Ask Help When You Need&lt;/h3&gt;
 
 &lt;p&gt;Asking help may be the important facotr I find.&lt;/p&gt;
 
-&lt;p&gt;This &lt;a href=&quot;https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html&quot;&gt;post&lt;/a&gt; reveals a fact:
-The team will be more productive if the team provide enough &lt;em&gt;psychological safety&lt;/em&gt;
+&lt;p&gt;This &lt;a href=&quot;https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html&quot;&gt;article&lt;/a&gt; reveals a fact:
+the team will be more productive if the team provides enough &lt;em&gt;psychological safety&lt;/em&gt;
 that makes teammate feel comfortable to ask things freely.&lt;/p&gt;
 
 &lt;p&gt;Fortunately, the coworkers I encountered are super supportive.&lt;/p&gt;
@@ -181,13 +178,13 @@ is usually better or at least equivalent
 than an idea formed by someone alone.
 And the process is usually shorter.&lt;/p&gt;
 
-&lt;h3 id=&quot;concolusion&quot;&gt;Concolusion&lt;/h3&gt;
+&lt;h3 id=&quot;closing-words&quot;&gt;Closing Words&lt;/h3&gt;
 
 &lt;p&gt;Trying hard to stick with the appropriate plan is the key to shape the code.&lt;/p&gt;
 
 &lt;p&gt;It’s not necessary to do the plan &lt;em&gt;100%&lt;/em&gt; correctely.
-If you have experience on calculating &lt;em&gt;TDEE (Total Daily Energy Expenditure)&lt;/em&gt;,
-you probably know the goal of fat loss is still reachable
+If you have experience on following a workout plan,
+you probably know the goal of fat-loss is still reachable
 if the achievement rate is only &lt;em&gt;80~90%&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;Good luck!&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">This post presents the results of applying a few tricks every Rust developer may already know but haven’t got a chance to try them.</summary></entry><entry><title type="html">Shape your code as how you shape your body</title><link href="http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body" rel="alternate" type="text/html" title="Shape your code as how you shape your body" /><published>2020-04-15T00:00:00+08:00</published><updated>2020-04-15T00:00:00+08:00</updated><id>http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body</id><content type="html" xml:base="http://localhost:4000/post/shape-your-code-as-how-you-shape-your-body">&lt;p&gt;The approach to refactor the code is same as how you shape the body.
@@ -209,7 +206,7 @@ Even the shape is made, it’s hard to keep the shape.&lt;/p&gt;
 &lt;p&gt;The quickest way to shape the body is hiring a mean coach!
 They make sure you’ve done everything right and push you to do your best.&lt;/p&gt;
 
-&lt;p&gt;Human is lazy. We only move forward when something push us.&lt;/p&gt;
+&lt;p&gt;Human is lazy. We only move forward when something pushes us.&lt;/p&gt;
 
 &lt;h2 id=&quot;we-need-a-mean-coach-and-rust-compiler-is-the-one&quot;&gt;We Need A Mean Coach, and &lt;em&gt;Rust Compiler&lt;/em&gt; Is the One&lt;/h2&gt;
 
@@ -218,16 +215,18 @@ I admit that sometimes I don’t stick on the coding disciplines the code should
 as long as the code pass the tests.
 That’s why I need a code reviewer.&lt;/p&gt;
 
-&lt;p&gt;However, code reviewer aren’t always there.
+&lt;p&gt;However, code reviewers aren’t always there.
 The code can become out of shape a bit and a bit if no one constantly watches it.
-This fits the well-known &lt;a href=&quot;https://en.wikipedia.org/wiki/Broken_windows_theory&quot;&gt;broken windows theory&lt;/a&gt;.&lt;/p&gt;
+This phenomenon reflects
+the &lt;a href=&quot;https://en.wikipedia.org/wiki/Broken_windows_theory&quot;&gt;broken windows theory&lt;/a&gt; I’ve read.&lt;/p&gt;
 
 &lt;p&gt;To keep the code in a good style, we need a robot-reviewer that is always accountable and trustworthy.
 The &lt;strong&gt;Rust compiler&lt;/strong&gt; is definitely one of them.&lt;/p&gt;
 
 &lt;p&gt;If you google &lt;em&gt;Rust&lt;/em&gt;, you will see comments largely divided into two groups:
 Some complain the &lt;em&gt;Rust compiler&lt;/em&gt; is too stupid to allow them doing things they want;
-Some love the &lt;em&gt;Rust compiler&lt;/em&gt; since it makes the code well-structured.
+Some love the &lt;em&gt;Rust compiler&lt;/em&gt; since it makes the code well-structured
+and prevent them from doing stupid things.
 This is same as the comments for a strict teacher or professor.&lt;/p&gt;
 
 &lt;p&gt;Gladly I am an Asian. I am totally fine with a mean coach.
@@ -256,8 +255,8 @@ The library can leverage many useful third-party &lt;em&gt;crate&lt;/em&gt;s to 
 Using the third-party library can not only reduces the maintaining effort
 but also &lt;strong&gt;embody the spirit of &lt;em&gt;open-source&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;When translating the &lt;em&gt;C&lt;/em&gt; code to the &lt;em&gt;Rust&lt;/em&gt; code that follows the &lt;em&gt;Rust&lt;/em&gt;’s programming rules,
-Some mysterious issues may be addressed silently
+&lt;p&gt;When translating the &lt;em&gt;C&lt;/em&gt; code to the &lt;em&gt;Rust&lt;/em&gt; code that follows those strict &lt;em&gt;Rust&lt;/em&gt; rules,
+(we pray) some mysterious issues might be addressed silently
 with transforming the code structure in a stricter style.
 The code would need to be refactored at some point anyway.
 &lt;em&gt;Rust&lt;/em&gt; seems to be the best choice for refactoring the library at this time.&lt;/p&gt;
@@ -268,8 +267,8 @@ The code would need to be refactored at some point anyway.
 translate the library into &lt;em&gt;Rust&lt;/em&gt; and don’t introduce regressions.&lt;/p&gt;
 
 &lt;p&gt;In the product-level view, this is pretty similar to:
-create a new flight engine in a state-of-the-art techniques,
-put it in our current flights and make our flights soar!&lt;/p&gt;
+create a new flight engine by the state-of-the-art techniques,
+put it in our current flights, and make our flights soar!&lt;/p&gt;
 
 &lt;p&gt;The goal is simple in high-level view, but the detailed process is hard.&lt;/p&gt;
 
@@ -298,8 +297,9 @@ it’s best to make a plan to address or prevent them as best as we can.&lt;/p&g
 &lt;blockquote&gt;
   &lt;p&gt;“If I had an hour to solve a problem
 I’d spend 55 minutes thinking about the problem
-and 5 minutes thinking about solutions.”
-― Albert Einstein&lt;/p&gt;
+and 5 minutes thinking about solutions.”&lt;/p&gt;
+
+  &lt;p&gt;― Albert Einstein&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;I believe how well we define a problem determines how well we solve it.&lt;/p&gt;
@@ -315,22 +315,27 @@ the following problems need to be addressed:&lt;/p&gt;
   &lt;li&gt;Some issues are device-related and we don’t have any way to simulate those device operations&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;Apparently, the test coverage needs to be enlarged.
-The &lt;em&gt;3&lt;/em&gt; can be addressed if test case can be written more often in a easier way.
-After separating the &lt;em&gt;Mac OS&lt;/em&gt;’s platform-dependent code to a standalone crate,
+&lt;p&gt;Apparently, the test coverage needs to be enlarged.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;3&lt;/em&gt; can be addressed if test case can be written more often in a easier way.&lt;/p&gt;
+
+&lt;p&gt;After separating the &lt;em&gt;Mac OS&lt;/em&gt;’s platform-dependent code into a standalone crate,
 the platform-dependent tests can be easily implemented without considering other platforms
-so &lt;em&gt;4&lt;/em&gt; can be solved.
-To address &lt;em&gt;5&lt;/em&gt;, it needs to find a way to simulate the device operations.
-The &lt;em&gt;2&lt;/em&gt; might indicate some data-racing issues.
+so &lt;em&gt;4&lt;/em&gt; can be solved.&lt;/p&gt;
+
+&lt;p&gt;To address &lt;em&gt;5&lt;/em&gt;, it needs to find a way to simulate the device operations.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;2&lt;/em&gt; might indicate some data-racing issues.
 Our library manages threads inside itself.
 The output and input I/O threads will be created when the audio starts playing.
 The task threads would be created when the device is switching, plugging, and unplugging.
 Writing multi-thread tests is helpful to hunt the potential data-racing issues
-and again the APIs to simulate device operations are really necessary.
-The &lt;em&gt;1&lt;/em&gt; may be caused by calling APIs in a wrong time
+and again the APIs to simulate device operations are really necessary.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;1&lt;/em&gt; may be caused by calling APIs in a wrong time
 or those problems only happen on specific hardwares.
-By separating a large library API into several smaller APIs
-with propery unit tests and logs can help us narrow down the scope of the causes.
+By separating a large library API into several smaller APIs,
+with propery unit tests and logs, can help us narrow down the scope of the causes.
 It’s easier to identify a problem by testing several small APIs independently
 than testing a large API at once.&lt;/p&gt;
 
@@ -350,10 +355,10 @@ than testing a large API at once.&lt;/p&gt;
   &lt;li&gt;Restructure the library APIs
     &lt;ul&gt;
       &lt;li&gt;Follow the Rust &lt;em&gt;rules&lt;/em&gt;&lt;/li&gt;
-      &lt;li&gt;Deconstruct a large API into several smaller one with error messages&lt;/li&gt;
+      &lt;li&gt;Deconstruct a large API into several smaller one&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;Solve the data-racing, memory leaks, or any issues we hunt during this deep-cleaning&lt;/li&gt;
+  &lt;li&gt;Solve the issues we hunt during this deep-cleaning&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;make-a-feasible-plan&quot;&gt;Make A Feasible Plan&lt;/h2&gt;
@@ -373,8 +378,8 @@ This could move all the workarounds for some special situations or devices
 the library used to have at the same time when all the &lt;em&gt;C&lt;/em&gt; code is rewritten in &lt;em&gt;Rust&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;One the other hand, the answer of the problem &lt;em&gt;2&lt;/em&gt; can be found
-on any advertisement flyer in your mailbox:
-“We provide a month-free trial-run for you to experience our class!”.&lt;/p&gt;
+on any advertisement flyer in the mailbox:
+“We provide a month-free trial class for you to explore and experience!”.&lt;/p&gt;
 
 &lt;p&gt;Same manner can be applied here.
 Writing a minimum-viable audio library in pure &lt;em&gt;Rust&lt;/em&gt; first as a trial-run
@@ -382,10 +387,10 @@ can address problem &lt;em&gt;2&lt;/em&gt; effectively. This process also brings
 
 &lt;ul&gt;
   &lt;li&gt;It’s able to see what the problems the rewriting will face are and how to solve them,
-in a way smaller scope&lt;/li&gt;
+in advance, in a way smaller scope&lt;/li&gt;
   &lt;li&gt;It shows a rough outline about what the audio APIs should look like at the end,
 since it’s rewritten in pure &lt;em&gt;Rust&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;Some APIs is reusable in the future and they’ve been tested in a way smaller scope&lt;/li&gt;
+  &lt;li&gt;Some APIs are reusable in the future and they’ve been tested in a way smaller scope&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;As a result, the plan is divided into 4 phases:&lt;/p&gt;
@@ -400,7 +405,7 @@ since it’s rewritten in pure &lt;em&gt;Rust&lt;/em&gt;&lt;/li&gt;
   &lt;li&gt;Remove the &lt;code class=&quot;highlighter-rouge&quot;&gt;unsafe&lt;/code&gt; code introduced in previous stage
     &lt;ul&gt;
       &lt;li&gt;Now tests are created to support the refactoring&lt;/li&gt;
-      &lt;li&gt;Shipping this version in the &lt;em&gt;Firefox Nightly&lt;/em&gt; to test this in the wild&lt;/li&gt;
+      &lt;li&gt;Shipping this version in the &lt;em&gt;Firefox Nightly&lt;/em&gt; to test the new APIs in the wild&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;Keeping refactoring the abnormal &lt;em&gt;Rust&lt;/em&gt; code
@@ -422,8 +427,15 @@ calculating &lt;em&gt;TDEE (Total Daily Energy Expenditure)&lt;/em&gt; to preven
 &lt;p&gt;It’s is a long, hard, and lonely process.
 But I find everything worth doing when the shape is finally made!
 (To be clear, only the shape of code is made.)
-I am happy to have the result I have at the end.
-The summay is listed in &lt;a href=&quot;summary-of-cubeb-oxidation-on-mac-os&quot;&gt;previous post&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">The approach to refactor the code is same as how you shape the body. You can apply what you’ve learned from workout to writing code.</summary></entry><entry><title type="html">Summary of Cubeb Oxidation on Mac OS</title><link href="http://localhost:4000/post/summary-of-cubeb-oxidation-on-mac-os" rel="alternate" type="text/html" title="Summary of Cubeb Oxidation on Mac OS" /><published>2020-04-13T00:00:00+08:00</published><updated>2020-04-13T00:00:00+08:00</updated><id>http://localhost:4000/post/summary-of-cubeb-oxidation-on-mac-os</id><content type="html" xml:base="http://localhost:4000/post/summary-of-cubeb-oxidation-on-mac-os">&lt;p&gt;A summary of the &lt;em&gt;C-to-Rust&lt;/em&gt; rewriting work for Firefox’s audio library on Mac OS.&lt;/p&gt;
+I am happy to have the result I have at the end.&lt;/p&gt;
+
+&lt;h3 id=&quot;results&quot;&gt;Results&lt;/h3&gt;
+
+&lt;p&gt;The result summay is listed in &lt;a href=&quot;summary-of-cubeb-oxidation-on-mac-os&quot;&gt;this post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;tips&quot;&gt;Tips&lt;/h3&gt;
+
+&lt;p&gt;Some tips I find useful is listed in &lt;a href=&quot;the-effect-of-practicing-what-you-already-know&quot;&gt;this post&lt;/a&gt;.&lt;/p&gt;</content><author><name>Chun-Min Chang</name><email>chun.m.chang@gmail.com</email></author><category term="[&quot;Media&quot;]" /><category term="Firefox" /><summary type="html">The approach to refactor the code is same as how you shape the body. You can apply what you’ve learned from workout to writing code.</summary></entry><entry><title type="html">Summary of Cubeb Oxidation on Mac OS</title><link href="http://localhost:4000/post/summary-of-cubeb-oxidation-on-mac-os" rel="alternate" type="text/html" title="Summary of Cubeb Oxidation on Mac OS" /><published>2020-04-13T00:00:00+08:00</published><updated>2020-04-13T00:00:00+08:00</updated><id>http://localhost:4000/post/summary-of-cubeb-oxidation-on-mac-os</id><content type="html" xml:base="http://localhost:4000/post/summary-of-cubeb-oxidation-on-mac-os">&lt;p&gt;A summary of the &lt;em&gt;C-to-Rust&lt;/em&gt; rewriting work for Firefox’s audio library on Mac OS.&lt;/p&gt;
 
 &lt;!--read more--&gt;
 
@@ -454,9 +466,9 @@ The tips-and-effects can be summarized in this &lt;a href=&quot;the-effect-of-pr
   &lt;li&gt;The test coverage is enlarged to almost 80%
     &lt;ul&gt;
       &lt;li&gt;The left 20% are mostly logs&lt;/li&gt;
-      &lt;li&gt;The amount of the regression bugs is pretty low:
+      &lt;li&gt;The amount of the regression bugs is pretty low
         &lt;ul&gt;
-          &lt;li&gt;For now, only &lt;em&gt;5&lt;/em&gt; bugs are introduced by using the new &lt;em&gt;Rust&lt;/em&gt; API&lt;/li&gt;
+          &lt;li&gt;The number of bugs are introduced by new &lt;em&gt;Rust&lt;/em&gt; API is kept in single digits&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
@@ -617,7 +629,7 @@ In this project, the 79.2% lines (in &lt;a href=&quot;https://github.com/ChunMin
 The left 20.8% code are mostly logs printed when turning on a preference
 so most of the product-level code are covered.&lt;/p&gt;
 
-&lt;p&gt;For now, only &lt;em&gt;5&lt;/em&gt; bugs are intorduced by the new &lt;em&gt;Rust&lt;/em&gt; backend itself.
+&lt;p&gt;For now, the number of bugs intorduced by the new &lt;em&gt;Rust&lt;/em&gt; backend itself.
 Most of the problem in the audio library occur in the original C backend as well.
 By enlarging the test coverage, many bugs are found before the code is shipped to the wild.&lt;/p&gt;
 

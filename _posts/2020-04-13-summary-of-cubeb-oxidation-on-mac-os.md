@@ -29,8 +29,8 @@ The tips-and-effects can be summarized in this [post][effect].
 - Hunt and fix *3* memory leaks
 - The test coverage is enlarged to almost 80%
   - The left 20% are mostly logs
-  - The amount of the regression bugs is pretty low:
-    - For now, only *5* bugs are introduced by using the new *Rust* API
+  - The amount of the regression bugs is pretty low
+    - The number of bugs are introduced by new *Rust* API is kept in single digits
 
 ### Data-racing issues
 
@@ -178,7 +178,7 @@ In this project, the 79.2% lines (in [src/backend][grcov-src-backend]) are cover
 The left 20.8% code are mostly logs printed when turning on a preference
 so most of the product-level code are covered.
 
-For now, only *5* bugs are intorduced by the new *Rust* backend itself.
+For now, the number of bugs intorduced by the new *Rust* backend itself.
 Most of the problem in the audio library occur in the original C backend as well.
 By enlarging the test coverage, many bugs are found before the code is shipped to the wild.
 

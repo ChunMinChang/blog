@@ -30,7 +30,7 @@ The tips-and-effects can be summarized in this [post][effect].
 - The test coverage is enlarged to almost 80%
   - The left 20% are mostly logs
   - The amount of the regression bugs is pretty low
-    - The number of bugs are introduced by new *Rust* API is kept in single digits
+    - The number of bugs introduced by new *Rust* API is kept in single digits
 
 ### Data-racing issues
 
@@ -50,9 +50,9 @@ Detecting data-racing issues effectively is a hard topic.
 However, `cargo test` framework lowers the barriers.
 
 All the tests within `cargo test` are run in parallel by default,
-which means there is no need to write the custom code to run the tests
-on different threads. The tests will be executed on the different threads automatically.
-As a result, the problems caused by data-racing emerge much more frequently,
+which means we can spend less effort to write the custom code for running the tests on different threads.
+The tests will be executed on the different threads automatically.
+As a result, the devious problems caused by data-racing emerge much more frequently,
 even when just running the unit tests.
 It can show a surprising fact
 that some of the APIs cannot be run at the same time.

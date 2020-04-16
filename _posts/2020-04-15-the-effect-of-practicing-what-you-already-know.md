@@ -52,7 +52,7 @@ In short, the following results are made:
 - The test coverage is enlarged to almost 80%
   - The left 20% are mostly logs
   - The amount of the regression bugs is pretty low
-    - The number of bugs are introduced by new *Rust* API is kept in single digits
+    - The number of bugs introduced by new *Rust* API is kept in single digits
 
 ## The Effect of Practicing What You Already Know
 

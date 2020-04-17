@@ -2,7 +2,7 @@
 layout: post
 title: Summary of Cubeb Oxidation on Mac OS
 category: [Media]
-tags: [Firefox]
+tags: [Firefox, Rust]
 comments: true
 ---
 
@@ -11,14 +11,12 @@ A summary of the *C-to-Rust* rewriting work for Firefox's audio library on Mac O
 <!--read more-->
 
 I have written several posts to
-share some experience of rewriting a library from *C/C++* into *Rust*.
-
-In this post, I am going to summarize the achievements
-of rewriting the Firefox's audio library, named [*Cubeb*][cubeb],
+share some experience of rewriting the Firefox's audio library, named [*Cubeb*][cubeb],
 from [*C++*][cubeb-audiounit] into [*Rust*][cubeb-coreaudio-rs].
+In this post, I am going to summarize the achievements done in this project.
 
 The story about how the plan is made is in this [post][shape].
-The tips-and-effects can be summarized in this [post][effect].
+The tips-and-effects is outlined in this [post][effect].
 
 ## Summary of Cubeb Oxidation on Mac OS
 
@@ -27,10 +25,9 @@ The tips-and-effects can be summarized in this [post][effect].
 - Boost the performance to *35x* faster when starting multiple streams simultaneously
   - A happy side effect when fixing data racing issues
 - Hunt and fix *3* memory leaks
-- The test coverage is enlarged to almost 80%
+- The test coverage of lines is enlarged to almost 80%
   - The left 20% are mostly logs
-  - The amount of the regression bugs is pretty low
-    - The number of bugs introduced by new *Rust* API is kept in single digits
+  - Only *5* bugs are introduced by the new *Rust* backend itself
 
 ### Data-racing issues
 
@@ -38,28 +35,28 @@ The data-racing issues could be naturally detected
 since all the tests within `cargo test` are run in parallel by default.
 
 The audio library is heavily threaded code.
-It is based on various system APIs that may use *mutex* internally
+It is based on various underlying system APIs that may use *mutex* internally
 to query or update the device-related settings.
-In addition, the library API can be called on different threads anytime.
+In addition, the library API can be called on the different threads anytime.
 
 In the past, most of the data-racing issues are found
 by investigating the bug reported by Firefox users
 at the time when the code is already shipped to the wild.
-
 Detecting data-racing issues effectively is a hard topic.
 However, `cargo test` framework lowers the barriers.
 
 All the tests within `cargo test` are run in parallel by default,
-which means we can spend less effort to write the custom code for running the tests on different threads.
-The tests will be executed on the different threads automatically.
-As a result, the devious problems caused by data-racing emerge much more frequently,
+which means we can spend less effort to write the custom code for running the tests
+on the different threads.
+The tests will be executed in parallel automatically.
+As a result, the obscure problems caused by data-racing emerge more frequently,
 even when just running the unit tests.
 It can show a surprising fact
 that some of the APIs cannot be run at the same time.
 
 ### Performance
 
-The performance for starting multiple streams is boosted to *35x* faster
+The performance for starting multiple streams simultaneously is boosted to *35x* faster
 after fixing the data-racing issues.
 
 Actually, this achievement is unexpected.
@@ -82,7 +79,7 @@ There are 4 different backends in the test:
 3. <span style="color:#f4b400">Yellow</span>: The version honors *Rust* style first
     - It rewrites many abnormal *Rust* code translated plainly from *C* code
     - To replace a custom mutex translated from *C* code,
-    some APIs are reimplemented with a gloabl task queue or `Mutex<T>`
+    some APIs are reimplemented with a gloabl task queue or standard *Rust* `Mutex<T>`
 4. <span style="color:#0f9d58">Green</span>: The version using stream-local task queues instead of a global task queue
 
 There are some fun findings on the above figure.
@@ -96,7 +93,7 @@ then their performances are roughly equal.
 This is understandable.
 The perofrmance won't be soared if the code are run in the same or similar way.
 
-#### But if every line honors the *Rust* rule, the performance improve
+#### But if every line honors the *Rust* rule, the performance is boosted
 
 The figure shows the performance improve a bit when the implementation
 goes from *2* to *3*.
@@ -111,7 +108,7 @@ the performance may be improved.
 *Rust* has strict rules for the *ownership*, *borrowing*,...etc
 to force the developers to think their code carefully
 and provide well-designed system libraries
-that lead to writing code in a good style.
+that lead developers to write code in a good structure.
 In this project, it turns out those strict rules also lead to better performances.
 
 Those limits ends up helping us to find a better way to implement the library APIs.
@@ -173,14 +170,14 @@ Enlarging the test-coverage to discover the problems earlier
 is one of the goal of the *C-to-Rust* rewriting project.
 
 The [grcov][grcov] is a convenient tool that help monitoring the test coverage in our code.
-It can show the test-coverage status of the *Rust* project in a less-than-10-line [script][grcov-script].
+It can show the test-coverage status of the *Rust* project [in a few lines][grcov-script].
 In this project, the 79.2% lines (in [src/backend][grcov-src-backend]) are covered within the tests.
 The left 20.8% code are mostly logs printed when turning on a preference
 so most of the product-level code are covered.
 
-For now, the number of bugs intorduced by the new *Rust* backend itself.
-Most of the problem in the audio library occur in the original C backend as well.
-By enlarging the test coverage, many bugs are found before the code is shipped to the wild.
+For now, only *5* bugs are introduced by the new *Rust* backend itself.
+Other problems in the audio library we found can occur in the original *C* backend as well.
+By enlarging the test coverage, many bugs are catched before the code is shipped to the wild.
 
 ### Conculsion
 

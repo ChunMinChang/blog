@@ -2,11 +2,11 @@
 layout: post
 title: Shape your code as how you shape your body
 category: [Media]
-tags: [Firefox]
+tags: [Firefox, Rust]
 comments: true
 ---
 
-The approach to refactor the code is same as how you shape the body.
+The approach to (re)shape the code is same as how you shape the body.
 You can apply what you've learned from workout to writing code.
 
 <!--read more-->
@@ -14,9 +14,18 @@ You can apply what you've learned from workout to writing code.
 This post introduce how I make the plan for rewriting the Firefox's audio library,
 named [*Cubeb*][cubeb], from [*C++*][cubeb-audiounit] into [*Rust*][cubeb-coreaudio-rs].
 
-The story is nothing more than a workout-training post that you've probably read before:
-it lists all the tips a trainee needs and shows a perfect body shape demonstrating
-the results for applying those tips.
+The series of this *C-to-Rust* rewriting story is nothing more than a workout-training post
+that you've probably read before:
+it makes a plan and lists all the tips a trainee needs
+and shows a perfect body shape demonstrating
+the results for practicing the plan and applying the tips.
+
+The results we achieved is summerized in [this post][summary].
+The tips I find useful are listed in [this post][tips].
+In the following article, I am going to tell the story about
+how the rewriting-plan is made.
+
+## We Need A Mean Coach, and *Rust Compiler* Is the One
 
 Everyone probably knows a few tricks for making the body in a good shape
 but not everyone can achieve that.
@@ -25,9 +34,7 @@ Even the shape is made, it's hard to keep the shape.
 The quickest way to shape the body is hiring a mean coach!
 They make sure you've done everything right and push you to do your best.
 
-Human is lazy. We only move forward when something pushes us.
-
-## We Need A Mean Coach, and *Rust Compiler* Is the One
+Human is lazy. We only move on when something pushes us.
 
 When this habit comes to programming,
 I admit that sometimes I don't stick on the coding disciplines the code should follow,
@@ -39,14 +46,12 @@ The code can become out of shape a bit and a bit if no one constantly watches it
 This phenomenon reflects
 the [broken windows theory](https://en.wikipedia.org/wiki/Broken_windows_theory) I've read.
 
-To keep the code in a good style, we need a robot-reviewer that is always accountable and trustworthy.
+To keep the code in a good shape, we need a robot-reviewer that is always accountable and trustworthy.
 The **Rust compiler** is definitely one of them.
 
-If you google *Rust*, you will see comments largely divided into two groups:
+If you google *Rust*, you will the comments are largely divided into two groups:
 Some complain the *Rust compiler* is too stupid to allow them doing things they want;
-Some love the *Rust compiler* since it makes the code well-structured
-and prevent them from doing stupid things.
-This is same as the comments for a strict teacher or professor.
+Some love the *Rust compiler* since it helps them to avoid doing stupid things.
 
 Gladly I am an Asian. I am totally fine with a mean coach.
 I bet I've seen meaner one in my school life.
@@ -57,8 +62,8 @@ The *Rust compiler* is the robot-reviewer I need.
 There are some reasons for supporting the decision
 to shape the audio library in *Rust*:
 
-1. This could reduce the developping and debugging efforts in the long run
-2. Some mysterious problem may be addressed by this deeply cleaning process
+1. This could reduce the developing and debugging efforts in the long run
+2. Some obscure problem may be addressed by this deep-cleaning process
 3. It's time to refactor the library after putting hot-fix and hot-fix
 
 Before this project, our team have successfully translated
@@ -66,15 +71,16 @@ the *PulseAudio* backend on *Linux* from *C* to *Rust* so
 we believe the plan is feasible.
 
 By rewriting all the code in *Rust*, which was born with good coding principals,
-the human effor to review or check the code would be lower.
+the human effor to review or check the code could be reduced.
 In addition, the *Rust*'s eco-system and community is thriving and robust.
-The library can leverage many useful third-party *crate*s to fulfil our needs.
+The library can leverage many useful third-party *Rust crate*s to fulfil our needs.
 Using the third-party library can not only reduces the maintaining effort
 but also __embody the spirit of *open-source*__.
 
 When translating the *C* code to the *Rust* code that follows those strict *Rust* rules,
-(we pray) some mysterious issues might be addressed silently
-with transforming the code structure in a stricter style.
+some mysterious issues might be addressed silently
+when transforming the code into a stricter structure (we pray 🙂).
+
 The code would need to be refactored at some point anyway.
 *Rust* seems to be the best choice for refactoring the library at this time.
 
@@ -118,7 +124,7 @@ The first step is to review the problems we have.
 I believe how well we define a problem determines how well we solve it.
 
 To bring value of the rewriting project as much as possible,
-the following problems need to be addressed:
+the following problems we used to have in the past need to be addressed:
 
 1. Some assertions will be hit unexpectedly
 2. Some code are suspected to be executed in a wrong time
@@ -128,22 +134,18 @@ the following problems need to be addressed:
 
 Apparently, the test coverage needs to be enlarged.
 
-The _3_ can be addressed if test case can be written more often in a easier way.
-
-After separating the *Mac OS*'s platform-dependent code into a standalone crate,
+1. The _3_ can be addressed if test case can be written more often in an easier way.
+2. After separating the *Mac OS*'s platform-dependent code into a standalone *Rust crate*,
 the platform-dependent tests can be easily implemented without considering other platforms
 so _4_ can be solved.
-
-To address _5_, it needs to find a way to simulate the device operations.
-
-The _2_ might indicate some data-racing issues.
+3. To address _5_, it needs to find a way to simulate the device operations.
+4. The _2_ might indicate some data-racing issues.
 Our library manages threads inside itself.
-The output and input I/O threads will be created when the audio starts playing.
+The input and output I/O threads will be created when the audio starts playing.
 The task threads would be created when the device is switching, plugging, and unplugging.
 Writing multi-thread tests is helpful to hunt the potential data-racing issues
 and again the APIs to simulate device operations are really necessary.
-
-The _1_ may be caused by calling APIs in a wrong time
+1. The _1_ may be caused by calling APIs in a wrong time
 or those problems only happen on specific hardwares.
 By separating a large library API into several smaller APIs,
 with propery unit tests and logs, can help us narrow down the scope of the causes.
@@ -173,6 +175,7 @@ There are two big problems left:
 
 For the problem _1_, the safest approach is: 
 translating all the code on a line-by-line basis at first.
+
 All the *C/C++* code should be translated to *Rust* plainly even they break *Rust*'s rule.
 *Rust* has `unsafe` block that allows developers to do what they used to do in *C*.
 This could move all the workarounds for some special situations or devices
@@ -187,7 +190,7 @@ Writing a minimum-viable audio library in pure *Rust* first as a trial-run
 can address problem _2_ effectively. This process also brings many benefits:
 
 - It's able to see what the problems the rewriting will face are and how to solve them,
-  in advance, in a way smaller scope
+  in a way smaller scope
 - It shows a rough outline about what the audio APIs should look like at the end,
   since it's rewritten in pure *Rust*
 - Some APIs are reusable in the future and they've been tested in a way smaller scope
@@ -196,34 +199,45 @@ As a result, the plan is divided into 4 phases:
 
 1. Write a minimum-viable version of the audio library as a trial-run
 2. Translate all the lines plainly
-   - Add the proper unit or intergretion tests at the same time
+   - Add the proper unit tests and intergretion tests in this phase
 3. Remove the `unsafe` code introduced in previous stage
    - Now tests are created to support the refactoring
    - Shipping this version in the *Firefox Nightly* to test the new APIs in the wild
-4. Keeping refactoring the abnormal *Rust* code
-   - Leverage with third-party crates to reduce the maintain efforts
-   - Split some code into sub crates to attract some contributors
+4. Keep refactoring the abnormal *Rust* code
+   - Leverage with third-party *crate*s to reduce the maintaining efforts
+   - Split some code into sub *crate*s to attract some contributors
 
 ## Start the Journey
 
-Now, the only things I need is patience, just what I need when doing workout.
-I know everything I should do but the plan is not easy to stick with.
+Now, the only things I need is patience, just like what I need when doing workout.
+I know everything I should do but the plan is not easy to be stuck with.
 Translating code on a line-by-line basis is dull as doing workout set.
 Writing test to prevent regression is uninteresting as
 calculating *TDEE (Total Daily Energy Expenditure)* to prevent my body from getting fat.
 
 It's is a long, hard, and lonely process.
-But I find everything worth doing when the shape is finally made!
+
+Not every API is translatable.
+Sometimes it's not difficult to find workarounds or alternative approaches.
+But sometimes I need to re-implement the whole API that is originally
+supported by *Mac*'s compiler by myself.
+Most of the APIs involve the memory operations that need to be dealt with carefully.
+Memory misusages or corruptions can lead to some serious problem.
+
+Defusing our custom mutex and replacing it by
+standard Rust `Mutex<T>`, or task queue, is not an easy job.
+The data-racing issues can be easily introduced during this replacing process.
+
+However, all the hard works are worthwhile at the end when the shape is made!
 (To be clear, only the shape of code is made.)
-I am happy to have the result I have at the end.
 
-### Results
+## Result Summary
 
-The result summay is listed in [this post][summary].
+The results is summarized in [this post][summary].
 
-### Tips
+## Tips and Effects
 
-Some tips I find useful is listed in [this post][tips].
+Some tips I find useful are listed in [this post][tips].
 
 [summary]: summary-of-cubeb-oxidation-on-mac-os
 [tips]: the-effect-of-practicing-what-you-already-know

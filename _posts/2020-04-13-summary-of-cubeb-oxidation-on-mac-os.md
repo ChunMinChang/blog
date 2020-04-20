@@ -6,17 +6,18 @@ tags: [Firefox, Media, Rust]
 comments: true
 ---
 
-A summary of the *C-to-Rust* rewriting work for Firefox's audio library on Mac OS.
+A summary of the *C-to-Rust* oxidizing work for Firefox's audio library on Mac OS.
 
 <!--read more-->
 
-I have written several posts to
-share some experience of rewriting the Firefox's audio library, named [*Cubeb*][cubeb],
-from [*C++*][cubeb-audiounit] into [*Rust*][cubeb-coreaudio-rs].
-In this post, I am going to summarize the achievements done in this project.
+I've been working on *oxidizing* the Firefox's audio backend, named [*Cubeb*][cubeb],
+from [*C++*][cubeb-audiounit] to [*Rust*][cubeb-coreaudio-rs] for more than one year.
+The new Rust backend has been shipped in *Firefox 74*.
 
-The story about how the plan is made is in this [post][shape].
-The tips-and-effects is outlined in this [post][effect].
+This is the first post for sharing what I’ve worked out.
+I am going to summarize the achievements done in this project.
+The next [post][shape] is about [how the plan is made][shape].
+The final [post][effect] briefs some [tips-and-effects][effect].
 
 ## Summary of Cubeb Oxidation on Mac OS
 
@@ -60,7 +61,7 @@ The performance for starting multiple streams simultaneously is boosted to *35x*
 after fixing the data-racing issues.
 
 Actually, this achievement is unexpected.
-Performance improvement is not included in the goals for this rewriting project
+Performance improvement is not included in the goals for this oxidizing project
 but it natually happens.
 (The goal is simply set to *do-not-cause-performance-regression*.)
 
@@ -84,7 +85,7 @@ There are 4 different backends in the test:
 
 There are some fun findings on the above figure.
 
-#### Rewriting the code from *C* to *Rust* won't improve the performance
+#### Oxidizing the code from *C* to *Rust* won't improve the performance
 
 There is no much performance differences between *1* and *2*.
 If the *Rust* code is implemented in a similar way as what *C* code does,
@@ -135,8 +136,10 @@ it naturally happens! This is amazing!
 
 ### Memory leaks
 
-Rewriting the code in a different language gives developer a chance to review:
+Oxidizing the code into *Rust* gives me a chance to review:
 How we manage the memory across API calls?
+The new *Rust* APIs would be called in *C++* side.
+
 The memory created and lent outside via one API needs to be
 retrieved and destroyed properly in another API
 since the memory allocator used in the library
@@ -167,7 +170,7 @@ As long as the test cases are written properly,
 *cargo* frameworks provide enough supports for what developers need.
 
 Enlarging the test-coverage to discover the problems earlier
-is one of the goal of the *C-to-Rust* rewriting project.
+is one of the goal of the *C-to-Rust* oxidizing project.
 
 The [grcov][grcov] is a convenient tool that help monitoring the test coverage in our code.
 It can show the test-coverage status of the *Rust* project [in a few lines][grcov-script].

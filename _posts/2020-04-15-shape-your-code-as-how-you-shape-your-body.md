@@ -6,24 +6,25 @@ tags: [Firefox, Media, Rust]
 comments: true
 ---
 
-The approach to (re)shape the code is same as how you shape the body.
+The approach to (re)shape the code is the same as how you shape your body.
 You can apply what you've learned from workout to writing code.
 
 <!--read more-->
 
-This post introduce how I make the plan for rewriting the Firefox's audio library,
-named [*Cubeb*][cubeb], from [*C++*][cubeb-audiounit] into [*Rust*][cubeb-coreaudio-rs].
+I've been working on *oxidizing* the Firefox's audio backend, named [*Cubeb*][cubeb],
+from [*C++*][cubeb-audiounit] to [*Rust*][cubeb-coreaudio-rs] for more than one year.
+The new Rust backend has been shipped in *Firefox 74*.
 
-The series of this *C-to-Rust* rewriting story is nothing more than a workout-training post
+This is the second post for sharing what I’ve worked out.
+I am going to introduce how I make the plan to oxidize the Firefox's audio library.
+The first [post][summary] summarizes the [achievements][summary] done in this project.
+The final [post][tips] briefs some [tips-and-effects][tips].
+
+The series of this *C-to-Rust* oxidizing story is nothing more than a workout-training post
 that you've probably read before:
 it makes a plan and lists all the tips a trainee needs
 and shows a perfect body shape demonstrating
 the results for practicing the plan and applying the tips.
-
-The results we achieved is summerized in [this post][summary].
-The tips I find useful are listed in [this post][tips].
-In the following article, I am going to tell the story about
-how the rewriting-plan is made.
 
 ## We Need A Mean Coach, and *Rust Compiler* Is the One
 
@@ -74,7 +75,7 @@ Before this project, our team have successfully translated
 the *PulseAudio* backend on *Linux* from *C* to *Rust* so
 we believe the plan is feasible.
 
-By rewriting all the code in *Rust*, which was born with good coding principals,
+By oxidizing all the code into *Rust*, which was born with good coding principals,
 the human effor to review or check the code could be reduced.
 In addition, the *Rust*'s eco-system and community is thriving and robust.
 The library can leverage many useful third-party *Rust crate*s to fulfil our needs.
@@ -127,7 +128,7 @@ The first step is to review the problems we have.
 
 I believe how well we define a problem determines how well we solve it.
 
-To bring value of the rewriting project as much as possible,
+To bring value of the oxidizing project as much as possible,
 the following problems we used to have in the past need to be addressed:
 
 1. Some assertions will be hit unexpectedly
@@ -174,7 +175,8 @@ The requirements can be organized to:
 
 There are two big problems left:
 
-1. How to prevent the regression from being introduced by rewriting the whole library, without having enough tests?
+1. How to prevent the regression from being introduced by oxidizing the whole library,
+   without having enough tests?
 2. I don't have much *Rust* experience
 
 For the problem _1_, the safest approach is: 
@@ -193,8 +195,8 @@ Same manner can be applied here.
 Writing a minimum-viable audio library in pure *Rust* first as a trial-run
 can address problem _2_ effectively. This process also brings many benefits:
 
-- It's able to see what the problems the rewriting will face are and how to solve them,
-  in a way smaller scope
+- It's able to see what the problems the oxidizing project will face are
+  and how to solve them in a way smaller scope
 - It shows a rough outline about what the audio APIs should look like at the end,
   since it's rewritten in pure *Rust*
 - Some APIs are reusable in the future and they've been tested in a way smaller scope

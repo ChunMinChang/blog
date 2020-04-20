@@ -11,13 +11,18 @@ but haven't got a chance to try them.
 
 <!--read more-->
 
-I am going to share some actions and results I find useful when
-rewriting the Firefox's audio library, named [*Cubeb*][cubeb],
-from [*C++*][cubeb-audiounit] into [*Rust*][cubeb-coreaudio-rs].
+I've been working on *oxidizing* the Firefox's audio backend, named [*Cubeb*][cubeb],
+from [*C++*][cubeb-audiounit] to [*Rust*][cubeb-coreaudio-rs] for more than one year.
+The new Rust backend has been shipped in *Firefox 74*.
+
+This is the final post for sharing what I’ve worked out.
+I am going to brief the some *tips-and-effects* that helps me to reshape the code.
+The first [post][summary] summarizes the [achievements][summary] done in this project.
+The second [post][plan] tell the story about [how the plan is made][plan].
 
 ## What the problem we have
 
-The problem needs to be solved in the rewriting project can be found in [the post here][plan].
+The problem needs to be solved in the oxidizing project can be found in [the post here][plan].
 
 In short, the following problems motivate us:
 
@@ -66,10 +71,10 @@ The [approach][plan] to refactor the code is same as how we shape the body.
 It's is a long and lonely process and it is hard to follow the plan sometimes.
 However, all the hard works are worthwhile at the end when the shape is made.
 
-The followings introduce some useful tips I learned from this rewriting project.
+The followings introduce some useful tips I learned from this oxidizing project.
 I hope these are useful for someone trying to do the same things.
 
-To read more story of how the rewriting plan is made,
+To read more story of how the oxidizing plan is made,
 please read [the post here][plan].
 
 ### Always Write Tests
@@ -77,8 +82,8 @@ please read [the post here][plan].
 Every programmer knows it's better to write tests
 but not everyone allocates time to do that.
 
-The experience I learned from this rewriting project makes me
-believe that the test cases are the founding blocks to refacotring.
+The experience I learned from this oxidizing project makes me
+believe that the test cases are the founding blocks to code refacotring.
 
 `cargo test` run tests in parallel by default.
 As a result, some data-racing issues could be naturally detected.

@@ -49,9 +49,13 @@ the [broken windows theory](https://en.wikipedia.org/wiki/Broken_windows_theory)
 To keep the code in a good shape, we need a robot-reviewer that is always accountable and trustworthy.
 The **Rust compiler** is definitely one of them.
 
-If you google *Rust*, you will the comments are largely divided into two groups:
-Some complain the *Rust compiler* is too stupid to allow them doing things they want;
+If you google *Rust*, you will see the comments are largely divided into two groups:
+Some complain the *Rust compiler* is too stupid to allow them to do things they want;
 Some love the *Rust compiler* since it helps them to avoid doing stupid things.
+
+The same situation can happen when asking the students to comment a strick teacher or professor:
+Some love learning things the hard way at the beginning;
+Some love learning things roughly and quickly first then try improving.
 
 Gladly I am an Asian. I am totally fine with a mean coach.
 I bet I've seen meaner one in my school life.

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Dancing LED
-category: [Toy]
-tags: [Hardware]
+category: [Random]
+tags: [Toy]
 comments: true
 type: video
 video: https://www.youtube.com/watch?v=DJeW6geKkkw

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Estimation of MP3 Duration
-category: [Media]
-tags: [Demuxer, Firefox]
+category: [Work]
+tags: [Media, Firefox]
 mathjax: true
 comments: true
 ---

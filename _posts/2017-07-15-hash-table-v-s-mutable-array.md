@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hash Table v.s. Mutable Array
-category: Common
+category: [Programming]
 tags: [C/C++]
 comments: true
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Exponentiation by squaring
-category: [Algorithm]
+category: [Programming]
 tags: [Recursion, Dynamic Programming]
 mathjax: true
 comments: true
@@ -37,8 +37,8 @@ we could solve $$k^n$$ in $$O(\log n)$$.
 
 ## Top-down Approach
 
-
 ### Recursive
+
 If we apply the first conversion, we could get the following code:
 
 ```cpp
@@ -123,6 +123,7 @@ uint64_t pow4(unsigned int k, unsigned int n)
 ```
 
 ### Iterative
+
 If we could rewrite a recursive algorithm into an iterative version,
 it usually run faster.
 
@@ -383,7 +384,6 @@ $$
 |       $$n$$ | $$0$$ |          $$1$$ |           $$2$$ |              $$5$$ |             $$10$$ |
 |         odd |       |              v |                 |                  v |                    |
 |       $$a$$ | $$1$$ | $$k\cdot{a_0}^2=k$$ | $${a_1}^2=k^2$$ | $$k\cdot{a_2}^2 = k^5$$ | $${a_3}^2=k^{10}$$ |
-
 
 The only question now is how we could get $$n_j$$.
 The changing of $$n_j$$ here is __opposite__ to the changing

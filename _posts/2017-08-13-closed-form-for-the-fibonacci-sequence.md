@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Closed Form for the Fibonacci Sequence
-category: Math
+category: [Random]
 tags: [Fibonacci]
 mathjax: true
 comments: true
@@ -94,14 +94,17 @@ x_k &= u \cdot p^k + v \cdot q^k \\
 $$
 
 ## Graph
+
 See the online [graph here](https://www.wolframalpha.com/input/?i=(((1%2Bsqrt(5))%2F2)%5Ex+-+((1-sqrt(5))%2F2)%5Ex)%2Fsqrt(5))
 
 ## Questions
+
 - Why we assume $$F_n = s \cdot r^n$$?
 - Why we use $$F_n = u \cdot p^n + v \cdot q^n$$
   instead of $$F_n = s \cdot r^n$$ as our closed form?
 
 ## References
+
 - http://math.ucr.edu/~res/math153/history07a.pdf
 - http://gozips.uakron.edu/~crm23/fibonacci/fibonacci.htm
 - https://math.stackexchange.com/questions/65011/prove-this-formula-for-the-fibonacci-sequence

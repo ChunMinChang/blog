@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Running Average
-category: [Common, Math]
+category: [Work, Programming]
 tags: [Firefox]
 mathjax: true
 comments: true
@@ -13,6 +13,7 @@ One simplest method to avoid the problem is *running average*
 (or *moving average*, *rolling average*, *incremental mean*).
 
 ## Problem
+
 Suppose we have data $$x_1, x_2, \cdots, x_n$$.
 The $$sum_{n+1}$$ will overflow when the new data $$x_{n+1}$$ is counted,
 where $$sum_i = x_1 + x_2 + \cdots + x_i$$.
@@ -59,6 +60,7 @@ Fortunately, the overflow happens once in a blue moon
 so it's not too much trouble.
 
 ### Proof
+
 We can formally prove the above approach is incorrect.
 Let $$sum_{k}$$ and $$\mu_k$$ be the **sum** and **arithmetic mean**
 of $$x_1, x_2, \cdots, x_k$$ respectively, and $$E_k$$ be the estimated average

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Audio Device Selector
-category: [Toy]
-tags: [Hardware]
+category: [Random]
+tags: [Toy]
 mathjax: true
 comments: true
 type: video
@@ -21,6 +21,7 @@ of the speaker by simply flipping a switch.
 <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/heBQHew3Guc" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> -->
 
 ## Circuit
+
 The circuit is super easy. It's nothing more than a switch.
 ![][deviceselector]
 

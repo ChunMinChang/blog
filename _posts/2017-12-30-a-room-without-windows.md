@@ -2,7 +2,7 @@
 layout: post
 title: A Room without Windows
 category: [Life]
-tags: [Memory, Music, TzChien慈謙]
+tags: [Thought]
 comments: true
 ---
 # 無窗的房間
@@ -224,5 +224,6 @@ comments: true
 至少，要把自己[種在大樹下，泥土裡](https://www.facebook.com/tzchienfans/videos/1405644819517261/)。
 
 ## 無窗的房間
+
 - [Blow吹音樂：混合台語、英文雙聲道 TzChien慈謙溫柔釋出全新單曲〈無窗的房間〉](https://blow.streetvoice.com/37778-%E6%B7%B7%E5%90%88%E5%8F%B0%E8%AA%9E%E3%80%81%E8%8B%B1%E6%96%87%E9%9B%99%E8%81%B2%E9%81%93-tzchien%E6%85%88%E8%AC%99%E6%BA%AB%E6%9F%94%E9%87%8B%E5%87%BA%E5%85%A8%E6%96%B0%E5%96%AE%E6%9B%B2%E3%80%88/)
 - [Yahoo!奇摩新聞：外在與內在交融 TzChien慈謙為無窗房間吶喊](https://tw.news.yahoo.com/%E5%A4%96%E5%9C%A8%E8%88%87%E5%85%A7%E5%9C%A8%E4%BA%A4%E8%9E%8D-tzchien%E6%85%88%E8%AC%99%E7%82%BA%E7%84%A1%E7%AA%97%E6%88%BF%E9%96%93%E5%90%B6%E5%96%8A-070703108.html)

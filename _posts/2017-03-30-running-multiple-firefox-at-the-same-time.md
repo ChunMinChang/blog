@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Running multiple Firefox at the same time
-category: Mozilla
+category: [Work]
 tags: [Firefox]
 comments: true
 ---

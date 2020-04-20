@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Development Notes for Mozilla
-category: Mozilla
+category: [Work]
 tags: [Firefox, Fennec]
 comments: true
 ---

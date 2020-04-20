@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Requiring Android build-tools for Fennec
-category: Mozilla
-tags: [Fennec]
+category: [Work]
+tags: [Firefox]
 comments: true
 ---
 # Requiring Android build-tools for Fennec

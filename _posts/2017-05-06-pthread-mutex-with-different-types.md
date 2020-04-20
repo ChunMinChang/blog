@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Pthread mutex with different types
-category: Common
+category: [Programming]
 tags: [Multithread]
 comments: true
 ---
@@ -14,7 +14,7 @@ If one pthread could unlock a mutex owned by other thread whenever it wants,
 then the mutex will be meaningless,
 unless it's a expected behavior.
 
-In my case, it's exactly what I want, 
+In my case, it's exactly what I want,
 because I need to break the deadlock to continue the program.
 However, in most case, this behavior should be __forbidden__,
 so I do some research about

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: The effect of practicing what you already know
-category: [Media]
-tags: [Firefox, Rust]
+category: [Work]
+tags: [Firefox, Media, Rust]
 comments: true
 ---
 

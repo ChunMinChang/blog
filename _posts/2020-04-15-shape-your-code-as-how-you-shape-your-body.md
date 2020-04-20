@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Shape your code as how you shape your body
-category: [Media]
-tags: [Firefox, Rust]
+category: [Work]
+tags: [Firefox, Media, Rust]
 comments: true
 ---
 

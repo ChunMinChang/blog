@@ -1,10 +1,11 @@
 ---
 layout: post
 title: How to avoid duplicate symbols when compiling
-category: Common
+category: [Programming]
 tags: [C/C++]
 comments: true
 ---
+
 # How to avoid duplicate symbols when compiling
 
 The error: ```duplicate symbol for architecture x86_64``` will be prompted
@@ -52,8 +53,8 @@ included from the shared header(```utils.h```).
 The program has no idea about which one it should call
 among those duplicated symbols.
 
+## Approach 1: Using macros instead of functions
 
-## Solution 1: Using macros instead of functions
 The macro is only textual substitution that expanded by the preprocessor,
 so there is no symbol generated.
 
@@ -73,7 +74,8 @@ void SayBye()
 You can run: ```$ g++ -E <file_name>.cpp``` to watch
 and confirm the preprocessor's output.
 
-## Solution 2: Make functions __inline__
+## Approach 2: Make functions __inline__
+
 It works almost same as macro.
 Inline functions are actual functions
 whose copy of the function body are injected directly into
@@ -101,7 +103,8 @@ type-checking issues to help debugging.
 
 See [here][inline] for more details.
 
-## Solution 3: Using __static__ to make functions local in each file
+## Approach 3: Using __static__ to make functions local in each file
+
 Since their states are __not__ sharable,
 they should __not__ visible across each other.
 Thus, the generated symbols are also local in each file.

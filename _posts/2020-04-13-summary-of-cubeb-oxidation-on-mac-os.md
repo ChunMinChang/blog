@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Summary of Cubeb Oxidation on Mac OS
-category: [Media]
-tags: [Firefox, Rust]
+category: [Work]
+tags: [Firefox, Media, Rust]
 comments: true
 ---
 

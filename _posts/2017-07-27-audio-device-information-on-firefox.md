@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Audio Device Information on Firefox
-category: [Media]
-tags: [Firefox]
+category: [Work]
+tags: [Firefox, Media]
 mathjax: true
 comments: true
 type: photo
@@ -16,6 +16,7 @@ on the dysfunctional machine.
 It usually takes a few days to get this information from the reporters.
 
 ## [about:support](about:support)
+
 To make the communication between developers and the issue reporters efficient,
 I created a table showing the audio devices information
 on **about:support** in *Firefox*.
@@ -81,9 +82,10 @@ like the following then paste it to us.
 ```
 
 ### Future Works
+
 I just implemented the basic version.
 Some useful information like soundcards and their drivers or versions
-are not included yet. 
+are not included yet.
 These unsolved tasks couldn't be addressed
 without adding new APIs to our underlying audio library.
 However, we are currently oxidating our library from *C++* into *Rust*,

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: My Rust Notes
-category: [Common]
+category: [Programming]
 tags: [Rust]
 comments: true
 ---

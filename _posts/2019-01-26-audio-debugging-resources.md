@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Audio Debugging Resources
-category: [Media]
-tags: [Firefox]
+category: [Work]
+tags: [Firefox, Media]
 comments: true
 ---
 

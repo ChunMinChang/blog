@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Compute Rand M from Rand N
-category: [Puzzle, Math, Algorithm]
+category: [Programming]
 tags: [Random, Probabilitiy]
 mathjax: true
 comments: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: How to simulate a C++ class in C
-category: Common
+category: [Programming]
 tags: [C/C++]
 comments: true
 ---
@@ -21,15 +21,18 @@ you can find my code [here][gist_c]
 To compare, I also implement a [_linked list_ in _C++_][gist_c++].
 
 ## Class in C
+
 {% gist ChunMinChang/31f11789bb859356daf05107e8fc859e list.h %}
 {% gist ChunMinChang/31f11789bb859356daf05107e8fc859e list.c %}
 {% gist ChunMinChang/31f11789bb859356daf05107e8fc859e test.c %}
 
 ## C++ version
+
 {% gist ChunMinChang/8e04130e778d77e0b30b8954cc5f2473 list.h %}
 {% gist ChunMinChang/8e04130e778d77e0b30b8954cc5f2473 test.cpp %}
 
 ## Comparison
+
 - The C version needs to call ```destroy``` explicitly,
   while the C++ version will automatically run deconstructor ```~List()```
   to release the memory, or use smart pointers
@@ -61,6 +64,7 @@ To compare, I also implement a [_linked list_ in _C++_][gist_c++].
     and we call ```f(NULL)```.
     
 ## References
+
 - [你所不知道的 C 語言：物件導向程式設計篇（共筆）][jserv-ooc]
 - [你所不知道的 C 語言：物件導向程式設計篇 video (上)][jserv-video-ooc-A]
 - [你所不知道的 C 語言：物件導向程式設計篇 video (下)][jserv-video-ooc-B]

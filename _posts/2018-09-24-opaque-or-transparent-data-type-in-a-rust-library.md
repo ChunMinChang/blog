@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Opaque or Transparent Data Type in a Rust Library
-category: [Common]
+category: [Programming]
 tags: [Rust]
 comments: true
 ---

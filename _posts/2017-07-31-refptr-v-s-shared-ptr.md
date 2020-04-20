@@ -1,7 +1,7 @@
 ---
 layout: post
 title: RefPtr v.s. shared_ptr
-category: [Common]
+category: [Work, Programming]
 tags: [C/C++, Smart Pointer, Firefox]
 comments: true
 ---
@@ -16,6 +16,7 @@ before I worked for Mozilla.
 So it's a perfect chance for me to get closer to look at their difference.
 
 ## Reference count
+
 Although they're both using reference-count to track object
 and manage objects' life-time by the count,
 they are counting on different things.
@@ -25,7 +26,8 @@ and ```std::shard_ptr<T>```,
 we will call it like ```RefPtr<Foo> p(new Foo(...))```
 and ```std::shard_ptr<Bar> q(new Bar(...))```
 
-### *RefPtr*
+### `RefPtr`
+
 When using ```RefPtr<T>```,
 the total reference is counted on the ```Foo``` objects.
 That's see an example below.
@@ -39,7 +41,8 @@ RefPtr<Foo> p1(f) // the reference count of f is 1 now.
 // the reference count of f is back to 1 now since p2 is destroyed.
 ```
 
-### *std::shard_ptr*
+### `std::shard_ptr`
+
 When using ```std::shard_ptr<T>```,
 the total reference is counted on the ```std::shard_ptr``` itself.
 That's see an example below.
@@ -76,6 +79,7 @@ std::shard_ptr<Bar> p(f)
 ```
 
 ## Sample code
+
 That's see the example-implementation of these two smart-pointers.
 Again, the key difference between *RefPtr* and *std::shard_ptr* is
 - ```RefPtr<T> p(new T(...))```:

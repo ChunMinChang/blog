@@ -13,8 +13,8 @@ The resources collection for debugging audio issues.
 ## Software
 
 - Firefox
-    - [about:support][aboutsupport]: Show audio device info on Firefox page.
-    - [DevTools Media Panel][dtmp-addon] ([source code][dtmp]): An additional panel in the Web Developer Tools displaying technical information about media elements and webrtc.
+  - [about:support][aboutsupport]: Show audio device info on Firefox page.
+  - [DevTools Media Panel][dtmp-addon] ([source code][dtmp]): An additional panel in the Web Developer Tools displaying technical information about media elements and webrtc.
 - FFmpeg: A powerful tool to record, convert and stream audio and video.
   - [website][ffmpeg-website]
   - [source code][ffmpeg-github]
@@ -23,9 +23,11 @@ The resources collection for debugging audio issues.
 - [REAPER][reaper]: Digital audio workstation for recording, mixing, ..., etc.
 
 ## Hardware
-- [Audio Device Selector][ads]: Share one output/input deivces with multiple input/output devices. 
+
+- [Audio Device Selector][ads]: Share one output/input deivces with multiple input/output devices.
 
 ## Test Samples
+
 - [raw2mp3 (mp3)][raw2mp3]: Convert raw audio files to mp3 files with different header types.
 - [SONY: High-Resolution music files(AAC, FLAC)](http://helpguide.sony.net/high-res/sample1/v1/en/index.html)
 - [Hyperion Records(MP3, FLAC, M4A)](http://www.hyperion-records.co.uk/testfiles.asp)
@@ -33,15 +35,18 @@ The resources collection for debugging audio issues.
 - [Audio Check (wav)](https://www.audiocheck.net/)
 
 ## Audio Formats
+
 - [Flac](https://xiph.org/flac/format.html)
   - [FFmpeg](https://github.com/FFmpeg/FFmpeg/blob/49c67e79ca761c43c1310a7e81f8607195a631b9/libavcodec/flac.c)
   - [vlc](https://github.com/videolan/vlc/blob/cc79f1f98f89465385c595f572eee9be1ce80c03/modules/codec/flac.c)
 
 ## Code References
+
 - [FFmpeg][ffmpeg-github]
 - [vlc](https://github.com/videolan/vlc)
 
 ## Others
+
 - [Hydrogenaudio Knowledgebase](http://wiki.hydrogenaud.io/index.php?title=Main_Page)
 
 ## Frequently Used Script
@@ -49,17 +54,20 @@ The resources collection for debugging audio issues.
 ### FFmpeg
 
 Show metadata:
-```
+
+```sh
 ffmpeg -i <filename>
 ```
 
 Show packet data:
-```
+
+```sh
 ffprobe -show_packets <filename>
 ```
 
 Create a sine wav file:
-```
+
+```sh
 ffmpeg -f lavfi -i "sine=frequency=441:duration=5" sine_441hz_5s.wav
 ```
 
@@ -68,13 +76,15 @@ ffmpeg -f lavfi -i "sine=frequency=441:duration=5" sine_441hz_5s.wav
 #### Unload/Reload the devices
 
 For the system devices:
-```
+
+```sh
 sudo kextunload /System/Library/Extensions/AppleHDA.kext
 sudo kextload /System/Library/Extensions/AppleHDA.kext
 ```
 
 For the Soundflower:
-```
+
+```sh
 sudo kextunload -b com.Cycling74.driver.Soundflower
 sudo kextload -b com.Cycling74.driver.Soundflower
 ```

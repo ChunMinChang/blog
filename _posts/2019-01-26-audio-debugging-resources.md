@@ -44,6 +44,18 @@ The resources collection for debugging audio issues.
 
 - [FFmpeg][ffmpeg-github]
 - [vlc](https://github.com/videolan/vlc)
+- [rhythmbox (Ubuntu's default music player)](https://github.com/GNOME/rhythmbox)
+- [clementine-player](https://github.com/clementine-player/Clementine)
+
+## MPRIS
+
+- [rhythmbox (via *Gnome*'s `GDBusConnection`)](https://github.com/GNOME/rhythmbox/blob/353c9095c08e12110d94e5fc25a67ce4929e29e0/plugins/mpris/rb-mpris-plugin.c)
+- [clementine-player (via *Qt*'s `QDBusMessage`)](https://github.com/clementine-player/Clementine/blob/b007e54b3db9a8f3bc6b49930d7d7b080789c286/src/core/mpris2.cpp)
+  - [doc](https://github.com/clementine-player/Clementine/wiki/Controlling-Clementine-from-the-commandline-with-DBus-and-MPRIS)
+- [media-explorer](https://github.com/media-explorer/media-explorer/blob/master/plugins/mpris/mex-mpris-plugin.c)
+- [Mopidy-MPRIS](https://github.com/mopidy/mopidy-mpris)
+- [mpris-controller](https://github.com/gsavin/mpris-controller)
+- [doc from  xmms2](https://github.com/xmms2/wiki/wiki/MPRIS)
 
 ## Others
 

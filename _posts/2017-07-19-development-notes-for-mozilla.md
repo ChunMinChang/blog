@@ -23,6 +23,7 @@ The following are some of my notes to develop the mozilla products.
     - [variables][build-vars]
       - [OS_TARGET][os-target]
   - [Platform build defines][pbd]
+  - [Develop gecko on Windows with git][gecko-git]
 
 
 [basic]: https://www.penflip.com/Chun-Min/mozilla-newbie-notes "Mozilla Newbie Notes"
@@ -35,3 +36,5 @@ The following are some of my notes to develop the mozilla products.
 [build-vars]: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/How_Mozilla_s_build_system_works/Makefile_-_variables "Makefile - variables"
 [os-target]: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/OS_TARGET "OS_TARGET"
 [pbd]: https://wiki.mozilla.org/Platform/Platform-specific_build_defines "Platform/Platform-specific build defines"
+
+[gecko-git]: https://gist.github.com/ChunMinChang/bd39852e96f39fce328de812e64a5b3c

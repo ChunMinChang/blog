@@ -21,8 +21,9 @@ The final [post][effect] briefs some [tips-and-effects][effect].
 
 ## Summary of Cubeb Oxidation on Mac OS
 
-- Solve *6* data racing issues discovered by enlarging the test coverage
+- Solve *10+* data racing issues discovered by enlarging the test coverage
   - Some issues exist for ages but their causes are not easy to be identified
+  - They are *6* different causes
 - Boost the performance to *35x* faster when starting multiple streams simultaneously
   - A happy side effect when fixing data racing issues
 - Hunt and fix *3* memory leaks

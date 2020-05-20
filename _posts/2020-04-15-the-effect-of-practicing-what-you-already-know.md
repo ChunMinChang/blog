@@ -50,8 +50,9 @@ The results we have can be found in [the post here][summary].
 
 In short, the following results are made:
 
-- Solve *6* data racing issues discovered by enlarging the test coverage
+- Solve *10+* data racing issues discovered by enlarging the test coverage
   - Some issues exist for ages but their causes are not easy to be identified
+  - They are *6* different causes
 - Boost the performance to *35x* faster when starting multiple streams simultaneously
   - A happy side effect when fixing data racing issues
 - Hunt and fix *3* memory leaks

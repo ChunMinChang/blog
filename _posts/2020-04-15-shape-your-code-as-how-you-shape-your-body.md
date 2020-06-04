@@ -84,7 +84,7 @@ but also __embody the spirit of *open-source*__.
 
 When translating the *C* code to the *Rust* code that follows those strict *Rust* rules,
 some mysterious issues might be addressed silently
-when transforming the code into a stricter structure (we pray 🙂).
+when transforming the code into a stricter structure (we pray 🙂 | _update: I've confrimed some crashes stop after Rust backend is on the right track_).
 
 The code would need to be refactored at some point anyway.
 *Rust* seems to be the best choice for refactoring the library at this time.

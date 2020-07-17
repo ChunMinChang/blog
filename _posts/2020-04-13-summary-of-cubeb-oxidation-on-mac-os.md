@@ -189,6 +189,44 @@ The experience I learned can be summarized in just one sentence:
 
 **Life is short, use _Rust_!**
 
+### Appendix: Details of the summary
+
+The meta bug is [BMO 1530713](https://bugzilla.mozilla.org/show_bug.cgi?id=1530713).
+
+#### Data racing issues
+
+1. Data race
+    - [BMO 1530715](https://phabricator.services.mozilla.com/D29978#inline-182301) - P6: The aggregate device isn’t initialized when it’s set to the current default device
+    - [BMO 1530715](https://phabricator.services.mozilla.com/D34054) - P21: BufferFrameSize isn’t set in time
+    - [BMO 1594426](https://bugzilla.mozilla.org/show_bug.cgi?id=1594426) - Crash in [@ cubeb_coreaudio::backend::CoreStreamData::close]
+    - [BMO 1595457](https://bugzilla.mozilla.org/show_bug.cgi?id=1595457) - Crash in [@ coreaudio_sys_utils::dispatch::create_closure_and_executor::closure_executer]
+    - [BMO 1614971](https://bugzilla.mozilla.org/show_bug.cgi?id=1614971)
+    - [BMO 1620488](https://bugzilla.mozilla.org/show_bug.cgi?id=1620488)
+    - [BMO 1622291](https://bugzilla.mozilla.org/show_bug.cgi?id=1622291)
+2. Deadlock
+    - [BMO 1572273](https://bugzilla.mozilla.org/show_bug.cgi?id=1572273#c13): Deadlock when unplugging the input device during WebRTC
+    - [BMO 1574632](https://bugzilla.mozilla.org/show_bug.cgi?id=1574632): Potential deadlock in cubeb-coreaudio-rs when unplugging the input device during WebRTC
+3. Audio I/O issue: No input data for a duplex stream (first output callback comes before first input callback)
+    - [BMO 1635973](https://bugzilla.mozilla.org/show_bug.cgi?id=1635973) - Crash in [@ cubeb_resampler_speex<T>::fill_internal_duplex]
+        - This appears at least on FF68 (c backend) but stops in FF76 (Rust backend)
+    - [BMO 1635982](https://bugzilla.mozilla.org/show_bug.cgi?id=1635982) - Hit `assert(destination && source)` in `PodCopy` when opening a duplex cubeb stream
+    - [#79](https://github.com/ChunMinChang/cubeb-coreaudio-rs/pull/79): (Fix a glitch) Always pass all of the buffered input in the resampler
+4. Regression data race issues caused by mis-rewriting
+    - [BMO 1598413](https://bugzilla.mozilla.org/show_bug.cgi?id=1598413) - Avoid racing issue when play/stop and reinit or destroy stream at the same time
+    - [BMO 1614389](https://bugzilla.mozilla.org/show_bug.cgi?id=1614389) - Fix data race found by ThreadSanitizer in cubeb-coreaudio
+
+#### Performance
+
+- [cubeb-coreaudio-rs #28](https://github.com/ChunMinChang/cubeb-coreaudio-rs/issues/28)
+- [cubeb-coreaudio-rs #55](https://github.com/ChunMinChang/cubeb-coreaudio-rs/pull/55) ([BMO 1619005](https://bugzilla.mozilla.org/show_bug.cgi?id=1619005) - Rework cubeb-coreaudio threading model)
+
+#### Memory leaks
+
+- [cubeb #495 P1](https://github.com/kinetiknz/cubeb/pull/495/commits/334d98be86c0f8d431852a739e2e4258126ca4f2): Leak memory every time when destroying cubeb context
+- [cubeb #495 P2](https://github.com/kinetiknz/cubeb/pull/495/commits/a627a4a1246524f65cb9407a3aa048cfe79a0e15): Leak memory every time when querying device name
+- [cubeb-coreaidio-rs #54](https://github.com/ChunMinChang/cubeb-coreaudio-rs/pull/54): Fix memory leak
+
+
 [cubeb]: https://github.com/kinetiknz/cubeb
 [cubeb-audiounit]: https://github.com/kinetiknz/cubeb/blob/master/src/cubeb_audiounit.cpp
 [cubeb-coreaudio-rs]: https://github.com/ChunMinChang/cubeb-coreaudio-rs

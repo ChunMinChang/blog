@@ -25,6 +25,9 @@ The following are some of my notes to develop the mozilla products.
   - [Platform build defines][pbd]
   - [Develop gecko on Windows with git][gecko-git-win]
   - [Develop gecko on Linux/MacOS with git][gecko-git-linux]
+- Debugging
+  - [GDB](https://developer.mozilla.org/en-US/docs/Mozilla/Debugging/Debugging_Mozilla_with_gdb)
+    - [Avoid getting SIGSYS when attaching to process](https://gist.github.com/ChunMinChang/464d8e338fb6c55f081286ea0aa503f6)
 
 
 [basic]: https://www.penflip.com/Chun-Min/mozilla-newbie-notes "Mozilla Newbie Notes"

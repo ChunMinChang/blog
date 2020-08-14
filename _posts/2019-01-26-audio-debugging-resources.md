@@ -49,6 +49,7 @@ The resources collection for debugging audio issues.
 
 ## MPRIS
 
+- [spec](https://specifications.freedesktop.org/mpris-spec/2.2/)
 - [rhythmbox (via *Gnome*'s `GDBusConnection`)](https://github.com/GNOME/rhythmbox/blob/353c9095c08e12110d94e5fc25a67ce4929e29e0/plugins/mpris/rb-mpris-plugin.c)
 - [clementine-player (via *Qt*'s `QDBusMessage`)](https://github.com/clementine-player/Clementine/blob/b007e54b3db9a8f3bc6b49930d7d7b080789c286/src/core/mpris2.cpp)
   - [doc](https://github.com/clementine-player/Clementine/wiki/Controlling-Clementine-from-the-commandline-with-DBus-and-MPRIS)
@@ -56,6 +57,13 @@ The resources collection for debugging audio issues.
 - [Mopidy-MPRIS](https://github.com/mopidy/mopidy-mpris)
 - [mpris-controller](https://github.com/gsavin/mpris-controller)
 - [doc from  xmms2](https://github.com/xmms2/wiki/wiki/MPRIS)
+
+### Utils
+
+- [Scripts to call methods, query properties](https://gist.github.com/ChunMinChang/06a776185055d03ec52cdc1539fd3c23)
+  - [`dbus-send` command](https://dbus.freedesktop.org/doc/dbus-send.1.html)
+- [mpris-rs](https://github.com/Mange/mpris-rs)
+  - Show properties: `$ cargo run --example capabilities`
 
 ## Others
 

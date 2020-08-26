@@ -64,6 +64,13 @@ please follow the steps below to open a bug with the following information
 
 1. The *Media* information shown on `about:support` page (see [post here][aboutsupport] for example)
 2. The log for audio output
+
+### Known Driver Issues
+
+#### On Mac OS
+
+- Sound Blaster X3 7.1 External USB DAC (see [Bug 1474175](https://bugzilla.mozilla.org/show_bug.cgi?id=1474175#c29))
+- Motu 828 MkII (see [Bug 1627827](https://bugzilla.mozilla.org/show_bug.cgi?id=1627827#c15))
   
 ### Steps to Create a Bug Report
 

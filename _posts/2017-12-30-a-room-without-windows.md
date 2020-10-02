@@ -13,13 +13,7 @@ comments: true
 
 <!--read more-->
 
-<iframe src="https://www.indievox.com/play/disc/14070?width=300&height=460&use_style=small" width="300" height="460" scrolling="no" frameborder="no" marginwidth="0" marginheight="0"></iframe>
-
-<iframe src="https://open.spotify.com/embed/album/6lvzOQm8yv4XWWDd481W0u" width="300" height="460" frameborder="0" allowtransparency="true"></iframe>
-
-<iframe width="300" height="460" src="https://widget.kkbox.com/v1/?id=GoNlM6tdzZWl82dPV2&amp;type=album&amp;terr=tw&amp;lang=tc" frameborder="0" scrolling="no"></iframe>
-
-<iframe src="https://tools.applemusic.com/embed/v1/album/1322341484?country=us" width="300" height="460" frameborder="0"></iframe>
+<iframe src="https://open.spotify.com/embed/track/4UUprWQfIfAwtV8AUtemVl" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 
 那年我帶著我老婆(當時是女友)到台北生活，
 一起從學生轉為社會人士，一起住在陰暗的小套房，

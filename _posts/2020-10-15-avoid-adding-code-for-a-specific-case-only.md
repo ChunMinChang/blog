@@ -232,4 +232,4 @@ There are other ways to fix this problem. But the above approach is enough to ex
 
 ## Closing words
 
-I do hope readers can understand why "adding code for a specific case only" is bad in this post, and the technique proposed in this post, "relaxing the conditions", can help other developers to work out a better, more general, approach to solve the problem they are focusing.
+I do hope readers can understand why "adding code for a specific case only" is bad in this post, and the technique proposed in this post, "relaxing the conditions", can help other developers to work out a better, more general, approach to solve the problem they are working on. Good luck :)

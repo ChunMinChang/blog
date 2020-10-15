@@ -6,7 +6,9 @@ category: [Programming]
 tags: [Common programming model]
 comments: true
 ---
-Why is it bad? It branches out a new code path for a specific case and inevitably raises the code complexity. In the long run, its knotty code paths make the code hard to be read and hard to be maintained.
+Why is it bad? It branches out a new code path for a specific case and inevitably raises the code complexity. In the long run, its knotty code paths make the code hard to be read and maintained.
+
+This post proposes a way helping the developers to work out a better approach from an approach working only for a specific case.
 
 <!--read more-->
 
@@ -48,7 +50,7 @@ That's why we always encourage the programmers to **fix the root cause**, and we
 
 ### Relax the conditions
 
-If we observe the problem _X_ occurs when `X_1 && X_2 && .. && X_N` is `true`, and we know running function `f` at that time can solve the problem, then relaxing the conditions when `f` is executed is likely to help us to work out a suitable solution, and help us to find out the root casue. We need to reduce the `N` as much as we can. That helps us to find the **minimal** conditions to trigger/reproduce the problem.
+If we observe the problem _X_ occurs when `X_1 && X_2 && .. && X_N` is `true`, and we know running function `f` at that time can solve the problem, then relaxing the conditions of when `f` is executed is likely to help us to work out a suitable solution, and help us to find out the root casue. We need to reduce the `N` as much as we can. That helps us to find the **minimal** conditions to trigger/reproduce the problem.
 
 ```cpp
 void some_function() {
@@ -92,7 +94,7 @@ In code level, what we want is to reduce the `if (X_1 && X_2 && .. && X_N) { f()
 
 In my experience, an intermittent bug happens sporadically and mysteriously can become reproducible when `X_1 && X_2 && .. && X_N` is `true` as well. Running `f` directly, without `if (X_1 && X_2 && .. && X_N)`, to fix that bug makes perfect sense since that bug occurs without those conditions. Those conditions just make the problem become visible. (We are lucky at most of time ;))
 
-On the other hand, relaxing the conditions when `f` is executed helps us to reduce the unnecessary code branches. In the first example of `some_function`,
+On the other hand, relaxing the conditions of when `f` is executed helps us to reduce the unnecessary code branches. In the first example of `some_function`,
 
 ```cpp
 void some_function() {
@@ -232,4 +234,4 @@ There are other ways to fix this problem. But the above approach is enough to ex
 
 ## Closing words
 
-I do hope readers can understand why "adding code for a specific case only" is bad in this post, and the technique proposed in this post, "relaxing the conditions", can help other developers to work out a better, more general, approach to solve the problem they are working on. Good luck :)
+I do hope readers can understand why "adding code for a specific case only" is bad in this post, and the technique proposed, "relaxing the conditions", can really help other developers to work out a better, more general, approach to solve the problem they are working on. Good luck :)

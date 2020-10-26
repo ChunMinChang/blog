@@ -15,6 +15,14 @@ I hope this post can be a reference for myself to check if my review skills impr
 
 I can review code effectively and help the reviewees to notice the defects in their patches or the potential bugs they miss. There are some examples as follow. What's more, I am able to explain some subtle software-engineering principles clearly with verbal comments, such as [what is over-engineering and why is it bad][overengineering], or [why is adding code for a specific case bad][specific-code-is-bad]. I am able to deliver clear messages to make my teammates understand what I am talking about exactly so we can make the code better together.
 
+### Comment Style
+
+Tone matters. Different tone makes different impression.
+
+Here is some tones I don't use.
+I don't use "you" in my comments, since what I judge is "code" instead of "author" ("person").
+I use "why" more often than "it's wrong". "Wrong" means the "actual result" is different from the "expected result". Most of the time, the "expected result" is vague. Therefore, there is no "wrong" and "right". I always compare the "pros" and "cons" between the different approaches, instead of saying "wrong" and "right" based on my personal judgements. "Why" is a better way to ask the reason for making a certain "trade-off". I only use "wrong" when the "expected result" is clearly "define"d.
+
 ## Code Reviews in Mozilla
 
 To be clear, I am not expressing the following code is bad. Most of the time my teammates’ code is generally good! The following list is only used to prove I do my daily job conscientiously and I don’t live up to my teammates’ trust. They are all awesome engineers. They are happier if I can catch some errors before the errors are shipped to the users ends.
@@ -76,12 +84,13 @@ There should be more reviews I did. But the above are what I can remember for no
 
 I am also willing to raise my opinions outside of Mozilla. When implementing the media-session, I filed several [spec issues](https://github.com/w3c/mediasession/issues?q=is%3Aissue+author%3AChunMinChang) and proposed [potential solutions](https://github.com/w3c/mediasession/issues/234#issuecomment-530540930).
 
-The team-wise communication is important part to make the whole team succeed. I am willing to help the team members to get the information they need to take further action, or share my views to any problems I spot. For example, I reported a WebRTC device-switching bug and gave a [code analysis about the cause and its possible solutions](https://bugzilla.mozilla.org/show_bug.cgi?id=1572281#c2). I also let the mp4parse-rust contributors noticed their new test settings [cannot work with Rust Nightly](https://github.com/mozilla/mp4parse-rust/pull/205#issuecomment-597326901) so they can fix it.
+The team-wise communication is a important part to make the whole team succeed. I am willing to help the team members to get the information they need to take further actions, or share my views to any problem I spot. For example, I reported a *WebRTC* device-switching bug and gave a [code analysis about the cause and its possible solutions](https://bugzilla.mozilla.org/show_bug.cgi?id=1572281#c2) even though *WebRTC* is not the area I was working on. I also let the *mp4parse-rust* contributors noticed their new test settings [cannot work with Rust Nightly](https://github.com/mozilla/mp4parse-rust/pull/205#issuecomment-597326901) so they can fix it.
 
 ## Closing Words
 
-During the pademic, I come to realize what mindset I need to have, when reviewing the patches from my peers. I come to realize that everyone needs companionship and constructive suggestions -- Cut right to the point, but “you don’t have to face the difficulty alone”.
+I hope the review-records here can reveal a part of my daily job. It's a reference to myself and to anyone who is interested in my review skills. Code-review is an important part to help the whole team succeed. Besides my daily programming work, I try my best to help others.
 
+During the pademic, I come to realize what mindset I need to have when reviewing the patches from my peers. I come to realize that everyone needs companionship and constructive suggestions -- Cut right to the point, but “you don’t have to face the difficulty alone”.
 
 [overengineering]: why-is-overengineering-bad
 [specific-code-is-bad]: avoid-adding-code-for-a-specific-case-only

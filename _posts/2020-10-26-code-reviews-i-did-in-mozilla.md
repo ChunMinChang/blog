@@ -17,11 +17,24 @@ I can review code effectively and help the reviewees to notice the defects in th
 
 ### Comment Style
 
-Tone matters. Different tone makes different impression.
+Tone matters. Different tone makes different impression, yet there is some tones I avoid.
 
-Here is some tones I don't use.
 I don't use "you" in my comments, since what I judge is "code" instead of "author" ("person").
-I use "why" more often than "it's wrong". "Wrong" means the "actual result" is different from the "expected result". Most of the time, the "expected result" is vague. Therefore, there is no "wrong" and "right". I always compare the "pros" and "cons" between the different approaches, instead of saying "wrong" and "right" based on my personal judgements. "Why" is a better way to ask the reason for making a certain "trade-off". I only use "wrong" when the "expected result" is clearly "define"d.
+I use "why" more often than "it's wrong". *Wrong* implies I know what exactly *right* is, which is not the case most of the time. *Wrong* means the *current result* is different from the *expected result*. But the *expected result* is often vague. In that case, there is no *wrong* and *right*. I always compare the *pros* and *cons* between the different approaches, instead of saying *wrong* and *right* based on my personal judgements. I only use *wrong* when the *expected result* is clearly *define*d (e.g., by a certain spec). Asking *Why* is a better way to know the reason for making a certain *trade-off*.
+
+### Review Focus
+
+> “If I had an hour to solve a problem
+> I'd spend 55 minutes thinking about the problem
+> and 5 minutes thinking about solutions.”
+>
+> ― Albert Einstein
+
+I focus more on the *problem* than the *solution*.
+
+I believe how well we define a problem determines how well we solve it. I focus on what the problem exactly is and why and when the problem occurs. The deeper we dig into the problem, the higher chance we can find out the root cause. There is always more than one approach to solve the problem. But it's impossible to find the most appropriate solution without knowing what the root cause is. I tend to ask why the problem occurs before reviewing the code detailedly (one example [here](https://github.com/kinetiknz/cubeb/pull/597#issuecomment-663144179)). The syntax, style, or code-pattern is less important. After all, doing the right thing is more important than doing things right.
+
+Challenging assumptions, considering a broader or narrower version of the problem, or rephrasing the problems are common ways to look at the problem from different perspectives.
 
 ## Code Reviews in Mozilla
 

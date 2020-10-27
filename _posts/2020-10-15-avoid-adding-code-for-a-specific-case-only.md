@@ -143,7 +143,7 @@ void some_function() {
 }
 ```
 
-#### Real-word Example
+#### Real-world Example
 
 One example is the process to derive a bug-fix from the [initial bug-fix proposal here](https://bugzilla.mozilla.org/page.cgi?id=splinter.html&ignore=&bug=1646719&attachment=9178827) to a [refined solution here](https://hg.mozilla.org/mozilla-central/rev/c845576c6a34), in [BMO 1646719](https://bugzilla.mozilla.org/show_bug.cgi?id=1646719).
 

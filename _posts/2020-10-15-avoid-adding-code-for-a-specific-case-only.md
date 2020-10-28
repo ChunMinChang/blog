@@ -3,7 +3,7 @@ layout: post
 title: Avoid adding code for a specific case only
 date: 2020-10-15 05:57 +0800
 category: [Programming]
-tags: [Common programming model]
+tags: [Software engineering]
 comments: true
 ---
 Why is it bad? It branches out a new code path for a specific case and inevitably raises the code complexity. In the long run, its knotty code paths make the code hard to be read and maintained.

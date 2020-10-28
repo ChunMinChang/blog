@@ -2,6 +2,8 @@
 layout: post
 title: Code-reviews I did in Mozilla
 date: 2020-10-26 01:53 +0800
+category: [Work]
+tags: [Firefox]
 ---
 
 Giving code-review is an essential part of my daily job as a software engineer. I always try my best to help my peers to address the problem properly when doing a review. For anyone who is interested in my reviews, this post lists some of the code-reviews I did in Mozilla.
@@ -45,7 +47,7 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
 - cubeb: The cross-platform audio library of Firefox
   - cubeb-coreaudio: The cubeb implementation on MacOS via `AudioUnit` APIs
   - cubeb-pulse: The cubeb implementation on Linux via `libpulseaudio` APIs
-- audio-ipc: The ipc (inter-process communication) protocal between main (parent) process and content (child) process within Firefox
+- audio-ipc: The IPC (inter-process communication) protocal between main (parent) process and content (child) process within Firefox
 - autoplay: HTML `<video>` autoplay mechanism
 - media-key-control: media-key control mechanism within Firefox that achieves [W3C media-session API](https://w3c.github.io/mediasession/)
 - mp3-demuxer: The demuxer for MP3 format

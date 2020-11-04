@@ -24,6 +24,18 @@ Tone matters. Different tone makes different impression, yet there is some tones
 I don't use "you" in my comments, since what I judge is "code" instead of "author" ("person").
 I use "why" more often than "it's wrong". *Wrong* implies I know what exactly *right* is, which is not the case most of the time. *Wrong* means the *current result* is different from the *expected result*. But the *expected result* is often vague. In that case, there is no *wrong* and *right*. I always compare the *pros* and *cons* between the different approaches, instead of saying *wrong* and *right* based on my personal judgements. I only use *wrong* when the *expected result* is clearly *define*d (e.g., by a certain spec). Asking *Why* is a better way to know the reason for making a certain *trade-off*.
 
+### Mindset
+
+Be a collaborator instead of an authority.
+
+I don't need to "guide" the code/patch author to do their jobs in a way I prefer. For me, this is one kind of *microaggression*. I **don't** have *right* to decide what they should do. The word *guide* kind of means leading the code auther to do what I expect, but which subtly implies or preassume I know better what to do than them. This is a bit tricky. Sometimes the review that asks for changing code in *X* field will be requested by the contributors without experience on *X* field. They might miss something indeed. But it's better not to presume they don't do the research before submitting the patches. It makes no sense and ignorant to *underestimate* someone's skills only because they has no prior experience on one field. Wisdom is not proportional to the experience or seniority.
+
+I think this is the most important part for code review. The attitude can seriously impact the interactions during the review. The reviewers should collaborate with the code author **as equals**, rather than imagining the code author needs helps because they know nothing.
+
+As long as the planned requirements are met and the patch makes the codebase better, I will accept the patch. Even the author's style is different from my one. If there is something unexpected but without logical defects, I will ask why instead of judging it's wrong. The only thing reviewer needs to do is helping the code auther to achieve the planned requirements (e.g., planned features or bug fixing) and catch the logical defects in their code. Personal preference, emotion, and feeling are not factors to block the review.
+
+Additionally, I don't ask the code author to do the research by their own, or force them to do the research in a way I like. I'll do the reseach around the topic I have questions with the code author together, and the code auther can do the research in any way they like. The reason to bring this up is becasue I know someone think it's code author's responsibility to do the research. But I don't think so. I am not that type of person who asks the code author to collect all the information I want but sit and wait until they get the answers for me to make a call. Code author is not my personal assistant. I prefer doing the research with code author together and work collaboratively. I think doing the research is part of the job when doing a review. After all, I got paid for doing that.
+
 ### Review Focus
 
 > “If I had an hour to solve a problem
@@ -40,7 +52,7 @@ Challenging assumptions, considering a broader or narrower version of the proble
 
 ## Code Reviews in Mozilla
 
-To be clear, I am not expressing the following code is bad. Most of the time my teammates’ code is generally good! The following list is only used to prove I do my daily job conscientiously and I don’t live up to my teammates’ trust. They are all awesome engineers. They are happier if I can catch some errors before the errors are shipped to the users ends.
+To be clear, I am not expressing the following code is bad. Most of the time my teammates’ code is generally good! The following list is only used to prove I do my daily job conscientiously and I don’t live up to my teammates’ trust. They are all awesome engineers. They'll be happier if I can catch the error before it's shipped to the users ends.
 
 ### Terms
 

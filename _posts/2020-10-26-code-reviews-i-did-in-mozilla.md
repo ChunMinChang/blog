@@ -34,7 +34,7 @@ I think this is the most important part for code review. The attitude can seriou
 
 As long as the planned requirements are met and the patch makes the codebase better, I will accept the patch. Even the author's style is different from my one. If there is something unexpected but without logical defects, I will ask why instead of judging it's wrong. The only thing reviewer needs to do is helping the code auther to achieve the planned requirements (e.g., planned features or bug fixing) and catch the logical defects in their code. Personal preference, emotion, and feeling are not factors to block the review.
 
-Additionally, I don't ask the code author to do the research by their own, or force them to do the research in a way I like. I'll do the reseach around the topic I have questions with the code author together, and the code auther can do the research in any way they like. The reason to bring this up is becasue I know someone think it's code author's responsibility to do the research. But I don't think so. I am not that type of person who asks the code author to collect all the information I want but sit and wait until they get the answers for me to make a call. Code author is not my personal assistant. I prefer doing the research with code author together and work collaboratively. I think doing the research is part of the job when doing a review. After all, I got paid for doing that.
+Additionally, I like to do the research around the topic I have questions to with the code author together. I won't ask the code author to collect all the information needed by themselves then sit and wait there. I think doing the research is part of the job for doing a review. After all, we are working together to make the code better.
 
 ### Review Focus
 

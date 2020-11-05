@@ -15,44 +15,44 @@ I hope this post can be a reference for myself to check if my review skills impr
 
 ## Self-evaluation
 
-I can review code effectively and help the reviewees to notice the defects in their patches or the potential bugs they miss. There are some examples as follow. What's more, I am able to explain some subtle software-engineering principles clearly with verbal comments, such as [what is over-engineering and why is it bad][overengineering], or [why is adding code for a specific case bad][specific-code-is-bad]. I am able to deliver clear messages to make my teammates understand what I am talking about exactly so we can make the code better together.
+I can review code effectively and help the reviewees to notice the defects in their patches or the potential bugs they miss. There are some examples as follow. What’s more, I am able to explain some subtle software-engineering principles clearly with verbal comments, such as [what is over-engineering and why is it bad][overengineering], or [why is adding code for a specific case bad][specific-code-is-bad]. I am able to deliver clear messages to make my teammates understand what I am talking about exactly so we can make the code better together.
 
 ### Comment Style
 
 Tone matters. Different tone makes different impression, yet there is some tones I avoid.
 
-I don't use "you" in my comments, since what I judge is "code" instead of "author".
-I use "why" more often than "it's wrong". *Wrong* implies I know what exactly *right* is, which is not the case most of the time. *Wrong* means the *current result* is different from the *expected result*. But the *expected result* is often vague. In that case, there is no *wrong* and *right*. I always compare the *pros* and *cons* between the different approaches, instead of saying *wrong* and *right* based on my personal judgements. I only use *wrong* when the *expected result* is clearly *define*d (e.g., by a certain spec). Asking *Why* is a better way to know the reason for making a certain trade-off.
+I don’t use "you" in my comments, since what I judge is "code" instead of "author".
+I use "why" more often than "it’s wrong". *Wrong* implies I know what exactly *right* is, which is not the case most of the time. *Wrong* means the *current result* is different from the *expected result*. But the *expected result* is often vague. In that case, there is no *wrong* and *right*. I always compare the *pros* and *cons* between the different approaches, instead of saying *wrong* and *right* based on my personal judgements. I only use *wrong* when the *expected result* is clearly *define*d (e.g., by a certain spec). Asking *Why* is a better way to know the reason for making a certain trade-off.
 
 ### Mindset
 
 Be a collaborator instead of an authority.
 
-I don't need to "guide" the patch author to do their jobs in a way I prefer. For me, this is one kind of [*microaggression*](https://en.wikipedia.org/wiki/Microaggression). I **don't** have *right* to decide what they should do. The word *guide* kind of means leading the code auther to do what I expect, but which subtly implies or preassume I know better what to do than them. I know sometimes the review for a patch asking for changing code in *X* field will be requested by the contributor without experience on *X* field. They might miss something indeed. But it's better not to presume they don't do the research before submitting the patches. It makes no sense and ignorant to *underestimate* someone's skills simply because they has no prior experience on one field. Wisdom is not proportional to the experience or seniority. Sometimes, this belittling attitude can hide behind some positive words trickily. For example, the comments like "your code is better than what I think" (It's worse when the author is female, person of color, or young) or "I empower you the freedom to structure the code in a way you like" (They are born free to write code in a way they like) are nonsensical and arrogant. Underestimating someone is unacceptable.
+I don’t need to "guide" the patch author to do their jobs in a way I prefer. For me, this is one kind of [*microaggression*](https://en.wikipedia.org/wiki/Microaggression). I don’t have *right* to decide what they should do. The word *guide* kind of means leading the code auther to do what I expect, but which subtly implies or preassume I know better what to do than them. I know sometimes the review for a patch asking for changing code in *X* field will be requested by the contributor without experience on *X* field. They might miss something indeed. But it’s better not to presume they don’t do the research before submitting the patches. It makes no sense and it's condescending to *underestimate* someone’s skills simply because they has no prior experience on one field. Wisdom is not proportional to the experience or seniority. Sometimes, the contemptuous attitude can hide behind some positive words trickily. For example, the comments like "your code is better than what I expect" (It’s worse when the author is female, person of color, and/or young but actually experienced) or "I empower you the freedom to structure the code in a way you like" (They are born free and have natural right to shape their code in any style) are nonsensical and arrogant. Underestimating someone is unacceptable. I try my best to avoid the comments that might be misunderstood like above and offend others. As a Asian in the U.S., I know how *microaggression* can hurt.
 
-I think this is the most important part when making a review. The attitude can seriously impact the interactions during the review. The reviewers should collaborate with the code author **as equals**, rather than imagining the code author knows nothing.
+I think this is the most important part when doing a review. The tone and the attitude can seriously impact the interactions during the review. The reviewers should collaborate with the code author **as equals**, rather than imagining the code author knows less.
 
-As long as the planned requirements are met and the patch makes the codebase better, I will accept the patch. Even the author's style is different from my one. If there is something unexpected but it has no logical defects, I will ask why instead of judging it's wrong. The only thing reviewer needs to do is helping the code auther to achieve the planned requirements (e.g., planned features or bug fixing) and catch the logical defects in their code. Personal preferences, emotions, and feelings are not factors to block the review.
+As long as the planned requirements are met and the patch makes the codebase better, I will accept the patch. Even the author’s style is different from my one. If there is something unexpected but without logical defects, I will ask why instead of asking them to change the code. The only thing reviewer needs to do is helping the code auther to achieve the planned requirements (e.g., planned features or bug fixing) and catch the logical defects in their code. Personal preferences, emotions, and feelings are not factors to block the review. Being rational is one of the key properties of a good reviewer.
 
-Additionally, I like to do the research around the topic I have questions about with the code author together. I won't ask the code author to collect all the information needed by themselves then sit and wait there to make a call. I think doing the research is part of the job for doing a review. We are working together to make the code better.
+Additionally, I like to do the research around the topic I have questions about with the code author together. I won’t ask the code author to collect all the information needed by themselves then sit and wait there to make a call. I believe doing the research is part of the job for doing a review. We are working together to make the code better.
 
 ### Review Focus
 
 > “If I had an hour to solve a problem
-> I'd spend 55 minutes thinking about the problem
+> I’d spend 55 minutes thinking about the problem
 > and 5 minutes thinking about solutions.”
 >
 > ― Albert Einstein
 
 I focus more on the *problem* than the *solution*.
 
-I believe how well we define a problem determines how well we solve it. I focus on what the problem exactly is and why and when the problem occurs. The deeper we dig into the problem, the higher chance we can find out the root cause and the appropriate requirements. There is always more than one approach to solve the problem. But it's impossible to find the most appropriate solution without analysing the problem. I tend to ask why the problem are, or why it occurs before reviewing the code detailedly (one example [here](https://github.com/kinetiknz/cubeb/pull/597#issuecomment-663144179)). The syntax, style, or code-pattern is less important. After all, doing the right thing is more important than doing things right.
+I believe how well we define a problem determines how well we solve it. I focus on what the problem exactly is and why and when the problem occurs. The deeper we dig into the problem, the higher chance we can find out the root cause and the appropriate requirements. There are always more than one approaches to solve the problem. But it’s impossible to find the most appropriate solution without analysing the problem elaborately. I tend to ask what the problem is, or why it occurs, before reviewing the code detailedly (one example [here](https://github.com/kinetiknz/cubeb/pull/597#issuecomment-663144179)). The syntax, style, or code-pattern is less important. After all, doing the right thing is more important than doing things right.
 
 Challenging assumptions, considering a broader or narrower version of the problem, or rephrasing the problems are common ways to look at the problem from different perspectives.
 
 ## Code Reviews in Mozilla
 
-To be clear, I am not expressing the following code is bad. Most of the time my teammates’ code is generally good! The following list is only used to prove I do my daily job conscientiously and I don’t live up to my teammates’ trust. They are all awesome engineers. They'll be happier if I can catch the error before it's shipped to the users ends.
+To be clear, I am not expressing the following code is bad. Most of the time my teammates’ code is generally good! The following list is only used to prove I do my daily job conscientiously and I don’t live up to my teammates’ trust. They are all awesome engineers. They’ll be happier if I can catch the error before it’s shipped to the users ends.
 
 ### Terms
 
@@ -80,7 +80,7 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
    - *media-key-control* - [BMO 1611332](https://phabricator.services.mozilla.com/D60935?vs=223340&id=223691#inline-371097): Propose an algorithm to centralize one specific job that done in different functions to one place, by leveraging a logical fact of the in-use hashtable
      - The comments aren’t updated since I explained how this logic works face-to-face with the author
    - *media-key-control* - [BMO 1654657](https://phabricator.services.mozilla.com/D85514?id=323396#inline-495158): Suggest an O(1) algorithm instead of the O(N) approaches used in the patch
-     - But it's ok to leave the O(N) as it is
+     - But it’s ok to leave the O(N) as it is
    - *audio-ipc* - [#107](https://github.com/djg/audioipc-2/pull/107#discussion_r507953026): Reduce a redundant variable whose value can be inferred by another variable
    - *cubeb-coreaudio* - [#86](https://github.com/ChunMinChang/cubeb-coreaudio-rs/pull/86) / [BMO 1629839](https://bugzilla.mozilla.org/show_bug.cgi?id=1629839#c2): Simplify the proposed solution
 3. I am able to provide a better code pattern or logic dependencies in code, to avoid the foreseeable errors
@@ -115,7 +115,7 @@ The team-wise communication is a important part to make the whole team succeed. 
 
 ## Closing Words
 
-I hope the review-records here can reveal a part of my daily job. It's a reference to myself and to anyone who is interested in my review skills. Code-review is an important part to help the whole team succeed. Besides my daily programming work, I try my best to help others.
+I hope the review-records here can reveal a part of my daily job. It’s a reference to myself and to anyone who is interested in my review skills. Code-review is an important part to help the whole team succeed. Besides my daily programming work, I try my best to help others.
 
 During the pademic, I come to realize what mindset I need to have when reviewing the patches from my peers. I come to realize that everyone needs companionship and constructive suggestions -- Cut right to the point, but “you don’t have to face the difficulty alone”.
 

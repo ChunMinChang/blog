@@ -114,7 +114,7 @@ Please attach the log files to the bug report.
 2. Show what folder you are currently in: Enter `pwd`
 3. Enter the command below to launch *Firefox*, which will create log files saved to the folder you are currently in
    - The command format is:
-       ```sh
+       ```
        MOZ_DISABLE_CONTENT_SANDBOX=1 MOZ_LOG=<MODULE:LEVEL> MOZ_LOG_FILE=<FILENAME> <APP_LOCATION>
        ```
    - For audio problem, please replace `<MODULE:LEVEL>` by

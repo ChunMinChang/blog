@@ -162,7 +162,7 @@ which leads to lower the maintaining effort in the long run.
 
 ### Ask Help When You Need
 
-Asking help may be the important facotr I find.
+Asking help may be the most important facotr I find.
 
 This [article][perfect-team] reveals a fact:
 the team will be more productive if the team provides enough *psychological safety*
@@ -183,7 +183,7 @@ Trying hard to stick with the appropriate plan is the key to shape the code.
 It's not necessary to do the plan *100%* correctely.
 If you have experience on following a workout plan,
 you probably know the goal of fat-loss is still reachable
-if the achievement rate is only *80~90%*.
+if the achievement rate is only *80%*.
 
 Good luck!
 

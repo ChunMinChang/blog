@@ -21,7 +21,7 @@ I can review code effectively and help the reviewees to notice the defects in th
 
 Tone matters. Different tone makes different impression, yet there is some tones I avoid.
 
-I don’t use "you" in my comments, since what I judge is "code" instead of "author".
+I rarely use "you" in my comments, since what I judge is "code" instead of "author".
 I use "why" more often than "it’s wrong". *Wrong* implies I know what exactly *right* is, which is not the case most of the time. *Wrong* means the *current result* is different from the *expected result*. But the *expected result* is often vague. In that case, there is no *wrong* and *right*. I always compare the *pros* and *cons* between the different approaches, instead of saying *wrong* and *right* based on my personal judgements. I only use *wrong* when the *expected result* is clearly *define*d (e.g., by a certain spec). Asking *Why* is a better way to know the reason for making a certain trade-off.
 
 ### Mindset

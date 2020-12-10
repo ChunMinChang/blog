@@ -28,7 +28,7 @@ The common symptoms are:
 
 An example is to build a giant gold mining factory in a small town only because some alluvial gold are found in a river near the town. The factory builder/owner *believe*s there are some gold mines near the town but there is no any sign showing there are mineral rich fields around, except for the onwser's crazy believe.
 
-Anyone who has no idea about the town and the actual working status of the factory will assume the town produces a lots of gold when they see that giant gold mining factory. A new city mayer may plan to build a railway to transport the gold mined from there to city. However, the real yeild of the gold is less than the storage volume of a track. If the city mayer infers the gold yeild from the size of the factory, instead of checking the real yeild reports, the city will waste tons of money.
+Anyone who has no idea about the town and the actual working status of the factory will assume the town produces a lots of gold when they see that giant gold mining factory. A new city mayer may plan to build a railway to transport the gold mined from there to city. However, the real yeild of the gold is less than the storage volume of a truck. If the city mayer infers the gold yeild from the size of the factory, instead of checking the real yeild reports, the city will waste tons of money. There is no need to build a railway. A truck is enough.
 
 In real life, the overengineering result often delivers misleading messages and lead the observers to make wrong assumptions. The developing, maintaining, and time effort wasted on meeting the unnecessary requirements can be expensive. In short, overengineering can bring less benefits than the damages it causes.
 

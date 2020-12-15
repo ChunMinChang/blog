@@ -117,6 +117,6 @@ I look forward to write a new story in my life!
 [libyuv]: https://chromium.googlesource.com/libyuv/libyuv/
 
 [AVIFDecoder]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
-[libavif-dav1d-example]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
-[libavif-aom-example]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
+[libavif-dav1d-example]: https://github.com/AOMediaCodec/libavif/blob/2a8e22101758494281d50ae33ec76797b354393e/src/codec_dav1d.c#L52-L189
+[libavif-aom-example]: https://github.com/AOMediaCodec/libavif/blob/2a8e22101758494281d50ae33ec76797b354393e/src/codec_aom.c#L72-L202
 [YCbCrA_to_RGBA]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462

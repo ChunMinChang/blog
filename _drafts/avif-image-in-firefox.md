@@ -1,6 +1,9 @@
 ---
 layout: post
 title: AVIF image in Firefox
+category: [Work]
+tags: [Firefox, Media]
+comments: true
 ---
 
 AVIF image will be soon enabled in Firefox!
@@ -14,20 +17,26 @@ The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:c
 
 ## Before v.s. After
 
+|                  | Before | After |
+| ---------------- | ------ | ----- |
+| I420 w/ I709     | ![I420-BT709-before][I420-BT709-before] | ![I420-BT709-after][I420-BT709-after]
+| I444 w/ I709     | ![I444-BT709-before][I444-BT709-before] | ![I444-BT709-after][I444-BT709-after]
+| I444 w/ Identity | ![I444-Identity-before][I444-Identity-before] | ![I444-Identity-after][I444-Identity-after]
+
+Test page [here][avif-transparency-test-page]
 
 ## How the AVIF image decoding work
 
 1. Demux the AVIF image from the mp4 format
    - The AVIF image is wrapped in mp4 format so we need to demux it first
    - we use [`mp4parse-rust`](https://github.com/mozilla/mp4parse-rust/blob/3d9efdc868ce8c5767cea28708fa6512c0ab6d17/mp4parse_capi/src/lib.rs#L1183-L1215) to parse the AVIF image in Firefox
-2. Decode the demuxed image binary
+2. Decode the demuxed image
    - This can done via [Dav1d decoder or AOM decoder][AVIFDecoder]
-   - libavif give some examples
+   - `libavif` has some examples (or you can use `libavif` directly)
      - [Dav1d][libavif-dav1d-example]
      - [AOM][libavif-aom-example]
 3. Convert the Y-Cb-Cr-Alpha data into R-G-B-Alpha data
-   - The conversion can be done by libyuv's API
-   - See the detail below
+   - The conversion can be done by [`libyuv`][libyuv]'s API (see the detail below)
 4. Render the pixels on the screen from the R-G-B-Alpha data
    - TBH, this is a blackbox to me
    - What I did is to feed the R-G-B-Alpha data to graphic pipeline
@@ -35,8 +44,7 @@ The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:c
 
 ### Challenge
 
-The most challenging part in this work is to convert the Y-Cb-Cr-Alpha data into the R-G-B-Alpha data.
-Fortunately, the libyuv provides some functions we can reuse. The conversion works as follow:
+The most challenging part in this work is to convert the Y-Cb-Cr-Alpha data into the R-G-B-Alpha data. Fortunately, the [`libyuv`][libyuv] provides some functions we can reuse. The conversion works as follow:
 
 ```
 YCbCrA_to_RGBA:
@@ -78,6 +86,35 @@ YCbCr_to_RGB32:
 ```
 
 To see what the actual code is, please read the code [here][YCbCrA_to_RGBA]
+
+## Closing Word
+
+2020 is a year trapping people in a zone and make us feel stuck in life.
+I am glad I have an opportunity to embrace a new challenge
+and explore a field I don't have experience in, at the end of 2020.
+
+This is my first work in graphic area and I kind of enjoy it.
+It reminds me that we can always try something new in life.
+
+2020 doesn't stop me from keeping advancing myself.
+I am confident that the next year and the following years won't be able to stop me either.
+This won't be the last time I try something different.
+I look forward to write a new story in my life!
+
+2021, I am comming!
+
+[BMO1654462-src]: ../images/posts/avif-transparency/BMO1654462-src.png "BMO1654462-src"
+
+[I420-BT709-before]: ../images/posts/avif-transparency/I420-BT709-before.png "I420-BT709-before"
+[I420-BT709-after]: ../images/posts/avif-transparency/I420-BT709-after.png "I420-BT709-after"
+[I444-BT709-before]: ../images/posts/avif-transparency/I444-BT709-before.png "I444-BT709-before"
+[I444-BT709-after]: ../images/posts/avif-transparency/I444-BT709-after.png "I444-BT709-after"
+[I444-Identity-before]: ../images/posts/avif-transparency/I444-Identity-before.png "I444-Identity-before"
+[I444-Identity-after]: ../images/posts/avif-transparency/I444-Identity-after.png "I444-Identity-after"
+
+[avif-transparency-test-page]: http://chunminchang.github.io/playground/avif/transparency.html
+
+[libyuv]: https://chromium.googlesource.com/libyuv/libyuv/
 
 [AVIFDecoder]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
 [libavif-dav1d-example]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462

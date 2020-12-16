@@ -1,35 +1,33 @@
 ---
 layout: post
 title: AVIF transparency support in Firefox
-category: [Work]
-tags: [Firefox, Media]
+category:
+- Work
+tags:
+- Firefox
+- Media
 comments: true
 type: photo
-imagefeature: ../images/posts/avif-transparency/ff-avif.png
+imagefeature: "../images/posts/avif-transparency/ff-avif.png"
 ---
-
-Transparent AVIF images work in Firefox now!
+AVIF image will be soon enabled in Firefox!
 
 <!--read more-->
 
-I've finished the AVIF image transparency support in Firefox recently,
+I've finished the last piece of the AVIF image work - transparency support in Firefox recently,
 in [BMO 1654462](https://bugzilla.mozilla.org/show_bug.cgi?id=1654462).
 
-The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:config` to `true` (it's `false` by default). As far as I know, it's the last piece of the main AVIF work that has to be done. Hopefully the `image.avif.enabled` would be set to `true` by default soon.
+The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:config` is to `true` (it's `false` by default). Since it's the last work that has to be done before enabling it on Firefox. The `image.avif.enabled` will soon be set to `true` by default. I am excited to see it since it's my first project in graphic field.
 
-To be honest, I am just lucky enough to pick this topic to implement the last piece.
-Most of the hard works are done by our excellent [`mp4parse-rust`](https://github.com/mozilla/mp4parse-rust) developers and the [original AVIF decoder author][BMO1625363].
-What I did is just to use these APIs to do demux and decode,
-then feed the decoded data to the graphics rendering pipeline in Firefox.
 ## Before v.s. After
 
-|                  | Before (w/ green background) | After (w/ green background) |
+|                  | Before | After |
 | ---------------- | ------ | ----- |
 | I420 w/ I709     | ![I420-BT709-before][I420-BT709-before] | ![I420-BT709-after][I420-BT709-after]
 | I444 w/ I709     | ![I444-BT709-before][I444-BT709-before] | ![I444-BT709-after][I444-BT709-after]
 | I444 w/ Identity | ![I444-Identity-before][I444-Identity-before] | ![I444-Identity-after][I444-Identity-after]
 
-Test page is [here][avif-transparency-test-page]
+Test page [here][avif-transparency-test-page]
 
 ## How the AVIF image decoding work
 
@@ -95,7 +93,7 @@ To see what the actual code is, please read the code [here][YCbCrA_to_RGBA]
 
 ## Closing Word
 
-2020 is a year trapping people in a specific zone and make us feel stuck in life.
+2020 is a year trapping people in a zone and make us feel stuck in life.
 I am glad I have an opportunity to embrace a new challenge
 and explore a field I don't have experience in, at the end of 2020.
 
@@ -108,8 +106,6 @@ This won't be the last time I try something different.
 I look forward to write a new story in my life!
 
 2021, I am comming!
-
-[BMO1625363]: https://bugzilla.mozilla.org/show_bug.cgi?id=1625363
 
 [BMO1654462-src]: ../images/posts/avif-transparency/BMO1654462-src.png "BMO1654462-src"
 

@@ -13,7 +13,7 @@ Transparent AVIF images work in Firefox now!
 <!--read more-->
 
 I've finished the AVIF image transparency support in Firefox recently,
-in [BMO 1654462](https://bugzilla.mozilla.org/show_bug.cgi?id=1654462).
+in [BMO 1654462][BMO1654462].
 
 The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:config` to `true` (it's `false` by default). As far as I know, it's the last piece of the main AVIF work that has to be done. Hopefully the `image.avif.enabled` would be set to `true` by default soon.
 
@@ -109,6 +109,8 @@ I look forward to write a new story in my life!
 
 2021, I am comming!
 
+[BMO1654462]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
+
 [BMO1625363]: https://bugzilla.mozilla.org/show_bug.cgi?id=1625363
 
 [BMO1654462-src]: ../images/posts/avif-transparency/BMO1654462-src.png "BMO1654462-src"
@@ -124,7 +126,7 @@ I look forward to write a new story in my life!
 
 [libyuv]: https://chromium.googlesource.com/libyuv/libyuv/
 
-[AVIFDecoder]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
+[AVIFDecoder]: https://hg.mozilla.org/mozilla-central/rev/c1478d03a451#l7.90
 [libavif-dav1d-example]: https://github.com/AOMediaCodec/libavif/blob/2a8e22101758494281d50ae33ec76797b354393e/src/codec_dav1d.c#L52-L189
 [libavif-aom-example]: https://github.com/AOMediaCodec/libavif/blob/2a8e22101758494281d50ae33ec76797b354393e/src/codec_aom.c#L72-L202
-[YCbCrA_to_RGBA]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
+[YCbCrA_to_RGBA]: https://hg.mozilla.org/mozilla-central/rev/c1478d03a451#l3.85

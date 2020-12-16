@@ -33,6 +33,7 @@ In breif, those APIs allow developers to
 ![SMTC][SMTC]
 
 On Windows, the virtual platform UI shows when the volume keys are pressed.
+(Code reference is [here](https://searchfox.org/mozilla-central/rev/c7cf087b6e1384608ca3989f042f12f7cabd0a5f/widget/windows/WindowsSMTCProvider.cpp))
 
 ### On Ubuntu (or Other Linux Platforms)
 
@@ -46,6 +47,7 @@ Since the media-session API is implemented by following the
 the third-party application is able to get those media-session information as well.
 That means some desktop extensions (e.g., Gnome/KDE extension)
 have a way to customize the UI by their needs.
+(Code reference is [here](https://searchfox.org/mozilla-central/rev/c7cf087b6e1384608ca3989f042f12f7cabd0a5f/widget/gtk/MPRISServiceHandler.cpp))
 
 ### Next/Previous Track Buttons
 
@@ -104,7 +106,7 @@ navigator.mediaSession.metadata = new MediaMetadata({
   artist: 'TzChien OFFICIAL',
   album: 'Lantern Light EP',
   artwork: [
-    { 
+    {
       src: 'http://tzchien.com/lantetn_light.jpg',
       sizes: '128x128',
       type: 'image/jpg'
@@ -136,7 +138,7 @@ navigator.mediaSession.metadata = new MediaMetadata({
   artist: "TzChien慈謙",
   album: "Life as People",
   artwork: [
-    { 
+    {
       src: "http://tzchien.com/life_as_people.jpg",
       sizes: "128x128",
       type: "image/jpg"

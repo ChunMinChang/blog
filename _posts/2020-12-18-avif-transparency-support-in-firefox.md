@@ -9,25 +9,30 @@ tags:
 comments: true
 type: photo
 imagefeature: "../images/posts/avif-transparency/ff-avif.png"
+date: 2020-12-18 01:34 +0800
 ---
-AVIF image will be soon enabled in Firefox!
+Transparent AVIF images work in Firefox now!
 
 <!--read more-->
 
-I've finished the last piece of the AVIF image work - transparency support in Firefox recently,
-in [BMO 1654462](https://bugzilla.mozilla.org/show_bug.cgi?id=1654462).
+I've finished the AVIF image transparency support in Firefox recently,
+in [BMO 1654462][BMO1654462].
 
-The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:config` is to `true` (it's `false` by default). Since it's the last work that has to be done before enabling it on Firefox. The `image.avif.enabled` will soon be set to `true` by default. I am excited to see it since it's my first project in graphic field.
+The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:config` to `true` (it's `false` by default). As far as I know, it's the last piece of the main AVIF work that has to be done. Hopefully the `image.avif.enabled` would be set to `true` by default soon.
 
+To be honest, I am just lucky enough to pick this topic to implement the last piece.
+Most of the hard works are done by our excellent [`mp4parse-rust`](https://github.com/mozilla/mp4parse-rust) developers and the [original AVIF decoder author][BMO1625363].
+What I did is just to use these APIs to do demux and decode,
+then feed the decoded data to the graphics rendering pipeline in Firefox.
 ## Before v.s. After
 
-|                  | Before | After |
+|                  | Before (w/ green background) | After (w/ green background) |
 | ---------------- | ------ | ----- |
 | I420 w/ I709     | ![I420-BT709-before][I420-BT709-before] | ![I420-BT709-after][I420-BT709-after]
 | I444 w/ I709     | ![I444-BT709-before][I444-BT709-before] | ![I444-BT709-after][I444-BT709-after]
 | I444 w/ Identity | ![I444-Identity-before][I444-Identity-before] | ![I444-Identity-after][I444-Identity-after]
 
-Test page [here][avif-transparency-test-page]
+Test page is [here][avif-transparency-test-page]
 
 ## How the AVIF image decoding work
 
@@ -93,7 +98,7 @@ To see what the actual code is, please read the code [here][YCbCrA_to_RGBA]
 
 ## Closing Word
 
-2020 is a year trapping people in a zone and make us feel stuck in life.
+2020 is a year trapping people in a specific zone and make us feel stuck in life.
 I am glad I have an opportunity to embrace a new challenge
 and explore a field I don't have experience in, at the end of 2020.
 
@@ -106,6 +111,10 @@ This won't be the last time I try something different.
 I look forward to write a new story in my life!
 
 2021, I am comming!
+
+[BMO1654462]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
+
+[BMO1625363]: https://bugzilla.mozilla.org/show_bug.cgi?id=1625363
 
 [BMO1654462-src]: ../images/posts/avif-transparency/BMO1654462-src.png "BMO1654462-src"
 
@@ -120,7 +129,7 @@ I look forward to write a new story in my life!
 
 [libyuv]: https://chromium.googlesource.com/libyuv/libyuv/
 
-[AVIFDecoder]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
+[AVIFDecoder]: https://github.com/mozilla/gecko-dev/blob/bf8688ff888668027347f1c225cdcdd79ab8dca4/image/decoders/nsAVIFDecoder.cpp#L44-L753
 [libavif-dav1d-example]: https://github.com/AOMediaCodec/libavif/blob/2a8e22101758494281d50ae33ec76797b354393e/src/codec_dav1d.c#L52-L189
 [libavif-aom-example]: https://github.com/AOMediaCodec/libavif/blob/2a8e22101758494281d50ae33ec76797b354393e/src/codec_aom.c#L72-L202
-[YCbCrA_to_RGBA]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
+[YCbCrA_to_RGBA]: https://github.com/mozilla/gecko-dev/blob/bf8688ff888668027347f1c225cdcdd79ab8dca4/gfx/ycbcr/YCbCrUtils.cpp#L288-L327

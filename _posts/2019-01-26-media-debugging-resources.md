@@ -60,6 +60,13 @@ The resources collection for debugging audio/video issues.
 - [mpris-controller](https://github.com/gsavin/mpris-controller)
 - [doc from  xmms2](https://github.com/xmms2/wiki/wiki/MPRIS)
 
+## AVIF
+
+- [libavif](https://github.com/AOMediaCodec/libavif)
+- [cavif-rs](https://github.com/kornelski/cavif-rs)
+- [colorist](https://github.com/joedrago/colorist)
+- [vantage](https://github.com/joedrago/vantage)
+
 ### Utils
 
 - [Scripts to call methods, query properties](https://gist.github.com/ChunMinChang/06a776185055d03ec52cdc1539fd3c23)

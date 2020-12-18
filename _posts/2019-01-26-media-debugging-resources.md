@@ -1,12 +1,14 @@
 ---
 layout: post
-title: Audio Debugging Resources
-category: [Work]
-tags: [Firefox, Media]
+title: Media Debugging Resources
+category:
+- Work
+tags:
+- Firefox
+- Media
 comments: true
 ---
-
-The resources collection for debugging audio issues.
+The resources collection for debugging audio/video issues.
 
 <!--read more-->
 

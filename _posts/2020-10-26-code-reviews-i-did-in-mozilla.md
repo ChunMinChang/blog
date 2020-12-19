@@ -4,6 +4,7 @@ title: Code-reviews I did in Mozilla
 date: 2020-10-26 01:53 +0800
 category: [Work]
 tags: [Firefox]
+comments: true
 ---
 
 Giving code-review is an essential part of my daily job as a software engineer. I always try my best to help my peers to address the problem properly when doing a review. For anyone who is interested in my reviews, this post lists some of the code-reviews I did in Mozilla.

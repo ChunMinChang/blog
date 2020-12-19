@@ -22,8 +22,8 @@ The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:c
 
 To be honest, I am just lucky enough to pick this topic to implement the last piece.
 Most of the hard works are done by our excellent [`mp4parse-rust`](https://github.com/mozilla/mp4parse-rust) developers and the [original AVIF decoder author][BMO1625363].
-What I did is just to use these APIs to do demux and decode,
-then feed the decoded data to the graphics rendering pipeline in Firefox.
+What I did is just to expose and use the right APIs to do demux and decode,
+then feed the decoded data to the graphic rendering pipeline in Firefox.
 ## Before v.s. After
 
 |                  | Before (w/ green background) | After (w/ green background) |
@@ -100,17 +100,17 @@ To see what the actual code is, please read the code [here][YCbCrA_to_RGBA]
 
 2020 is a year trapping people in a specific zone and make us feel stuck in life.
 I am glad I have an opportunity to embrace a new challenge
-and explore a field I don't have experience in, at the end of 2020.
+and explore a field I don't have experience in at the end of 2020.
 
-This is my first work in graphic area and I kind of enjoy it.
+This is my first work in the graphic area, and I enjoy it.
 It reminds me that we can always try something new in life.
 
 2020 doesn't stop me from keeping advancing myself.
-I am confident that the next year and the following years won't be able to stop me either.
+I am confident that the next year and the following years won't stop me either.
 This won't be the last time I try something different.
-I look forward to write a new story in my life!
+I look forward to writing a new story in my life!
 
-2021, I am comming!
+2021, I am coming!
 
 [BMO1654462]: https://bugzilla.mozilla.org/show_bug.cgi?id=1654462
 

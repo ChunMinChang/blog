@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AVIF transparency support in Firefox
+title: 'Firefox: AVIF Transparency Support'
 category:
 - Work
 tags:

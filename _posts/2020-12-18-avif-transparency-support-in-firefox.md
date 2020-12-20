@@ -9,6 +9,7 @@ tags:
 comments: true
 type: photo
 imagefeature: "../images/posts/avif-transparency/ff-avif.png"
+image: "../images/posts/avif-transparency/ff-avif.png"
 date: 2020-12-18 01:34 +0800
 ---
 Transparent AVIF images work in Firefox now!

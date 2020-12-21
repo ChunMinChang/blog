@@ -50,7 +50,7 @@ Test page is [here][avif-transparency-test-page]
 4. Render the pixels on the screen from the R-G-B-Alpha data
    - TBH, this is a blackbox to me
    - What I did is to feed the R-G-B-Alpha data to graphic pipeline
-   - Then image is rendered to the screen
+   - Then image will be rendered to the screen
 
 ### Challenge
 
@@ -58,10 +58,11 @@ The most challenging part in this work is to convert the Y-Cb-Cr-Alpha data into
 
 ```
 YCbCrA_to_RGBA:
-  if the layout is I420 format, then call
+  if the layout is I420 format
+    call libyuv::I420AlphaToARGB
   else
     convert the Y-Cb-Cr data to R-G-B data via YCbCr_to_RGB32
-    fill the alpha data to the RGB32 buffer
+    fill the Alpha data to the RGB32 buffer
 
 YCbCr_to_RGB32:
   switch layout:

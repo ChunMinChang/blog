@@ -22,9 +22,8 @@ in [BMO 1654462][BMO1654462].
 The AVIF support can be enabled by toggling the `image.avif.enabled` in `about:config` to `true` (it's `false` by default). As far as I know, it's the last piece of the main AVIF work that has to be done. Hopefully the `image.avif.enabled` would be set to `true` by default soon.
 
 To be honest, I am just lucky enough to pick this topic to implement the last piece.
-Most of the hard works are done by our excellent [`mp4parse-rust`](https://github.com/mozilla/mp4parse-rust) developers and the [original AVIF decoder author][BMO1625363].
-What I did is just to expose and use the right APIs to do demux and decode,
-then feed the decoded data to the graphic rendering pipeline in Firefox.
+Most of the hard works are done by our excellent [`mp4parse-rust`](https://github.com/mozilla/mp4parse-rust) developers and the [original AVIF decoder author][BMO1625363]. They give me great advices and help me to achieve this work.
+
 ## Before v.s. After
 
 |                  | Before (w/ green background) | After (w/ green background) |
@@ -37,34 +36,47 @@ Test page is [here][avif-transparency-test-page]
 
 ## How the AVIF image decoding work
 
-1. Demux the AVIF image from the mp4 format
-   - The AVIF image is wrapped in mp4 format so we need to demux it first
+The steps to render an AVIF image to the screen from the raw data are as follows:
+
+1. Extract the AVIF image data from the mp4 container.
+   - The AVIF image is stored in the mp4 format, so we need to get its data first
    - we use [`mp4parse-rust`](https://github.com/mozilla/mp4parse-rust/blob/3d9efdc868ce8c5767cea28708fa6512c0ab6d17/mp4parse_capi/src/lib.rs#L1183-L1215) to parse the AVIF image in Firefox
-2. Decode the demuxed image
-   - This can done via [Dav1d decoder or AOM decoder][AVIFDecoder]
+2. Decode the AVIF image to Y-Cb-Cr-Alpha data by [Dav1d or AOM decoder][AVIFDecoder]
+   - Dav1d is the video/image decoder for AV1/AVIF format.
    - `libavif` has some examples (or you can use `libavif` directly)
      - [Dav1d][libavif-dav1d-example]
      - [AOM][libavif-aom-example]
-3. Convert the Y-Cb-Cr-Alpha data into R-G-B-Alpha data
-   - The conversion can be done by [`libyuv`][libyuv]'s API (see the detail below)
-4. Render the pixels on the screen from the R-G-B-Alpha data
-   - TBH, this is a blackbox to me
-   - What I did is to feed the R-G-B-Alpha data to graphic pipeline
-   - Then image will be rendered to the screen
+3. Convert the Y-Cb-Cr-Alpha data into RGBA data
+   - The conversion here is the critical part of this project.
+4. Render the decoded RGBA data to the screen
+   - This part is relatively easy since Firefox already has APIs to do this job for all other image formats or videos.
 
-### Challenge
+## Challenge
 
-The most challenging part in this work is to convert the Y-Cb-Cr-Alpha data into the R-G-B-Alpha data. Fortunately, the [`libyuv`][libyuv] provides some functions we can reuse. The conversion works as follow:
+The biggest challenge in this project is to convert the Y-Cb-Cr-Alpha data into RGBA data correctly. This conversion is the only part that we don't exactly know how to do in Firefox.
+
+To know how to convert the Y-Cb-Cr-Alpha data into RGBA data, first thing I do is to look at the third-party library used in Firefox to convert the Y-Cb-Cr to RGB data. The third-party library is [*libyuv*][libyuv]. Fortunately, I saw one function that can transform the Y-Cb-Cr-Alpha into RGBA data if the Y-Cb-Cr's data layout is *I420*. There are many different layouts of the Y-Cb-Cr's data, such as *I444* or *I422*. Therefore, the problem is narrowed down to convert the Y-Cb-Cr-Alpha into RGBA data if Y-Cb-Cr's data layout is *not I420*.
+
+The next task is to look at the function that converts Y-Cb-Cr-Alpha to RGBA data for the *I420* layout to see how the conversion is implemented and evaluate if it's possible to apply its manner to other forms.
+
+The answer is yes. The conversion for the *I420* layout is a 3-step process:
+
+1. It converts the Y-Cb-Cr to RGB data and fills the RGB data into the RGBA buffer.
+2. It injects the Alpha data into the RGBA buffer.
+3. It does the "pre-attenuate" if the caller requests it.
+
+The last two steps are unrelated to the Y-Cb-Cr 's layout. To apply the same approach to the *non-I420* layout, the only thing I need to figure out is how to convert the Y-Cb-Cr to RGB data. The problem now is narrowed down to the conversion for non-I420 layout. Fortunately, the [`libyuv`][libyuv] library already provides such functions. All I need to do is call the operations depends on the Y-Cb-Cr 's layout, then fill the alpha data and do the "pre-attenuate" if required. As a result, the conversion works as follows:
 
 ```
 YCbCrA_to_RGBA:
   if the layout is I420 format
     call libyuv::I420AlphaToARGB
   else
-    convert the Y-Cb-Cr data to R-G-B data via YCbCr_to_RGB32
-    fill the Alpha data to the RGB32 buffer
+    convert the Y-Cb-Cr data to R-G-B data via YCbCr_to_RGBA32
+    fill the Alpha data to the RGBA32 buffer
+    attenuate RGBA data
 
-YCbCr_to_RGB32:
+YCbCr_to_RGBA32:
   switch layout:
     case I400:
         call libyuv::I400ToARGB

@@ -57,7 +57,7 @@ Challenging assumptions, considering a broader or narrower version of the proble
 
 To be clear, I am not expressing the following code is bad. Most of the time my teammates’ code is generally good! The following list is only used to prove I do my daily job conscientiously and I don’t live up to my teammates’ trust. They are all awesome engineers. They’ll be happier if I can catch the error before it’s shipped to the users ends.
 
-### Terms
+### Components
 
 - cubeb: The cross-platform audio library of Firefox
   - cubeb-coreaudio: The cubeb implementation on MacOS via `AudioUnit` APIs

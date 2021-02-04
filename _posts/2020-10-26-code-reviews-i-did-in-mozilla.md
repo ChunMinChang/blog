@@ -105,6 +105,7 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
    - crash: *audio-ipc* - [#62](https://reviewable.io/reviews/djg/audioipc-2/62#-LjLm3ei63coXTWilJ0C): Catch a crash that can happen when device collection changes
    - crash: *media-key-control* - [BMO 1634494](https://phabricator.services.mozilla.com/D87143?id=330905#inline-502409): Catch a crash that can happen when media-sesson is not set but some specific media key is pressed 
 7. I am able to maintain/improve the code readability
+   - *audio-ipc* - [#112](https://github.com/mozilla/audioipc-2/pull/112/files#r569712579): Ask author to add a comment indicating the message-channel recevicer takes a message-channel error as the signal to execute task, which is an untraditional way of using message-channel sender and recevicer.
    - *cubeb* - [#463](https://github.com/kinetiknz/cubeb/pull/463#discussion_r223819871): Replace `if` that always work by `assert` and remove the misleading comments
    - *media-key-control* - [BMO 1627999](https://phabricator.services.mozilla.com/D75477?id=279333#inline-438887): Ask the author to add an assertion to let the reader know the current code state
   

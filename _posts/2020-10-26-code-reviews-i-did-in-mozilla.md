@@ -100,10 +100,10 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
    - *cubeb-coreaudio* -  [#107](https://github.com/ChunMinChang/cubeb-coreaudio-rs/pull/107#discussion_r461091182): Make sure the bound of stream position is correct
    - *cubeb-pulse* - [#63](https://github.com/djg/cubeb-pulse-rs/pull/63#pullrequestreview-510856014): Correct the calculation of the audio samples
 6. I am able to catch potential crash/UAF/data race
-   - UAF: *media-key-control* - [BMO 1611332](https://phabricator.services.mozilla.com/D60935?id=222398#inline-370531) ([BMO 1621779](https://bugzilla.mozilla.org/show_bug.cgi?id=1621779)). The right fix lead us to find [BMO 1623950](https://bugzilla.mozilla.org/show_bug.cgi?id=1623950)
-   - data race:  *media-key-control* - [BMO 1633010](https://phabricator.services.mozilla.com/D73486?id=271074#inline-431599)
-   - crash: *audio-ipc* - [#62](https://reviewable.io/reviews/djg/audioipc-2/62#-LjLm3ei63coXTWilJ0C): Catch a crash that can happen when device collection changes
-   - crash: *media-key-control* - [BMO 1634494](https://phabricator.services.mozilla.com/D87143?id=330905#inline-502409): Catch a crash that can happen when media-sesson is not set but some specific media key is pressed 
+   - *media-key-control* - [BMO 1611332](https://phabricator.services.mozilla.com/D60935?id=222398#inline-370531) ([BMO 1621779](https://bugzilla.mozilla.org/show_bug.cgi?id=1621779)). Catch a UAF. The right fix lead us to find [BMO 1623950](https://bugzilla.mozilla.org/show_bug.cgi?id=1623950)
+   - *media-key-control* - [BMO 1633010](https://phabricator.services.mozilla.com/D73486?id=271074#inline-431599) Catch a data race issue between shutdown and dispatching key-event
+   - *audio-ipc* - [#62](https://reviewable.io/reviews/djg/audioipc-2/62#-LjLm3ei63coXTWilJ0C): (crash) Catch a crash that can happen when device collection changes
+   - *media-key-control* - [BMO 1634494](https://phabricator.services.mozilla.com/D87143?id=330905#inline-502409): (crash) Catch a crash that can happen when media-sesson is not set but some specific media key is pressed 
 7. I am able to maintain/improve the code readability
    - *audio-ipc* - [#112](https://github.com/mozilla/audioipc-2/pull/112/files#r569712579): Ask author to add a comment indicating the message-channel recevicer takes a message-channel error as the signal to execute task, which is an untraditional way of using message-channel sender and recevicer.
    - *cubeb* - [#463](https://github.com/kinetiknz/cubeb/pull/463#discussion_r223819871): Replace `if` that always work by `assert` and remove the misleading comments

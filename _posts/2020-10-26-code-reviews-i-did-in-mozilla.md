@@ -11,6 +11,20 @@ Giving code-review is an essential part of my daily job as a software engineer. 
 
 <!--read more-->
 
+## Table of Contents
+- [Table of Contents](#table-of-contents)
+- [Self-evaluation](#self-evaluation)
+  - [Comment Style](#comment-style)
+  - [Mindset](#mindset)
+  - [Review Focus](#review-focus)
+- [Code Reviews in Mozilla](#code-reviews-in-mozilla)
+  - [Components](#components)
+  - [List](#list)
+- [Other Reviews and Communications](#other-reviews-and-communications)
+- [Closing Words](#closing-words)
+
+**TL;DR**: See my review skills from the [list](#list)
+
 This post organizes some code reviews I did in Mozilla in the past.
 I hope this post can be a reference for myself to check if my review skills improve or not when I look back several years later. Aside from that, this is a reference for anyone who is interested in my review quality.
 

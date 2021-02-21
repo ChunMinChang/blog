@@ -203,6 +203,7 @@ The meta bug is [BMO 1530713](https://bugzilla.mozilla.org/show_bug.cgi?id=15307
     - [BMO 1614971](https://bugzilla.mozilla.org/show_bug.cgi?id=1614971)
     - [BMO 1620488](https://bugzilla.mozilla.org/show_bug.cgi?id=1620488)
     - [BMO 1622291](https://bugzilla.mozilla.org/show_bug.cgi?id=1622291)
+    - [Bug 1692910](https://bugzilla.mozilla.org/show_bug.cgi?id=1692910) - Crash in [@ cubeb_coreaudio::backend::set_volume]
 2. Deadlock
     - [BMO 1572273](https://bugzilla.mozilla.org/show_bug.cgi?id=1572273#c13): Deadlock when unplugging the input device during WebRTC
     - [BMO 1574632](https://bugzilla.mozilla.org/show_bug.cgi?id=1574632): Potential deadlock in cubeb-coreaudio-rs when unplugging the input device during WebRTC

@@ -91,6 +91,7 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
    - *media-key-control* - [BMO 1584501](https://phabricator.services.mozilla.com/D47546?id=175094#inline-299094): Catch an error that initialization return success but it may fail actually
    - *media-key-control* - [BMO 1623486](https://phabricator.services.mozilla.com/D67712?id=248138#inline-405706): Catch [BMO 1626600](https://bugzilla.mozilla.org/show_bug.cgi?id=1626600) when reviewing patches
    - *cubeb-pulse* - [#63](https://github.com/djg/cubeb-pulse-rs/pull/63#pullrequestreview-510856014): Catch an out-of-sync problem between two related variables
+   - *audio-ipc* - [#115](https://github.com/mozilla/audioipc-2/pull/115#discussion_r581489302): Catch a mismatched-state error between two paired variables
 2. I am able to reduce the code complexity by suggesting a better algorithm or data structure
    - *media-key-control* - [BMO 1633010](https://phabricator.services.mozilla.com/D73486#inline-433818): Apply logic reasoning to restrict the object lifetime and avoid abusing the shared-pointers
    - *media-key-control* - [BMO 1611332](https://phabricator.services.mozilla.com/D60935?vs=223340&id=223691#inline-371097): Propose an algorithm to centralize one specific job that done in different functions to one place, by leveraging a logical fact of the in-use hashtable
@@ -118,6 +119,7 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
    - *audio-ipc* - [#62](https://reviewable.io/reviews/djg/audioipc-2/62#-LjLm3ei63coXTWilJ0C): (crash) Catch a crash that can happen when device collection changes
    - *media-key-control* - [BMO 1634494](https://phabricator.services.mozilla.com/D87143?id=330905#inline-502409): (crash) Catch a crash that can happen when media-sesson is not set but some specific media key is pressed 
 7. I am able to maintain/improve the code readability
+   - *audio-ipc* - [#115](https://github.com/mozilla/audioipc-2/pull/115#discussion_r581509059): Ask author to add a comment for using an invalid handle as a special value indicating the ownership of the shared-meory between two processes
    - *audio-ipc* - [#112](https://github.com/mozilla/audioipc-2/pull/112/files#r569712579): Ask author to add a comment indicating the message-channel recevicer takes a message-channel error as the signal to execute task, which is an untraditional way of using message-channel sender and recevicer.
    - *cubeb* - [#463](https://github.com/kinetiknz/cubeb/pull/463#discussion_r223819871): Replace `if` that always work by `assert` and remove the misleading comments
    - *media-key-control* - [BMO 1627999](https://phabricator.services.mozilla.com/D75477?id=279333#inline-438887): Ask the author to add an assertion to let the reader know the current code state

@@ -82,7 +82,7 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
 
 ### List
 
-1. I have sharp eyes to catch algorithmic defects or logic conflicts
+1. I have sharp eyes to catch algorithmic defects or logical conflicts
    - *media-key-control* - [BMO 1654657](https://phabricator.services.mozilla.com/D85514?id=319982#inline-491358): Catch an out-of-order problem when updating main-media-controller
    - *media-key-control* - [BMO 1592454](https://phabricator.services.mozilla.com/D54388?id=198735#anchor-inline-339178): Catch an out-of-order problem when updating the active media session. This is critical since it leads to re-implement all the things
    - *media-key-control* - [BMO 1633565](https://phabricator.services.mozilla.com/D73374#inline-440627): Catch an architectural defect that stops us to implement the expected behavior.

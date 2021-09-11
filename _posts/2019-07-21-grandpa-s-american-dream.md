@@ -17,7 +17,7 @@ Three months later after moving here, in middle October, I got a phone call from
 
 After hanging up the phone, I started searching the flight ticket back to Taiwan. It’s bloody expensive and I don’t have many time-offs. I was not sure if I should go back to Taiwan immediately. I just started my new job here and I was assigned to a challenging project. I don’t want to mess it up. It’s my first project of my first job in the United States. So I booked the ticket in Thanksgiving days.
 
-I called home every week to check my grandpa. However, there was only one time he was awake. I had a video chat with him. During our chat, he looked the camera, and said: “The girl next to you is pretty. You should marry her.”. I said “She is already your granddaughter-in-law”. Then he laughed and said he couldn't remember things these days. Then he said he was tired, so we ended our chat. A few minutes later, my mom called me again and said: “Your grandpa asks me to push you for a Phd”, and I just laughed.
+I called home every week to check my grandpa. However, there was only one time he was awake. I had a video chat with him. During our chat, he looked the camera, and said: “The girl next to you is pretty. You should marry her.”. I said “She is already your granddaughter-in-law”. Then he laughed and said he couldn't remember things these days. Then he said he was tired, so we ended our chat. A few minutes later, my mom called me again and said: “Your grandpa asks me to push you for a PhD”, and I just laughed.
 
 Two weeks later, my grandpa passed away. I really regretted I was not being there with him. I rearranged an earlier ticket back to Taiwan.
 

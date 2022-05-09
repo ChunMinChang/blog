@@ -26,7 +26,7 @@ Now you can open more than one microphone at a time via `getUserMedia` in Firefo
 In the past, Firefox could use only one microphone per [window][window] most of the time. Now the restriction is lifted! The example code below can demonstrate the difference between the *before* and *after*.
 
 ```js
-function runTest() {
+async function runTest() {
   let devices = await navigator.mediaDevices.enumerateDevices();
   // Create constraints
   let constraints = [];
@@ -87,6 +87,59 @@ You can see the online demo of the above code [here][example]. Aside from it, [h
 The most beneficial change is that this makes microphone switching easier!
 
 When the user asks to switch a microphone during video conferencing, the service websites usually open a second/new microphone to check the volume and other audio settings before closing the first/original one. To work around the constraint Firefox used to have, the service websites may need extra work, e.g., opening the second/new microphone in an iframe, which usually wastes more resources and power.
+
+```js
+async function runTest() {
+  let devices = await navigator.mediaDevices.enumerateDevices();
+  // Create constraints
+  let constraints = [];
+  devices.forEach((device) => {
+    if (device.kind === "audioinput") {
+      constraints.push({
+        audio: { deviceId: { exact: device.deviceId } },
+      });
+    }
+  });
+
+  if (constraints.length < 2) {
+    console.log("Need at least 2 audio devices!");
+    return;
+  }
+
+  try {
+    // Open the audio input device
+    let c1 = constraints.shift();
+    console.log("Open audio input: " + c1.audio.deviceId.exact);
+    let stream1 = await navigator.mediaDevices.getUserMedia(c1);
+    console.log("MediaStream: " + stream1.id + " is created");
+
+    // Switch the audio input device
+    let c2 = constraints.shift();
+    console.log(
+      "Switch audio input from: " +
+        c1.audio.deviceId.exact +
+        " to: " +
+        c2.audio.deviceId.exact
+    );
+    let stream2 = await navigator.mediaDevices.getUserMedia(c2);
+    console.log("MediaStream: " + stream2.id + " is created");
+    for (let track of stream1.getTracks()) {
+      console.log("Stopping " + track.label);
+      track.stop();
+    }
+    console.log("Stop all tracks in MediaStream: " + stream1.id);
+
+    // Close the audio input device
+    for (let track of stream2.getTracks()) {
+      console.log("Stopping " + track.label);
+      track.stop();
+    }
+    console.log("Stop all tracks in MediaStream: " + stream2.id);
+  } catch (e) {
+    console.log(e.name + ": " + e.message);
+  }
+}
+```
 
 After the restriction is lifted, there is no reason to do those workarounds anymore. The service website can easily enable the second or third microphone via the `getUserMedia` as they do for the first one. In addition, users can use multiple microphones simultaneously during the video conferencing or in some WebAudio apps if the video conferencing website adopts this feature in their services.
 

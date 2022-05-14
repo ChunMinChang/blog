@@ -15,7 +15,7 @@ date: 2022-04-19 07:44 +0800
 
 Firefox Nightly now allows users to use as many microphones as they want at the same time during video conferencing!
 
-The most important benefit is that you can easily switch your microphones at any time, if your conferencing service provider enables this flexibility!
+The most important benefit is that you can easily switch your microphones at any time, if your conferencing service provider enables this flexibility! (update: jitsi enables this in [PR 1988](https://github.com/jitsi/lib-jitsi-meet/pull/1988)!)
 
 <!--read more-->
 

@@ -2,7 +2,7 @@
 layout: post
 title: 'Monster, Victim, or Both?'
 category:
-- Life
+- Random
 tags:
 - Thought
 comments: true

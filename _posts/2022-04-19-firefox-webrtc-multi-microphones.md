@@ -145,25 +145,25 @@ After the restriction is lifted, there is no reason to do those workarounds anym
 
 ## Lessons learned
 
-Below is my development story and what I've learned from this project.
+The developement is an unexpectedly long journey that I learned so much things in a hrad way.
 
 ### Review the plan carefully
 
 I should do more research and ask more detailed review of my design before implementing the code.
 
-Enabling multi-microphone in Firefox is my first WebRTC project. WebRTC is a whole new world to me. Since I had never worked in WebRTC code before, I took one week or two to do the research and wrote down a design document for this project, with the block diagram of the code modules. However, the lack of domain knowledge leads me to underestimate the project's scope and have a less-optimal design. The worst of it is that I realized this after implementing the whole code. In the end, I revised my design and re-do most of all my implementations.
+Enabling multi-microphone in Firefox was my first WebRTC project. WebRTC is a whole new world to me. Since I had never worked in WebRTC code before, I took one week or two to do the research and wrote down a design document for this project, with the block diagram of the code modules. However, the lack of domain knowledge led me to underestimate the project's scope and had a less-optimal design. The worst of it is that I realized this after implementing the whole code. In the end, I revised my design and re-do most of all my implementations.
 
 ### Comments are indispensable
 
 The comments for the design concept and goal are necessary, especially the calculations for a particular purpose.
 
-I am not the type of person who adds comments everywhere. I believe the code can explain itself well by using proper names for variables and functions, appropriate function size..., etc (see more in [*Cleaning Code*](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)). But it's vital to add comments if the purpose is not clear. The code may be able to explain what they are doing itself. But sometimes, it's hard to see why they do things in a certain way.
+I am not the type of person who adds comments everywhere. I believe the code can explain itself well by using proper names for variables and functions, appropriate function size..., etc (see more in [*Cleaning Code*](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)), but it's vital to add comments if the purpose is not clear. The code may be able to explain what they are doing itself. However, it's hard to see why they do things in a certain way sometimes.
 
-When I researched how to split the code into different modules, I found some mysterious calculations that append and remove audio data in certain conditions (and sometimes it could cause crashes). It seems to me it's a workaround of something. But without understandable comments and fair enough domain knowledge, I don't know why and when it needs to do that calculation. Except for the original code author, no one in our team knows what it is, or they simply forgot it. To make matters worse, the author was taking a long leave. So I decided to move all those codes into the same module and leave them as a black box.
+When I studied how to split the code into different modules, I found some mysterious calculations that append and remove audio data in certain conditions (and sometimes it could cause crashes). It seems to me it's a workaround of something. Yet, without understandable comments and fair enough domain knowledge, I didn't know why and when it needs to do that calculation. Except for the original code author, no one in our team knew what it is, or they simply forgot it. To make matters worse, the original author was taking a long leave. Thus, I decided to move all those codes into the same module and leave them as a black box.
 
-Unfortunately, that module is the essential building block of the architecture. I realized that I needed to have a new design for the whole project after I had a chance to discuss it with the original author. I needed to replace that workaround with a better fix.
+Unfortunately, that black box is the essential building block of the architecture. I realized that I needed to replace that black box with a proper fix after I had a chance to discuss it with the original author. This requirement then made me have a new design for the whole project. Due to the design changes, this project took longer time than I expected.
 
-In the end, I took a different approach with the same concept to solve the problem that the code intended to solve. The most important difference I made is that I added a [short paragraph][bmo1741959-comment] explaining the issue we faced and the design concept with a mathematical proof. I hope those comments can help others understand the intention of that code better, so they can modify the code without asking for my help.
+Especially, the problem that the incomprehensible calculation tried to solve was sorted out by a *mathematical-proved* method with the same concept. I added a [short paragraph][bmo1741959-comment] explaining the issue we faced and the design concept with a *mathematical proof*. The explanation and the proof can help the reader understand the purpose and how the code works respectively. With a clear comments, the calculation is no longer a puzzle that no one can understand it.
 
 ### Testability without dependencies
 
@@ -171,17 +171,15 @@ Make sure you can test every single module without other dependencies.
 
 I consistently applied *TDD* (Test Driven Development) when possible. I like to write high-level integration tests that illustrate the project's main goal before working on the production code and gradually adding unit tests while developing.
 
-To enhance my test approach in this project, I used [dependency injection][DI] techniques to isolate code modules in my unit tests, mainly *constructor injection*. [*gMock*][gmock] is a practical tool/framework  that makes this easy for me. Every C++ programmer should know how to use [*gTest*][gtest], and every *gTest* user should use *gMock* for unit tests in isolation.
+To enhance my test approach in this project, I used [dependency injection][DI] techniques to isolate code modules in my unit tests, mainly *constructor injection*. [*gMock*][gmock] is a practical tool/framework that makes this easy for me. Every C++ programmer should know how to use [*gTest*][gtest], and every *gTest* user should use *gMock* for unit tests in isolation.
 
-### Breaks down a problem into several sub-problems
+### Breaks a problem down into several sub-problems
 
-Break down the task into smaller sub-tasks by the dependencies.
+Break the task down into smaller sub-tasks by the dependencies.
 
-It's always good to split the task into several smaller ones and finish them individually. I didn't always do this since it's easier for me to manage the related code patches in one git branch. More precisely, I did break down the task into smaller chunks and finished them separately. However, I tended to fix several problems in one individual task.
+It's always good to split the task into several smaller ones and finish them individually. Still, I know it's easier to manage the related code patches in one git branch. While spending time to divide patches sounds like a waste of energy, breaking the problem down into several sub tasks and address then one by one can provide several benefits. It forces me to outline the problem dependencies. Having sub tasks makes sketching the project's scope easier and makes calculating how many milestones the project have possible. By having a smaller task size, I can land the patches reaching the reviewers' agreements sooner. The sooner I can test them in the wild, the sooner I can find out the problems. In addition, it gives me a positive feeling since I can see I am making progress, step by step.
 
-Now I prefer to fix the problems one by one: one problem per task. The benefit is that it forces me to outline the problem dependencies. It makes sketching the project's scope easier and calculating how many milestones the project might have possible. By having a smaller task size, I can land the patches reaching the reviewers' agreements sooner. The sooner I can test them in the wild, the sooner I can find out the problems. In addition, it gives me a positive feeling since I can see I am making progress, step by step.
-
-I changed my task-dividing approach when I realized that I underestimated the project's scope. It probably doesn't matter if I fix all the problems or implement all the code in one bug ticket for a small project. But for a large project like this, I chose to break down the goal into smaller ones than I usually did. Besides the benefits mentioned above, the smaller task also lowers the brain burden for my code reviewers since they will only see the code they need to know. It's easier for me to multitask by communicating with a different person individually.
+Besides the benefits mentioned above, the smaller task also lowers the brain burden for my code reviewers since they will only see the code they need to know. It's easier for me to multitask by communicating with a different person individually.
 
 ## Other engineering details
 
@@ -254,7 +252,7 @@ It is an unexpectedly arduous journey. I enjoyed the thought process of shaping 
 
 It took me almost a year from starting to finishing it, from learning WebRTC code to implementing all the code alone. Fortunately, I have enough support when needed, and my reviewers are always willing to take their time to discuss with me.
 
-I have mixed feelings about this project. I didn't expect it would take me so long to accomplish the mission. I felt terrible when things weren't going well. I felt annoyed when digging into problems in unfamiliar code. On the other hand, I appreciate this project gives me a chance to learn how to calm myself down and enrich my engineering experience in a new domain, which will advance my skills in the long run.
+I have mixed feelings about this project. I didn't expect it would take me so long to accomplish the mission. I felt terrible when things weren't going well. I felt annoyed when digging into problems in unfamiliar code. On the other hand, I appreciate this project gave me a chance to learn how to calm myself down and enrich my engineering experience in a new domain, which will advance my skills in the long run.
 
 Life is full of ups and downs, so make the project progress. I've learned how to keep moving forward between the rises and falls. The experience I gained from this project will help me conquer my next project and all the followings. I have faith in myself. I believe I can overcome my upcoming challenges, and it will become another unforgettable memory.
 

@@ -74,7 +74,7 @@ and background blurring in another, then combine them as our processing pipeline
 
 ![audio-processing][audio-processing]
 
-On audio side, we can do similar things to process the `AudioData` with *WebAudio* API.
+On audio side, we can do similar things to process the `AudioData` with [*WebAudio*][webaudio-api] API.
 
 ## Special Thanks & Closing Words
 
@@ -91,4 +91,5 @@ Over the past year, my team has implemented [many modules][fx-webcodecs-July-25-
 [video-streams]: ../images/posts/webcodecs/video_streams_API.png "Video Processing Pipeline with Streams API"
 [streams-api]: https://developer.mozilla.org/en-US/docs/Web/API/Streams_API
 [audio-processing]: ../images/posts/webcodecs/audio_processing.png "Future of Audio Processing"
+[webaudio-api]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
 [fx-webcodecs-July-25-2023]: https://github.com/mozilla/gecko-dev/tree/28f4536791dc9f145984ec9004102982ee6cc905/dom/media/webcodecs

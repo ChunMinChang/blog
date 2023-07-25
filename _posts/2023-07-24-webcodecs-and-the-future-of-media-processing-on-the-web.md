@@ -32,7 +32,7 @@ One special thing is that *WebCodecs* has a `ImageDecoder` to decode an image in
 
 ### Why We Need WebCodecs
 
-But why we need *WebCodecs*? Because, in short, there is no way to access and process the media data **efficently**. Some video conferencing sites, like *Zoom*, create their own media encoders and decoders in *C* and then compile them into *WebAssembly* to achieve the low-latency media processing. However, this makes users waste their bandwidth to download the media encoders and decoders that are actually duplicate in the browser, just because those websites has no access to them. That's why *WebCodecs* is a better solution.
+But why we need *WebCodecs*? Because, in short, there is no way to access and process the media data **efficently**. Some video conferencing sites, like [*Zoom*][zoom-hack], create their own media encoders and decoders in *C* and then compile them into [*WebAssembly*][wasm] to achieve the low-latency media processing. However, this makes users waste their bandwidth to download the media encoders and decoders that are actually duplicate in the browser, just because those websites has no access to them. That's why *WebCodecs* is a better solution.
 
 ## Demo
 
@@ -75,14 +75,17 @@ On audio side, we can do similar things to process the `AudioData` with *WebAudi
 
 ## Special Thanks & Closing Words
 
-Over the past year, my team has implemented many modules for *WebCodecs*. I need to thank to [Paul Adenot](https://github.com/padenot), [Andrew Osmond](https://github.com/aosmond), media team, and DOM team, to help solving spec issues and engineering problems. Now we alreay have the essential blocks to build the reset of the *WebCodecs*, so I am looking forward seeing what Firefox can bring to the future of media processing on the web!
+Over the past year, my team has implemented [many modules][fx-webcodecs-July-25-2023] for *WebCodecs*. I need to thank to [Paul Adenot](https://github.com/padenot), [Andrew Osmond](https://github.com/aosmond), media team, and DOM team, to help solving spec issues and engineering problems. Now we alreay have the essential blocks to build the reset of the *WebCodecs*, so I am looking forward seeing what Firefox can bring to the future of media processing on the web!
 
 [webcodecs-api]: https://developer.mozilla.org/en-US/docs/Web/API/WebCodecs_API
 [webrtc-api]: https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API
 [webgl-api]: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API
 [webgpu-api]: https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API
 [interfaces]: ../images/posts/webcodecs/interfaces.png "WebCodecs Interfaces"
+[zoom-hack]: https://webrtchacks.com/zoom-avoids-using-webrtc/
+[wasm]: https://developer.mozilla.org/en-US/docs/WebAssembly
 [video-processing]: ../images/posts/webcodecs/video_processing.png "Future of Video Processing"
 [video-streams]: ../images/posts/webcodecs/video_streams_API.png "Video Processing Pipeline with Streams API"
 [streams-api]: https://developer.mozilla.org/en-US/docs/Web/API/Streams_API
 [audio-processing]: ../images/posts/webcodecs/audio_processing.png "Future of Audio Processing"
+[fx-webcodecs-July-25-2023]: https://github.com/mozilla/gecko-dev/tree/28f4536791dc9f145984ec9004102982ee6cc905/dom/media/webcodecs

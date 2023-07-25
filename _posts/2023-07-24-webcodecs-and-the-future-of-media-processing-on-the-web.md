@@ -9,8 +9,8 @@ tags:
 comments: true
 date: 2023-07-24 15:56 +0800
 type: photo
-imagefeature: "../images/posts/webcodecs/webcodecs-icon.png"
-image: "../images/posts/webcodecs/webcodecs-icon.png"
+imagefeature: "../images/posts/webcodecs/icon.png"
+image: "../images/posts/webcodecs/icon.png"
 ---
 
 Today I am going to talk about three things: What's WebCodecs, its showcase, and what the future may look like with it.

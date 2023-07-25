@@ -30,6 +30,7 @@ The final [post][effect] briefs some [tips-and-effects][effect].
 - The test coverage of lines is enlarged to almost 80%
   - The left 20% are mostly logs
   - Only *5* bugs are introduced by the new *Rust* backend itself
+- Jul, 25, 2023 update: No more regressions found yet in three years.
 
 ### Data-racing issues
 

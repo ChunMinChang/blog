@@ -15,13 +15,13 @@ date: 2022-04-19 07:44 +0800
 
 Firefox Nightly now allows users to use as many microphones as they want at the same time during video conferencing!
 
-The most important benefit is that you can easily switch your microphones at any time, if your conferencing service provider enables this flexibility! (update: jitsi enables this in [PR 1988](https://github.com/jitsi/lib-jitsi-meet/pull/1988)!)
+The most important benefit is that you can easily switch your microphones at any time, if your conferencing service provider enables this flexibility! (Jul, 25, 2023 update: No any regression found yet)
 
 <!--read more-->
 
 ## Multi-microphones in Firefox
 
-Now you can open more than one microphone at a time via `getUserMedia` in Firefox Nightly! The [`getUserMedia`][gUM] is an interface that prompts the user for permission to open a media input, which will produce media data for the web service.
+Now you can open more than one microphone at a time via `getUserMedia` in Firefox Nightly (e.g, [jitsi PR 1988](https://github.com/jitsi/lib-jitsi-meet/pull/1988))! The [`getUserMedia`][gUM] is an interface that prompts the user for permission to open a media input, which will produce media data for the web service.
 
 In the past, Firefox could use only one microphone per [window][window] most of the time. Now the restriction is lifted! The example code below can demonstrate the difference between the *before* and *after*.
 

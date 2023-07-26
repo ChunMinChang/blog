@@ -19,7 +19,9 @@ Today I am going to talk about three things: What's WebCodecs, its showcase, and
 
 ## What is WebCodces
 
-[*WebCodecs*][webcodecs-api] is a set of low-level APIs that can access and process the media data **flexibly** and **efficiently**. The flexibility means that these APIs can easily work with other APIs, such as [*WebRTC*][webrtc-api], [*WebGL*][webgl-api], and [*WebGPU*][webgpu-api]. The efficiency implies that the media data can be transferred and processed in the best performance we can offer.
+First, let's see what *WebCodecs* is.
+
+[*WebCodecs*][webcodecs-api] is a set of low-level APIs that can access and process the media data **flexibly** and **efficiently**. The flexibility means that these APIs can easily work with other APIs, such as [*WebRTC*][webrtc-api], [*WebGL*][webgl-api], and [*WebGPU*][webgpu-api]. The efficiency implies that the media data can be transferred and processed in the best performance we can offer (e.g., saving the unnecessary copies).
 
 ### WebCodecs Interfaces
 
@@ -35,25 +37,29 @@ One special thing is that *WebCodecs* has a `ImageDecoder` to decode an image in
 
 ### Why We Need WebCodecs
 
-But why we need *WebCodecs*? Because, in short, there is no way to access and process the media data **efficently**. Some video conferencing sites, like [*Zoom*][zoom-hack], create their own media encoders and decoders in *C* and then compile them into [*WebAssembly*][wasm] to achieve the low-latency media processing. However, this makes users waste their bandwidth to download the media encoders and decoders that are actually duplicate in the browser, just because those websites has no access to them. That's why *WebCodecs* is a better solution.
+But why we need *WebCodecs*? In short, because there is no way to access and process the media data **efficently**. Some video conferencing sites, like [*Zoom*][zoom-hack], create their own media encoders and decoders in *C* and then pack them into [*WebAssembly*][wasm] to achieve the low-latency processing. However, this makes users waste their bandwidth to download the media encoders and decoders that are actually duplicate in the browser, just because those websites has no access to them. That's why *WebCodecs* is a better solution.
 
 ## Demo
 
-The video here shows how `VideoDecoder` decode the `EncodedVideoChunk`s into `VideoFrame`s, and how we can process the `VideoFrame`s before painting them to the screen. In the video, we will change their colors. Let's see the demo.
+Now, you have a rough idea about *WebCodecs*. Let's see the demo.
+
+The video here shows how `VideoDecoder` decode the `EncodedVideoChunk`s into `VideoFrame`s, and how we can process the `VideoFrame`s before painting them to the screen. Let's play the video below.
 
 [![webcodecs-demo](https://img.youtube.com/vi/sfJ1qc2d_ec/0.jpg)](https://www.youtube.com/watch?v=sfJ1qc2d_ec)
 
-The video processing in the demo is very basic, which you can find in the textbook. But you can do more complicated processing like cartoon filter. Next, I am going to talk more about the video processing.
+The video processing in the demo is very basic. You can find the color changing alrogithms in the textbook. But you can do more complicated processing like cartoon filter.
 
 ## Future of Media Processing
 
 ### Future of Video Processing
 
+Next, I am going to talk more about the video processing.
+
 ![video-processing][video-processing]
 
 In the future, *WebCodecs* will be the central part linking lots of interfaces, for media processing.
 
-The video processing in the demo can be more efficient and more magical once we build the bridges from *WebCodecs* to *WebGL* and *WebGPU*, then the processing can be accelerated by the graphics card, and processed all inside GPUs. That can boost the performance since there is no need to copy the data from GPU to CPU to process the images.
+The video processing in the demo can be more efficient and more magical once we integrate *WebCodecs* with *WebGL* and *WebGPU*, then the processing can be accelerated by the graphics card, and processed all inside GPUs, which means no copies are needed for moving data from GPU to CPU to process the images.
 
 On the other hand, *WebCodecs* has a sibling spec in *WebRTC* that can stream `VideoFrame`s from your camera. So Firefox will be able to hide your video background before sending the video over the internet for better privacy.
 
@@ -65,7 +71,7 @@ We can build a pipeline to process `VideoFrame` stream by [*Streams* API][stream
 
 The `VideoFrame` stream comming from *WebRTC*, or other kind of source, can easily work with *Streams* API, as long as it is a `ReadableStream`.
 
-There are three kinds of *Streams*. The first one is `ReadableStream`. You can think it is source stream that constantly generates data. The second one is `WritableStream`. You can think it is a destination of the data stream. The last one is `TransformStream`, which processes the data from a `ReadableStream` and then write it into a `WritableStream`, or another `TransformStream`, which means you can link as many `TransformStream` as you want.
+There are three kinds of *Streams*: `ReadableStream`, `WritableStream`, and `TransformStream`. You can think `ReadableStream` is the source of the data stream, and the `WritableStream` is the destination, while `TransformStream` is a pipe connecting them and processing the data. `TransformStream` can write the data into a `WritableStream`, or another `TransformStream`, which means you can connect as many `TransformStream` as you want.
 
 For *WebCodecs* usage, we can do face recognition in one `TransformStream` and
 and background blurring in another, then combine them as our processing pipeline.
@@ -74,7 +80,7 @@ and background blurring in another, then combine them as our processing pipeline
 
 ![audio-processing][audio-processing]
 
-On audio side, we can do similar things to process the `AudioData` with [*WebAudio*][webaudio-api] API.
+On audio side, we can do similar things to process the `AudioData` with [*WebAudio*][webaudio-api] API, but I am going to skip the details today.
 
 ## Special Thanks & Closing Words
 

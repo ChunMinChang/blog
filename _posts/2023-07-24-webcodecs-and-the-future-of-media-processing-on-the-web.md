@@ -35,7 +35,7 @@ Similarly, *WebCodecs* has symmetric interfaces on the audio side. `AudioData` r
 
 On top of that, *WebCodecs* has a `ImageDecoder` to decode an image into `VideoFrame`s, so the image processing can follow the pattern of video processing we are going talk later.
 
-On the other hand, it is worth mentioning that `VideoFrame` will be a *processing unit* carrying the image from one interface to another in media processing. The latest [*WebGL*]([videoframe-in-webgl]) and [*WebGPU*]([videoframe-in-webgpu]) takes a `VideoFrame` as one of its input sources, and *WebRTC* will have [new API]([insertable-streams]) constantly producing `VideoFrame`s that capture the images from your camera.
+On the other hand, it is worth mentioning that `VideoFrame` will be a *processing unit* carrying the image from one interface to another in media processing. The latest [*WebGL*][videoframe-in-webgl] and [*WebGPU*][videoframe-in-webgpu] takes a `VideoFrame` as one of its input sources, and *WebRTC* will have [new API]([insertable-streams]) constantly producing `VideoFrame`s that capture the images from your camera.
 
 ### Why We Need WebCodecs
 
@@ -84,11 +84,11 @@ More specifically, the processing model of the above animation will use the inte
 
 ![webcodecs-video][webcodecs-video]
 
-That is, on the sender side, `MediaStreamTrackProcesser` will constantly produce `VideoFrame`s, and the `VideoFrame`s will be processed via *WebGL* or *WebGPU* before being encoded into `EncodedVideoChunk`s by `VideoEncoder`. Finally, those chunks will be sent to the internet and painted to the sender's screen.
+That is, on the sender side, `MediaStreamTrackProcesser` will constantly produce `VideoFrame`s, and the `VideoFrame`s will be processed via *WebGL* or *WebGPU* before being encoded into `EncodedVideoChunk`s by `VideoEncoder`. Finally, those chunks will be sent to the internet and painted to the sender's screen via `<canvas>`.
 
 On receiver side, the process is reversed. The received `EncodedVideoChunk` from the internet will be decoded into `VideoFrame` by `VideoDecoder` and then those frame will be painted to the receiver's screen.
 
-
+Additionally, the above figure also outlines other ways to create or use a `VideoFrame`. It can be created by a `<video>`, a `ImageBitmap`, or other interfaces listed, and it can be an input source of a `<canvas>`, or a `MediaStreamTrack` for *WebRTC*.
 #### Video Processing Pipeline with Streams API
 
 ![video-streams][video-streams]

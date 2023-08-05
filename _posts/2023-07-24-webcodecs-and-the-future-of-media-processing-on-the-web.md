@@ -84,11 +84,11 @@ More specifically, the processing model of the above animation will use the inte
 
 ![webcodecs-video][webcodecs-video]
 
-That is, on the sender side, `MediaStreamTrackProcesser` will constantly produce `VideoFrame`s, and the `VideoFrame`s will be processed via *WebGL* or *WebGPU* before being encoded into `EncodedVideoChunk`s by `VideoEncoder`. Finally, those chunks will be sent to the internet and painted to the sender's screen via `<canvas>`.
+On the sender side, `MediaStreamTrackProcesser` will constantly produce `VideoFrame`s, and the `VideoFrame`s will be processed via *WebGL* or *WebGPU* before being encoded into `EncodedVideoChunk`s by `VideoEncoder`. Finally, those chunks will be sent to the internet and painted to the sender's screen via `<canvas>`.
 
 On receiver side, the process is reversed. The received `EncodedVideoChunk` from the internet will be decoded into `VideoFrame` by `VideoDecoder` and then those frame will be painted to the receiver's screen.
 
-Additionally, the above figure also outlines other ways to create or use a `VideoFrame`. It can be created by a `<video>`, a `ImageBitmap`, or other interfaces listed, and it can be an input source of a `<canvas>`, or a `MediaStreamTrack` for *WebRTC*.
+Additionally, the above figure also outlines other usages of `VideoFrame`. It can be created by a `<video>`, a `ImageBitmap`, or other interfaces listed, and it can be an input source of a `<canvas>`, or a `MediaStreamTrack` for *WebRTC*, ...etc.
 #### Video Processing Pipeline with Streams API
 
 ![video-streams][video-streams]

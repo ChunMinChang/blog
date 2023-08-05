@@ -73,7 +73,7 @@ In the demo, *WebCodecs* decodes the data from the video file, and we adjust the
 
 Once we integrate *WebCodecs* with *WebGL* and *WebGPU*, or any other graphic APIs, the process can be accelerated by the graphics card, and we will get the images faster.
 
-Again, *WebCodecs* has an interface carrying the image in the video, called `VideoFrame`, that will soon become a processing unit in the *WebRTC* and *WebGL*. As a result, once *WebRTC* can stream the video coming from your camera **frame by frame**, we can easily send them to *WebGL* to process.
+Again, *WebCodecs* has an interface carrying the image in the video, called `VideoFrame`, that will soon become a processing unit in the *WebRTC* and *WebGL*. As a result, once *WebRTC* can stream the video coming from your camera **in VideoFrame**s, we can easily send them to *WebGL* to process.
 
 ![webrtc-video-processing][webrtc-video-processing]
 

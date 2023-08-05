@@ -7,7 +7,7 @@ tags: [Firefox]
 comments: true
 ---
 
-Giving code-review is an essential part of my daily job as a software engineer. I always try my best to help my peers to address the problem properly when doing a review. For anyone who is interested in my reviews, this post lists some of the code-reviews I did in Mozilla.
+Giving code-review is an essential part of my daily job as a software engineer. I always try my best to help my peers to address the problem properly when doing a review. This post lists some of the code-reviews I did in Mozilla. To be honest, it's mainly used as a supporting material of my working visa, but it's can also be a self-monitor basis to check if I learn more things in years later.
 
 <!--read more-->
 

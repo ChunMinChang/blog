@@ -99,7 +99,7 @@ People may argue that pursuing beauty is a biological instinct. However, we are 
 
 ## More questions than answers
 
-This research leaves me with more questions than answers: How do beauty standards shift or expand? How did K-Pop capture the attention of western audiences? Why is being attractive more crucial for people in marginalized groups? If the discrimination against race is true, does being attractive help minorities escape discrimination? Are stunning minorities more likely to break the glass ceiling?
+This research leaves me with more questions than answers: How do beauty standards shift or expand? How did K-Pop capture the attention of western audiences? Why is being attractive more crucial for people in marginalized groups? If the discrimination against race is true, does being attractive help minorities escape discrimination? Are stunning minorities more likely to break the glass ceiling? What's the racial distribution of K-pop fans?
 
 There is not much research on how Asians’ appearances affect their life in the United States. When searching and digging into studies, I found that most data only includes Whites, Hispanics, and Blacks. Asians disappeared in statistics. With the rise of K-Pop, I wonder if I can see more attention to Asians in scientific studies soon.
 

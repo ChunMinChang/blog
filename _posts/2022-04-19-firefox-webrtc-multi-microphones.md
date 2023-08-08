@@ -15,7 +15,7 @@ date: 2022-04-19 07:44 +0800
 
 Firefox Nightly now allows users to use as many microphones as they want at the same time during video conferencing!
 
-The most important benefit is that you can easily switch your microphones at any time, if your conferencing service provider enables this flexibility! (e.g, [jitsi PR 1988](https://github.com/jitsi/lib-jitsi-meet/pull/1988))
+The most important benefit is that you can switch your microphones more easily during a call, if your conferencing service provider enables this flexibility! (e.g, [jitsi PR 1988](https://github.com/jitsi/lib-jitsi-meet/pull/1988))
 
 <!--read more-->
 
@@ -23,7 +23,7 @@ The most important benefit is that you can easily switch your microphones at any
 
 Now you can open more than one microphone at a time via `getUserMedia` in Firefox Nightly! The [`getUserMedia`][gUM] is an interface that prompts the user for permission to open a media input, which will produce media data for the web service.
 
-In the past, Firefox could use only one microphone per [window][window] most of the time. Now the restriction is lifted! The example code below can demonstrate the difference between the *before* and *after*.
+In the past, Firefox could use only one microphone per [window][window]. Now the restriction is lifted! The example code below can demonstrate the difference between the *before* and *after*.
 
 ```js
 async function runTest() {
@@ -86,7 +86,7 @@ You can see the online demo of the above code [here][example]. Aside from it, [h
 
 The most beneficial change is that this makes microphone switching easier!
 
-When the user asks to switch a microphone during video conferencing, the service websites usually open a second/new microphone to check the volume and other audio settings before closing the first/original one. To work around the constraint Firefox used to have, the service websites may need extra work, e.g., opening the second/new microphone in an iframe, which usually wastes more resources and power.
+When the user asks to switch a microphone during video conferencing, the service websites usually open a second/new microphone to check the volume and other audio settings before closing the first/original one. To work around the constraint Firefox used to have, the service websites may need extra works, e.g., opening the second/new microphone in an iframe, which usually wastes more resources and power.
 
 ```js
 async function runTest() {
@@ -145,51 +145,72 @@ After the restriction is lifted, there is no reason to do those workarounds anym
 
 ## Lessons learned
 
-The developement is an unexpectedly long journey that I learned so much things in a hrad way.
+Althoug I am quite content with my outcomes (Aug, 08, 2023 update: no regression found yet), I don't have the same feeling about my journey.
+
+The developement journey was unexpectedly longer than what I expected. Battling in an unfamiliar field with a mission is quite struggling. I learned so much things in a hard way:
+
+1. First of all, I should do more research and ask more detailed review of my design before implementing the code.
+2. Second, I found that the comments for the design concept and goal are indispensable, especially for the calculations in some particular cases.
+3. Third, testing is key to make sure every module works and guarantees those modules can work together.
+4. Finally, breaking down the problems, and then fixing them and shiping them one by one, is better than shipping them all at once.
+
+I am going to detail each of the points below.
 
 ### Review the plan carefully
 
-I should do more research and ask more detailed review of my design before implementing the code.
+First of all, I should do more research and ask more detailed review of my design before implementing the code.
 
 Enabling multi-microphone in Firefox was my first WebRTC project. WebRTC is a whole new world to me. Since I had never worked in WebRTC code before, I took one week or two to do the research and wrote down a design document for this project, with the block diagram of the code modules. However, the lack of domain knowledge led me to underestimate the project's scope and had a less-optimal design. The worst of it is that I realized this after implementing the whole code. In the end, I revised my design and re-do most of all my implementations.
 
+I might be able to find a better solution earlier if I can study more, to have more engineering details to discuss with the right person.
+
 ### Comments are indispensable
 
-The comments for the design concept and goal are necessary, especially the calculations for a particular purpose.
+Second, the comments for the design concept and goal are indispensable, especially for the calculations in some particular cases.
 
 I am not the type of person who adds comments everywhere. I believe the code can explain itself well by using proper names for variables and functions, appropriate function size..., etc (see more in [*Cleaning Code*](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)), but it's vital to add comments if the purpose is not clear. The code may be able to explain what they are doing itself. However, it's hard to see why they do things in a certain way sometimes.
 
 When I studied how to split the code into different modules, I found some mysterious calculations that append and remove audio data in certain conditions (and sometimes it could cause crashes). It seems to me it's a workaround of something. Yet, without understandable comments and fair enough domain knowledge, I didn't know why and when it needs to do that calculation. Except for the original code author, no one in our team knew what it is, or they simply forgot it. To make matters worse, the original author was taking a long leave. Thus, I decided to move all those codes into the same module and leave them as a black box.
 
-Unfortunately, that black box is the essential building block of the architecture. I realized that I needed to replace that black box with a proper fix after I had a chance to discuss it with the original author. This requirement then made me have a new design for the whole project. Due to the design changes, this project took longer time than I expected.
+Unfortunately, that black box is the essential building block of the architecture. I realized that I needed to replace that black box with a proper fix after I had a chance to discuss it with the original author. This requirement made me have a new design for the whole project. Due to the changes, this project took longer time than I expected.
 
-Especially, the problem that the incomprehensible calculation tried to solve was sorted out by a *mathematical-proved* method with the same concept. I added a [short paragraph][bmo1741959-comment] explaining the issue we faced and the design concept with a *mathematical proof*. The explanation and the proof can help the reader understand the purpose and how the code works respectively. With a clear comments, the calculation is no longer a puzzle that no one can understand it.
+In the end, the problem was solved by a new method with the same concept, and I also **mathematically** prove it works. I added a [short paragraph][bmo1741959-comment] explaining the issue we faced and the design concept with the proof. The explanation and the proof should help the readers understand how the code works. With a clear comments, the calculation is no longer a puzzle that no one can understand it.
 
 ### Testability without dependencies
 
-Make sure you can test every single module without other dependencies.
+Third, testing is key to make sure every module works and guarantees those modules can work together.
 
 I consistently applied *TDD* (Test Driven Development) when possible. I like to write high-level integration tests that illustrate the project's main goal before working on the production code and gradually adding unit tests while developing.
 
-To enhance my test approach in this project, I used [dependency injection][DI] techniques to isolate code modules in my unit tests, mainly *constructor injection*. [*gMock*][gmock] is a practical tool/framework that makes this easy for me. Every C++ programmer should know how to use [*gTest*][gtest], and every *gTest* user should use *gMock* for unit tests in isolation.
+To enhance my test approach in this project, I used [dependency injection][DI] techniques to isolate code modules in my unit tests, mainly *constructor injection*. This way, the module can be tested **without other dependencies**. [*gMock*][gmock] is a practical tool/framework that makes this easy for me. Every C++ programmer should know how to use [*gTest*][gtest], and every *gTest* user should use *gMock* for unit tests in isolation.
+
+With the tests, I was able to catch the problem in an early stage.
 
 ### Breaks a problem down into several sub-problems
 
-Break the task down into smaller sub-tasks by the dependencies.
+Finally, breaking down the problems, and then fixing them and shiping them one by one, is better than shipping them all at once.
 
-It's always good to split the task into several smaller ones and finish them individually. Still, I know it's easier to manage the related code patches in one git branch. While spending time to divide patches sounds like a waste of energy, breaking the problem down into several sub tasks and address then one by one can provide several benefits. It forces me to outline the problem dependencies. Having sub tasks makes sketching the project's scope easier and makes calculating how many milestones the project have possible. By having a smaller task size, I can land the patches reaching the reviewers' agreements sooner. The sooner I can test them in the wild, the sooner I can find out the problems. In addition, it gives me a positive feeling since I can see I am making progress, step by step.
+Breaking down the problem really depends on the experience. The same problem can be divided into different sets of sub-problems in different views. However, once the task is divided into several smaller sub-tasks, the most important thing to do is to sort out their dependencies. Those dependencies are the keys to decide what problems need to be solved first. With the order of the divided sub tasks, we are able to fix and ship each of them individually, and finish the whole project gradually over the time.
 
-Besides the benefits mentioned above, the smaller task also lowers the brain burden for my code reviewers since they will only see the code they need to know. It's easier for me to multitask by communicating with a different person individually.
+While spending time to divide patches sounds like a waste of energy, breaking the problem down into several sub tasks and address them one by one can provide several benefits.
+
+1. Having sub tasks makes sketching the project's scope easier and help calculating how many milestones the project have.
+2. It's easier to work on a smaller problem, for both code authoer and reviewers. It's easier to discuss one issue at a time.
+3. It's easier to multitask on different sub-problems. We can work on several problems that don't have dependencies on each other at a time.
+communicating with a different person individually.
+4. The step-by-step progress can be visualized, and it can give a positive feeling!
+
+To be honest, this is the hardest habit for me to establish.
 
 ## Other engineering details
 
-(Jul, 25, 2023 update: No any regression found yet)
+Now, let's talk about some engineering details. This is pretty Firefox/Gecko-specific, so if you're not interested, feel free to skip this part.
 
 The following are some notes for myself (in case I need to revisit this project) or others who have an interest in contributing to our codebase.
 
 ### Architecture
 
-The main goal of this project is to enable [`MediaTrackGraph`][MTG] (*MTG*) to have multiple audio streams and the ability to process them. `MediaTrackGraph` (*MTG*) is Firefox/gecko's internal WebRTC data processing framework.
+The main goal of this project is to enable [`MediaTrackGraph`][MTG] (*MTG*) to have multiple audio streams and the ability to process them. `MediaTrackGraph` (*MTG*) is Firefox/Gecko's internal WebRTC data processing framework.
 
 #### Original design
 
@@ -224,7 +245,7 @@ There are several problems with achieving this:
 
 ![new][design]
 
-We've developed some essential modules to address part of the problems above over time in different projects. It comes to the point of reworking Firefox/gecko's WebRTC infrastructure. Hence, I redesigned the architecture illustrated in the above figure.
+We've developed some essential modules to address part of the problems above over time in different projects. It comes to the point of reworking Firefox/Gecko's WebRTC infrastructure. Hence, I redesigned the architecture illustrated in the above figure.
 
 The data processing procedure is the same as the original design. The key difference is that the `AudioInputTrack` is replaced by `AudioProcessingTrack` and [`NativeInputTrack`][NIT] or [`NonNativeInputTrack`][NNIT].
 
@@ -250,13 +271,13 @@ I hope this can give you, probably future me, a rough idea about the ownerships 
 
 ## Closing Words
 
-It is an unexpectedly arduous journey. I enjoyed the thought process of shaping a raw idea into a proper design and then implementing it. It brings back my memory when working on [cubeb oxidation][cubeb-oxidation].
+Despite it is an unexpectedly arduous journey, I enjoyed the thought process of shaping a raw idea into a proper design and then implementing it. It brings back my memory when working on [cubeb oxidation][cubeb-oxidation].
 
-It took me almost a year from starting to finishing it, from learning WebRTC code to implementing all the code alone. Fortunately, I have enough support when needed, and my reviewers are always willing to take their time to discuss with me.
+It took me almost a year to finish it, from learning WebRTC code to implementing all the code alone. Fortunately, I have enough supports when needed, and my reviewers are always willing to take their time to discuss with me.
 
 I have mixed feelings about this project. I didn't expect it would take me so long to accomplish the mission. I felt terrible when things weren't going well. I felt annoyed when digging into problems in unfamiliar code. On the other hand, I appreciate this project gave me a chance to learn how to calm myself down and enrich my engineering experience in a new domain, which will advance my skills in the long run.
 
-Life is full of ups and downs, so make the project progress. I've learned how to keep moving forward between the rises and falls. The experience I gained from this project will help me conquer my next project and all the followings. I have faith in myself. I believe I can overcome my upcoming challenges, and it will become another unforgettable memory.
+Life is full of ups and downs, so making the project progress. I've learned how to keep moving forward between the rises and falls. The experience I gained from this project is going to help me conquer my next project and all the followings. I have faith in myself. I believe I can overcome my upcoming challenges, and it will become another unforgettable memory.
 
 [gUM]: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 [window]: https://developer.mozilla.org/en-US/docs/Web/API/Window

@@ -269,6 +269,133 @@ There are several classes between `NonNativeInputTrack` and its underlying audio
 
 I hope this can give you, probably future me, a rough idea about the ownerships between the classes. However, the above description might not hold for too long. The code is likely to be updated from time to time. It's better to read our current code to know the latest development.
 
+### Audio Processing
+
+In order to do audio processing like noise suppression or echo cancellation for the voice data from microphone, the [`AudioProcessing` module in `libwebrtc`][libwebrtc-audioprocessing] is integrated into our audio processing pipeline to do the job.
+
+This audio processing module needs a *specific amount* of data to do the processing. It requires its input to be a **[10-ms][libwebrtc-audioprocessing-10ms]** chunk of voice data. However, the input of our audio pipeline is not always guaranteed to have data with the times of 10ms length. For example, we may have 15ms of data, which means we can only feed the first 10ms of data and leave the 5ms of data unprocessed. If we only have 8 ms of data, then no data will be processed.
+
+To force processing the input data, a naive way is to append silent data when there is no enough data to process. That is, *x* ms of silent data will be appended when data is *(10-x)*-ms length. Nevertheless, this could result in **glitch** sounds in the audio.
+
+Instead of inserting the silent data between the voice data, we can append the silence in advance, before all the data, so there won't be any glitch. The only drawback is the real voice data won't be sent out immediately. The pre-buffered silent data will be sent as the output first. But how many silent data we need to feed in advance? The answer is at least **10ms** of data!
+
+More specifically, the design is to have an *internal buffer* that pre-loads at least **10ms** of silent data in advance. The *internal buffer* has three components, *pending*, *audio-processing* and *ready*. *Pending* holds the *unprocessed* data that will be sent to *audio-processing*, *ready* stores the *processed* data out of *audio-processing*, while *audio-processing* is the place that takes raw voice input data, do audio processing like noise suppression or echo cancellation, and then return the processed data out.
+
+```
+        +------------------------------------------------+
+        |   +---------+                       +-------+  |
+input --+-->| pending |--> AudioProcessing -->| ready |--+--> output
+        |   +---------+                       +-------+  |
+        +------------------------------------------------+
+
+        < --------------- internal buffer --------------->
+```
+
+In our desige, the silent data are pre-buffered in *ready*, and the *internal buffer* will output the same amout of data as input.
+
+When the input data is less than *10ms*, we stock the input data in *pending* and return the buffered data in *ready* as output. That's said, suppose we pre-buffer 10ms of silent data in *ready*. If the input has only 3ms of data, those data will be stocked in *pending*. Then, *ready* will move 3ms of the buffered data as the output, and leave 7ms of data inside.
+
+If the next input makes *pending* have enough data to process, we move as much as *10ms*-chunk data as we can to *audio-processing*, and put the processed results to *ready*. If the input at this time has 35ms of data, the first 7ms of data of the input with the 3ms data left in *pending* will result in a 10ms chunk that can be passed to *audio-processing*, and then the *audio-processing* will return 10ms of processed data to *ready*. Next, following the same process, we can take 20ms of data from input and produce 20ms of processed data to *ready*. Then, the left 8ms of input data will be stocked in *pending* since they won't be able to be a valid input of *audio-processing*. At this time, we've produced 30ms of processed data to *ready*, and make *ready* have 37ms of data. After moving 35ms of data from as output, *ready* will leave 2ms of data inside. As a result, we will still leave 10ms data in the *internal buffer*: 8ms of data in *pending*; 2ms of data in *ready*. Repeating this process guarantees that *internal buffer* always have *10ms* of data, and has no need to insert the silent data in between.
+
+The below is the formal proof, copied from the [code comments][bmo1741959-comment] I wrote. Although the description is slighty different, the idea is same. In the description, *audio-processing* is omitted, because we only need to focus on the amount of data in *pending* and *ready*. In the comments, the *pending* referes to the *packetizer*, and the *ready* referes to *mSegment*.
+
+```
+// We will use webrtc::AudioProcessing to process the input audio data in this
+// mode. The data input in webrtc::AudioProcessing needs to be a 10ms chunk,
+// while the input data passed to Process() is not necessary to have times of
+// 10ms-chunk length. To divide the input data into 10ms chunks,
+// mPacketizerInput is introduced.
+//
+// We will add one 10ms-chunk silence into the internal buffer before Process()
+// works. Those extra frames is called pre-buffering. It aims to avoid glitches
+// we may have when producing data in mPacketizerInput. Without pre-buffering,
+// when the input data length is not 10ms-times, we could end up having no
+// enough output needs since mPacketizerInput would keep some input data, which
+// is the remainder of the 10ms-chunk length. To force processing those data
+// left in mPacketizerInput, we would need to add some extra frames to make
+// mPacketizerInput produce a 10ms-chunk. For example, if the sample rate is
+// 44100 Hz, then the packet-size is 441 frames. When we only have 384 input
+// frames, we would need to put additional 57 frames to mPacketizerInput to
+// produce a packet. However, those extra 57 frames result in a glitch sound.
+//
+// By adding one 10ms-chunk silence in advance to the internal buffer, we won't
+// need to add extra frames between the input data no matter what data length it
+// is. The only drawback is the input data won't be processed and send to output
+// immediately. Process() will consume pre-buffering data for its output first.
+// The below describes how it works:
+//
+//
+//                          Process()
+//               +-----------------------------+
+//   input D(N)  |   +--------+   +--------+   |  output D(N)
+// --------------|-->|  P(N)  |-->|  S(N)  |---|-------------->
+//               |   +--------+   +--------+   |
+//               |   packetizer    mSegment    |
+//               +-----------------------------+
+//               <------ internal buffer ------>
+//
+//
+//   D(N): number of frames from the input and the output needs in the N round
+//      Z: number of frames of a 10ms chunk(packet) in mPacketizerInput, Z >= 1
+//         (if Z = 1, packetizer has no effect)
+//   P(N): number of frames left in mPacketizerInput after the N round. Once the
+//         frames in packetizer >= Z, packetizer will produce a packet to
+//         mSegment, so P(N) = (P(N-1) + D(N)) % Z, 0 <= P(N) <= Z-1
+//   S(N): number of frames left in mSegment after the N round. The input D(N)
+//         frames will be passed to mPacketizerInput first, and then
+//         mPacketizerInput may append some packets to mSegment, so
+//         S(N) = S(N-1) + Z * floor((P(N-1) + D(N)) / Z) - D(N)
+//
+// At the first, we set P(0) = 0, S(0) = X, where X >= Z-1. X is the
+// pre-buffering put in the internal buffer. With this settings, P(K) + S(K) = X
+// always holds.
+//
+// Intuitively, this seems true: We put X frames in the internal buffer at
+// first. If the data won't be blocked in packetizer, after the Process(), the
+// internal buffer should still hold X frames since the number of frames coming
+// from input is the same as the output needs. The key of having enough data for
+// output needs, while the input data is piled up in packetizer, is by putting
+// at least Z-1 frames as pre-buffering, since the maximum number of frames
+// stuck in the packetizer before it can emit a packet is packet-size - 1.
+// Otherwise, we don't have enough data for output if the new input data plus
+// the data left in packetizer produces a smaller-than-10ms chunk, which will be
+// left in packetizer. Thus we must have some pre-buffering frames in the
+// mSegment to make up the length of the left chunk we need for output. This can
+// also be told by by induction:
+//   (1) This holds when K = 0
+//   (2) Assume this holds when K = N: so P(N) + S(N) = X
+//       => P(N) + S(N) = X >= Z-1 => S(N) >= Z-1-P(N)
+//   (3) When K = N+1, we have D(N+1) input frames comes
+//     a. if P(N) + D(N+1) < Z, then packetizer has no enough data for one
+//        packet. No data produced by packertizer, so the mSegment now has
+//        S(N) >= Z-1-P(N) frames. Output needs D(N+1) < Z-P(N) frames. So it
+//        needs at most Z-P(N)-1 frames, and mSegment has enough frames for
+//        output, Then, P(N+1) = P(N) + D(N+1) and S(N+1) = S(N) - D(N+1)
+//        => P(N+1) + S(N+1) = P(N) + S(N) = X
+//     b. if P(N) + D(N+1) = Z, then packetizer will produce one packet for
+//        mSegment, so mSegment now has S(N) + Z frames. Output needs D(N+1)
+//        = Z-P(N) frames. S(N) has at least Z-1-P(N)+Z >= Z-P(N) frames, since
+//        Z >= 1. So mSegment has enough frames for output. Then, P(N+1) = 0 and
+//        S(N+1) = S(N) + Z - D(N+1) = S(N) + P(N)
+//        => P(N+1) + S(N+1) = P(N) + S(N) = X
+//     c. if P(N) + D(N+1) > Z, and let P(N) + D(N+1) = q * Z + r, where q >= 1
+//        and 0 <= r <= Z-1, then packetizer will produce can produce q packets
+//        for mSegment. Output needs D(N+1) = q * Z - P(N) + r frames and
+//        mSegment has S(N) + q * z >= q * z - P(N) + Z-1 >= q*z -P(N) + r,
+//        since r <= Z-1. So mSegment has enough frames for output. Then,
+//        P(N+1) = r and S(N+1) = S(N) + q * Z - D(N+1)
+//         => P(N+1) + S(N+1) = S(N) + (q * Z + r - D(N+1)) =  S(N) + P(N) = X
+//   => P(K) + S(K) = X always holds
+//
+// Since P(K) + S(K) = X and P(K) is in [0, Z-1], the S(K) is in [X-Z+1, X]
+// range. In our implementation, X is set to Z so S(K) is in [1, Z].
+// By the above workflow, we always have enough data for output and no extra
+// frames put into packetizer. It means we don't have any glitch!
+//
+```
+
+This was the mysterious calculations I mentioned in [*Comments are indispensable*](#comments-are-indispensable). With the clear comments, the code is more understandable and easier to maintain.
+
 ## Closing Words
 
 Despite it is an unexpectedly arduous journey, I enjoyed the thought process of shaping a raw idea into a proper design and then implementing it. It brings back my memory when working on [cubeb oxidation][cubeb-oxidation].
@@ -317,3 +444,8 @@ Life is full of ups and downs, so making the project progress. I've learned how 
 [cis]: https://github.com/mozilla/gecko-dev/blob/6da1ebe13b260efabd88eb98dec5fa8ee65987b2/dom/media/CubebInputStream.h#L18-L21
 
 [PA]: https://www.freedesktop.org/wiki/Software/PulseAudio/
+
+[libwebrtc-audioprocessing]: https://github.com/mozilla/gecko-dev/blob/ea11c5c0b49f9bd0fff6fa926ee95d0680af1e83/third_party/libwebrtc/modules/audio_processing/include/audio_processing.h#L54-L130
+
+[libwebrtc-audioprocessing-10ms]: https://github.com/mozilla/gecko-dev/blob/ea11c5c0b49f9bd0fff6fa926ee95d0680af1e83/third_party/libwebrtc/modules/audio_processing/include/audio_processing.h#L83-L86
+[libwebrtc-audioprocessing-10ms]: https://github.com/mozilla/gecko-dev/blob/ea11c5c0b49f9bd0fff6fa926ee95d0680af1e83/dom/media/webrtc/MediaEngineWebRTCAudio.h#L173-L178

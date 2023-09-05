@@ -277,9 +277,9 @@ This audio processing module needs a *specific amount* of data to do the process
 
 To force processing the input data, a naive way is to append silent data when there is no enough data to process. That is, *x* ms of silent data will be appended when data is *(10-x)*-ms length. Nevertheless, this could result in **glitch** sounds in the audio.
 
-Instead of inserting the silent data between the voice data, we can append the silence in advance, before all the data, so there won't be any glitch. The only drawback is the real voice data won't be sent out immediately. The pre-buffered silent data will be sent as the output first. But how many silent data we need to feed in advance? The answer is at least **10ms** of data!
+Instead of inserting the silent data between the voice data, we can append the silence in advance, before all the data, so there won't be any glitch. The only drawback is the real voice data won't be sent out immediately. The pre-buffered silent data will be sent as the output first. But how many silent data we need to feed in advance? The answer is **at least 10ms** of data!
 
-More specifically, the design is to have an *internal buffer* that pre-loads at least **10ms** of silent data in advance. The *internal buffer* has three components, *pending*, *audio-processing* and *ready*. *Pending* holds the *unprocessed* data that will be sent to *audio-processing*, *ready* stores the *processed* data out of *audio-processing*, while *audio-processing* is the place that takes raw voice input data, do audio processing like noise suppression or echo cancellation, and then return the processed data out.
+More specifically, the design is to have an *internal buffer* that pre-loads at least 10ms of silent data in advance. The *internal buffer* has three components, *pending*, *audio-processing* and *ready*. *Pending* holds the *unprocessed* data that will be sent to *audio-processing*, *ready* stores the *processed* data out of *audio-processing*, while *audio-processing* is the place that takes raw voice input data, do audio processing, and then return the processed data out.
 
 ```
         +------------------------------------------------+
@@ -291,11 +291,13 @@ input --+-->| pending |--> AudioProcessing -->| ready |--+--> output
         < --------------- internal buffer --------------->
 ```
 
-In our desige, the silent data are pre-buffered in *ready*, and the *internal buffer* will output the same amout of data as input.
+In the design, the *internal buffer* will output the same amout of data as input, and the silent data are pre-buffered in *ready*.
 
 When the input data is less than *10ms*, we stock the input data in *pending* and return the buffered data in *ready* as output. That's said, suppose we pre-buffer 10ms of silent data in *ready*. If the input has only 3ms of data, those data will be stocked in *pending*. Then, *ready* will move 3ms of the buffered data as the output, and leave 7ms of data inside.
 
-If the next input makes *pending* have enough data to process, we move as much as *10ms*-chunk data as we can to *audio-processing*, and put the processed results to *ready*. If the input at this time has 35ms of data, the first 7ms of data of the input with the 3ms data left in *pending* will result in a 10ms chunk that can be passed to *audio-processing*, and then the *audio-processing* will return 10ms of processed data to *ready*. Next, following the same process, we can take 20ms of data from input and produce 20ms of processed data to *ready*. Then, the left 8ms of input data will be stocked in *pending* since they won't be able to be a valid input of *audio-processing*. At this time, we've produced 30ms of processed data to *ready*, and make *ready* have 37ms of data. After moving 35ms of data from as output, *ready* will leave 2ms of data inside. As a result, we will still leave 10ms data in the *internal buffer*: 8ms of data in *pending*; 2ms of data in *ready*. Repeating this process guarantees that *internal buffer* always have *10ms* of data, and has no need to insert the silent data in between.
+Next, if the new input makes *pending* have enough data to process, we forward as much as *10ms* chunks as we can to *audio-processing*, and move the processed results to *ready*. If the input at this time has 35ms of data, the first 7ms of data of the input with the 3ms data left in *pending* will result in a 10ms chunk that can be passed to *audio-processing*. Then, the *audio-processing* will return 10ms of processed data to *ready*. Next, following the same process, we can take 20ms of data from input and produce 20ms of processed data to *ready*. At the end, the left 8ms of input data will be stocked in *pending* since they are not long enough to be a valid input of *audio-processing*.
+
+Now, we've produced 30ms of processed data to *ready*, and make *ready* have 37ms of data. After moving 35ms of data from as output, *ready* will leave 2ms of data inside. As a result, we will still leave 10ms data in the *internal buffer*: 8ms of data in *pending*; 2ms of data in *ready*. Repeating this process guarantees that *internal buffer* always have *10ms* of data, and has no need to insert the silent data in between.
 
 The below is the formal proof, copied from the [code comments][bmo1741959-comment] I wrote. Although the description is slighty different, the idea is same. In the description, *audio-processing* is omitted, because we only need to focus on the amount of data in *pending* and *ready*. In the comments, the *pending* referes to the *packetizer*, and the *ready* referes to *mSegment*.
 
@@ -391,7 +393,6 @@ The below is the formal proof, copied from the [code comments][bmo1741959-commen
 // range. In our implementation, X is set to Z so S(K) is in [1, Z].
 // By the above workflow, we always have enough data for output and no extra
 // frames put into packetizer. It means we don't have any glitch!
-//
 ```
 
 This was the mysterious calculations I mentioned in [*Comments are indispensable*](#comments-are-indispensable). With the clear comments, the code is more understandable and easier to maintain.

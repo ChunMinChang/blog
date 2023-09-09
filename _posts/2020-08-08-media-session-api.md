@@ -7,7 +7,7 @@ tags: [Firefox, Media]
 comments: true
 ---
 
-Media Session API will be enabled on Firefox soon!
+Media Session API will be enabled in Firefox soon!
 
 <!--read more-->
 

@@ -13,7 +13,7 @@ imagefeature: "../images/posts/webcodecs/icon.png"
 image: "../images/posts/webcodecs/icon.png"
 ---
 
-This post talks about three things: What’s WebCodecs, its demo, and its role in the future of media processing.
+This post talks about three things: What’s WebCodecs, its demo, and its role in the future of media processing (talk slides [here][slides]).
 
 <!--read more-->
 
@@ -139,3 +139,5 @@ Special thanks to [Paul Adenot](https://github.com/padenot), [Andrew Osmond](htt
 [webaudio-api]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
 [fox-hug]: ../images/posts/webcodecs/fox-hug-media-platforms.png
 [fx-webcodecs-July-25-2023]: https://github.com/mozilla/gecko-dev/tree/28f4536791dc9f145984ec9004102982ee6cc905/dom/media/webcodecs
+
+[slides]: https://docs.google.com/presentation/d/1UNYg2RWDBNeazOUgoUJTes7VhYnEcG4wUDLoQOwIpC0/edit?usp=sharing

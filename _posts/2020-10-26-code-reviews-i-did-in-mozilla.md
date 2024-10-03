@@ -107,7 +107,7 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
 4. I am able to foresee the problem from a spec before and without implementing the code
    - W3C media session issue [#254](https://github.com/w3c/mediasession/issues/254): [BMO 1621403](https://phabricator.services.mozilla.com/D82816?id=310984#inline-476211)
 5. I can review the math calculation carefully
-   - *mp3-demuxer* - [BMO 1423834](https://bugzilla.mozilla.org/show_bug.cgi?id=1423834): Catch and [prove](https://chunminchang.github.io/blog/post/running-average) the average calculation is wrong when having a look at the code 
+   - *mp3-demuxer* - [BMO 1423834](https://bugzilla.mozilla.org/show_bug.cgi?id=1423834): Catch and [prove](https://chunminchang.github.io/blog/post/running-average) the average calculation is wrong when having a look at the code
    - *cubeb-coreaudio* -  [private #1](https://github.com/padenot/cubeb-coreaudio-rs-private/pull/1#discussion_r401092469): Correct the calculation of the audio samples. Incorrect calculation can damage the audio quality.
    - *cubeb-coreaudio* -  [#99](https://github.com/ChunMinChang/cubeb-coreaudio-rs/pull/99#discussion_r459775374): Make sure all the latency is counted in a total-latency-time
    - *cubeb-coreaudio* -  [#101](https://github.com/ChunMinChang/cubeb-coreaudio-rs/pull/101#discussion_r459078356): Suggest having a default value for a variable whose value can be changed on the fly. That change would fit in more general cases
@@ -117,18 +117,18 @@ To be clear, I am not expressing the following code is bad. Most of the time my 
    - *media-key-control* - [BMO 1611332](https://phabricator.services.mozilla.com/D60935?id=222398#inline-370531) ([BMO 1621779](https://bugzilla.mozilla.org/show_bug.cgi?id=1621779)). Catch a UAF. The right fix lead us to find [BMO 1623950](https://bugzilla.mozilla.org/show_bug.cgi?id=1623950)
    - *media-key-control* - [BMO 1633010](https://phabricator.services.mozilla.com/D73486?id=271074#inline-431599) Catch a data race issue between shutdown and dispatching key-event
    - *audio-ipc* - [#62](https://reviewable.io/reviews/djg/audioipc-2/62#-LjLm3ei63coXTWilJ0C): (crash) Catch a crash that can happen when device collection changes
-   - *media-key-control* - [BMO 1634494](https://phabricator.services.mozilla.com/D87143?id=330905#inline-502409): (crash) Catch a crash that can happen when media-sesson is not set but some specific media key is pressed 
+   - *media-key-control* - [BMO 1634494](https://phabricator.services.mozilla.com/D87143?id=330905#inline-502409): (crash) Catch a crash that can happen when media-sesson is not set but some specific media key is pressed
 7. I am able to maintain/improve the code readability
    - *audio-ipc* - [#115](https://github.com/mozilla/audioipc-2/pull/115#discussion_r581509059): Ask author to add a comment for using an invalid handle as a special value indicating the ownership of the shared-meory between two processes
    - *audio-ipc* - [#112](https://github.com/mozilla/audioipc-2/pull/112/files#r569712579): Ask author to add a comment indicating the message-channel recevicer takes a message-channel error as the signal to execute task, which is an untraditional way of using message-channel sender and recevicer.
    - *cubeb* - [#463](https://github.com/kinetiknz/cubeb/pull/463#discussion_r223819871): Replace `if` that always work by `assert` and remove the misleading comments
    - *media-key-control* - [BMO 1627999](https://phabricator.services.mozilla.com/D75477?id=279333#inline-438887): Ask the author to add an assertion to let the reader know the current code state
-  
+
 There should be more reviews I did. But the above are what I can remember for now.
 
 ## Other Reviews and Communications
 
-I am also willing to raise my opinions outside of Mozilla. When implementing the media-session, I filed several [spec issues](https://github.com/w3c/mediasession/issues?q=is%3Aissue+author%3AChunMinChang) and proposed [potential solutions](https://github.com/w3c/mediasession/issues/234#issuecomment-530540930).
+I am also willing to raise my opinions outside of Mozilla. When implementing the media-session, I filed several spec issues for [media session](https://github.com/w3c/mediasession/issues?q=is%3Aissue+author%3AChunMinChang), [webcodecs](https://github.com/w3c/webcodecs/issues?q=is%3Aissue+author%3AChunMinChang)and proposed [potential solutions](https://github.com/w3c/mediasession/issues/234#issuecomment-530540930).
 
 The team-wise communication is a important part to make the whole team succeed. I am willing to help the team members to get the information they need to take further actions, or share my views to any problem I spot. For example, I reported a *WebRTC* device-switching bug and gave a [code analysis about the cause and its possible solutions](https://bugzilla.mozilla.org/show_bug.cgi?id=1572281#c2) even though *WebRTC* is not the area I was working on. I also let the *mp4parse-rust* contributors noticed their new test settings [cannot work with Rust Nightly](https://github.com/mozilla/mp4parse-rust/pull/205#issuecomment-597326901) so they can fix it.
 

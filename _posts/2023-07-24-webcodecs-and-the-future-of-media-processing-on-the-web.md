@@ -63,6 +63,8 @@ Let's see the demo (click the images below!).
 
 [![webcodecs-demo](https://img.youtube.com/vi/TMUfP9jXKjc/0.jpg)](https://youtu.be/TMUfP9jXKjc)
 
+(If you would like to see more example or tests, please go to https://chunminchang.github.io/playground/)
+
 ## Future of Media Processing
 
 ### Future of Video Processing

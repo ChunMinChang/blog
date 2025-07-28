@@ -5,7 +5,7 @@ category: [Random]
 tags: [Toy]
 comments: true
 type: video
-video: https://www.youtube.com/watch?v=DJeW6geKkkw
+video: https://ody.sh/vnNlieHQFY
 ---
 
 To make some fun in a snowing night,

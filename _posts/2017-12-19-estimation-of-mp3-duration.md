@@ -84,7 +84,7 @@ before they finish introducing and start streaming.
 After finishing the opening talks,
 the UI should behave as the same as they are live streams.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/f53NjLQTafQ" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+<iframe id="odysee-iframe" style="width:100%; aspect-ratio:16 / 9;" src="https://odysee.com/%24/embed/%40cmchang%3A9%2Ffx-mp3-live-stream-with-opening-remark%3A5?r=BsRLJWBvcv3MTreGkwZjPR7dTNzfV3Hk&signature=99538328abdf7ffe6ca6df55cb5c00e464442881b646226d60fa9b7c233bb1b06c1124ea7c0058924cd9c0ecf108483434a6df3d12fcc2951a16ac6b76f50731&signature_ts=1753739663" allowfullscreen></iframe>
 
 (You can check this by opening [*KHNY Honey 103*](http://honey.macchiatomedia.org:8080/stream/1/?lang=en-US%2cen%3bq%3d0.5) directly,
 or go to [shoutcast](https://www.shoutcast.com/) and play *KHNY Honey 103* under Genre *Jazz*)

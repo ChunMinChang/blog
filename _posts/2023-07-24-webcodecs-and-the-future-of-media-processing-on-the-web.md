@@ -61,7 +61,7 @@ The video will be downloaded, and you will see the original video, and being pro
 
 Let's see the demo (click the images below!).
 
-[![webcodecs-demo](https://img.youtube.com/vi/TMUfP9jXKjc/0.jpg)](https://youtu.be/TMUfP9jXKjc)
+[![webcodecs-demo](../images/posts/webcodecs/icon.png)](https://ody.sh/V02bSXloFY)
 
 (If you would like to see more example or tests, please go to https://chunminchang.github.io/playground/)
 

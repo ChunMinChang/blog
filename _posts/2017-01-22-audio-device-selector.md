@@ -6,7 +6,7 @@ tags: [Toy]
 mathjax: true
 comments: true
 type: video
-video: https://www.youtube.com/watch?v=heBQHew3Guc
+video: https://ody.sh/joFWAcRyRX
 ---
 To develop a cross-platform audio library,
 I need to switch between computers
@@ -18,7 +18,6 @@ and then connect it to another one again and again.
 Therefore, I made a device selector that can switch the audio source
 of the speaker by simply flipping a switch.
 
-<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/heBQHew3Guc" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> -->
 
 ## Circuit
 

@@ -5,18 +5,20 @@ category: [Random]
 tags: [Toy]
 mathjax: true
 comments: true
-type: video
-video: https://ody.sh/joFWAcRyRX
 ---
 To develop a cross-platform audio library,
 I need to switch between computers
 with different OS frequently
 to check if my code works on different platforms.
 
+<!--read more-->
+
 It's annoying to unconnect the speaker from one computer
 and then connect it to another one again and again.
 Therefore, I made a device selector that can switch the audio source
 of the speaker by simply flipping a switch.
+
+<iframe id="odysee-iframe" style="width:100%; aspect-ratio:16 / 9;" src="https://odysee.com/%24/embed/%40cmchang%3A9%2Faudio-device-switcher%3A3?r=BsRLJWBvcv3MTreGkwZjPR7dTNzfV3Hk&signature=07c4ecc731a92c3304fec8bdb05e7d804ee64d77a9e9ab3e81d9ee834bfdeca36f3dac1dbf6e7ea4f4b51b461c01e291047ea7600d4cd1a83caeee4a0406d3ed&signature_ts=1753743249" allowfullscreen></iframe>
 
 
 ## Circuit

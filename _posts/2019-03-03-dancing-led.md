@@ -4,8 +4,6 @@ title: Dancing LED
 category: [Random]
 tags: [Toy]
 comments: true
-type: video
-video: https://ody.sh/vnNlieHQFY
 ---
 
 To make some fun in a snowing night,
@@ -23,6 +21,8 @@ I bet you will get much more fun
 if you dance with real humans rather than the LED circuit!
 
 <!--read more-->
+
+<iframe id="odysee-iframe" style="width:100%; aspect-ratio:16 / 9;" src="https://odysee.com/%24/embed/%40cmchang%3A9%2Fdancing-led%3Ac?r=BsRLJWBvcv3MTreGkwZjPR7dTNzfV3Hk&signature=feb6cb634a62d9fb1a66182ded4338bc118a1cd25f7094bb1698bc2c9271e7bc7ef1094f7f6bbbaba1f918b41fd7a6f9140c94293f0efff5bcc4db1362d43433&signature_ts=1753744233" allowfullscreen></iframe>
 
 ## Circuit
 ![][deviceselector]

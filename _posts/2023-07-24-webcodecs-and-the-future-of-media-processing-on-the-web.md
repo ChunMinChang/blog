@@ -59,9 +59,9 @@ The video will show options of video files in different formats. In this case, w
 
 The video will be downloaded, and you will see the original video, and being processed into filters of grayscale, inverted, and sepia.
 
-Let's see the demo (click the images below!).
+Let's see the demo below!
 
-[![webcodecs-demo](../images/posts/webcodecs/icon.png)](https://ody.sh/V02bSXloFY)
+<iframe id="odysee-iframe" style="width:100%; aspect-ratio:16 / 9;" src="https://odysee.com/%24/embed/%40cmchang%3A9%2Fwebcodecs-videodecoder-demo%3A0?r=BsRLJWBvcv3MTreGkwZjPR7dTNzfV3Hk&signature=759879aa5668803d4540a0d8652a8b6e8d12fb7b286eac25128201e6ce738e9c41f335699c67b5b89db1a392f5ddb9a1546858b6cd26b374c04f3e26427377cd&signature_ts=1753739841" allowfullscreen></iframe>
 
 (If you would like to see more example or tests, please go to https://chunminchang.github.io/playground/)
 
